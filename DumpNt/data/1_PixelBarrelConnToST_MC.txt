@@ -1,0 +1,2 @@
+/cms/store/user/sandro/1_PixelBarrelConnToST/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_21_1_M3i.root
+/cms/store/user/sandro/1_PixelBarrelConnToST/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_23_1_pMz.root
