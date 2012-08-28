@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Mauro Donega (ETH) [donega]
 //         Created:  Wed Jun 13 18:08:53 CEST 2012
-// $Id$
+// $Id: DumpNt.cc,v 1.2 2012/08/27 08:40:50 sandro Exp $
 //
 //
 
@@ -508,8 +508,7 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   edm::Handle<EcalRecHitCollection> EERecHits_;
   iEvent.getByLabel(reducedBarrelEcalRecHitCollection_, EBRecHits_);
   iEvent.getByLabel(reducedEndcapEcalRecHitCollection_, EERecHits_);
-  EcalClusterLazyTools* lazyTools = 0;
-  lazyTools = new EcalClusterLazyTools( iEvent, iSetup, reducedBarrelEcalRecHitCollection_, reducedEndcapEcalRecHitCollection_ );  
+  EcalClusterLazyTools lazyTools = EcalClusterLazyTools( iEvent, iSetup, reducedBarrelEcalRecHitCollection_, reducedEndcapEcalRecHitCollection_ );  
 
 
 //inizio
@@ -620,7 +619,7 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 //	el_pfSuperClusterFbrem 		         = eleIter->pfSuperClusterFbrem(); 				  		     
 	//	el_r9 					 = eleIter->r9(); 
 	el_r9                                    =  -9 ;
-	if (el_scRawEnergy != 0) el_r9 =  lazyTools->e3x3(*eleSeed)/el_scRawEnergy; 
+	if (el_scRawEnergy != 0) el_r9 =  lazyTools.e3x3(*eleSeed)/el_scRawEnergy; 
 
 	el_scE1x5 				 = eleIter->scE1x5(); 						  		     
 	el_scE2x5Max 				 = eleIter->scE2x5Max(); 					     	  	     
@@ -734,7 +733,7 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         el_scE                              = scRef->energy();
 
         reco::GsfElectron ele = *eleIter;
-        std::pair<double,double> cor = ecorr_.CorrectedEnergyWithError(ele, *hVertexProduct, *lazyTools, iSetup);
+        std::pair<double,double> cor = ecorr_.CorrectedEnergyWithError(ele, *hVertexProduct, lazyTools, iSetup);
         scE_regression                      = cor.first;
 
         int ieta = 0;
