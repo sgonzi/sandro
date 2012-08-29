@@ -1,3 +1,12 @@
+/*
+from
+http://cmssw.cvs.cern.ch/cgi-bin/cmssw.cgi/UserCode/donega/ECAL/SC/scCorrections/scCorrections.C?revision=1.10&view=markup
+/////
+.x loadRoofit.C
+.L fit.C++
+fit();
+/////
+*/
 
 #include "TROOT.h"
 #include "TStyle.h"
@@ -24,129 +33,225 @@
 #include <math.h>
 #include <vector>
 
-using namespace std;
+//Mauro->Inizio
+//#define scCorrections_cxx
+//#include "scCorrections.h"
+//#include "Utils.C"
+//#include <iostream>
+#include <fstream>
+//#include <sstream>
+//#include "TROOT.h"
+//#include <TF1.h>
+//#include <TH1.h>
+//#include <TH2.h>
+//#include <TH3.h>
+#include "TMath.h"
+//#include <TStyle.h>
+//#include <TProfile.h>
+//#include <TCanvas.h>
+//#include <TLegend.h>
+#include <TLatex.h>
+//#include <TBox.h>
+//#include "TFile.h"
+#include "TString.h"
 
+#include "RooGlobalFunc.h"
+#include "RooRealVar.h"
+#include "RooCBShape.h"
+#include "RooDataHist.h"
+#include "RooPlot.h"
+//#include "binning.h"
+//Mauro->Fine
 
-//const float c = -1.610;
+//using namespace std;
+
+//Mauro->Inizio
+//using namespace RooFit;
+//Mauro->Fine
+
+const int bin = 95;
+
 const float c = -1.653;
-
-//const float d = 0.0805;
-//const float d = 0.04025;
 const float d = 0.0348;
 
+int nBinsErecEgen = 500;
+int ErecEgenMin = 0; 
+int ErecEgenMax = 2;
+
 int EtaBins(float eta, float a, float b){
-//	float a = -1.610;
-//	float b = 0.0805;
 
-	if (eta<= a+0*b)                  {return 0;}
-	if (eta> a+0*b && eta <= a+1*b)   {return 1;}
-	if (eta> a+1*b && eta <= a+2*b)   {return 2;}
-	if (eta> a+2*b && eta <= a+3*b)   {return 3;}
-	if (eta> a+3*b && eta <= a+4*b)   {return 4;}  
-	if (eta> a+4*b && eta <= a+5*b)   {return 5;}
-	if (eta> a+5*b && eta <= a+6*b)   {return 6;}
-	if (eta> a+6*b && eta <= a+7*b)   {return 7;}
-	if (eta> a+7*b && eta <= a+8*b)   {return 8;}
-	if (eta> a+8*b && eta <= a+9*b)   {return 9;}
-	if (eta> a+9*b && eta <= a+10*b)  {return 10;} 
-	if (eta> a+10*b && eta <= a+11*b) {return 11;}
-	if (eta> a+11*b && eta <= a+12*b) {return 12;}
-	if (eta> a+12*b && eta <= a+13*b) {return 13;}
-	if (eta> a+13*b && eta <= a+14*b) {return 14;}  
-	if (eta> a+14*b && eta <= a+15*b) {return 15;}
-	if (eta> a+15*b && eta <= a+16*b) {return 16;}
-	if (eta> a+16*b && eta <= a+17*b) {return 17;}
-	if (eta> a+17*b && eta <= a+18*b) {return 18;}
-	if (eta> a+18*b && eta <= a+19*b) {return 19;}
-	if (eta> a+19*b && eta <= a+20*b) {return 20;}  
-	if (eta> a+20*b && eta <= a+21*b) {return 21;}  
-	if (eta> a+21*b && eta <= a+22*b) {return 22;}  
-	if (eta> a+22*b && eta <= a+23*b) {return 23;}  
-	if (eta> a+23*b && eta <= a+24*b) {return 24;}  
-	if (eta> a+24*b && eta <= a+25*b) {return 25;}  
-	if (eta> a+25*b && eta <= a+26*b) {return 26;}  
-	if (eta> a+26*b && eta <= a+27*b) {return 27;}  
-	if (eta> a+27*b && eta <= a+28*b) {return 28;}  
-	if (eta> a+28*b && eta <= a+29*b) {return 29;}  
-	if (eta> a+29*b && eta <= a+30*b) {return 30;}  
-	if (eta> a+30*b && eta <= a+31*b) {return 31;}  
-	if (eta> a+31*b && eta <= a+32*b) {return 32;}  
-	if (eta> a+32*b && eta <= a+33*b) {return 33;}  
-	if (eta> a+33*b && eta <= a+34*b) {return 34;}  
-	if (eta> a+34*b && eta <= a+35*b) {return 35;}  
-	if (eta> a+35*b && eta <= a+36*b) {return 36;}  
-	if (eta> a+36*b && eta <= a+37*b) {return 37;}  
-	if (eta> a+37*b && eta <= a+38*b) {return 38;}  
-	if (eta> a+38*b && eta <= a+39*b) {return 39;}  
-	if (eta> a+39*b && eta <= a+40*b) {return 40;}
-	if (eta> a+40*b && eta <= a+41*b) {return 41;}
-	if (eta> a+41*b && eta <= a+42*b) {return 42;}
-	if (eta> a+42*b && eta <= a+43*b) {return 43;}
-	if (eta> a+43*b && eta <= a+44*b) {return 44;}
-	if (eta> a+44*b && eta <= a+45*b) {return 45;}
-	if (eta> a+45*b && eta <= a+46*b) {return 46;}
-	if (eta> a+46*b && eta <= a+47*b) {return 47;}
+	int z = bin;
+	if (eta <= a+0*b)                              {return 0;}
 
-	if (eta> a+47*b && eta <= a+48*b) {return 48;}
-	if (eta> a+48*b && eta <= a+49*b) {return 49;}
-	if (eta> a+49*b && eta <= a+50*b) {return 50;}
-	if (eta> a+50*b && eta <= a+51*b) {return 51;}
-	if (eta> a+51*b && eta <= a+52*b) {return 52;}
-	if (eta> a+52*b && eta <= a+53*b) {return 53;}
-	if (eta> a+53*b && eta <= a+54*b) {return 54;}
-	if (eta> a+54*b && eta <= a+55*b) {return 55;}
-	if (eta> a+55*b && eta <= a+56*b) {return 56;}
-	if (eta> a+56*b && eta <= a+57*b) {return 57;}
-	if (eta> a+57*b && eta <= a+58*b) {return 58;}
-	if (eta> a+58*b && eta <= a+59*b) {return 59;}
-	if (eta> a+59*b && eta <= a+60*b) {return 60;}
-	if (eta> a+60*b && eta <= a+61*b) {return 61;}
-	if (eta> a+61*b && eta <= a+62*b) {return 62;}
-	if (eta> a+62*b && eta <= a+63*b) {return 63;}
-	if (eta> a+63*b && eta <= a+64*b) {return 64;}
-	if (eta> a+64*b && eta <= a+65*b) {return 65;}
-	if (eta> a+65*b && eta <= a+66*b) {return 66;}
-	if (eta> a+66*b && eta <= a+67*b) {return 67;}
-	if (eta> a+67*b && eta <= a+68*b) {return 68;}
-	if (eta> a+68*b && eta <= a+69*b) {return 69;}
-	if (eta> a+69*b && eta <= a+70*b) {return 70;}
-	if (eta> a+70*b && eta <= a+71*b) {return 71;}
-	if (eta> a+71*b && eta <= a+72*b) {return 72;}
-	if (eta> a+72*b && eta <= a+73*b) {return 73;}
-	if (eta> a+73*b && eta <= a+74*b) {return 74;}
-	if (eta> a+74*b && eta <= a+75*b) {return 75;}
-	if (eta> a+75*b && eta <= a+76*b) {return 76;}
-	if (eta> a+76*b && eta <= a+77*b) {return 77;}
-	if (eta> a+77*b && eta <= a+78*b) {return 78;}
-	if (eta> a+78*b && eta <= a+79*b) {return 79;}
-	if (eta> a+79*b && eta <= a+80*b) {return 80;}
-	if (eta> a+80*b && eta <= a+81*b) {return 81;}
-	if (eta> a+81*b && eta <= a+82*b) {return 82;}
-	if (eta> a+82*b && eta <= a+83*b) {return 83;}
-	if (eta> a+83*b && eta <= a+84*b) {return 84;}
-	if (eta> a+84*b && eta <= a+85*b) {return 85;}
-	if (eta> a+85*b && eta <= a+86*b) {return 86;}
-	if (eta> a+86*b && eta <= a+87*b) {return 87;}
-	if (eta> a+87*b && eta <= a+88*b) {return 88;}
-	if (eta> a+88*b && eta <= a+89*b) {return 89;}
-	if (eta> a+89*b && eta <= a+90*b) {return 90;}
-	if (eta> a+90*b && eta <= a+91*b) {return 91;}
-	if (eta> a+91*b && eta <= a+92*b) {return 92;}
-	if (eta> a+92*b && eta <= a+93*b) {return 93;}
-	if (eta> a+93*b && eta <= a+94*b) {return 94;}
-	if (eta> a+94*b && eta <= a+95*b) {return 95;}
-  	if (eta> a+95*b)                  {return 96;}  
+	for(int x = 1; x < (z+1); ++x){
+		if (eta > a+(x-1)*b && eta <= a+x*b)   {return x;}
+	}
+
+	if (eta > a+z*b)                             {return z+1;} 
 
 	return -1;
 }
 
+TString floatToString(float number){
+	ostringstream oss;
+	oss << number;
+	return oss.str();
+}
+
+string intToString(int number){
+	std::string st;
+	std::stringstream out;
+	out << number;
+	return st = out.str();
+}
 
 
-void Grafici_dopo_incontro(){
+void fitCB(TH1F *h, Double_t &mean, Double_t &emean, Double_t &chi2, string &stringa)
+{
+	// This is to quantify the fraction of events where the reconstructed energy is below EgenFrac
+	// badReco = h->Integral(1,h->FindBin(EgenFrac)) / (Double_t)h->GetEntries();
+
+	// driving gaussian. Used to estimate the fit range
+	TF1 *gtmp = 0;
+
+	TCanvas *c1 = new TCanvas("c1","c1",600,600);
+	c1->cd();
+	h->Draw();
+
+	// more solid peak position with a temporary histogram filled only with the bins above 50% of the peak max
+	TH1F *htmp = new TH1F("htmp","htmp",nBinsErecEgen,ErecEgenMin, ErecEgenMax);
+	// protect the fits from small statistics rebinning
+	if (h->GetMaximum()< 50.) { h->Rebin(2); htmp->Rebin(2); }
+	if (h->GetMaximum()< 25.) { h->Rebin(2); htmp->Rebin(2); }
+	for (Int_t i=0; i<h->GetNbinsX(); ++i) {
+		if (h->GetBinContent(i) > h->GetMaximum()/2.) htmp->SetBinContent(i,h->GetBinContent(i));
+	}
+	htmp->Draw();
+	c1->Update();
+
+	
+	// driving gaussian
+	gtmp = new TF1("gtmp","gaus(0)",0,2.0);	
+	// use the mean and RMS of the Erec/Egen as initial parameters for the driving gaussian
+	// gtmp->SetParameters(10,1,0.05);
+	cout << h->GetMaximum() << " " 
+	     << h->GetMean() << " " 
+	     << h->GetRMS() << " " 
+	     << htmp->GetMean() << " " 
+	     << htmp->GetRMS() << " " 
+	     << endl;
+	gtmp->SetParameters(10, htmp->GetMean(), htmp->GetRMS());
+	h->Fit("gtmp","","",htmp->GetMean()-5*htmp->GetRMS(),htmp->GetMean()+5*htmp->GetRMS()); // 0.8,1.1);
+	h->Fit("gtmp","","",
+	       gtmp->GetParameter(1)-2*TMath::Abs(gtmp->GetParameter(2)),
+	       gtmp->GetParameter(1)+2*TMath::Abs(gtmp->GetParameter(2)));
+	cout << "***** GTMP " 
+	     << gtmp->GetParameter(0) << " " 
+	     << gtmp->GetParameter(1) << " " 
+	     << gtmp->GetParameter(2) << " "
+	     << endl;
+	c1->Update();
+
+	delete htmp;
+	 
+	// RooDataHist from TH1F
+	RooRealVar x("x","x", ErecEgenMin, ErecEgenMax);
+	RooDataHist data("data","p_{T}/p_{T}^{True}",x,h); 
+	RooPlot* xframe = x.frame(RooFit::Name("xframe"),RooFit::Title("p_{T}/p_{T}^{True}")) ;
+	data.plotOn(xframe);
+
+	// Initialize CB parameters
+	Double_t  alphaStart =   0.5;
+	Double_t  alphaMin   =   0.1;
+	Double_t  alphaMax   =   2.0;
+	Double_t  nStart     =  50.0;
+	Double_t  nMin       =   0.0;
+	Double_t  nMax       = 200.0;
+	if ( gtmp->GetParameter(1) < 0.95 && gtmp->GetParameter(2) > 0.03 ) {
+		alphaStart =   0.4;
+		alphaMin   =   0.;
+		alphaMax   =   1.0;
+		nStart     =  20.;
+		nMin       =   0.;
+		nMax       = 100.;
+	}
+
+	// fit function
+	RooRealVar alpha  ("alpha"  ,        "alpha" , alphaStart, alphaMin, alphaMax); 
+	RooRealVar n      ("n"      ,            "n" , nStart, nMin, nMax); 
+	RooRealVar cbmean ("cbmean" ,       "cbmean" , gtmp->GetParameter(1) ,0.5, 1.2); // ErecEgenMin, ErecEgenMax);
+	RooRealVar cbsigma("cbsigma",      "cbsigma" , 0.01, 0.001,0.1) ;
+	RooCBShape cball  ("cball"  , "crystal ball" , x, cbmean, cbsigma, alpha, n);
+
+/*
+	// other functions
+	// CB (x) Gaussian
+	//   RooRealVar mg("mg","mg",1) ;
+	//   RooRealVar sg("sg","sg",0.1,0.01,0.2) ;
+	//   RooGaussian gauss("gauss","gauss",x,mg,sg) ; 
+	//   RooFFTConvPdf CBgaus("CBgaus","CB (X) gauss",x,cball,gauss);
+	//
+	// CB + Gaussian
+	//   RooRealVar ng("ng","ng",100,1,10000);
+	//   RooRealVar nc("nc","nc",10, 1,10000);
+	//   RooAddPdf CBgaus("CBgaus","CB + gauss",RooArgList(cball,gauss),RooArgList(nc,ng));
+
+	// Fit Range using as units the sigma of the driving gaussian
+	//
+	Float_t nsigmaL = 10;
+	Float_t nsigmaR = 2;
+	//
+	// Fit
+
+	RooFitResult* fitres =cball.fitTo(data,
+				          RooFit::Range(gtmp->GetParameter(1)-nsigmaL*TMath::Abs(gtmp->GetParameter(2)),
+					  gtmp->GetParameter(1)+nsigmaR*TMath::Abs(gtmp->GetParameter(2))),
+				          RooFit::Minos(kFALSE));    
+*/
+	mean  = cbmean.getVal();
+	emean = cbmean.getError();
+	cball.plotOn (xframe,RooFit::LineColor(kBlue));
+	cball.paramOn(xframe,RooFit::Layout(0.55,0.98,0.95));
+	data. statOn (xframe,RooFit::Layout(0.55,0.98,0.65));
+	chi2  = xframe->chiSquare(4); // dof = 4 = number fof floating parametes
+	//cout << "***** CHI2 " << xframe->chiSquare(4) << endl; getchar();
+
+
+	// plot
+	// gStyle->SetOptFit(1);
+
+	string s_cpull = "cpull";
+	TCanvas *cpull = new TCanvas((s_cpull + stringa).c_str(),(s_cpull + stringa).c_str(),600,600);
+	cpull->SetFillColor(0);
+	cpull->SetBorderMode(0);
+	cpull->SetBorderSize(2);
+	cpull->SetFrameBorderMode(0);
+	cpull->SetFrameBorderMode(0);
+	cpull->SetBottomMargin(0.25);
+	TString chi2txt = "#chi^{2}=" + floatToString(xframe->chiSquare(4)) ; // dof = 4 = number dof floating parametes
+	TLatex* txt = new TLatex(0.65,0.38,chi2txt);
+	txt->SetNDC();
+	txt->SetTextSize(0.04) ;
+	txt->SetTextColor(kRed) ;
+	xframe->addObject(txt) ;
+	xframe->GetXaxis()->SetTitle("p_{T}/p_{T}^{True}");
+	xframe->Draw();
+
+	cpull->Update();
+	cpull->Write();
+	cpull->Close();
+
+	return;
+}
+
+void fit(){
 
 	//---- output file to save graphs
 	char outfilename[20];
 	sprintf(outfilename,"fit_dopo_incontro.root");
+
+	//out file
+	TFile outfile(outfilename,"recreate");
 
 	// --- NTUPLES
 	TChain *ntu_MC = new TChain("ntu");
@@ -164,18 +269,18 @@ void Grafici_dopo_incontro(){
 	ntu_MC->SetBranchAddress("el_scEta",    &el_scEta);
 
 	//---- book histos
-	const int Ntempl = 97;
+	const int Ntempl = bin+2;
 	TH1F* h_ptOverGenpt_MC[Ntempl];
 	for(int i = 0; i < Ntempl; ++i){
 		char histoName[20];
 		sprintf(histoName, "h_ptOverGenpt_MC_%d", i);
-		h_ptOverGenpt_MC[i] = new TH1F(histoName, "", 1000, 0., 2.);
+		h_ptOverGenpt_MC[i] = new TH1F(histoName, "", nBinsErecEgen, ErecEgenMin, ErecEgenMax);
 	}
 
 
 	//******************************************************************************************
-	//*************************************** MC  ********************************************** 
-   
+	//*************************************** MC ********************************************** 
+
 	std::cout << "Loop in MC events " << endl; 
 	//--------------- loop on MC, make reference and fit distributions
 	for(int entry = 0; entry < ntu_MC->GetEntries(); ++entry) {
@@ -197,20 +302,18 @@ void Grafici_dopo_incontro(){
 
 	for (int imod = 1; imod < Ntempl-1; imod++) {
 
-		h_ptOverGenpt_MC[imod]-> Rebin(4);
+		double mean    = 1;
+		double emean   = 0;
+		double chi2    = 0;
+		string s      = "_";
+		s += intToString(imod);
 
-		TFitResultPtr rp;
-//		int fStatus; 
-//		for (int trial = 0; trial < 5; trial++) {
-			TF1 *f1 = new TF1("f1", "gaus", 0, 2);
-			rp = h_ptOverGenpt_MC[imod] -> Fit(f1, "EMQRLS+");
-//			fStatus = rp;
-//			if (fStatus < 2) break; 
+		fitCB(h_ptOverGenpt_MC[imod], mean, emean, chi2, s);
 
-			float Iniz = imod-1;
-			float xval = ((c + (imod-1)*d) + (c + imod*d))/2;
-			float yval = f1->GetParameter(1);
-			float yvalErr = f1->GetParError(1);
+		float Iniz = imod-1;
+		float xval = ((c + (imod-1)*d) + (c + imod*d))/2;
+		float yval = mean;
+		float yvalErr = emean;
 cout << "imod = " << imod << endl; 
 cout << "(c + (imod-1)*d) = " << (c + (imod-1)*d) << endl; 
 cout << "(c + imod*d) = " << (c + imod*d) << endl; 
@@ -219,14 +322,12 @@ cout << "yval = " << yval << endl;
 cout << "yvalErr = " << yvalErr << endl;
 cout << "----------------------------------" << endl; 
 
-			g_ptOverGenpt_MC -> SetPoint(Iniz, xval , yval);
-			g_ptOverGenpt_MC -> SetPointError(Iniz, 0., yvalErr);
+		g_ptOverGenpt_MC -> SetPoint(Iniz, xval , yval);
+		g_ptOverGenpt_MC -> SetPointError(Iniz, 0., yvalErr);
 
-//		}
 	}
 
-	//out file
-	TFile outfile(outfilename,"recreate");
+
 
 	for (int jmod = 0; jmod < Ntempl; jmod++){
 		h_ptOverGenpt_MC[jmod]->Write();

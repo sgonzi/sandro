@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Mauro Donega (ETH) [donega]
 //         Created:  Wed Jun 13 18:08:53 CEST 2012
-// $Id: DumpNt.cc,v 1.2 2012/08/27 08:40:50 sandro Exp $
+// $Id: DumpNt.cc,v 1.3 2012/08/28 11:59:29 sandro Exp $
 //
 //
 
@@ -547,8 +547,9 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
   // EnergyCorrecto tools
   EGEnergyCorrector ecorr_;
+
   if ( !ecorr_.IsInitialized() ){
-     ecorr_.Initialize(iSetup, "/raid/sandro/Geometria/Tracker_ECAL/CMSSW_5_2_5/src/DumpNt/DumpNt/test/gbrv3ele_52x.root"); //from UserCode/HiggsAnalysis/HiggsTo2photons/data/
+	ecorr_.Initialize(iSetup, "/raid/sandro/Geometria/Tracker_ECAL/CMSSW_5_2_5/src/DumpNt/DumpNt/test/gbrv3ele_52x.root"); //from UserCode/HiggsAnalysis/HiggsTo2photons/data/
   }
 //  EcalClusterLazyTools lazyTools_1(iEvent, iSetup, reducedBarrelEcalRecHitCollection_, reducedEndcapEcalRecHitCollection_);
 //fine

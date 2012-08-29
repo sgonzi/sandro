@@ -132,7 +132,7 @@ void setTDRStyle() {
 }
 
 
-void Draw_Grafici_dopo_incontro(){
+void Draw_fit(){
 
 	setTDRStyle();
 
