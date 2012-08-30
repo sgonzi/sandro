@@ -69,12 +69,14 @@ fit();
 //using namespace RooFit;
 //Mauro->Fine
 
-const int bin = 95;
+//const int bin = 95;
+const int bin = 190;
 
 const float c = -1.653;
-const float d = 0.0348;
+//const float d = 0.0348;
+const float d = 0.0174;
 
-int nBinsErecEgen = 500;
+int nBinsErecEgen = 250;
 int ErecEgenMin = 0; 
 int ErecEgenMax = 2;
 
@@ -248,7 +250,7 @@ void fit(){
 
 	//---- output file to save graphs
 	char outfilename[20];
-	sprintf(outfilename,"fit_dopo_incontro.root");
+	sprintf(outfilename,"fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root");
 
 	//out file
 	TFile outfile(outfilename,"recreate");
@@ -257,7 +259,7 @@ void fit(){
 	TChain *ntu_MC = new TChain("ntu");
 
 	//---- MC Particle Gun
-	ntu_MC->Add("outfile_0_Original_MC.root/Tree");
+	ntu_MC->Add("outfile_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root/Tree");
 
 	std::cout << "     MC    : " << ntu_MC->GetEntries() << " entries in MC sample." << std::endl;
 

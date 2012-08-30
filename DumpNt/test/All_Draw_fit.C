@@ -132,7 +132,7 @@ void setTDRStyle() {
 }
 
 
-void Draw_fit(){
+void All_Draw_fit(){
 
 	setTDRStyle();
 
@@ -141,27 +141,64 @@ void Draw_fit(){
 	float ymin   = 0.6;
 	float ymax   = 1.2;
 
-	TFile *f = TFile::Open("fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root");
+	string pwd_0 = "/raid/sandro/Geometria/Tracker_ECAL/2_PixelBarrelConn1_and_PixelBarrelConn2/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
+	string pwd_1 = "/raid/sandro/Geometria/Tracker_ECAL/2_PixelBarrelConn1_and_PixelBarrelConn2/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
+	string pwd_2 = "/raid/sandro/Geometria/Tracker_ECAL/2_PixelBarrelConn1_and_PixelBarrelConn2/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
+	string pwd_3 = "/raid/sandro/Geometria/Tracker_ECAL/2_PixelBarrelConn1_and_PixelBarrelConn2/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
+	string pwd_4 = "/raid/sandro/Geometria/Tracker_ECAL/2_PixelBarrelConn1_and_PixelBarrelConn2/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
+	string pwd_5 = "/raid/sandro/Geometria/Tracker_ECAL/2_PixelBarrelConn1_and_PixelBarrelConn2/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 
-	TFile *outfile = new TFile("draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root","recreate");
+	string infile_0 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root";
+	string infile_1 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root";
+	string infile_2 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root";
+	string infile_3 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root";
+	string infile_4 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root";
+	string infile_5 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root";
 
-	TGraphErrors* g_ptOverGenpt_MC = (TGraphErrors*)f->Get("g_ptOverGenpt_MC");
-	g_ptOverGenpt_MC -> SetMarkerStyle(21);
-	g_ptOverGenpt_MC -> SetMarkerSize(0.7);
-	g_ptOverGenpt_MC -> SetMarkerColor(2); 
+	TFile *f_0 = TFile::Open((pwd_0+infile_0).c_str());
+	TFile *f_1 = TFile::Open((pwd_1+infile_1).c_str());
+	TFile *f_2 = TFile::Open((pwd_2+infile_2).c_str());
+	TFile *f_3 = TFile::Open((pwd_3+infile_3).c_str());
+	TFile *f_4 = TFile::Open((pwd_4+infile_4).c_str());
+	TFile *f_5 = TFile::Open((pwd_5+infile_5).c_str());
 
-	TCanvas* c_g_fit = new TCanvas("g_fit", "g_fit",100,100,1000,600);
+	TFile *outfile = new TFile("all_draw_fit.root","recreate");
+
+	TGraphErrors* g_ptOverGenpt_MC_0 = (TGraphErrors*)f_0->Get("g_ptOverGenpt_MC_Original");
+	g_ptOverGenpt_MC_0 -> SetMarkerStyle(21);
+	g_ptOverGenpt_MC_0 -> SetMarkerSize(0.7);
+	g_ptOverGenpt_MC_0 -> SetMarkerColor(1); 
+
+	TGraphErrors* g_ptOverGenpt_MC_1 = (TGraphErrors*)f_1->Get("g_ptOverGenpt_MC_Original");
+	g_ptOverGenpt_MC_1 -> SetMarkerStyle(21);
+	g_ptOverGenpt_MC_1 -> SetMarkerSize(0.7);
+	g_ptOverGenpt_MC_1 -> SetMarkerColor(1); 
+
+	TGraphErrors* g_ptOverGenpt_MC_2 = (TGraphErrors*)f_2->Get("g_ptOverGenpt_MC");
+	g_ptOverGenpt_MC_2 -> SetMarkerStyle(21);
+	g_ptOverGenpt_MC_2 -> SetMarkerSize(0.7);
+	g_ptOverGenpt_MC_2 -> SetMarkerColor(2); 
+
+	TGraphErrors* g_ptOverGenpt_MC_3 = (TGraphErrors*)f_3->Get("g_ptOverGenpt_MC_Original");
+	g_ptOverGenpt_MC_3 -> SetMarkerStyle(21);
+	g_ptOverGenpt_MC_3 -> SetMarkerSize(0.7);
+	g_ptOverGenpt_MC_3 -> SetMarkerColor(1); 
+
+	TGraphErrors* g_ptOverGenpt_MC_4 = (TGraphErrors*)f_4->Get("g_ptOverGenpt_MC_Original");
+	g_ptOverGenpt_MC_4 -> SetMarkerStyle(21);
+	g_ptOverGenpt_MC_4 -> SetMarkerSize(0.7);
+	g_ptOverGenpt_MC_4 -> SetMarkerColor(1); 
+
+	TGraphErrors* g_ptOverGenpt_MC_5 = (TGraphErrors*)f_5->Get("g_ptOverGenpt_MC_Original");
+	g_ptOverGenpt_MC_5 -> SetMarkerStyle(21);
+	g_ptOverGenpt_MC_5 -> SetMarkerSize(0.7);
+	g_ptOverGenpt_MC_5 -> SetMarkerColor(1); 
+
+	TCanvas* c_g_all = new TCanvas("g_all", "g_all",100,100,1000,600);
 
 	TH1F *hPad = (TH1F*) gPad->DrawFrame(etaMin,ymin, etaMax,ymax);
 	hPad->GetXaxis()->SetTitle("#eta_{SC}");
 	hPad->GetYaxis()->SetTitle("p_{T}/p_{T}^{True}"); 
-
-	TPaveText *Titolo = new TPaveText(0,0,0.39,0.06,"NDC");
-	Titolo ->SetTextAlign(11);
-	Titolo ->SetFillColor(0);
-	Titolo ->SetBorderSize(0);
-	Titolo ->AddText(Form("PixelBarrelConn1_and_PixelBarrelConn2"));
-   	Titolo ->Draw();
 
 	TBox *box_1 = new TBox(-1.4616,ymin,-1.1484,ymax);
 	box_1->SetFillColor(19);
@@ -171,108 +208,31 @@ void Draw_fit(){
 	box_2->SetFillColor(19);
 	box_2->Draw();
 
-	TLegend *legend = new TLegend(0.37,0.76,0.78,0.88);
+	TLegend *legend = new TLegend(0.37,0.60,0.78,0.88);
 	legend ->SetFillColor(0); 
  	legend ->SetFillStyle(0); 
  	legend ->SetBorderSize(0);  
-	legend ->AddEntry(g_ptOverGenpt_MC, "PixelBarrelConn1_and_PixelBarrelConn2", "LP");
+	legend ->AddEntry(g_ptOverGenpt_MC_0, "Original", "LP");
+	legend ->AddEntry(g_ptOverGenpt_MC_1, "Original", "LP");
+	legend ->AddEntry(g_ptOverGenpt_MC_2, "PixelBarrelConn1_and_PixelBarrelConn2", "LP");
+	legend ->AddEntry(g_ptOverGenpt_MC_3, "Original", "LP");
+	legend ->AddEntry(g_ptOverGenpt_MC_4, "Original", "LP");
+	legend ->AddEntry(g_ptOverGenpt_MC_5, "Original", "LP");
 	legend ->AddEntry(box_1, "ECAL 4^{th} module", "F");
 	legend ->Draw();
 
-	g_ptOverGenpt_MC -> Draw("PL");
-	g_ptOverGenpt_MC -> Write("g_ptOverGenpt_MC");
+	g_ptOverGenpt_MC_0 -> Draw("PL");
+	g_ptOverGenpt_MC_1 -> Draw("PL same");
+	g_ptOverGenpt_MC_2 -> Draw("PL same");
+	g_ptOverGenpt_MC_3 -> Draw("PL same");
+	g_ptOverGenpt_MC_4 -> Draw("PL same");
+	g_ptOverGenpt_MC_5 -> Draw("PL same");
 
-	c_g_fit->SetGrid();
-
-	c_g_fit->Write();
-	c_g_fit->SaveAs("draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.pdf");
-
-
-//-------------
-
-	string Original_pwd = "/raid/sandro/Geometria/Tracker_ECAL/0_Original/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
-	string Original = "fit_0_Original_MC.root";
-
-	TFile *f_Original = TFile::Open((Original_pwd+Original).c_str());
-
-	TGraphErrors* g_ptOverGenpt_MC_Original = (TGraphErrors*)f_Original->Get("g_ptOverGenpt_MC");
-	g_ptOverGenpt_MC_Original -> SetMarkerStyle(21);
-	g_ptOverGenpt_MC_Original -> SetMarkerSize(0.7);
-	g_ptOverGenpt_MC_Original -> SetMarkerColor(1); 
-
-	TCanvas* c_g_fit_Original = new TCanvas("g_fit_Original", "g_fit_Original",100,100,1000,600);
-
-	TH1F *hPad_Original = (TH1F*) gPad->DrawFrame(etaMin,ymin, etaMax,ymax);
-	hPad_Original->GetXaxis()->SetTitle("#eta_{SC}");
-	hPad_Original->GetYaxis()->SetTitle("p_{T}/p_{T}^{True}"); 
-
-	TPaveText *Titolo_Original = new TPaveText(0,0,0.39,0.06,"NDC");
-	Titolo_Original ->SetTextAlign(11);
-	Titolo_Original ->SetFillColor(0);
-	Titolo_Original ->SetBorderSize(0);
-	Titolo_Original ->AddText(Form("Original"));
-   	Titolo_Original ->Draw();
-
-	TBox *box_1_Original = new TBox(-1.4616,ymin,-1.1484,ymax);
-	box_1_Original->SetFillColor(19);
-	box_1_Original->Draw();
-
-	TBox *box_2_Original = new TBox(1.1484,ymin,1.4616,ymax);
-	box_2_Original->SetFillColor(19);
-	box_2_Original->Draw();
-
-	TLegend *legend_Original = new TLegend(0.37,0.76,0.78,0.88);
-	legend_Original ->SetFillColor(0); 
- 	legend_Original ->SetFillStyle(0); 
- 	legend_Original ->SetBorderSize(0);  
-	legend_Original ->AddEntry(g_ptOverGenpt_MC_Original, "Original", "LP");
-	legend_Original ->AddEntry(box_1, "ECAL 4^{th} module", "F");
-	legend_Original ->Draw();
-
-
-	g_ptOverGenpt_MC_Original -> Draw("PL");
-	outfile->cd();
-	g_ptOverGenpt_MC_Original -> Write("g_ptOverGenpt_MC_Original");
-
-	c_g_fit_Original->SetGrid();
-
-
-	c_g_fit_Original->Write();
-	c_g_fit_Original->SaveAs("draw_fit_Original_MC.pdf");
-
-//-------------
-
-	TCanvas* c_g_fit_double = new TCanvas("g_fit_double", "g_fit_double",100,100,1000,600);
-
-	TH1F *hPad_double = (TH1F*) gPad->DrawFrame(etaMin,ymin, etaMax,ymax);
-	hPad_double->GetXaxis()->SetTitle("#eta_{SC}");
-	hPad_double->GetYaxis()->SetTitle("p_{T}/p_{T}^{True}"); 
-
-	TBox *box_1_double = new TBox(-1.4616,ymin,-1.1484,ymax);
-	box_1_double->SetFillColor(19);
-	box_1_double->Draw();
-
-	TBox *box_2_double = new TBox(1.1484,ymin,1.4616,ymax);
-	box_2_double->SetFillColor(19);
-	box_2_double->Draw();
-
-	g_ptOverGenpt_MC_Original -> Draw("PL");
-	g_ptOverGenpt_MC -> Draw("PL same");
-
-	TLegend *legend_double = new TLegend(0.37,0.76,0.78,0.88);
-	legend_double->SetFillColor(0); 
- 	legend_double->SetFillStyle(0); 
- 	legend_double->SetBorderSize(0);  
-	legend_double->AddEntry(g_ptOverGenpt_MC_Original, "Original", "LP");
-	legend_double->AddEntry(g_ptOverGenpt_MC, "PixelBarrelConn1_and_PixelBarrelConn2", "LP");
-	legend_double->AddEntry(box_1_double, "ECAL 4^{th} module", "F");
-	legend_double->Draw();
-
-	c_g_fit_double->SetGrid();
+	c_g_all->SetGrid();
 
 	outfile->cd();
-	c_g_fit_double->Write();
-	c_g_fit_double->SaveAs("draw_fit_double_MC.pdf");
+	c_g_all->Write();
+	c_g_all->SaveAs("all_draw_fit.pdf");
 
 }
 
