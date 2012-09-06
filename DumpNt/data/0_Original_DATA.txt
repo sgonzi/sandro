@@ -1,2 +1,0 @@
-/store/user/sandro/4_TIBTIDServiceCylinder/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_93_3_sSn.root
-/store/user/sandro/4_TIBTIDServiceCylinder/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_94_1_zRW.root

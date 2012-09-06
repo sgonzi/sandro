@@ -250,7 +250,7 @@ void fit(){
 
 	//---- output file to save graphs
 	char outfilename[20];
-	sprintf(outfilename,"fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root");
+	sprintf(outfilename,"fit_5_TIBTIDMargherita_MC.root");
 
 	//out file
 	TFile outfile(outfilename,"recreate");
@@ -259,7 +259,7 @@ void fit(){
 	TChain *ntu_MC = new TChain("ntu");
 
 	//---- MC Particle Gun
-	ntu_MC->Add("outfile_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root/Tree");
+	ntu_MC->Add("outfile_5_TIBTIDMargherita_MC.root/Tree");
 
 	std::cout << "     MC    : " << ntu_MC->GetEntries() << " entries in MC sample." << std::endl;
 

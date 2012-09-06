@@ -141,14 +141,15 @@ void Draw_fit(){
 	float ymin   = 0.6;
 	float ymax   = 1.2;
 
-	TFile *f = TFile::Open("fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root");
+	TFile *f = TFile::Open("fit_5_TIBTIDMargherita_MC.root");
 
-	TFile *outfile = new TFile("draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root","recreate");
+	TFile *outfile = new TFile("draw_fit_5_TIBTIDMargherita_MC.root","recreate");
 
 	TGraphErrors* g_ptOverGenpt_MC = (TGraphErrors*)f->Get("g_ptOverGenpt_MC");
+	g_ptOverGenpt_MC -> SetLineColor(6); 
 	g_ptOverGenpt_MC -> SetMarkerStyle(21);
 	g_ptOverGenpt_MC -> SetMarkerSize(0.7);
-	g_ptOverGenpt_MC -> SetMarkerColor(2); 
+	g_ptOverGenpt_MC -> SetMarkerColor(6); 
 
 	TCanvas* c_g_fit = new TCanvas("g_fit", "g_fit",100,100,1000,600);
 
@@ -160,7 +161,7 @@ void Draw_fit(){
 	Titolo ->SetTextAlign(11);
 	Titolo ->SetFillColor(0);
 	Titolo ->SetBorderSize(0);
-	Titolo ->AddText(Form("PixelBarrelConn1_and_PixelBarrelConn2"));
+	Titolo ->AddText(Form("TIBTIDMargherita"));
    	Titolo ->Draw();
 
 	TBox *box_1 = new TBox(-1.4616,ymin,-1.1484,ymax);
@@ -175,7 +176,7 @@ void Draw_fit(){
 	legend ->SetFillColor(0); 
  	legend ->SetFillStyle(0); 
  	legend ->SetBorderSize(0);  
-	legend ->AddEntry(g_ptOverGenpt_MC, "PixelBarrelConn1_and_PixelBarrelConn2", "LP");
+	legend ->AddEntry(g_ptOverGenpt_MC, "TIBTIDMargherita", "LP");
 	legend ->AddEntry(box_1, "ECAL 4^{th} module", "F");
 	legend ->Draw();
 
@@ -185,7 +186,7 @@ void Draw_fit(){
 	c_g_fit->SetGrid();
 
 	c_g_fit->Write();
-	c_g_fit->SaveAs("draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.pdf");
+	c_g_fit->SaveAs("draw_fit_5_TIBTIDMargherita_MC.pdf");
 
 
 //-------------
@@ -196,6 +197,7 @@ void Draw_fit(){
 	TFile *f_Original = TFile::Open((Original_pwd+Original).c_str());
 
 	TGraphErrors* g_ptOverGenpt_MC_Original = (TGraphErrors*)f_Original->Get("g_ptOverGenpt_MC");
+	g_ptOverGenpt_MC -> SetLineColor(1); 
 	g_ptOverGenpt_MC_Original -> SetMarkerStyle(21);
 	g_ptOverGenpt_MC_Original -> SetMarkerSize(0.7);
 	g_ptOverGenpt_MC_Original -> SetMarkerColor(1); 
@@ -264,7 +266,7 @@ void Draw_fit(){
  	legend_double->SetFillStyle(0); 
  	legend_double->SetBorderSize(0);  
 	legend_double->AddEntry(g_ptOverGenpt_MC_Original, "Original", "LP");
-	legend_double->AddEntry(g_ptOverGenpt_MC, "PixelBarrelConn1_and_PixelBarrelConn2", "LP");
+	legend_double->AddEntry(g_ptOverGenpt_MC, "TIBTIDMargherita", "LP");
 	legend_double->AddEntry(box_1_double, "ECAL 4^{th} module", "F");
 	legend_double->Draw();
 
