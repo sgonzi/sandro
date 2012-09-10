@@ -10,10 +10,12 @@ PATH_CERN=srm://srm-eoscms.cern.ch:8443/srm/v2/server?SFN=/
 USER_PISA=/cms/store/user/sandro/
 USER_CERN=/eos/cms/store/user/sandro/
 
-DIR=SandroGonziCrabTest/SandroGonziCrabTest/07b5bb36faa323ae4fefd73d7a1ce628/Directory/
+DIR=Test
 
 EXIT_SUCCESS=1
 EXIT_FAILURE=0
+
+source /afs/cern.ch/cms/LCG/LCG-2/UI/cms_ui_env.sh
 
 if [ $TIER != 0 -a $TIER != 1 ]; then
 
