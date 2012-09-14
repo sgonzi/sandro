@@ -142,18 +142,20 @@ void All_Draw_fit(){
 	float ymax   = 1.2;
 
 	string pwd_0 = "/raid/sandro/Geometria/Tracker_ECAL/2_PixelBarrelConn1_and_PixelBarrelConn2/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
-	string pwd_1 = "/raid/sandro/Geometria/Tracker_ECAL/2_PixelBarrelConn1_and_PixelBarrelConn2/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
+	string pwd_1 = "/raid/sandro/Geometria/Tracker_ECAL/1_PixelBarrelConnToST/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 	string pwd_2 = "/raid/sandro/Geometria/Tracker_ECAL/2_PixelBarrelConn1_and_PixelBarrelConn2/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 	string pwd_3 = "/raid/sandro/Geometria/Tracker_ECAL/3_TIBFlange/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 	string pwd_4 = "/raid/sandro/Geometria/Tracker_ECAL/4_TIBTIDServiceCylinder/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 	string pwd_5 = "/raid/sandro/Geometria/Tracker_ECAL/5_TIBTIDMargherita/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
+	string pwd_6 = "/raid/sandro/Geometria/Tracker_ECAL/6_Geometries_12345/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 
 	string infile_0 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root";
-	string infile_1 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root";
+	string infile_1 = "draw_fit_1_PixelBarrelConnToST_MC.root";
 	string infile_2 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root";
 	string infile_3 = "draw_fit_3_TIBFlange_MC.root";
 	string infile_4 = "draw_fit_4_TIBTIDServiceCylinder_MC.root";
 	string infile_5 = "draw_fit_5_TIBTIDMargherita_MC.root";
+	string infile_6 = "draw_fit_6_Geometries_12345_MC.root";
 
 	TFile *f_0 = TFile::Open((pwd_0+infile_0).c_str());
 	TFile *f_1 = TFile::Open((pwd_1+infile_1).c_str());
@@ -161,6 +163,7 @@ void All_Draw_fit(){
 	TFile *f_3 = TFile::Open((pwd_3+infile_3).c_str());
 	TFile *f_4 = TFile::Open((pwd_4+infile_4).c_str());
 	TFile *f_5 = TFile::Open((pwd_5+infile_5).c_str());
+	TFile *f_6 = TFile::Open((pwd_6+infile_6).c_str());
 
 	TFile *outfile = new TFile("all_draw_fit.root","recreate");
 
@@ -169,10 +172,10 @@ void All_Draw_fit(){
 	g_ptOverGenpt_MC_0 -> SetMarkerSize(0.7);
 	g_ptOverGenpt_MC_0 -> SetMarkerColor(1); 
 
-	TGraphErrors* g_ptOverGenpt_MC_1 = (TGraphErrors*)f_1->Get("g_ptOverGenpt_MC_Original");
+	TGraphErrors* g_ptOverGenpt_MC_1 = (TGraphErrors*)f_1->Get("g_ptOverGenpt_MC");
 	g_ptOverGenpt_MC_1 -> SetMarkerStyle(21);
 	g_ptOverGenpt_MC_1 -> SetMarkerSize(0.7);
-	g_ptOverGenpt_MC_1 -> SetMarkerColor(1); 
+	g_ptOverGenpt_MC_1 -> SetMarkerColor(2); 
 
 	TGraphErrors* g_ptOverGenpt_MC_2 = (TGraphErrors*)f_2->Get("g_ptOverGenpt_MC");
 	g_ptOverGenpt_MC_2 -> SetMarkerStyle(21);
@@ -194,6 +197,12 @@ void All_Draw_fit(){
 	g_ptOverGenpt_MC_5 -> SetMarkerSize(0.7);
 	g_ptOverGenpt_MC_5 -> SetMarkerColor(6); 
 
+	TGraphErrors* g_ptOverGenpt_MC_6 = (TGraphErrors*)f_6->Get("g_ptOverGenpt_MC");
+	g_ptOverGenpt_MC_6 -> SetMarkerStyle(21);
+	g_ptOverGenpt_MC_6 -> SetMarkerSize(0.7);
+	g_ptOverGenpt_MC_6 -> SetMarkerColor(7); 
+
+
 	TCanvas* c_g_all = new TCanvas("g_all", "g_all",100,100,1000,600);
 
 	TH1F *hPad = (TH1F*) gPad->DrawFrame(etaMin,ymin, etaMax,ymax);
@@ -213,11 +222,12 @@ void All_Draw_fit(){
  	legend ->SetFillStyle(0); 
  	legend ->SetBorderSize(0);  
 	legend ->AddEntry(g_ptOverGenpt_MC_0, "Original", "LP");
-	legend ->AddEntry(g_ptOverGenpt_MC_1, "Original", "LP");
+	legend ->AddEntry(g_ptOverGenpt_MC_1, "PixelBarrelConnToST", "LP");
 	legend ->AddEntry(g_ptOverGenpt_MC_2, "PixelBarrelConn1_and_PixelBarrelConn2", "LP");
 	legend ->AddEntry(g_ptOverGenpt_MC_3, "TIBFlange", "LP");
 	legend ->AddEntry(g_ptOverGenpt_MC_4, "TIBTIDServiceCylinder", "LP");
 	legend ->AddEntry(g_ptOverGenpt_MC_5, "TIBTIDMargherita", "LP");
+	legend ->AddEntry(g_ptOverGenpt_MC_6, "Total effect", "LP");
 	legend ->AddEntry(box_1, "ECAL 4^{th} module", "F");
 	legend ->Draw();
 
@@ -227,6 +237,7 @@ void All_Draw_fit(){
 	g_ptOverGenpt_MC_3 -> Draw("PL same");
 	g_ptOverGenpt_MC_4 -> Draw("PL same");
 	g_ptOverGenpt_MC_5 -> Draw("PL same");
+	g_ptOverGenpt_MC_6 -> Draw("PL same");
 
 	c_g_all->SetGrid();
 
