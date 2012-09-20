@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Mauro Donega (ETH) [donega]
 //         Created:  Wed Jun 13 18:08:53 CEST 2012
-// $Id: DumpNt.cc,v 1.3 2012/08/28 11:59:29 sandro Exp $
+// $Id: DumpNt.cc,v 1.4 2012/08/29 07:24:34 sandro Exp $
 //
 //
 
@@ -278,6 +278,7 @@ public:
   int	           el_seedIy;
   int	           el_seedZside;
   float	           el_pt;
+  float            el_Tracker_pt;
  //fine
 
 private:
@@ -458,6 +459,7 @@ DumpNt::DumpNt(const edm::ParameterSet& iConfig)
   myTree_->Branch("el_seedIy"      , &el_seedIy                ,"el_seedIy/I");
   myTree_->Branch("el_seedZside"   , &el_seedZside             ,"el_seedZside/I");
   myTree_->Branch("el_pt"          , &el_pt                    ,"el_pt/F");
+  myTree_->Branch("el_Tracker_pt"  , &el_Tracker_pt            ,"el_Tracker_pt/F");
 //fine
 
   iEvent_        = 0;
@@ -569,6 +571,7 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 //inizio
         reco::SuperClusterRef scRef = eleIter->superCluster();
         //const edm::Ptr<reco::CaloCluster>& seedCluster = scRef->seed();
+        reco::TrackRef trackRef = eleIter->track(); 
 //fine
 
 	el_scEnergy                              = eleIter->energy();
@@ -786,7 +789,7 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         el_seedZside                        = zside;
 
         el_pt                               = eleIter->pt();
-
+        el_Tracker_pt                       = trackRef->pt();
 //fine
 
 	// Dump Truth quantities
