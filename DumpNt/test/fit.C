@@ -250,7 +250,7 @@ void fit(){
 
 	//---- output file to save graphs
 	char outfilename[20];
-	sprintf(outfilename,"fit_5_TIBTIDMargherita_MC.root");
+	sprintf(outfilename,"fit_6_Geometries_12345_MC.root");
 
 	//out file
 	TFile outfile(outfilename,"recreate");
@@ -259,7 +259,7 @@ void fit(){
 	TChain *ntu_MC = new TChain("ntu");
 
 	//---- MC Particle Gun
-	ntu_MC->Add("outfile_5_TIBTIDMargherita_MC.root/Tree");
+	ntu_MC->Add("outfile_6_Geometries_12345_MC.root/Tree");
 
 	std::cout << "     MC    : " << ntu_MC->GetEntries() << " entries in MC sample." << std::endl;
 
@@ -267,7 +267,7 @@ void fit(){
 	float ptOverGenpt, el_scEta;
 
 	//---- Set branch addresses for MC
-	ntu_MC->SetBranchAddress("ptOverGenpt", &ptOverGenpt);
+	ntu_MC->SetBranchAddress("CtfTrackpt_Over_Genpt", &ptOverGenpt);
 	ntu_MC->SetBranchAddress("el_scEta",    &el_scEta);
 
 	//---- book histos

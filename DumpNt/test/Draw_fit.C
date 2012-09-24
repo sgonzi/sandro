@@ -12,6 +12,7 @@
 #include "TChain.h"
 #include "TVirtualFitter.h"
 #include "TBox.h"
+#include "TPaveText.h"
 
 //#include <iostream>
 #include <iomanip>
@@ -141,15 +142,15 @@ void Draw_fit(){
 	float ymin   = 0.6;
 	float ymax   = 1.2;
 
-	TFile *f = TFile::Open("fit_5_TIBTIDMargherita_MC.root");
+	TFile *f = TFile::Open("fit_6_Geometries_12345_MC.root");
 
-	TFile *outfile = new TFile("draw_fit_5_TIBTIDMargherita_MC.root","recreate");
+	TFile *outfile = new TFile("draw_fit_6_Geometries_12345_MC.root","recreate");
 
 	TGraphErrors* g_ptOverGenpt_MC = (TGraphErrors*)f->Get("g_ptOverGenpt_MC");
-	g_ptOverGenpt_MC -> SetLineColor(6); 
+	g_ptOverGenpt_MC -> SetLineColor(7); 
 	g_ptOverGenpt_MC -> SetMarkerStyle(21);
 	g_ptOverGenpt_MC -> SetMarkerSize(0.7);
-	g_ptOverGenpt_MC -> SetMarkerColor(6); 
+	g_ptOverGenpt_MC -> SetMarkerColor(7); 
 
 	TCanvas* c_g_fit = new TCanvas("g_fit", "g_fit",100,100,1000,600);
 
@@ -161,22 +162,22 @@ void Draw_fit(){
 	Titolo ->SetTextAlign(11);
 	Titolo ->SetFillColor(0);
 	Titolo ->SetBorderSize(0);
-	Titolo ->AddText(Form("TIBTIDMargherita"));
+	Titolo ->AddText(Form("Total effect"));
    	Titolo ->Draw();
 
 	TBox *box_1 = new TBox(-1.4616,ymin,-1.1484,ymax);
-	box_1->SetFillColor(19);
+	box_1->SetFillColor(22);
 	box_1->Draw();
 
 	TBox *box_2 = new TBox(1.1484,ymin,1.4616,ymax);
-	box_2->SetFillColor(19);
+	box_2->SetFillColor(22);
 	box_2->Draw();
 
 	TLegend *legend = new TLegend(0.37,0.76,0.78,0.88);
 	legend ->SetFillColor(0); 
  	legend ->SetFillStyle(0); 
  	legend ->SetBorderSize(0);  
-	legend ->AddEntry(g_ptOverGenpt_MC, "TIBTIDMargherita", "LP");
+	legend ->AddEntry(g_ptOverGenpt_MC, "Total effect", "LP");
 	legend ->AddEntry(box_1, "ECAL 4^{th} module", "F");
 	legend ->Draw();
 
@@ -186,7 +187,7 @@ void Draw_fit(){
 	c_g_fit->SetGrid();
 
 	c_g_fit->Write();
-	c_g_fit->SaveAs("draw_fit_5_TIBTIDMargherita_MC.pdf");
+	c_g_fit->SaveAs("draw_fit_6_Geometries_12345_MC.png");
 
 
 //-------------
@@ -216,11 +217,11 @@ void Draw_fit(){
    	Titolo_Original ->Draw();
 
 	TBox *box_1_Original = new TBox(-1.4616,ymin,-1.1484,ymax);
-	box_1_Original->SetFillColor(19);
+	box_1_Original->SetFillColor(22);
 	box_1_Original->Draw();
 
 	TBox *box_2_Original = new TBox(1.1484,ymin,1.4616,ymax);
-	box_2_Original->SetFillColor(19);
+	box_2_Original->SetFillColor(22);
 	box_2_Original->Draw();
 
 	TLegend *legend_Original = new TLegend(0.37,0.76,0.78,0.88);
@@ -240,7 +241,7 @@ void Draw_fit(){
 
 
 	c_g_fit_Original->Write();
-	c_g_fit_Original->SaveAs("draw_fit_Original_MC.pdf");
+	c_g_fit_Original->SaveAs("draw_fit_Original_MC.png");
 
 //-------------
 
@@ -251,11 +252,11 @@ void Draw_fit(){
 	hPad_double->GetYaxis()->SetTitle("p_{T}/p_{T}^{True}"); 
 
 	TBox *box_1_double = new TBox(-1.4616,ymin,-1.1484,ymax);
-	box_1_double->SetFillColor(19);
+	box_1_double->SetFillColor(22);
 	box_1_double->Draw();
 
 	TBox *box_2_double = new TBox(1.1484,ymin,1.4616,ymax);
-	box_2_double->SetFillColor(19);
+	box_2_double->SetFillColor(22);
 	box_2_double->Draw();
 
 	g_ptOverGenpt_MC_Original -> Draw("PL");
@@ -266,7 +267,7 @@ void Draw_fit(){
  	legend_double->SetFillStyle(0); 
  	legend_double->SetBorderSize(0);  
 	legend_double->AddEntry(g_ptOverGenpt_MC_Original, "Original", "LP");
-	legend_double->AddEntry(g_ptOverGenpt_MC, "TIBTIDMargherita", "LP");
+	legend_double->AddEntry(g_ptOverGenpt_MC, "Total effect", "LP");
 	legend_double->AddEntry(box_1_double, "ECAL 4^{th} module", "F");
 	legend_double->Draw();
 
@@ -274,7 +275,7 @@ void Draw_fit(){
 
 	outfile->cd();
 	c_g_fit_double->Write();
-	c_g_fit_double->SaveAs("draw_fit_double_MC.pdf");
+	c_g_fit_double->SaveAs("draw_fit_double_MC.png");
 
 }
 

@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Mauro Donega (ETH) [donega]
 //         Created:  Wed Jun 13 18:08:53 CEST 2012
-// $Id: DumpNt.cc,v 1.5 2012/09/20 13:55:31 sandro Exp $
+// $Id: DumpNt.cc,v 1.4 2012/08/29 07:24:34 sandro Exp $
 //
 //
 
@@ -100,9 +100,12 @@ Implementation:
 #include "Geometry/CaloEventSetup/interface/CaloTopologyRecord.h"
 //#include "/raid/sandro/Geometria/Tracker_ECAL/CMSSW_5_2_5/src/Geometry/CaloEventSetup/interface/CaloTopologyRecord.h"
 #include "RecoEgamma/EgammaTools/interface/EGEnergyCorrector.h"
-//#include "DataFormats/Common/interface/Ref.h"
+#include "DataFormats/Common/interface/Ref.h"
 //#include "DataFormats/Common/interface/RefProd.h"
 //#include "DataFormats/Common/interface/RefVector.h"
+//#include "DataFormats/TrackReco/interface/TrackFwd.h"
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/GsfTrackReco/interface/GsfTrack.h"
 //fine
 
 
@@ -163,7 +166,9 @@ public:
   float GenPhi;
 //inizio
   float Genpt;
-  float ptOverGenpt;
+  float pt_Over_Genpt;
+  float CtfTrackpt_Over_Genpt;
+  float gsfTrackpt_Over_Genpt;
 //fine
 
   float            el_scEnergy;
@@ -278,7 +283,8 @@ public:
   int	           el_seedIy;
   int	           el_seedZside;
   float	           el_pt;
-  float            el_Tracker_pt;
+  float            el_CtfTrack_pt;
+  float            el_gsfTrack_pt;
  //fine
 
 private:
@@ -344,7 +350,9 @@ DumpNt::DumpNt(const edm::ParameterSet& iConfig)
   myTree_->Branch("GenPhi",&GenPhi,"GenPhi/F");
 //inizio
   myTree_->Branch("Genpt",&Genpt,"Genpt/F");
-  myTree_->Branch("ptOverGenpt",&ptOverGenpt,"ptOverGenpt/F");
+  myTree_->Branch("pt_Over_Genpt",&pt_Over_Genpt,"pt_Over_Genpt/F");
+  myTree_->Branch("CtfTrackpt_Over_Genpt",&CtfTrackpt_Over_Genpt,"CtfTrackpt_Over_Genpt/F");
+  myTree_->Branch("gsfTrackpt_Over_Genpt",&gsfTrackpt_Over_Genpt,"gsfTrackpt_Over_Genpt/F");
 //fine
 
   myTree_->Branch("el_scEnergy"                               ,  &el_scEnergy                       , "el_scEnergy/F"                                 );  
@@ -459,7 +467,8 @@ DumpNt::DumpNt(const edm::ParameterSet& iConfig)
   myTree_->Branch("el_seedIy"      , &el_seedIy                ,"el_seedIy/I");
   myTree_->Branch("el_seedZside"   , &el_seedZside             ,"el_seedZside/I");
   myTree_->Branch("el_pt"          , &el_pt                    ,"el_pt/F");
-  myTree_->Branch("el_Tracker_pt"  , &el_Tracker_pt            ,"el_Tracker_pt/F");
+  myTree_->Branch("el_CtfTrack_pt"  , &el_CtfTrack_pt            ,"el_CtfTrack_pt/F");
+  myTree_->Branch("el_gsfTrack_pt" , &el_gsfTrack_pt           ,"el_gsfTrack_pt/F");
 //fine
 
   iEvent_        = 0;
@@ -571,7 +580,7 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 //inizio
         reco::SuperClusterRef scRef = eleIter->superCluster();
         //const edm::Ptr<reco::CaloCluster>& seedCluster = scRef->seed();
-        reco::TrackRef trackRef = eleIter->track(); 
+        //reco::TrackRef trackRef = eleIter->track(); 
 //fine
 
 	el_scEnergy                              = eleIter->energy();
@@ -789,7 +798,12 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         el_seedZside                        = zside;
 
         el_pt                               = eleIter->pt();
-        el_Tracker_pt                       = trackRef->pt();
+	if (eleIter->closestCtfTrackRef().isNonnull()){
+	        el_CtfTrack_pt               = eleIter->closestCtfTrackRef()->pt();
+	}
+	if (eleIter->gsfTrack().isNonnull()){
+	        el_gsfTrack_pt               = eleIter->gsfTrack()->pt();
+	}
 //fine
 
 	// Dump Truth quantities
@@ -800,7 +814,9 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	GenEta          = -9;
 	GenPhi          = -9;
 	Genpt           = -9;
-	ptOverGenpt     = -9;
+	pt_Over_Genpt             = -9;
+	CtfTrackpt_Over_Genpt     = -9;
+	gsfTrackpt_Over_Genpt     = -9;
   
 	// simple truth matching
 	if (doMC_){
@@ -817,7 +833,9 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		GenEta      = p.eta();
 		GenPhi      = p.phi();
 		Genpt       = p.pt();
-                ptOverGenpt = el_pt/Genpt;
+		pt_Over_Genpt         = el_pt/Genpt;
+                CtfTrackpt_Over_Genpt = el_CtfTrack_pt/Genpt;
+                gsfTrackpt_Over_Genpt = el_gsfTrack_pt/Genpt;
 	      }
 	    }
 	  }

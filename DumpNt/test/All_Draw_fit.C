@@ -141,7 +141,7 @@ void All_Draw_fit(){
 	float ymin   = 0.6;
 	float ymax   = 1.2;
 
-	string pwd_0 = "/raid/sandro/Geometria/Tracker_ECAL/2_PixelBarrelConn1_and_PixelBarrelConn2/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
+	string pwd_0 = "/raid/sandro/Geometria/Tracker_ECAL/0_Original/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 	string pwd_1 = "/raid/sandro/Geometria/Tracker_ECAL/1_PixelBarrelConnToST/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 	string pwd_2 = "/raid/sandro/Geometria/Tracker_ECAL/2_PixelBarrelConn1_and_PixelBarrelConn2/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 	string pwd_3 = "/raid/sandro/Geometria/Tracker_ECAL/3_TIBFlange/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
@@ -149,7 +149,7 @@ void All_Draw_fit(){
 	string pwd_5 = "/raid/sandro/Geometria/Tracker_ECAL/5_TIBTIDMargherita/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 	string pwd_6 = "/raid/sandro/Geometria/Tracker_ECAL/6_Geometries_12345/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 
-	string infile_0 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root";
+	string infile_0 = "draw_fit_0_Original_MC.root";
 	string infile_1 = "draw_fit_1_PixelBarrelConnToST_MC.root";
 	string infile_2 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root";
 	string infile_3 = "draw_fit_3_TIBFlange_MC.root";
@@ -167,7 +167,7 @@ void All_Draw_fit(){
 
 	TFile *outfile = new TFile("all_draw_fit.root","recreate");
 
-	TGraphErrors* g_ptOverGenpt_MC_0 = (TGraphErrors*)f_0->Get("g_ptOverGenpt_MC_Original");
+	TGraphErrors* g_ptOverGenpt_MC_0 = (TGraphErrors*)f_0->Get("g_ptOverGenpt_MC");
 	g_ptOverGenpt_MC_0 -> SetMarkerStyle(21);
 	g_ptOverGenpt_MC_0 -> SetMarkerSize(0.7);
 	g_ptOverGenpt_MC_0 -> SetMarkerColor(1); 
@@ -210,11 +210,11 @@ void All_Draw_fit(){
 	hPad->GetYaxis()->SetTitle("p_{T}/p_{T}^{True}"); 
 
 	TBox *box_1 = new TBox(-1.4616,ymin,-1.1484,ymax);
-	box_1->SetFillColor(19);
+	box_1->SetFillColor(22);
 	box_1->Draw();
 
 	TBox *box_2 = new TBox(1.1484,ymin,1.4616,ymax);
-	box_2->SetFillColor(19);
+	box_2->SetFillColor(22);
 	box_2->Draw();
 
 	TLegend *legend = new TLegend(0.37,0.60,0.78,0.88);
@@ -243,7 +243,7 @@ void All_Draw_fit(){
 
 	outfile->cd();
 	c_g_all->Write();
-	c_g_all->SaveAs("all_draw_fit.pdf");
+	c_g_all->SaveAs("all_draw_fit.png");
 
 }
 
