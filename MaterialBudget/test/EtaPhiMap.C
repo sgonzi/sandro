@@ -5,7 +5,6 @@
 #include "TH1.h"
 #include "TH2.h"
 #include "TCanvas.h"
-#include "TProfile.h"
 #include "TGraphErrors.h"
 #include "TPaveStats.h"
 #include "TLegend.h"
@@ -14,6 +13,8 @@
 #include "TBox.h"
 #include "TPaveText.h"
 #include "TColor.h"
+#include "TProfile.h"
+#include "TProfile2D.h"
 
 //#include <iostream>
 #include <iomanip>
@@ -86,10 +87,10 @@ void setTDRStyle() {
   tdrStyle->SetStatW(0.15);
 
 // Margins:
-  tdrStyle->SetPadTopMargin(0.05);
+  tdrStyle->SetPadTopMargin(0.07);
   tdrStyle->SetPadBottomMargin(0.13);
   tdrStyle->SetPadLeftMargin(0.13);
-  tdrStyle->SetPadRightMargin(0.15);
+  tdrStyle->SetPadRightMargin(0.19);
 
 // For the Global title:
   tdrStyle->SetOptTitle(0);
@@ -104,13 +105,13 @@ void setTDRStyle() {
   tdrStyle->SetTitleFont(42, "XYZ");
   tdrStyle->SetTitleSize(0.06, "XYZ");
   tdrStyle->SetTitleXOffset(0.9);
-  tdrStyle->SetTitleYOffset(1.25);
+  tdrStyle->SetTitleYOffset(1.);
 
 // For the axis labels:
   tdrStyle->SetLabelColor(1, "XYZ");
   tdrStyle->SetLabelFont(42, "XYZ");
   tdrStyle->SetLabelOffset(0.007, "XYZ");
-  tdrStyle->SetLabelSize(0.05, "XYZ");
+  tdrStyle->SetLabelSize(0.045, "XYZ");
 
 // For the axis:
   tdrStyle->SetAxisColor(1, "XYZ");
@@ -150,20 +151,26 @@ void palette(){
 TString theDirName = "EtaPhiMap";
 //
 
-
 //
-float xmin = -4;
-float xmax = 4; 
+float xmin = -4.;
+float xmax = 4.; 
 
 float ymin = -3.1416;
 float ymax = 3.1416;
 
-float zmin_x0 = 0; 
-float zmax_x0 = 2.2;
+float zmin_x0 = 0.; 
+float zmax_x0;
 
-float zmin_lambdaI = 0; 
-float zmax_lambdaI = 0.7;
+float zmin_lambdaI = 0.; 
+float zmax_lambdaI;
+//
 
+//
+float rebin_x0_x = 1.;
+float rebin_x0_y = 1.;
+
+float rebin_lambdaI_x = 1.;
+float rebin_lambdaI_y = 1.;
 //
 
 using namespace std;
@@ -185,30 +192,37 @@ void EtaPhiMap() {
 	cout << "***" << endl;
 
 	//case t/X0
-	TProfile *prof_x0_Tracker = (TProfile*)subDetectorFile->Get("30");
+	TProfile *prof_x0_Tracker_X = (TProfile*)subDetectorFile->Get("10");
+	TH1D* hist_x0_Tracker_X = (TH1D*)prof_x0_Tracker_X->ProjectionX();
+
+	TProfile2D *prof_x0_Tracker_XY = (TProfile2D*)subDetectorFile->Get("30");
+	TH2D* hist_x0_Tracker_XY = (TH2D*)prof_x0_Tracker_XY->ProjectionXY();
 
 	// canvas
 	TCanvas can_x0("can_x0","can_x0",800,800);
 //	can_x0.Range(0,0,25,25);
 	
 	// Draw
-	prof_x0_Tracker->GetXaxis()->SetLimits(xmin,xmax);
-	prof_x0_Tracker->GetYaxis()->SetLimits(ymin,ymax);
-	prof_x0_Tracker->SetMinimum(zmin_x0);
-	prof_x0_Tracker->SetMaximum(zmax_x0);
-//	prof_x0_Tracker->GetZaxis()->SetLimits(zmin_x0,zmax_x0);
-	prof_x0_Tracker->Draw("zcol");
-	prof_x0_Tracker->GetXaxis()->SetTitle("#eta");
-	prof_x0_Tracker->GetYaxis()->SetTitle("#varphi");
-	prof_x0_Tracker->GetZaxis()->SetTitle("t/X_{0}");
-	prof_x0_Tracker->GetZaxis()->SetTitleOffset(1.3);
+	hist_x0_Tracker_XY->GetXaxis()->SetLimits(xmin,xmax);
+	hist_x0_Tracker_XY->GetYaxis()->SetLimits(ymin,ymax);
+	hist_x0_Tracker_XY->SetMinimum(zmin_x0);
+	zmax_x0 = 1.13*hist_x0_Tracker_X->GetMaximum();
+	hist_x0_Tracker_XY->SetMaximum(zmax_x0);
+
+	hist_x0_Tracker_XY->GetXaxis()->SetTitle("#eta");
+	hist_x0_Tracker_XY->GetYaxis()->SetTitle("#varphi [rad]");
+	hist_x0_Tracker_XY->GetZaxis()->SetTitle("t/X_{0}");
+	hist_x0_Tracker_XY->GetZaxis()->SetTitleOffset(1.1);
+
+	hist_x0_Tracker_XY->Rebin2D(rebin_x0_x,rebin_x0_y);
+	hist_x0_Tracker_XY->Draw("zcol");
 
 	// text
-	TPaveText* text_x0 = new TPaveText(0.,0.,0.22,0.06,"NDC");
+	TPaveText* text_x0 = new TPaveText(0.13,0.937,0.35,0.997,"NDC");
 	text_x0->SetFillColor(0);
 	text_x0->SetBorderSize(0);
 	text_x0->AddText("CMS Simulation");
-	text_x0->SetTextAlign(11);
+	text_x0->SetTextAlign(13);
 	text_x0->Draw();
 
 	// Store
@@ -224,31 +238,36 @@ void EtaPhiMap() {
 //----------------
 
 	//case t/lambdaI
-	TProfile *prof_lambdaI_Tracker = (TProfile*)subDetectorFile->Get("1030");
+	TProfile *prof_lambdaI_Tracker_X = (TProfile*)subDetectorFile->Get("1010");
+	TH1D* hist_lambdaI_Tracker_X = (TH1D*)prof_lambdaI_Tracker_X->ProjectionX();
+
+	TProfile2D *prof_lambdaI_Tracker_XY = (TProfile2D*)subDetectorFile->Get("1030");
+	TH2D* hist_lambdaI_Tracker_XY = (TH2D*)prof_lambdaI_Tracker_XY->ProjectionXY();
 
 	// canvas
 	TCanvas can_lambdaI("can_lambdaI","can_lambdaI",800,800);
 //	can_lambdaI.Range(0,0,25,25);
 	
 	// Draw
-	prof_lambdaI_Tracker->GetXaxis()->SetLimits(xmin,xmax);
-	prof_lambdaI_Tracker->GetYaxis()->SetLimits(ymin,ymax);
-	prof_lambdaI_Tracker->SetMinimum(zmin_lambdaI);
-	prof_lambdaI_Tracker->SetMaximum(zmax_lambdaI);
-//	prof_lambdaI_Tracker->GetZaxis()->SetLimits(zmin_lambdaI,zmax_lambdaI);
-	prof_lambdaI_Tracker->Draw("zcol");
+	hist_lambdaI_Tracker_XY->GetXaxis()->SetLimits(xmin,xmax);
+	hist_lambdaI_Tracker_XY->GetYaxis()->SetLimits(ymin,ymax);
+	hist_lambdaI_Tracker_XY->SetMinimum(zmin_lambdaI);
+	zmax_lambdaI = 1.13*hist_lambdaI_Tracker_X->GetMaximum();
+	hist_lambdaI_Tracker_XY->SetMaximum(zmax_lambdaI);
 
-	prof_lambdaI_Tracker->GetXaxis()->SetTitle("#eta");
-	prof_lambdaI_Tracker->GetYaxis()->SetTitle("#varphi");
-	prof_lambdaI_Tracker->GetZaxis()->SetTitle("t/#lambda_{I}");
-	prof_lambdaI_Tracker->GetZaxis()->SetTitleOffset(1.3);
+	hist_lambdaI_Tracker_XY->GetXaxis()->SetTitle("#eta");
+	hist_lambdaI_Tracker_XY->GetYaxis()->SetTitle("#varphi [rad]");
+	hist_lambdaI_Tracker_XY->GetZaxis()->SetTitle("t/#lambda_{I}");
+
+	hist_lambdaI_Tracker_XY->Rebin2D(rebin_lambdaI_x,rebin_lambdaI_y);
+	hist_lambdaI_Tracker_XY->Draw("zcol");
 
 	// text
-	TPaveText* text_lambdaI = new TPaveText(0.,0.,0.22,0.06,"NDC");
+	TPaveText* text_lambdaI = new TPaveText(0.13,0.937,0.35,0.997,"NDC");
 	text_lambdaI->SetFillColor(0);
 	text_lambdaI->SetBorderSize(0);
 	text_lambdaI->AddText("CMS Simulation");
-	text_lambdaI->SetTextAlign(11);
+	text_lambdaI->SetTextAlign(13);
 	text_lambdaI->Draw();
 
 	// Store
@@ -260,7 +279,5 @@ void EtaPhiMap() {
 	can_lambdaI.SaveAs( Form( "%s/EtaPhiMap_lambdaI.root",  theDirName.Data() ) );
 	//  can_lambdaI.SaveAs( Form( "%s/EtaPhiMap_lambdaI.C",  theDirName.Data() ) );
 	//
-
-
 
 }
