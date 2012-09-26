@@ -166,11 +166,13 @@ float zmax_lambdaI;
 //
 
 //
-float rebin_x0_x = 1.;
-float rebin_x0_y = 1.;
+int rebin_x0_x = 1;
+int rebin_x0_y = 1;
+float norm_x0 = rebin_x0_x*rebin_x0_y;
 
-float rebin_lambdaI_x = 1.;
-float rebin_lambdaI_y = 1.;
+int rebin_lambdaI_x = 1;
+int rebin_lambdaI_y = 1;
+float norm_lambdaI = rebin_lambdaI_x*rebin_lambdaI_y;
 //
 
 using namespace std;
@@ -192,9 +194,6 @@ void EtaPhiMap() {
 	cout << "***" << endl;
 
 	//case t/X0
-	TProfile *prof_x0_Tracker_X = (TProfile*)subDetectorFile->Get("10");
-	TH1D* hist_x0_Tracker_X = (TH1D*)prof_x0_Tracker_X->ProjectionX();
-
 	TProfile2D *prof_x0_Tracker_XY = (TProfile2D*)subDetectorFile->Get("30");
 	TH2D* hist_x0_Tracker_XY = (TH2D*)prof_x0_Tracker_XY->ProjectionXY();
 
@@ -205,8 +204,13 @@ void EtaPhiMap() {
 	// Draw
 	hist_x0_Tracker_XY->GetXaxis()->SetLimits(xmin,xmax);
 	hist_x0_Tracker_XY->GetYaxis()->SetLimits(ymin,ymax);
+	hist_x0_Tracker_XY->Rebin2D(rebin_x0_x,rebin_x0_y);
+//cout << hist_x0_Tracker_XY->GetMaximum()<< endl;
+//cout << 2.2/(hist_x0_Tracker_XY->GetMaximum()*1/norm_x0)<< endl;
+	hist_x0_Tracker_XY->Scale(1/norm_x0);
+//	zmax_x0 =0.743*hist_x0_Tracker_XY->GetMaximum();
+	zmax_x0 = hist_x0_Tracker_XY->GetMaximum();
 	hist_x0_Tracker_XY->SetMinimum(zmin_x0);
-	zmax_x0 = 1.13*hist_x0_Tracker_X->GetMaximum();
 	hist_x0_Tracker_XY->SetMaximum(zmax_x0);
 
 	hist_x0_Tracker_XY->GetXaxis()->SetTitle("#eta");
@@ -214,7 +218,6 @@ void EtaPhiMap() {
 	hist_x0_Tracker_XY->GetZaxis()->SetTitle("t/X_{0}");
 	hist_x0_Tracker_XY->GetZaxis()->SetTitleOffset(1.1);
 
-	hist_x0_Tracker_XY->Rebin2D(rebin_x0_x,rebin_x0_y);
 	hist_x0_Tracker_XY->Draw("zcol");
 
 	// text
@@ -238,9 +241,6 @@ void EtaPhiMap() {
 //----------------
 
 	//case t/lambdaI
-	TProfile *prof_lambdaI_Tracker_X = (TProfile*)subDetectorFile->Get("1010");
-	TH1D* hist_lambdaI_Tracker_X = (TH1D*)prof_lambdaI_Tracker_X->ProjectionX();
-
 	TProfile2D *prof_lambdaI_Tracker_XY = (TProfile2D*)subDetectorFile->Get("1030");
 	TH2D* hist_lambdaI_Tracker_XY = (TH2D*)prof_lambdaI_Tracker_XY->ProjectionXY();
 
@@ -251,15 +251,19 @@ void EtaPhiMap() {
 	// Draw
 	hist_lambdaI_Tracker_XY->GetXaxis()->SetLimits(xmin,xmax);
 	hist_lambdaI_Tracker_XY->GetYaxis()->SetLimits(ymin,ymax);
+	hist_lambdaI_Tracker_XY->Rebin2D(rebin_lambdaI_x,rebin_lambdaI_y);
+//cout << hist_lambdaI_Tracker_XY->GetMaximum()<< endl;
+//cout << 0.7/(hist_lambdaI_Tracker_XY->GetMaximum()*1/norm_lambdaI)<< endl;
+	hist_lambdaI_Tracker_XY->Scale(1/norm_lambdaI);
+//	zmax_lambdaI = 0.907*hist_lambdaI_Tracker_XY->GetMaximum();
+	zmax_lambdaI = hist_lambdaI_Tracker_XY->GetMaximum();
 	hist_lambdaI_Tracker_XY->SetMinimum(zmin_lambdaI);
-	zmax_lambdaI = 1.13*hist_lambdaI_Tracker_X->GetMaximum();
 	hist_lambdaI_Tracker_XY->SetMaximum(zmax_lambdaI);
 
 	hist_lambdaI_Tracker_XY->GetXaxis()->SetTitle("#eta");
 	hist_lambdaI_Tracker_XY->GetYaxis()->SetTitle("#varphi [rad]");
 	hist_lambdaI_Tracker_XY->GetZaxis()->SetTitle("t/#lambda_{I}");
 
-	hist_lambdaI_Tracker_XY->Rebin2D(rebin_lambdaI_x,rebin_lambdaI_y);
 	hist_lambdaI_Tracker_XY->Draw("zcol");
 
 	// text
