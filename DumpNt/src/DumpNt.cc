@@ -168,6 +168,7 @@ public:
   float Genpt;
   float pt_Over_Genpt;
   float CtfTrackpt_Over_Genpt;
+  float ClosestTrackpt_Over_Genpt;
   float gsfTrackpt_Over_Genpt;
 //fine
 
@@ -284,6 +285,7 @@ public:
   int	           el_seedZside;
   float	           el_pt;
   float            el_CtfTrack_pt;
+  float            el_ClosestTrack_pt;
   float            el_gsfTrack_pt;
  //fine
 
@@ -352,6 +354,7 @@ DumpNt::DumpNt(const edm::ParameterSet& iConfig)
   myTree_->Branch("Genpt",&Genpt,"Genpt/F");
   myTree_->Branch("pt_Over_Genpt",&pt_Over_Genpt,"pt_Over_Genpt/F");
   myTree_->Branch("CtfTrackpt_Over_Genpt",&CtfTrackpt_Over_Genpt,"CtfTrackpt_Over_Genpt/F");
+  myTree_->Branch("ClosestTrackpt_Over_Genpt",&ClosestTrackpt_Over_Genpt,"ClosestTrackpt_Over_Genpt/F");
   myTree_->Branch("gsfTrackpt_Over_Genpt",&gsfTrackpt_Over_Genpt,"gsfTrackpt_Over_Genpt/F");
 //fine
 
@@ -467,7 +470,8 @@ DumpNt::DumpNt(const edm::ParameterSet& iConfig)
   myTree_->Branch("el_seedIy"      , &el_seedIy                ,"el_seedIy/I");
   myTree_->Branch("el_seedZside"   , &el_seedZside             ,"el_seedZside/I");
   myTree_->Branch("el_pt"          , &el_pt                    ,"el_pt/F");
-  myTree_->Branch("el_CtfTrack_pt"  , &el_CtfTrack_pt            ,"el_CtfTrack_pt/F");
+  myTree_->Branch("el_CtfTrack_pt" , &el_CtfTrack_pt           ,"el_CtfTrack_pt/F");
+  myTree_->Branch("el_ClosestTrack_pt" , &el_ClosestTrack_pt   ,"el_ClosestTrack_pt/F");
   myTree_->Branch("el_gsfTrack_pt" , &el_gsfTrack_pt           ,"el_gsfTrack_pt/F");
 //fine
 
@@ -801,6 +805,9 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	if (eleIter->closestCtfTrackRef().isNonnull()){
 	        el_CtfTrack_pt               = eleIter->closestCtfTrackRef()->pt();
 	}
+	if (eleIter->closestTrack().isNonnull()){
+	        el_ClosestTrack_pt           = eleIter->closestTrack()->pt();
+	}
 	if (eleIter->gsfTrack().isNonnull()){
 	        el_gsfTrack_pt               = eleIter->gsfTrack()->pt();
 	}
@@ -816,6 +823,7 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	Genpt           = -9;
 	pt_Over_Genpt             = -9;
 	CtfTrackpt_Over_Genpt     = -9;
+	ClosestTrackpt_Over_Genpt = -9;
 	gsfTrackpt_Over_Genpt     = -9;
   
 	// simple truth matching
@@ -835,6 +843,7 @@ DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		Genpt       = p.pt();
 		pt_Over_Genpt         = el_pt/Genpt;
                 CtfTrackpt_Over_Genpt = el_CtfTrack_pt/Genpt;
+                ClosestTrackpt_Over_Genpt = el_ClosestTrack_pt/Genpt;
                 gsfTrackpt_Over_Genpt = el_gsfTrack_pt/Genpt;
 	      }
 	    }
