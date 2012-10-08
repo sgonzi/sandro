@@ -149,13 +149,13 @@ void All_Draw_fit(){
 	string pwd_5 = "/raid/sandro/Geometria/Tracker_ECAL/5_TIBTIDMargherita/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 	string pwd_6 = "/raid/sandro/Geometria/Tracker_ECAL/6_Geometries_12345/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
 
-	string infile_0 = "draw_fit_0_Original_MC.root";
-	string infile_1 = "draw_fit_1_PixelBarrelConnToST_MC.root";
-	string infile_2 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root";
-	string infile_3 = "draw_fit_3_TIBFlange_MC.root";
-	string infile_4 = "draw_fit_4_TIBTIDServiceCylinder_MC.root";
-	string infile_5 = "draw_fit_5_TIBTIDMargherita_MC.root";
-	string infile_6 = "draw_fit_6_Geometries_12345_MC.root";
+	string infile_0 = "draw_fit_0_Original_MC_ClosestTrackpt.root";
+	string infile_1 = "draw_fit_1_PixelBarrelConnToST_MC_ClosestTrackpt.root";
+	string infile_2 = "draw_fit_2_PixelBarrelConn1_and_PixelBarrelConn2_MC_ClosestTrackpt.root";
+	string infile_3 = "draw_fit_3_TIBFlange_MC_ClosestTrackpt.root";
+	string infile_4 = "draw_fit_4_TIBTIDServiceCylinder_MC_ClosestTrackpt.root";
+	string infile_5 = "draw_fit_5_TIBTIDMargherita_MC_ClosestTrackpt.root";
+	string infile_6 = "draw_fit_6_Geometries_12345_MC_ClosestTrackpt.root";
 
 	TFile *f_0 = TFile::Open((pwd_0+infile_0).c_str());
 	TFile *f_1 = TFile::Open((pwd_1+infile_1).c_str());

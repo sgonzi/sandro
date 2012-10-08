@@ -76,9 +76,13 @@ const float c = -1.653;
 //const float d = 0.0348;
 const float d = 0.0174;
 
+
+double gaussMin = 0.388; 
+double gaussMax = 1.612;
+
 int nBinsErecEgen = 250;
-int ErecEgenMin = 0; 
-int ErecEgenMax = 2;
+double ErecEgenMin = 0.; 
+double ErecEgenMax = 2.;
 
 int EtaBins(float eta, float a, float b){
 
@@ -121,7 +125,7 @@ void fitCB(TH1F *h, Double_t &mean, Double_t &emean, Double_t &chi2, string &str
 	h->Draw();
 
 	// more solid peak position with a temporary histogram filled only with the bins above 50% of the peak max
-	TH1F *htmp = new TH1F("htmp","htmp",nBinsErecEgen,ErecEgenMin, ErecEgenMax);
+	TH1F *htmp = new TH1F("htmp","htmp",nBinsErecEgen,gaussMin, gaussMax);
 	// protect the fits from small statistics rebinning
 	if (h->GetMaximum()< 50.) { h->Rebin(2); htmp->Rebin(2); }
 	if (h->GetMaximum()< 25.) { h->Rebin(2); htmp->Rebin(2); }
@@ -163,26 +167,50 @@ void fitCB(TH1F *h, Double_t &mean, Double_t &emean, Double_t &chi2, string &str
 	data.plotOn(xframe);
 
 	// Initialize CB parameters
-	Double_t  alphaStart =   0.5;
-	Double_t  alphaMin   =   0.1;
-	Double_t  alphaMax   =   2.0;
-	Double_t  nStart     =  50.0;
-	Double_t  nMin       =   0.0;
-	Double_t  nMax       = 200.0;
-	if ( gtmp->GetParameter(1) < 0.95 && gtmp->GetParameter(2) > 0.03 ) {
-		alphaStart =   0.4;
-		alphaMin   =   0.;
-		alphaMax   =   1.0;
-		nStart     =  20.;
-		nMin       =   0.;
-		nMax       = 100.;
-	}
+	Double_t  cbmeanStart =   gtmp->GetParameter(1)+0.025*gtmp->GetParameter(1);
+	Double_t  cbmeanMin   =   cbmeanStart-0.5*cbmeanStart;
+	Double_t  cbmeanMax   =   cbmeanStart+0.5*cbmeanStart;
 
+	Double_t  cbsigmaStart =   TMath::Abs(gtmp->GetParameter(2))-0.2*TMath::Abs(gtmp->GetParameter(2));
+	Double_t  cbsigmaMin   =   cbsigmaStart-0.4*cbsigmaStart;
+	Double_t  cbsigmaMax   =   cbsigmaStart+0.4*cbsigmaStart;
+
+	Double_t  alphaStart =   0.7;
+	Double_t  alphaMin   =   alphaStart-0.4*alphaStart;
+	Double_t  alphaMax   =   alphaStart+0.4*alphaStart;
+
+	Double_t  nStart     =   1.7;
+	Double_t  nMin       =   nStart-0.4*nStart;
+	Double_t  nMax       =   nStart+0.4*nStart;
+
+cout << "cbmeanStart = " <<  gtmp->GetParameter(1) << endl;
+//cout << "cbmean = " <<  cbmean << endl;
+cout << "cbsigmaStart = " <<  gtmp->GetParameter(2) << endl;
+//cout << "cbsigma = " <<  cbsigma << endl;
+/*
+	if (gtmp->GetParameter(1)<0.93){
+		cbmeanStart =   gtmp->GetParameter(1)+0.18*gtmp->GetParameter(1);
+		cbmeanMin   =   cbmeanStart-0.5*cbmeanStart;
+		cbmeanMax   =   cbmeanStart+0.5*cbmeanStart;
+
+		cbsigmaStart =   TMath::Abs(gtmp->GetParameter(2))-0.3*TMath::Abs(gtmp->GetParameter(2));
+		cbsigmaMin   =   cbsigmaStart-0.3*cbsigmaStart;
+		cbsigmaMax   =   cbsigmaStart+0.3*cbsigmaStart;
+
+		alphaStart =   0.7;
+		alphaMin   =   alphaStart-0.4*alphaStart;
+		alphaMax   =   alphaStart+0.4*alphaStart;
+
+		nStart     =   1.0;
+		nMin       =   nStart-0.3*nStart;
+		nMax       =   nStart+0.3*nStart;
+	}
+*/
 	// fit function
 	RooRealVar alpha  ("alpha"  ,        "alpha" , alphaStart, alphaMin, alphaMax); 
 	RooRealVar n      ("n"      ,            "n" , nStart, nMin, nMax); 
-	RooRealVar cbmean ("cbmean" ,       "cbmean" , gtmp->GetParameter(1) ,0.5, 1.2); // ErecEgenMin, ErecEgenMax);
-	RooRealVar cbsigma("cbsigma",      "cbsigma" , 0.01, 0.001,0.1) ;
+	RooRealVar cbmean ("cbmean" ,       "cbmean" , cbmeanStart ,cbmeanMin, cbmeanMax); // ErecEgenMin, ErecEgenMax);
+	RooRealVar cbsigma("cbsigma",      "cbsigma" , cbsigmaStart ,cbsigmaMin, cbsigmaMax) ;
 	RooCBShape cball  ("cball"  , "crystal ball" , x, cbmean, cbsigma, alpha, n);
 
 /*
@@ -197,19 +225,21 @@ void fitCB(TH1F *h, Double_t &mean, Double_t &emean, Double_t &chi2, string &str
 	//   RooRealVar ng("ng","ng",100,1,10000);
 	//   RooRealVar nc("nc","nc",10, 1,10000);
 	//   RooAddPdf CBgaus("CBgaus","CB + gauss",RooArgList(cball,gauss),RooArgList(nc,ng));
+*/
 
 	// Fit Range using as units the sigma of the driving gaussian
 	//
 	Float_t nsigmaL = 10;
 	Float_t nsigmaR = 2;
 	//
-	// Fit
 
+	// Fit
 	RooFitResult* fitres =cball.fitTo(data,
-				          RooFit::Range(gtmp->GetParameter(1)-nsigmaL*TMath::Abs(gtmp->GetParameter(2)),
-					  gtmp->GetParameter(1)+nsigmaR*TMath::Abs(gtmp->GetParameter(2))),
+		                          RooFit::Range(gtmp->GetParameter(1)-nsigmaL*TMath::Abs(gtmp->GetParameter(2)),
+					                gtmp->GetParameter(1)+nsigmaR*TMath::Abs(gtmp->GetParameter(2))),
 				          RooFit::Minos(kFALSE));    
-*/
+	cout <<"fitres = " << fitres << endl;
+
 	mean  = cbmean.getVal();
 	emean = cbmean.getError();
 	cball.plotOn (xframe,RooFit::LineColor(kBlue));
@@ -241,6 +271,11 @@ void fitCB(TH1F *h, Double_t &mean, Double_t &emean, Double_t &chi2, string &str
 
 	cpull->Update();
 	cpull->Write();
+	string dir = "plots/";
+	string ext = ".png";
+	cpull->SaveAs((dir + s_cpull + stringa + ext).c_str());
+	cpull->Close();
+
 	cpull->Close();
 
 	return;
@@ -250,7 +285,7 @@ void fit(){
 
 	//---- output file to save graphs
 	char outfilename[20];
-	sprintf(outfilename,"fit_6_Geometries_12345_MC.root");
+	sprintf(outfilename,"fit_6_Geometries_12345_MC_ClosestTrackpt.root");
 
 	//out file
 	TFile outfile(outfilename,"recreate");
@@ -267,7 +302,7 @@ void fit(){
 	float ptOverGenpt, el_scEta;
 
 	//---- Set branch addresses for MC
-	ntu_MC->SetBranchAddress("CtfTrackpt_Over_Genpt", &ptOverGenpt);
+	ntu_MC->SetBranchAddress("ClosestTrackpt_Over_Genpt", &ptOverGenpt);
 	ntu_MC->SetBranchAddress("el_scEta",    &el_scEta);
 
 	//---- book histos
@@ -303,7 +338,7 @@ void fit(){
 
 
 	for (int imod = 1; imod < Ntempl-1; imod++) {
-
+//	for (int imod = 15; imod < 16; imod++) {
 		double mean    = 1;
 		double emean   = 0;
 		double chi2    = 0;
@@ -316,12 +351,14 @@ void fit(){
 		float xval = ((c + (imod-1)*d) + (c + imod*d))/2;
 		float yval = mean;
 		float yvalErr = emean;
+
 cout << "imod = " << imod << endl; 
 cout << "(c + (imod-1)*d) = " << (c + (imod-1)*d) << endl; 
 cout << "(c + imod*d) = " << (c + imod*d) << endl; 
 cout << "xval = " << xval << endl;
 cout << "yval = " << yval << endl;
 cout << "yvalErr = " << yvalErr << endl;
+cout << "chi2 = " << chi2 << endl;
 cout << "----------------------------------" << endl; 
 
 		g_ptOverGenpt_MC -> SetPoint(Iniz, xval , yval);

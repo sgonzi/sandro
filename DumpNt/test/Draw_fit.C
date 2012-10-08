@@ -142,9 +142,9 @@ void Draw_fit(){
 	float ymin   = 0.6;
 	float ymax   = 1.2;
 
-	TFile *f = TFile::Open("fit_6_Geometries_12345_MC.root");
+	TFile *f = TFile::Open("fit_6_Geometries_12345_MC_ClosestTrackpt.root");
 
-	TFile *outfile = new TFile("draw_fit_6_Geometries_12345_MC.root","recreate");
+	TFile *outfile = new TFile("draw_fit_6_Geometries_12345_MC_ClosestTrackpt.root","recreate");
 
 	TGraphErrors* g_ptOverGenpt_MC = (TGraphErrors*)f->Get("g_ptOverGenpt_MC");
 	g_ptOverGenpt_MC -> SetLineColor(7); 
@@ -187,13 +187,13 @@ void Draw_fit(){
 	c_g_fit->SetGrid();
 
 	c_g_fit->Write();
-	c_g_fit->SaveAs("draw_fit_6_Geometries_12345_MC.png");
+	c_g_fit->SaveAs("draw_fit_6_Geometries_12345_MC_ClosestTrackpt.png");
 
 
 //-------------
 
 	string Original_pwd = "/raid/sandro/Geometria/Tracker_ECAL/0_Original/CMSSW_5_2_5/src/DumpNt/DumpNt/test/";
-	string Original = "fit_0_Original_MC.root";
+	string Original = "fit_0_Original_MC_ClosestTrackpt.root";
 
 	TFile *f_Original = TFile::Open((Original_pwd+Original).c_str());
 
@@ -241,7 +241,7 @@ void Draw_fit(){
 
 
 	c_g_fit_Original->Write();
-	c_g_fit_Original->SaveAs("draw_fit_Original_MC.png");
+	c_g_fit_Original->SaveAs("draw_fit_Original_MC_ClosestTrackpt.png");
 
 //-------------
 
@@ -275,7 +275,7 @@ void Draw_fit(){
 
 	outfile->cd();
 	c_g_fit_double->Write();
-	c_g_fit_double->SaveAs("draw_fit_double_MC.png");
+	c_g_fit_double->SaveAs("draw_fit_double_MC_ClosestTrackpt.png");
 
 }
 
