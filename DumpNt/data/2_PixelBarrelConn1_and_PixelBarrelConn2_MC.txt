@@ -106,7 +106,6 @@ root://xrootd.ba.infn.it//store/user/sandro/2_PixelBarrelConn1_and_PixelBarrelCo
 root://xrootd.ba.infn.it//store/user/sandro/2_PixelBarrelConn1_and_PixelBarrelConn2/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_19_4_vYh.root
 root://xrootd.ba.infn.it//store/user/sandro/2_PixelBarrelConn1_and_PixelBarrelConn2/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_195_1_zrv.root
 root://xrootd.ba.infn.it//store/user/sandro/2_PixelBarrelConn1_and_PixelBarrelConn2/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_196_1_G87.root
-root://xrootd.ba.infn.it//store/user/sandro/2_PixelBarrelConn1_and_PixelBarrelConn2/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_197_1_fvR.root
 root://xrootd.ba.infn.it//store/user/sandro/2_PixelBarrelConn1_and_PixelBarrelConn2/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_20_4_wR1.root
 root://xrootd.ba.infn.it//store/user/sandro/2_PixelBarrelConn1_and_PixelBarrelConn2/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_21_1_PBy.root
 root://xrootd.ba.infn.it//store/user/sandro/2_PixelBarrelConn1_and_PixelBarrelConn2/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_22_1_jI0.root

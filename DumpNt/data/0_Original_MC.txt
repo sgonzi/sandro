@@ -23,7 +23,6 @@ root://xrootd.ba.infn.it//store/user/sandro/0_Original/SingleElectronPt35/fast/r
 root://xrootd.ba.infn.it//store/user/sandro/0_Original/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_1_1_uqH.root
 root://xrootd.ba.infn.it//store/user/sandro/0_Original/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_120_1_D96.root
 root://xrootd.ba.infn.it//store/user/sandro/0_Original/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_121_1_SEH.root
-root://xrootd.ba.infn.it//store/user/sandro/0_Original/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_12_1_42t.root
 root://xrootd.ba.infn.it//store/user/sandro/0_Original/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_122_1_tke.root
 root://xrootd.ba.infn.it//store/user/sandro/0_Original/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_123_1_fCo.root
 root://xrootd.ba.infn.it//store/user/sandro/0_Original/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_124_1_eXG.root

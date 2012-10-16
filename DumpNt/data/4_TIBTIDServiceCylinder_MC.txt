@@ -75,7 +75,6 @@ root://xrootd.ba.infn.it//store/user/sandro/4_TIBTIDServiceCylinder/SingleElectr
 root://xrootd.ba.infn.it//store/user/sandro/4_TIBTIDServiceCylinder/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_172_4_nCt.root
 root://xrootd.ba.infn.it//store/user/sandro/4_TIBTIDServiceCylinder/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_173_1_5U5.root
 root://xrootd.ba.infn.it//store/user/sandro/4_TIBTIDServiceCylinder/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_174_1_Brl.root
-root://xrootd.ba.infn.it//store/user/sandro/4_TIBTIDServiceCylinder/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_17_4_9tE.root
 root://xrootd.ba.infn.it//store/user/sandro/4_TIBTIDServiceCylinder/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_175_4_UGN.root
 root://xrootd.ba.infn.it//store/user/sandro/4_TIBTIDServiceCylinder/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_176_4_9nZ.root
 root://xrootd.ba.infn.it//store/user/sandro/4_TIBTIDServiceCylinder/SingleElectronPt35/fast/rec/SingleElectronPt35_cfi_py_RAW2DIGI_RECO_177_4_DYP.root
