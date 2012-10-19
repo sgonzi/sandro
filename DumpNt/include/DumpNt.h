@@ -42,11 +42,12 @@ class DumpNt : public edm::EDAnalyzer{
 
 		int event_number;
 
-		float GenEnergy, GenET, GenEta, GenPhi;
+		float GenEnergy, GenET, GenEta, GenPhi, Genpt;
 
-		float Genpt, pt_Over_Genpt, CtfTrackpt_Over_Genpt, ClosestTrackpt_Over_Genpt, gsfTrackpt_Over_Genpt;
+		float pt_Over_Genpt, CtfTrackpt_Over_Genpt, ClosestTrackpt_Over_Genpt, gsfTrackpt_Over_Genpt, 
+		Energy_Over_GenEnergy, scEnergy_Over_GenEnergy, scRawEnergy_Over_GenEnergy;
 
-		float el_scEnergy, el_scRawEnergy, el_convDcot, el_convDist, el_convRadius;
+		float el_Energy, el_scEnergy, el_scRawEnergy, el_convDcot, el_convDist, el_convRadius;
 
 		int el_convFlags;
 

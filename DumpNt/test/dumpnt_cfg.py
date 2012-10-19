@@ -11,18 +11,18 @@ process.ntuple.doMC = cms.bool(True)
 isMC = process.ntuple.doMC
 
 import FWCore.Utilities.FileUtils as FileUtils
-nameSourceMC = FileUtils.loadListFromFile ('../data/2_PixelBarrelConn1_and_PixelBarrelConn2_MC.txt')
+nameSourceMC = FileUtils.loadListFromFile ('../data/0_Original_MC.txt')
 nameSourceDATA = FileUtils.loadListFromFile ('../data/1_PixelBarrelConnToST_MC.txt')
 #nameSourceMC = cms.untracked.vstring('file:/raid/sandro/Geometria/Tracker_ECAL/CMSSW_5_2_5/src/DumpNt/DumpNt/test/SingleElectronPt35_cfi_py_RAW2DIGI_RECO.root')
 #nameSourceDATA = cms.untracked.vstring('/store/data/Run2012B/DoubleElectron/AOD/08Jun2012-v1/0000/F68EAAC5-92B2-E111-B9BF-003048FFD736.root')
 
-numEventsToRun = -1
+numEventsToRun = 1000
 
 GloTagMC = cms.string('START52_V11C::All')
 GloTagDATA = cms.string('GR_R_52_V9D::All')
 
-nameOutputMC = cms.string("outfile_2_PixelBarrelConn1_and_PixelBarrelConn2_MC.root")
-nameOutputDATA = cms.string("outfile_2_PixelBarrelConn1_and_PixelBarrelConn2_DATA.root")
+nameOutputMC = cms.string("outfile_0_Original_MC.root")
+nameOutputDATA = cms.string("outfile_0_Original_DATA.root")
 #################
 
 ## MessageLogger

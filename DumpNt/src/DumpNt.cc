@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author: Mauro Donega (ETH) [donega]
 // Created: Wed Jun 13 18:08:53 CEST 2012
-// $Id: DumpNt.cc,v 1.9 2012/10/17 10:30:35 sandro Exp $
+// $Id: DumpNt.cc,v 1.10 2012/10/19 17:56:31 sandro Exp $
 //
 //
 
@@ -156,13 +156,17 @@ DumpNt::DumpNt(const edm::ParameterSet& iConfig){
 	myTree_->Branch("GenET", &GenET, "GenET/F");
 	myTree_->Branch("GenEta", &GenEta, "GenEta/F");
 	myTree_->Branch("GenPhi", &GenPhi, "GenPhi/F");
-
 	myTree_->Branch("Genpt", &Genpt, "Genpt/F");
+
 	myTree_->Branch("pt_Over_Genpt", &pt_Over_Genpt, "pt_Over_Genpt/F");
 	myTree_->Branch("CtfTrackpt_Over_Genpt", &CtfTrackpt_Over_Genpt, "CtfTrackpt_Over_Genpt/F");
 	myTree_->Branch("ClosestTrackpt_Over_Genpt", &ClosestTrackpt_Over_Genpt, "ClosestTrackpt_Over_Genpt/F");
 	myTree_->Branch("gsfTrackpt_Over_Genpt", &gsfTrackpt_Over_Genpt, "gsfTrackpt_Over_Genpt/F");
+	myTree_->Branch("Energy_Over_GenEnergy", &Energy_Over_GenEnergy, "Energy_Over_GenEnergy/F");
+	myTree_->Branch("scEnergy_Over_GenEnergy", &scEnergy_Over_GenEnergy, "scEnergy_Over_GenEnergy/F");
+	myTree_->Branch("scRawEnergy_Over_GenEnergy", &scRawEnergy_Over_GenEnergy, "scRawEnergy_Over_GenEnergy/F");
 
+	myTree_->Branch("el_Energy", &el_Energy, "el_Energy/F");
 	myTree_->Branch("el_scEnergy", &el_scEnergy, "el_scEnergy/F");
 	myTree_->Branch("el_scRawEnergy", &el_scRawEnergy, "el_scRawEnergy/F");
 	myTree_->Branch("el_convDcot", &el_convDcot, "el_convDcot/F"); 
@@ -404,7 +408,8 @@ void DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 				//const edm::Ptr<reco::CaloCluster>& seedCluster = scRef->seed();
 				//reco::TrackRef trackRef = eleIter->track(); 
 
-				el_scEnergy = eleIter->energy();
+				el_Energy = eleIter->energy();
+				el_scEnergy = eleIter->superCluster()->energy();
 				el_scRawEnergy = eleIter->superCluster()->rawEnergy();
 				el_convDcot = eleIter->convDcot(); 
 				el_convDist = eleIter->convDist(); 	 
@@ -650,6 +655,9 @@ void DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 				CtfTrackpt_Over_Genpt = -9;
 				ClosestTrackpt_Over_Genpt = -9;
 				gsfTrackpt_Over_Genpt = -9;
+				Energy_Over_GenEnergy = -9;
+				scEnergy_Over_GenEnergy = -9;
+				scRawEnergy_Over_GenEnergy = -9;
 
 				// simple truth matching
 				if (doMC_){
@@ -671,6 +679,9 @@ void DumpNt::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 								CtfTrackpt_Over_Genpt = el_CtfTrack_pt/Genpt;
 								ClosestTrackpt_Over_Genpt = el_ClosestTrack_pt/Genpt;
 								gsfTrackpt_Over_Genpt = el_gsfTrack_pt/Genpt;
+								Energy_Over_GenEnergy = el_Energy/GenEnergy;
+								scEnergy_Over_GenEnergy = el_scEnergy/GenEnergy;
+								scRawEnergy_Over_GenEnergy = el_scRawEnergy/GenEnergy;
 							}
 						}
 					}
