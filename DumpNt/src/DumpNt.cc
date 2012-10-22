@@ -13,12 +13,12 @@ Implementation:
 //
 // Original Author: Mauro Donega (ETH) [donega]
 // Created: Wed Jun 13 18:08:53 CEST 2012
-// $Id: DumpNt.cc,v 1.10 2012/10/19 17:56:31 sandro Exp $
+// $Id: DumpNt.cc,v 1.11 2012/10/19 18:33:02 sandro Exp $
 //
 //
 
 
-#include "sandro/DumpNt/include/DumpNt.h"
+#include "DumpNt/DumpNt/include/DumpNt.h"
 
 // system include files
 #include <memory>

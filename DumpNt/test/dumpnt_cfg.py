@@ -3,7 +3,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("Ntuple")
 
 ## load parameters
-process.load("sandro.DumpNt.dumpnt_cfi")
+process.load("DumpNt.DumpNt.dumpnt_cfi")
 process.ntuple.doMC = cms.bool(True)
 
 #################
