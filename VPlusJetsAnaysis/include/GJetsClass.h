@@ -1,10 +1,3 @@
-//////////////////////////////////////////////////////////
-// This class has been automatically generated on
-// Tue Jul 24 10:33:24 2012 by ROOT version 5.27/06b
-// from TTree events/events
-// found on file: /data/zjets/V02-02-02/data_merged/all_photons.root
-//////////////////////////////////////////////////////////
-
 #ifndef GJetsClass_h
 #define GJetsClass_h
 
@@ -379,7 +372,7 @@ GJetsClass::GJetsClass(TTree *tree)
 // used to generate this class and read the Tree.
    if (tree == 0) {
 
-     Int_t isample=3;
+     Int_t isample=0;
 
      if(isample==0){
       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/zjets/V02-02-02/data_merged/all_photons.root");

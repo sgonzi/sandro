@@ -1,5 +1,6 @@
 #define GJetsClass_cxx
-#include "GJetsClass.h"
+#include "sandro/VPlusJetsAnaysis/include/GJetsClass.h"
+#include "sandro/VPlusJetsAnaysis/include/GJetsDefs.h"
 #include <vector>
 #include <string>
 #include <stdio.h>
@@ -10,7 +11,6 @@
 #include <TMath.h>
 #include <TStyle.h>
 #include <TCanvas.h>
-#include "GJetsDefs.h"
 #ifdef __MAKECINT__
 #pragma link C++ class vector<float>+;
 #endif
