@@ -1,6 +1,7 @@
 #ifndef GJetsAnalyzer_h
 #define GJetsAnalyzer_h
 
+//#include <Riostream.h>
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
@@ -494,7 +495,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree) {
 	// used to generate this class and read the Tree.
   if (tree == 0) {
 
-		Int_t isample = 0;
+		Int_t isample = 2;
 
 /*
 		if (isample == 0){
@@ -1109,6 +1110,7 @@ Int_t GJetsAnalyzer::Cut(Long64_t entry) {
 	// This function may be called from Loop.
 	// returns  1 if entry is accepted.
 	// returns -1 otherwise.
+//	cout << "entry = " << entry << endl;
   return 1;
 }
 
