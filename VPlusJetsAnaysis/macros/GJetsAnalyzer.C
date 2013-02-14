@@ -9,8 +9,6 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TMath.h>
-#include <TStyle.h>
-#include <TCanvas.h>
 #ifdef __MAKECINT__
 #pragma link C++ class vector<float>+;
 #endif
@@ -42,7 +40,8 @@
 
 void GJetsAnalyzer::Loop(Int_t isample){
 
-  Float_t weight = 1;
+  Float_t weight = 1; 
+  //  Float_t weight;
   Int_t itype = 0;   // 0: Medium ID (80%) 
 //  Int_t itype = 1;   // 0: Loose ID (90%) 
 
@@ -92,7 +91,7 @@ void GJetsAnalyzer::Loop(Int_t isample){
 
   else if (isample == 2){
     sprintf(outputname, "mc_GJets_HT-400ToInf_gammahistos_%d.root", itype);   //xsec=5213 pb *1.23?
-		nEvents = 398804;
+		nEvents = 3988444;
 //		nEvents = 3995000;
 		xsec = 107.5;  //Matching efficiency: 0.123
 	  kFac = 1.;  
@@ -226,34 +225,42 @@ void GJetsAnalyzer::Loop(Int_t isample){
 			// and that the photon is in the barrel (photonBit |= (it->isEB()          << 0) => (*photonBit)[0]&1) con 2^0 = 1
 			// and has a pt greater than 150.;
 
+			// ---- photon variables ----------------------------------------------
 			photonPt_1 = photonPt->at(0);
 			photonE_1 = photonE->at(0);
 			photonEta_1 = photonEta->at(0);
-			photonPhi_1 = photonPhi->at(0);			
+			photonPhi_1 = photonPhi->at(0);
+//		photonIso_1 = photonIso->at(0);	
 			photonPassConversionVeto_1 = photonPassConversionVeto->at(0);
 			photonPfIsoChargedHad_1 = photonPfIsoChargedHad->at(0); 
 			photonPfIsoNeutralHad_1 = photonPfIsoNeutralHad->at(0); 
-			photonPfIsoPhoton_1 = photonPfIsoPhoton->at(0);  
+			photonPfIsoPhoton_1 = photonPfIsoPhoton->at(0);
+			
 			photonPfIsoPhotons03ForCic_1 = photonPfIsoPhotons03ForCic->at(0); 
 			photonPfIsoNeutrals03ForCic_1 = photonPfIsoNeutrals03ForCic->at(0); 
 			photonPfIsoCharged03ForCicVtx0_1 = photonPfIsoCharged03ForCicVtx0->at(0); 
-			photonPfIsoCharged03BadForCic_1 = photonPfIsoCharged03BadForCic->at(0); 
+			photonPfIsoCharged03BadForCic_1 = photonPfIsoCharged03BadForCic->at(0);
+			
 			photonPfIsoPhotons04ForCic_1 = photonPfIsoPhotons04ForCic->at(0); 
 			photonPfIsoNeutrals04ForCic_1 = photonPfIsoNeutrals04ForCic->at(0);
 			photonPfIsoCharged04ForCicVtx0_1 = photonPfIsoCharged04ForCicVtx0->at(0); 
 			photonPfIsoCharged04BadForCic_1 = photonPfIsoCharged04BadForCic->at(0);
+			
 			photonid_sieie_1 = photonid_sieie->at(0);  
 			photonid_sieip_1 = photonid_sieip->at(0); 
 			photonid_etawidth_1 = photonid_etawidth->at(0); 
 			photonid_phiwidth_1 = photonid_phiwidth->at(0); 
-			photonid_r9_1 = photonid_r9->at(0); 
+			photonid_r9_1 = photonid_r9->at(0);
+			
 			photonid_lambdaRatio_1 = photonid_lambdaRatio->at(0); 
 			photonid_s4Ratio_1 = photonid_s4Ratio->at(0);
 			photonid_e25_1 = photonid_e25->at(0);
-			photonid_sceta_1 = photonid_sceta->at(0); 
+			photonid_sceta_1 = photonid_sceta->at(0);
+			 
 			photonid_ESEffSigmaRR_1 = photonid_ESEffSigmaRR->at(0);
 			photonid_hadronicOverEm_1 = photonid_hadronicOverEm->at(0);
 			photonid_hadronicOverEm2012_1 = photonid_hadronicOverEm2012->at(0);
+			
 			photonhcalTowerSumEtConeDR04_1 = photonhcalTowerSumEtConeDR04->at(0);
 			photonecalRecHitSumEtConeDR04_1 = photonecalRecHitSumEtConeDR04->at(0);
 			photonnTrkSolidConeDR04_1 = photonnTrkSolidConeDR04->at(0);
@@ -295,7 +302,7 @@ void GJetsAnalyzer::Loop(Int_t isample){
 			DeltaR_photon1_jet3 = deltaR(photonEta_1, photonPhi_1, jetEta_3, jetPhi_3);
 			}
 			
-			if (jetPt_1 > 50. && TMath::Abs(jetEta_1) < 2.5 && photonPt_1 > 150. && ((*photonBit)[0]&1) ) {
+			if (jetPt_1 > 50. && TMath::Abs(jetEta_1) < 2.5 && photonPt_1 > 220. && ((*photonBit)[0]&1) ) {
 
 /*
 				if(photonPassConversionVeto == 1 && 
@@ -450,7 +457,7 @@ void Book_Histos(){
   Nvtx_ = new TH1F("Nvtx_","Number of vertices ", 50, 0, 50);
 
 	nPhotons_ = new TH1F("nPhotons_","N Photons ", 10, 0, 10);
-	isPhotonlead_ = new TH1F("isPhotonlead_", "isPhotonlead", 10, -2, 2);
+	isPhotonlead_ = new TH1F("isPhotonlead_", "isPhotonlead", 10, 0, 4);
 	photonPt_1_ = new TH1F("photonPt_1","Photon p_{T} ", 100, 0., 1000.);
 	photonE_1_ = new TH1F("photonE_1","Photon E ", 100, 0., 1000.);
 	photonEta_1_ = new TH1F("photonEta_1","Photon #eta ", 100, -3, 3.);

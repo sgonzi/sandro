@@ -35,8 +35,6 @@ photonEta_1->SaveAs("photonEta_1.png");
 photonPhi_1->SaveAs("photonPhi_1.png");
 	comparestack("photonBit_1", "bit^{#gamma1}");
 photonBit_1->SaveAs("photonBit_1.png");
-	comparestack("photonPassConversionVeto_1","#gamma1 PassConversionVeto);
-photonPassConversionVeto_1->SaveAs("photonPassConversionVeto_1.png");
 	comparestack("photonPfIsoChargedHad_1", "#gamma1 PfIsoChargedHad");
 photonPfIsoChargedHad_1->SaveAs("photonPfIsoChargedHad_1.png");
 	comparestack("photonPfIsoNeutralHad_1", "#gamma1 PfIsoNeutralHad");
@@ -139,6 +137,9 @@ DeltaR_photon1_jet1_->SaveAs("DeltaR_photon1_jet1_.png");
 DeltaR_photon1_jet2_->SaveAs("DeltaR_photon1_jet2_.png");
 	comparestack("DeltaR_photon1_jet3_", "#DeltaR #gamma1-jet3");
 DeltaR_photon1_jet3_->SaveAs("DeltaR_photon1_jet3_.png");
+
+	comparestack("photonPassConversionVeto_1","#gamma1 PassConversionVeto);
+photonPassConversionVeto_1->SaveAs("photonPassConversionVeto_1.png");
 	*/
 
 	gStyle->SetFrameBorderMode(0);

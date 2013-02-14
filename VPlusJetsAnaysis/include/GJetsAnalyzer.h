@@ -495,7 +495,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree) {
 	// used to generate this class and read the Tree.
   if (tree == 0) {
 
-		Int_t isample = 2;
+		Int_t isample = 5;
 
 /*
 		if (isample == 0){
