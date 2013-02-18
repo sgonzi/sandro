@@ -1,6 +1,6 @@
 #define GJetsAnalyzer_cxx
-#include "sandro/VPlusJetsAnaysis/include/GJetsAnalyzer.h"
-#include "sandro/VPlusJetsAnaysis/include/GJetsDefs.h"
+#include "GJetsAnalyzer.h"
+#include "GJetsDefs.h"
 #include <vector>
 #include <string>
 #include <stdio.h>
@@ -9,9 +9,9 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TMath.h>
-#ifdef __MAKECINT__
-#pragma link C++ class vector<float>+;
-#endif
+//#ifdef __MAKECINT__
+//#pragma link C++ class vector<float>+;
+//#endif
 
 //		In a ROOT session, you can do:
 //			Root > .L GJetsAnalyzer.C++
