@@ -3,18 +3,20 @@
 #include "GJetsDefs.h"
 #include <vector>
 #include <string>
+#include <TString.h>
 #include <stdio.h>
 #include <Riostream.h>
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TMath.h>
+#include <fstream>
 //#ifdef __MAKECINT__
 //#pragma link C++ class vector<float>+;
 //#endif
 
 //		In a ROOT session, you can do:
-//			Root > .L GJetsAnalyzer.C++
+//			Root > .L GJetsAnalyzer.C+
 //			Root > GJetsAnalyzer t
 //			Root > t.GetEntry(12); // Fill t data members with entry number 12
 //			Root > t.Show();       // Show values of entry 12
@@ -38,7 +40,7 @@
 //				by b_branchname->GetEntry(ientry);     // read only this branch
 
 
-void GJetsAnalyzer::Loop(Int_t isample){
+void GJetsAnalyzer::Loop(){
 
   Float_t weight = 1; 
   //  Float_t weight;
@@ -46,111 +48,192 @@ void GJetsAnalyzer::Loop(Int_t isample){
 //  Int_t itype = 1;   // 0: Loose ID (90%) 
 
   // choose the sample:
-  // isample == 0 -> data
-  // isample == 1 -> GJets 200<HT<400
-  // isample == 2 -> Gjets 400<HT<Inf
-  // isample == 3 -> QCD   100<HT<250
-  // isample == 4 -> QCD   250<HT<500
-  // isample == 5 -> QCD   500<HT<1000
-  // isample == 6 -> QCD   1000<HT<inf
-  // isample == 7 -> test
+  // mysample == 0  -> data
+  // mysample == 1  -> GJets 200<HT<400
+  // mysample == 2  -> Gjets 400<HT<Inf
+  // mysample == 3  -> QCD EMEnriched 20<Pt<30
+  // mysample == 4  -> QCD EMEnriched 30<Pt<80
+  // mysample == 5  -> QCD EMEnriched 80<Pt<170
+  // mysample == 6  -> QCD EMEnriched 170<Pt<250
+  // mysample == 7  -> QCD EMEnriched 250<Pt<350
+  // mysample == 8  -> QCD EMEnriched 350<Pt<Inf
+  // mysample == 9  -> Test
+  // mysample == 10 -> QCD 100<HT<250
+  // mysample == 11 -> QCD 250<HT<500
+  // mysample == 12 -> QCD 500<HT<1000
+  // mysample == 13 -> QCD 1000<HT<inf
 
-//  double Lumi_t = 185.798;  
-  double Lumi_t = 510.274;  
-  double xsec = 1.;  
+//  double Lumi_t = 510.274;
+  double Lumi_t = 486.355;
+  double xsec = 1.;
+  double FiltEff = 1.;  
   double kFac = 1.;  
   double nEvents = 1.;  
+	
+	cout << "mysample is " << mysample << endl;
 
-/*
-  if (isample == 0) {
-    sprintf(outputname, "data_Run2012B-13Jul2012_gammahistos_%d.root", itype);
-    weight = 1.;
-    cout << "Running on data. " << endl;
-    cout<<"Integrated luminosity is "<< Lumi_t << " \pb" << endl;
-  }
-*/
-
-  if (isample == 0) {
+// data -----------------------------------------------------------------
+  if (mysample == 0) {
     sprintf(outputname, "data_all_photons_gammahistos_%d.root", itype);
     weight = 1.;
     cout << "Running on data. " << endl;
     cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
   }
-
-  else if (isample == 1){ 
-    sprintf(outputname, "mc_GJets_HT-200To400_gammahistos_%d.root", itype);   //xsec=25690 pb * k-factor 1.23?
-		nEvents = 365000;
-//		nEvents = 4990000;
-		xsec = 960.5;  //Matching efficiency: 0.148
-	  kFac = 1.;  
-    // weight = 1.;                                                       // temporary weight=1 for eff. calculation    
-    weight = Lumi_t /(nEvents/(xsec*kFac));
+  
+// MC signal GJets_HT-xToy ----------------------------------------------
+  else if (mysample == 1){ 
+    sprintf(outputname, "mc_GJets_HT-200To400_gammahistos_%d.root", itype);   
+//		nEvents = 365000;
+		nEvents = 2985000;
+		xsec = 960.5;
+		FiltEff = 1.;  
+		kFac = 1.;  
+    // weight = 1.; // temporary weight=1 for eff. calculation    
+    weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
     cout << "Running on GJets_HT-200To400. " << endl;
     cout << "Weight is " << weight << endl;
   }
 
-  else if (isample == 2){
-    sprintf(outputname, "mc_GJets_HT-400ToInf_gammahistos_%d.root", itype);   //xsec=5213 pb *1.23?
-		nEvents = 3988444;
-//		nEvents = 3995000;
-		xsec = 107.5;  //Matching efficiency: 0.123
+  else if (mysample == 2){
+    sprintf(outputname, "mc_GJets_HT-400ToInf_gammahistos_%d.root", itype);
+//		nEvents = 3988444;
+		nEvents = 1260000;
+		xsec = 107.5;
+		FiltEff = 1.;  
 	  kFac = 1.;  
-    // weight = 1.;                                                       // temporary weight=1 for eff. calculation    
-    weight = Lumi_t /(nEvents/(xsec*kFac));
+    // weight = 1.; // temporary weight=1 for eff. calculation    
+    weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
     cout << "Running on GJets_HT-400ToInf. " << endl;
     cout << "Weight is " << weight << endl;
   }
 
-  else if (isample == 3){
-    sprintf(outputname, "mc_QCD_HT-100To250_gammahistos_%d.root", itype);   //xsec=798.3 pb *1.23?
-		nEvents = 380000;
-//		nEvents = 5000000;
-		xsec = 1.036E7;  //Matching efficiency: 0.29
+// MC background QCD_Pt_x_y EMEnriched ----------------------------------
+  else if (mysample == 3){
+    sprintf(outputname, "mc_QCD_Pt_20_30_EMEnriched_gammahistos_%d.root", itype);
+		nEvents = 3000000;
+		xsec = 2.886E8;
+		FiltEff = 0.0101;		
 	  kFac = 1.;  
-    // weight = 1.;                                                       // temporary weight=1 for eff. calculation    
-    weight = Lumi_t /(nEvents/(xsec*kFac));
+    // weight = 1.; // temporary weight=1 for eff. calculation    
+    weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+    cout << "Running on QCD_Pt_20_30_EMEnriched " << endl;
+    cout << "Weight is " << weight << endl;
+  }
+
+  else if (mysample == 4){
+    sprintf(outputname, "mc_QCD_Pt_30_80_EMEnriched_gammahistos_%d.root", itype);
+		nEvents = 3000000;
+		xsec = 7.433E7;
+		FiltEff = 0.0621;		
+	  kFac = 1.;  
+    // weight = 1.; // temporary weight=1 for eff. calculation    
+    weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+    cout << "Running on QCD_Pt_30_80_EMEnriched " << endl;
+    cout << "Weight is " << weight << endl;
+  }
+
+  else if (mysample == 5){
+    sprintf(outputname, "mc_QCD_Pt_80_170_EMEnriched_gammahistos_%d.root", itype);
+		nEvents = 1800000;
+		xsec = 1191000.0;
+		FiltEff = 0.1539;
+		kFac = 1.;  
+    // weight = 1.; // temporary weight=1 for eff. calculation    
+    weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+    cout << "Running on QCD_Pt_80_170_EMEnriched " << endl;
+    cout << "Weight is " << weight << endl;
+  }
+
+  else if (mysample == 6){
+    sprintf(outputname, "mc_QCD_Pt_170_250_EMEnriched_gammahistos_%d.root", itype);
+		nEvents = 3000000;
+		xsec = 30990.0;
+		FiltEff = 0.148;		
+	  kFac = 1.;  
+    // weight = 1.; // temporary weight=1 for eff. calculation    
+    weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+    cout << "Running on QCD_Pt_170_250_EMEnriched " << endl;
+    cout << "weight is " << weight << endl;
+  }
+
+  else if (mysample == 7){
+    sprintf(outputname, "mc_QCD_Pt_250_350_EMEnriched_gammahistos_%d.root", itype);
+		nEvents = 995000;
+		xsec = 	4250.0;
+		FiltEff = 0.131;		
+	  kFac = 1.;  
+    // weight = 1.; // temporary weight=1 for eff. calculation    
+    weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+    cout << "Running on QCD_Pt_250_350_EMEnriched " << endl;
+    cout << "weight is " << weight << endl;
+  }
+
+  else if (mysample == 8){
+    sprintf(outputname, "mc_QCD_Pt_350_EMEnriched_gammahistos_%d.root", itype);
+		nEvents = 2930000;
+		xsec = 	810.0;
+		FiltEff = 0.11;
+		kFac = 1.;  
+    // weight = 1.; // temporary weight=1 for eff. calculation    
+    weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+    cout << "Running on QCD_Pt_350_EMEnriched " << endl;
+    cout << "weight is " << weight << endl;
+  }
+
+// test -----------------------------------------------------------------
+  else if (mysample == 9){
+    sprintf(outputname, "test_%d.root", itype);
+    weight = 1.;
+    cout << "Running on test " << endl;
+    cout << "weight is " << weight << endl;
+  }
+
+// MC background QCD HT-xToy --------------------------------------------
+  else if (mysample == 10){
+    sprintf(outputname, "mc_QCD_HT-100To250_gammahistos_%d.root", itype); 
+		nEvents = 380000;
+		xsec = 1.036E7;
+		FiltEff = 1.;
+	  kFac = 1.;  
+    // weight = 1.; // temporary weight=1 for eff. calculation    
+    weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
     cout << "Running on QCD_HT-100To250 " << endl;
     cout << "Weight is " << weight << endl;
   }
 
-  else if (isample == 4){
-    sprintf(outputname, "mc_QCD_HT-250To500_gammahistos_%d.root", itype);   //xsec=198500
+  else if (mysample == 11){
+    sprintf(outputname, "mc_QCD_HT-250To500_gammahistos_%d.root", itype);
 		nEvents = 1.;
-		xsec = 	276000.0;  //Matching efficiency: 0.23
+		xsec = 	276000.0;
+		FiltEff = 1.;		
 	  kFac = 1.;  
-    // weight = 1.;                                                       // temporary weight=1 for eff. calculation    
-    weight = Lumi_t /(nEvents/(xsec*kFac));
+    // weight = 1.; // temporary weight=1 for eff. calculation    
+    weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
     cout << "Running on QCD_HT-250To500. " << endl;
     cout << "Weight is " << weight << endl;
   }
 
-  else if (isample == 5){
-    sprintf(outputname, "mc_QCD_HT-500To1000_gammahistos_%d.root", itype);   //xsec=5856
+  else if (mysample == 12){
+    sprintf(outputname, "mc_QCD_HT-500To1000_gammahistos_%d.root", itype);
 		nEvents = 368426;
-//		nEvents = 4985000;
-		xsec = 8426.0;  //Matching efficiency: 0.32
+		xsec = 8426.0;
+		FiltEff = 1.;
 	  kFac = 1.;  
-    // weight = 1.;                                                       // temporary weight=1 for eff. calculation    
-    weight = Lumi_t /(nEvents/(xsec*kFac));
+    // weight = 1.; // temporary weight=1 for eff. calculation    
+    weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
     cout << "Running on QCD_HT-500To1000. " << endl;
     cout << "Weight is " << weight << endl;
   }
 
-  else if (isample == 6){
-    sprintf(outputname, "mc_QCD_HT-1000ToInf_gammahistos_%d.root", itype);   //xsec=198500
+  else if (mysample == 13){
+    sprintf(outputname, "mc_QCD_HT-1000ToInf_gammahistos_%d.root", itype);
 		nEvents = 3987307;
-		xsec = 204.0;  //Matching efficiency: 0.28
+		xsec = 204.0;
+		FiltEff = 1.;		
 	  kFac = 1.;  
-    // weight = 1.;                                                       // temporary weight=1 for eff. calculation    
-    weight = Lumi_t /(nEvents/(xsec*kFac));
+    // weight = 1.; // temporary weight=1 for eff. calculation    
+    weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
     cout << "Running on QCD_HT-1000ToInf. " << endl;
-    cout << "weight is " << weight << endl;
-  }
-
-  else if (isample == 7){
-    sprintf(outputname, "test_%d.root", itype);   //xsec=198500
-    weight = 1.;
-    cout << "Running on test " << endl;
     cout << "weight is " << weight << endl;
   }
 
@@ -171,6 +254,7 @@ void GJetsAnalyzer::Loop(Int_t isample){
 //  iSelectedWithWeights = 0;
 
   Long64_t nentries = fChain->GetEntriesFast();
+//  Long64_t nentries = 1000;
   cout << "nentries " << nentries << endl;
   
   Long64_t nbytes = 0, nb = 0;
@@ -218,7 +302,8 @@ void GJetsAnalyzer::Loop(Int_t isample){
 */
 
     // ============ selection for photons at RECO level for control plots
-		if(selRECO && nPhotons > 0 && nJets > 0 && isTriggerMatchedFamily4) { 
+		if(//selRECO && 
+		nPhotons > 0 && nJets > 0 && isTriggerMatchedFamily4) { 
 
 			// =========== add stricter selection here
 			// at least one jet with pt > 50 GeV and eta < 2.5
@@ -275,21 +360,21 @@ void GJetsAnalyzer::Loop(Int_t isample){
 
 			jetPt_1 = jetPt->at(0);
 			jetEta_1 = jetEta->at(0);
-			jetY_1 = jetY->at(0);
+//			jetY_1 = jetY->at(0);
 			jetPhi_1 = jetPhi->at(0);           
 			jetE_1 = jetE->at(0);
 			
 			if(nJets > 1){  
 				jetPt_2 = jetPt->at(1);
 				jetEta_2 = jetEta->at(1);
-				jetY_2 = jetY->at(1);
+//				jetY_2 = jetY->at(1);
 				jetPhi_2 = jetPhi->at(1);           
 				jetE_2 = jetE->at(1);
 			}
 			if(nJets > 2){  
 				jetPt_3 = jetPt->at(2);
 				jetEta_3 = jetEta->at(2);
-				jetY_3 = jetY->at(2);
+//				jetY_3 = jetY->at(2);
 				jetPhi_3 = jetPhi->at(2);           
 				jetE_3 = jetE->at(2);		
 			}
@@ -313,6 +398,107 @@ void GJetsAnalyzer::Loop(Int_t isample){
 				   photonPfIsoPhoton < (1.3 + 0.005*(*photonPt)[0])){
 */
 			iSelected0++;
+
+//--------------------------
+			int A_photonPt,	A_photonE, A_photonEta,	A_photonPhi, A_photonPassConversionVeto, A_photonPfIsoChargedHad, A_photonPfIsoNeutralHad, A_photonPfIsoPhoton, A_photonPfIsoPhotons03ForCic, A_photonPfIsoNeutrals03ForCic, A_photonPfIsoCharged03ForCicVtx0, A_photonPfIsoCharged03BadForCic, A_photonPfIsoPhotons04ForCic, A_photonPfIsoNeutrals04ForCic,		A_photonPfIsoCharged04ForCicVtx0,	A_photonPfIsoCharged04BadForCic, A_photonid_sieie, A_photonid_sieip, A_photonid_etawidth, A_photonid_phiwidth, A_photonid_r9,	A_photonid_lambdaRatio,	A_photonid_s4Ratio,	A_photonid_e25,	A_photonid_sceta, A_photonid_ESEffSigmaRR, A_photonid_hadronicOverEm, A_photonid_hadronicOverEm2012, A_photonhcalTowerSumEtConeDR04, A_photonecalRecHitSumEtConeDR04, A_photonnTrkSolidConeDR04, A_photontrkSumPtSolidConeDR04, A_photonnTrkHollowConeDR04, A_photontrkSumPtHollowConeDR04,	A_photonIsoFPRCharged, A_photonIsoFPRNeutral, A_photonIsoFPRPhoton, A_photonBit, A_jetPt, A_jetEta, A_jetPhi,	A_jetE;
+			
+			A_photonPt = photonPt->size();
+			A_photonE = photonE->size();
+			A_photonEta = photonEta->size();
+			A_photonPhi = photonPhi->size();
+	
+			A_photonPassConversionVeto = photonPassConversionVeto->size();
+			A_photonPfIsoChargedHad = photonPfIsoChargedHad->size(); 
+			A_photonPfIsoNeutralHad = photonPfIsoNeutralHad->size(); 
+			A_photonPfIsoPhoton = photonPfIsoPhoton->size();
+			
+			A_photonPfIsoPhotons03ForCic = photonPfIsoPhotons03ForCic->size(); 
+			A_photonPfIsoNeutrals03ForCic = photonPfIsoNeutrals03ForCic->size(); 
+			A_photonPfIsoCharged03ForCicVtx0 = photonPfIsoCharged03ForCicVtx0->size(); 
+			A_photonPfIsoCharged03BadForCic = photonPfIsoCharged03BadForCic->size();
+			
+			A_photonPfIsoPhotons04ForCic = photonPfIsoPhotons04ForCic->size(); 
+			A_photonPfIsoNeutrals04ForCic = photonPfIsoNeutrals04ForCic->size();
+			A_photonPfIsoCharged04ForCicVtx0 = photonPfIsoCharged04ForCicVtx0->size(); 
+			A_photonPfIsoCharged04BadForCic = photonPfIsoCharged04BadForCic->size();
+			
+			A_photonid_sieie = photonid_sieie->size();  
+			A_photonid_sieip = photonid_sieip->size(); 
+			A_photonid_etawidth = photonid_etawidth->size(); 
+			A_photonid_phiwidth = photonid_phiwidth->size(); 
+			A_photonid_r9 = photonid_r9->size();
+			
+			A_photonid_lambdaRatio = photonid_lambdaRatio->size(); 
+			A_photonid_s4Ratio = photonid_s4Ratio->size();
+			A_photonid_e25 = photonid_e25->size();
+			A_photonid_sceta = photonid_sceta->size();
+			 
+			A_photonid_ESEffSigmaRR = photonid_ESEffSigmaRR->size();
+			A_photonid_hadronicOverEm = photonid_hadronicOverEm->size();
+			A_photonid_hadronicOverEm2012 = photonid_hadronicOverEm2012->size();
+			
+			A_photonhcalTowerSumEtConeDR04 = photonhcalTowerSumEtConeDR04->size();
+			A_photonecalRecHitSumEtConeDR04 = photonecalRecHitSumEtConeDR04->size();
+			A_photonnTrkSolidConeDR04 = photonnTrkSolidConeDR04->size();
+			A_photontrkSumPtSolidConeDR04 = photontrkSumPtSolidConeDR04->size(); 
+			A_photonnTrkHollowConeDR04 = photonnTrkHollowConeDR04->size();
+			A_photontrkSumPtHollowConeDR04 = photontrkSumPtHollowConeDR04->size();
+
+			A_photonIsoFPRCharged = photonIsoFPRCharged->size();
+			A_photonIsoFPRNeutral = photonIsoFPRNeutral->size();
+			A_photonIsoFPRPhoton = photonIsoFPRPhoton->size();
+			A_photonBit = photonBit->size();
+
+			A_jetPt = jetPt->size();
+			A_jetEta = jetEta->size();
+
+			A_jetPhi = jetPhi->size();           
+			A_jetE = jetE->size();
+/*			
+cout << "A_photonPt = " << A_photonPt << endl;
+cout << "A_photonE = " << A_photonE << endl;
+cout << "A_photonEta = " <<	A_photonEta << endl;
+cout << "A_photonPhi = " << A_photonPhi << endl;
+cout << "A_photonPassConversionVeto = " << A_photonPassConversionVeto << endl;
+cout << "A_photonPfIsoChargedHad = " << A_photonPfIsoChargedHad << endl;
+cout << "A_photonPfIsoNeutralHad = " << A_photonPfIsoNeutralHad << endl;
+cout << "A_photonPfIsoPhoton = " << A_photonPfIsoPhoton << endl;
+cout << "A_photonPfIsoPhotons03ForCic = " << A_photonPfIsoPhotons03ForCic << endl;
+cout << "A_photonPfIsoNeutrals03ForCic = " << A_photonPfIsoNeutrals03ForCic << endl;
+cout << "A_photonPfIsoCharged03ForCicVtx0 = " << A_photonPfIsoCharged03ForCicVtx0 << endl;
+cout << "A_photonPfIsoCharged03BadForCic = " << A_photonPfIsoCharged03BadForCic << endl;
+cout << "A_photonPfIsoPhotons04ForCic = " << A_photonPfIsoPhotons04ForCic << endl;
+cout << "A_photonPfIsoNeutrals04ForCic = " << A_photonPfIsoNeutrals04ForCic << endl;
+cout << "A_photonPfIsoCharged04ForCicVtx0 = " << A_photonPfIsoCharged04ForCicVtx0 << endl;
+cout << "A_photonPfIsoCharged04BadForCic = " << A_photonPfIsoCharged04BadForCic << endl;
+cout << "A_photonid_sieie = " << A_photonid_sieie << endl;
+cout << "A_photonid_sieip = " << A_photonid_sieip << endl;
+cout << "A_photonid_etawidth = " << A_photonid_etawidth << endl;
+cout << "A_photonid_phiwidth = " << A_photonid_phiwidth << endl;
+cout << "A_photonid_r9 = " <<	A_photonid_r9 << endl;
+cout << "A_photonid_lambdaRatio = " << A_photonid_lambdaRatio << endl;
+cout << "A_photonid_s4Ratio = " << A_photonid_s4Ratio << endl;
+cout << "A_photonid_e25 = " <<	A_photonid_e25 << endl;
+cout << "A_photonid_sceta = " << A_photonid_sceta << endl;
+cout << "A_photonid_ESEffSigmaRR = " << A_photonid_ESEffSigmaRR << endl;
+cout << "A_photonid_hadronicOverEm = " << A_photonid_hadronicOverEm << endl;
+cout << "A_photonid_hadronicOverEm2012 = " << A_photonid_hadronicOverEm2012 << endl;
+cout << "A_photonhcalTowerSumEtConeDR04 = " << A_photonhcalTowerSumEtConeDR04 << endl;
+cout << "A_photonecalRecHitSumEtConeDR04 = " << A_photonecalRecHitSumEtConeDR04 << endl;
+cout << "A_photonnTrkSolidConeDR04 = " << A_photonnTrkSolidConeDR04 << endl;
+cout << "A_photontrkSumPtSolidConeDR04 = " << A_photontrkSumPtSolidConeDR04 << endl;
+cout << "A_photonnTrkHollowConeDR04 = " << A_photonnTrkHollowConeDR04 << endl;
+cout << "A_photontrkSumPtHollowConeDR04 = " <<	A_photontrkSumPtHollowConeDR04 << endl;
+cout << "A_photonIsoFPRCharged = " << A_photonIsoFPRCharged << endl;
+cout << "A_photonIsoFPRNeutral = " << A_photonIsoFPRNeutral << endl;
+cout << "A_photonIsoFPRPhoton = " << A_photonIsoFPRPhoton << endl;
+cout << "A_photonBit = " << A_photonBit << endl;
+cout << "A_jetPt = " << A_jetPt << endl;
+cout << "A_jetEta = " << A_jetEta << endl;
+cout << "A_jetPhi = " << 	A_jetPhi << endl;
+cout << "A_jetE = " << 	A_jetE << endl;
+*/
+//--------------------------
 
 
 			//quality selection: Barrel - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
@@ -347,7 +533,7 @@ void GJetsAnalyzer::Loop(Int_t isample){
 
 				Nvtx_->Fill(nVtx, weight);
 				nPhotons_->Fill(nPhotons, weight);
-				isPhotonlead_->Fill(isPhotonlead, weight);
+//				isPhotonlead_->Fill(isPhotonlead, weight);
 //				photonPt_1_->Fill((*photonPt)[0], weight);
 				photonPt_1_->Fill(photonPt_1, weight);
 				photonE_1_->Fill(photonE_1, weight);
@@ -393,19 +579,19 @@ void GJetsAnalyzer::Loop(Int_t isample){
 				
 				jetPt_1_->Fill(jetPt_1, weight);
 				jetEta_1_->Fill(jetEta_1, weight);
-				jetY_1_->Fill(jetY_1, weight);
+//				jetY_1_->Fill(jetY_1, weight);
 				jetPhi_1_->Fill(jetPhi_1, weight);
 				jetE_1_->Fill(jetE_1, weight);
 				
 				jetPt_2_->Fill(jetPt_2, weight);
 				jetEta_2_->Fill(jetEta_2, weight);
-				jetY_2_->Fill(jetY_2, weight);
+//				jetY_2_->Fill(jetY_2, weight);
 				jetPhi_2_->Fill(jetPhi_2, weight);
 				jetE_2_->Fill(jetE_2, weight);
 
 				jetPt_3_->Fill(jetPt_3, weight);
 				jetEta_3_->Fill(jetEta_3, weight);
-				jetY_3_->Fill(jetY_3, weight);
+//				jetY_3_->Fill(jetY_3, weight);
 				jetPhi_3_->Fill(jetPhi_3, weight);
 				jetE_3_->Fill(jetE_3, weight);
 
@@ -457,7 +643,7 @@ void Book_Histos(){
   Nvtx_ = new TH1F("Nvtx_","Number of vertices ", 50, 0, 50);
 
 	nPhotons_ = new TH1F("nPhotons_","N Photons ", 10, 0, 10);
-	isPhotonlead_ = new TH1F("isPhotonlead_", "isPhotonlead", 10, 0, 4);
+//	isPhotonlead_ = new TH1F("isPhotonlead_", "isPhotonlead", 10, 0, 4);
 	photonPt_1_ = new TH1F("photonPt_1","Photon p_{T} ", 100, 0., 1000.);
 	photonE_1_ = new TH1F("photonE_1","Photon E ", 100, 0., 1000.);
 	photonEta_1_ = new TH1F("photonEta_1","Photon #eta ", 100, -3, 3.);
@@ -504,19 +690,19 @@ void Book_Histos(){
 
 	jetPt_1_ = new TH1F("jetPt_1","Jet 1 p_{T} ", 100, 0., 1000.);
 	jetEta_1_ = new TH1F("jetEta_1","Jet 1 #eta ", 100, -3., 3.);
-	jetY_1_ = new TH1F("jetY_1", "jet 1 Y",100, -3., 3.); 
+//	jetY_1_ = new TH1F("jetY_1", "jet 1 Y",100, -3., 3.); 
 	jetPhi_1_ = new TH1F("jetPhi_1","Jet 1 #varphi ", 100, -3.1416, 3.1416);
 	jetE_1_ = new TH1F("jetE_1", "jet 1 E", 100, 0., 1000.);
 
 	jetPt_2_ = new TH1F("jetPt_2","Jet 2 p_{T} ", 100, 0., 1000.);
 	jetEta_2_ = new TH1F("jetEta_2","Jet 2 #eta ", 100, -3., 3.);
-	jetY_2_ = new TH1F("jetY_2", "jet 2 Y",100, -3., 3.); 
+//	jetY_2_ = new TH1F("jetY_2", "jet 2 Y",100, -3., 3.); 
 	jetPhi_2_ = new TH1F("jetPhi_2","Jet 2 #varphi ", 100, -3.1416, 3.1416);
 	jetE_2_ = new TH1F("jetE_2", "jet 2 E", 100, 0., 1000.);
 
 	jetPt_3_ = new TH1F("jetPt_3","Jet 3 p_{T} ", 100, 0., 1000.);
 	jetEta_3_ = new TH1F("jetEta_3","Jet 3 #eta ", 100, -3., 3.);
-	jetY_3_ = new TH1F("jetY_3", "jet 3 Y",100, -3., 3.); 
+//	jetY_3_ = new TH1F("jetY_3", "jet 3 Y",100, -3., 3.); 
 	jetPhi_3_ = new TH1F("jetPhi_3","Jet 3 #varphi ", 100, -3.1416, 3.1416);
 	jetE_3_ = new TH1F("jetE_3", "jet 3 E", 100, 0., 1000.);
 
@@ -677,7 +863,7 @@ void Plot_Histos(){
   c08->cd(3);
 	jetEta_1_->Draw();
   c08->cd(4);
-  jetY_1_->Draw();
+//  jetY_1_->Draw();
   c08->cd(5);
 	jetPhi_1_->Draw();
   c08->cd(6);
@@ -693,7 +879,7 @@ void Plot_Histos(){
   c09->cd(3);
 	jetEta_2_->Draw();
   c09->cd(4);
-  jetY_2_->Draw();
+//  jetY_2_->Draw();
   c09->cd(5);
 	jetPhi_2_->Draw();
   c09->cd(6);
@@ -709,7 +895,7 @@ void Plot_Histos(){
   c10->cd(3);
 	jetEta_3_->Draw();
   c10->cd(4);
-  jetY_3_->Draw();
+//  jetY_3_->Draw();
   c10->cd(5);
 	jetPhi_3_->Draw();
   c10->cd(6);
@@ -724,6 +910,8 @@ void Plot_Histos(){
 	DeltaR_photon1_jet2_->Draw();
   c11->cd(3);
 	DeltaR_photon1_jet3_->Draw();	
+
+	Text_File();
   }
 
 
@@ -746,3 +934,11 @@ float deltaR(float eta1, float eta2, float phi1, float phi2) {
 
 void Zero_Variables(){
 }
+
+
+void Text_File(){
+
+	ofstream txt;
+	txt.open("pippo.txt");
+	txt.close();
+	}

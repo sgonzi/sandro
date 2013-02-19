@@ -84,6 +84,7 @@ TH1F  *ptPhotonGEN_, *ptPhotonREC_, *DeltaRGENREC_,
 void Book_Histos();
 void Plot_Histos();
 void Zero_Variables();
+void Text_File();
 float deltaPhi(float, float);
 float deltaR(float, float, float, float);
 

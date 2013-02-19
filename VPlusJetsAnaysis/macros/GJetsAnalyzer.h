@@ -1,20 +1,22 @@
 #ifndef GJetsAnalyzer_h
 #define GJetsAnalyzer_h
 
-//#include <Riostream.h>
+#include <Riostream.h>
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
 
 class GJetsAnalyzer {
   public :
+  
+  	Int_t        mysample;
 		TTree       *fChain;   //!pointer to the analyzed TTree or TChain
 		Int_t        fCurrent;  //!current Tree number in a TChain
 
 		// Declaration of leaf types
 		// ---- global event variables ----------------------------------------
 		Int_t        isRealData;
-		Int_t        selRECO;
+//		Int_t        selRECO;
 		ULong64_t    eventNum;
 		Int_t        runNum;
 		Int_t        lumi;
@@ -23,35 +25,35 @@ class GJetsAnalyzer {
 		Int_t        nPhotons;
 		Int_t        nJets;
 //		Int_t        nRJets;
-		Int_t        isZlead;
-		Int_t        isPhotonlead;
+//		Int_t        isZlead;
+//		Int_t        isPhotonlead;
 		Float_t      rho;
 		Float_t      rho25;
-		Float_t      mZj1;
-		Float_t      mZj1j2;
-		Float_t      mZj1j2j3;
-		Float_t      ptZj1;
-		Float_t      costhetaZj1;
+//		Float_t      mZj1;
+//		Float_t      mZj1j2;
+//		Float_t      mZj1j2j3;
+//		Float_t      ptZj1;
+//		Float_t      costhetaZj1;
 //		Float_t      costhetaPhotonj1;
-		Float_t      mj1j2;
-		Float_t      mj1j2j3;
-		Float_t      mrj1rj2;
-		Float_t      mLep;
-		Float_t      htLead;
-		Float_t      j1j2DPhi;
-		Float_t      j1j3DPhi;
-		Float_t      j2j3DPhi;
-		Float_t      j1j2DR;
-		Float_t      j1j3DR;
-		Float_t      j2j3DR;
-		Float_t      jetPtGeMean;
-		Float_t      jetPtArMean;
+//		Float_t      mj1j2;
+//		Float_t      mj1j2j3;
+//		Float_t      mrj1rj2;
+//		Float_t      mLep;
+//		Float_t      htLead;
+//		Float_t      j1j2DPhi;
+//		Float_t      j1j3DPhi;
+//		Float_t      j2j3DPhi;
+//		Float_t      j1j2DR;
+//		Float_t      j1j3DR;
+//		Float_t      j2j3DR;
+//		Float_t      jetPtGeMean;
+//		Float_t      jetPtArMean;
 		// ---- met variables -------------------------------------------------
 		Float_t      pfmet;
 		Float_t      pfmetPhi;
 		Float_t      pfhadPt;
 		Float_t      pfSumEt;
-		Float_t      HTJetSum;
+//		Float_t      HTJetSum;
 		// ---- dilepton variables --------------------------------------------
 		Float_t      llM;
 		Float_t      llPt;
@@ -139,11 +141,12 @@ class GJetsAnalyzer {
 		vector<int>    *lepChId;
 		vector<int>    *lepId;
 		// ---- jet variables -------------------------------------------------
+		vector<int>    *jetVeto;
 		vector<float>  *jetPt;
 		vector<float>  *jetEta;
 		vector<float>  *jetPhi;
 		vector<float>  *jetE;
-		vector<float>  *jetY;
+//		vector<float>  *jetY;
 		vector<float>  *jetArea;
 		vector<float>  *jetBeta;
 		vector<float>  *jetQGL;
@@ -156,12 +159,12 @@ class GJetsAnalyzer {
 		vector<float>  *jetJEC;
 		vector<float>  *jetUNC;
 		vector<float>  *jetllDPhi;
-		vector<float>  *jetCHF;
-		vector<float>  *jetPHF;
-		vector<float>  *jetNHF;
-		vector<float>  *jetMUF;
-		vector<float>  *jetELF;
-		vector<int>    *jetId;
+//		vector<float>  *jetCHF;
+//		vector<float>  *jetPHF;
+//		vector<float>  *jetNHF;
+//		vector<float>  *jetMUF;
+//		vector<float>  *jetELF;
+//		vector<int>    *jetId;
 	 // ---- DR rejected jet variables ------------------------------------
 //		vector<float>  *rjetPt;
 //		vector<float>  *rjetEta;
@@ -183,27 +186,28 @@ class GJetsAnalyzer {
 		vector<float>  *vtxZ;
 		vector<float>  *vtxNdof;
 		// ---- gen variables ----------------------------------------------
-		Int_t        selGEN;
+//		Int_t        selGEN;
 		Int_t        puINT;
+		Int_t        puTrueINT;		
 		Int_t        puOOT;
+		Int_t        puTrueOOT;
 		Int_t        nLeptonsGEN;
 		Int_t        nJetsGEN;
-		Int_t        isZleadGEN;
-		Float_t      mZj1GEN;
-		Float_t      ptZj1GEN;
-		Float_t      costhetaZj1GEN;
-		Float_t      mj1j2GEN;
-		Float_t      mLepGEN;
-		Float_t      htLeadGEN;
-		Float_t      j1j2DPhiGEN;
-		Float_t      j1j3DPhiGEN;
-		Float_t      j2j3DPhiGEN;
-		Float_t      j1j2DRGEN;
-		Float_t      j1j3DRGEN;
-		Float_t      j2j3DRGEN;
-		Float_t      jetPtGeMeanGEN;
-		Float_t      jetPtArMeanGEN;
-		vector<int>    *jetVeto;
+//		Int_t        isZleadGEN;
+//		Float_t      mZj1GEN;
+//		Float_t      ptZj1GEN;
+//		Float_t      costhetaZj1GEN;
+//		Float_t      mj1j2GEN;
+//		Float_t      mLepGEN;
+//		Float_t      htLeadGEN;
+//		Float_t      j1j2DPhiGEN;
+//		Float_t      j1j3DPhiGEN;
+//		Float_t      j2j3DPhiGEN;
+//		Float_t      j1j2DRGEN;
+//		Float_t      j1j3DRGEN;
+//		Float_t      j2j3DRGEN;
+//		Float_t      jetPtGeMeanGEN;
+//		Float_t      jetPtArMeanGEN;
 		Float_t      llMGEN;
 		Float_t      llPtGEN;
 		Float_t      llPhiGEN;
@@ -223,7 +227,7 @@ class GJetsAnalyzer {
 		vector<float>  *jetEGEN;
 		vector<int>    *jetVetoGEN;
 		vector<float>  *jetllDPhiGEN;
-		Float_t      HTJetSumGEN;
+//		Float_t      HTJetSumGEN;
 		Float_t      HTParSum;
 		Float_t      mcWeight;
 		Int_t        nPhotonsGEN;
@@ -246,7 +250,7 @@ class GJetsAnalyzer {
   	// List of branches
 	  // ---- global event variables ----------------------------------------
   	TBranch      *b_isRealData;
-  	TBranch      *b_selRECO;
+//  	TBranch      *b_selRECO;
   	TBranch      *b_eventNum;
  		TBranch      *b_runNum;
   	TBranch      *b_lumi;
@@ -255,35 +259,35 @@ class GJetsAnalyzer {
   	TBranch      *b_nPhotons;
   	TBranch      *b_nJets;
 //  	TBranch      *b_nRJets;
-  	TBranch      *b_isZlead;
-  	TBranch      *b_isPhotonlead;
+//  	TBranch      *b_isZlead;
+//  	TBranch      *b_isPhotonlead;
   	TBranch      *b_rho;
   	TBranch      *b_rho25;
-  	TBranch      *b_mZj1;
-  	TBranch      *b_mZj1j2;
-  	TBranch      *b_mZj1j2j3;
-  	TBranch      *b_ptZj1;
-  	TBranch      *b_costhetaZj1;
+//  	TBranch      *b_mZj1;
+//  	TBranch      *b_mZj1j2;
+//  	TBranch      *b_mZj1j2j3;
+//  	TBranch      *b_ptZj1;
+//  	TBranch      *b_costhetaZj1;
 //  	TBranch      *b_costhetaPhotonj1;
-  	TBranch      *b_mj1j2;
-  	TBranch      *b_mj1j2j3;
-  	TBranch      *b_mrj1rj2;
-  	TBranch      *b_mLep;
-  	TBranch      *b_htLead;
-  	TBranch      *b_j1j2DPhi;
-  	TBranch      *b_j1j3DPhi;
-  	TBranch      *b_j2j3DPhi;
-  	TBranch      *b_j1j2DR;
-  	TBranch      *b_j1j3DR;
-  	TBranch      *b_j2j3DR;
-  	TBranch      *b_jetPtGeMean;
-  	TBranch      *b_jetPtArMean;
+//  	TBranch      *b_mj1j2;
+//  	TBranch      *b_mj1j2j3;
+//  	TBranch      *b_mrj1rj2;
+//  	TBranch      *b_mLep;
+//  	TBranch      *b_htLead;
+//  	TBranch      *b_j1j2DPhi;
+//  	TBranch      *b_j1j3DPhi;
+//  	TBranch      *b_j2j3DPhi;
+//  	TBranch      *b_j1j2DR;
+//  	TBranch      *b_j1j3DR;
+//  	TBranch      *b_j2j3DR;
+//  	TBranch      *b_jetPtGeMean;
+//  	TBranch      *b_jetPtArMean;
 	  // ---- met variables -------------------------------------------------
   	TBranch      *b_pfmet;
   	TBranch      *b_pfmetPhi;
   	TBranch      *b_pfhadPt;
   	TBranch      *b_pfSumEt;
-  	TBranch      *b_HTJetSum;
+//  	TBranch      *b_HTJetSum;
 	  // ---- dilepton variables -------------------------------------------- 
   	TBranch      *b_llM;
   	TBranch      *b_llPt;
@@ -375,7 +379,7 @@ class GJetsAnalyzer {
   	TBranch      *b_jetEta;
   	TBranch      *b_jetPhi;
   	TBranch      *b_jetE;
-  	TBranch      *b_jetY;
+//  	TBranch      *b_jetY;
   	TBranch      *b_jetArea;
   	TBranch      *b_jetBeta;
   	TBranch      *b_jetQGL;
@@ -388,12 +392,12 @@ class GJetsAnalyzer {
   	TBranch      *b_jetJEC;
   	TBranch      *b_jetUNC;
   	TBranch      *b_jetllDPhi;
-  	TBranch      *b_jetCHF;
-  	TBranch      *b_jetPHF;
-  	TBranch      *b_jetNHF;
-  	TBranch      *b_jetMUF;
-  	TBranch      *b_jetELF;
-  	TBranch      *b_jetId;
+//  	TBranch      *b_jetCHF;
+//  	TBranch      *b_jetPHF;
+//  	TBranch      *b_jetNHF;
+//  	TBranch      *b_jetMUF;
+//  	TBranch      *b_jetELF;
+//  	TBranch      *b_jetId;
 	 // ---- DR rejected jet variables ------------------------------------  
 //  	TBranch      *b_rjetPt;
 //  	TBranch      *b_rjetEta;
@@ -415,26 +419,28 @@ class GJetsAnalyzer {
   	TBranch      *b_vtxZ;
   	TBranch      *b_vtxNdof;
 	  // ---- gen variables ----------------------------------------------
-  	TBranch      *b_selGEN;
+//  	TBranch      *b_selGEN;
   	TBranch      *b_puINT;
+  	TBranch      *b_puTrueINT;
   	TBranch      *b_puOOT;
+  	TBranch      *b_puTrueOOT;
   	TBranch      *b_nLeptonsGEN;
   	TBranch      *b_nJetsGEN;
-  	TBranch      *b_isZleadGEN;
-  	TBranch      *b_mZj1GEN;
-  	TBranch      *b_ptZj1GEN;
-  	TBranch      *b_costhetaZj1GEN;
-  	TBranch      *b_mj1j2GEN;
-  	TBranch      *b_mLepGEN;
-  	TBranch      *b_htLeadGEN;
-  	TBranch      *b_j1j2DPhiGEN;
-  	TBranch      *b_j1j3DPhiGEN;
-  	TBranch      *b_j2j3DPhiGEN;
-  	TBranch      *b_j1j2DRGEN;
-  	TBranch      *b_j1j3DRGEN;
-  	TBranch      *b_j2j3DRGEN;
-  	TBranch      *b_jetPtGeMeanGEN;
-  	TBranch      *b_jetPtArMeanGEN;
+//  	TBranch      *b_isZleadGEN;
+//  	TBranch      *b_mZj1GEN;
+//  	TBranch      *b_ptZj1GEN;
+//  	TBranch      *b_costhetaZj1GEN;
+//  	TBranch      *b_mj1j2GEN;
+//  	TBranch      *b_mLepGEN;
+//  	TBranch      *b_htLeadGEN;
+//  	TBranch      *b_j1j2DPhiGEN;
+//  	TBranch      *b_j1j3DPhiGEN;
+//  	TBranch      *b_j2j3DPhiGEN;
+//  	TBranch      *b_j1j2DRGEN;
+//  	TBranch      *b_j1j3DRGEN;
+//  	TBranch      *b_j2j3DRGEN;
+//  	TBranch      *b_jetPtGeMeanGEN;
+//  	TBranch      *b_jetPtArMeanGEN;
   	TBranch      *b_jetVeto;
   	TBranch      *b_llMGEN;
   	TBranch      *b_llPtGEN;
@@ -455,7 +461,7 @@ class GJetsAnalyzer {
   	TBranch      *b_jetEGEN;
   	TBranch      *b_jetVetoGEN;
   	TBranch      *b_jetllDPhiGEN;
-  	TBranch      *b_HTJetSumGEN;
+//  	TBranch      *b_HTJetSumGEN;
   	TBranch      *b_HTParSum;
   	TBranch      *b_mcWeight;
   	TBranch      *b_nPhotonsGEN;
@@ -476,7 +482,7 @@ class GJetsAnalyzer {
   	TBranch      *b_lepHadronicOverEm;
 
 	
-		GJetsAnalyzer(TTree *tree = 0);
+		GJetsAnalyzer(TTree *tree = 0, Int_t isample = -1);
 		virtual ~GJetsAnalyzer();
 		virtual Int_t    GetEntry(Long64_t entry);
 		virtual Long64_t LoadTree(Long64_t entry);
@@ -484,93 +490,141 @@ class GJetsAnalyzer {
   	virtual Bool_t   Notify();
   	virtual void     Show(Long64_t entry = -1);
 		virtual Int_t    Cut(Long64_t entry);
-  	virtual void     Loop(Int_t isample);
+  	virtual void     Loop();
 
 };
 #endif
 
 #ifdef GJetsAnalyzer_cxx
-GJetsAnalyzer::GJetsAnalyzer(TTree *tree) {
+GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 	// if parameter tree is not specified (or zero), connect the file
 	// used to generate this class and read the Tree.
+
+	mysample = isample;
+	
   if (tree == 0) {
 
-		Int_t isample = 5;
-
-/*
-		if (isample == 0){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("DATA_Run2012B-13Jul2012.root");
-			if (!f) {
-				f = new TFile("DATA_Run2012B-13Jul2012.root");
-				f->cd("DATA_Run2012B-13Jul2012.root:/accepted");
-			}
+		if (mysample < 0 || mysample > 13){
+		cout << "Error: mysample range is 0-13"<< endl;
 		}
-*/
-		if (isample == 0){
+		
+// data -----------------------------------------------------------------
+		else if (mysample == 0){
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("DATA_all_photons.root");
 			if (!f) {
 				f = new TFile("DATA_all_photons.root");
-				f->cd("DATA_all_photons.root:/accepted");
+				f->cd("accepted");
 			}
 		}
-  
-		else if (isample == 1){
+
+// MC signal GJets_HT-xToy ----------------------------------------------  
+		else if (mysample == 1){
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_GJets_HT-200To400_Summer12.root");
 			if (!f) {
 		  	f = new TFile("MC_GJets_HT-200To400_Summer12.root");
-		  	f->cd("MC_GJets_HT-200To400_Summer12.root:/accepted");
+		  	f->cd("accepted");
 			}
 		}
 
-		else if (isample == 2){
+		else if (mysample == 2){
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_GJets_HT-400ToInf_Summer12.root");
 			if (!f) {
 				f = new TFile("MC_GJets_HT-400ToInf_Summer12.root");
-				f->cd("MC_GJets_HT-400ToInf_Summer12.root:/accepted");
-			}
-		}
-   
-		else if (isample == 3){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_HT-100To250_Summer12.root");
-			if (!f) {
-		  	f = new TFile("MC_QCD_HT-100To250_Summer12.root");
-		  	f->cd("MC_QCD_HT-100To250_Summer12.root:/accepted");
+				f->cd("accepted");
 			}
 		}
 
-		else if (isample == 4){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_HT-250To500_Summer12.root");
+// MC background QCD_Pt_x_y EMEnriched ----------------------------------
+		else if (mysample == 3){
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_Pt_20_30_EMEnriched_Summer12.root");
 			if (!f) {
-		  	f = new TFile("MC_QCD_HT-250To500_Summer12.root");
-		  	f->cd("MC_QCD_HT-250To500_Summer12.root:/accepted");
+		  	f = new TFile("MC_QCD_Pt_20_30_EMEnriched_Summer12.root");
+		  	f->cd("accepted");
 			}
 		}
 
-		else if (isample == 5){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_HT-500To1000_Summer12.root");
+		else if (mysample == 4){
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_Pt_30_80_EMEnriched_Summer12.root");
 			if (!f) {
-		  	f = new TFile("MC_QCD_HT-500To1000_Summer12.root");
-		  	f->cd("MC_QCD_HT-500To1000_Summer12.root:/accepted");
+		  	f = new TFile("MC_QCD_Pt_30_80_EMEnriched_Summer12.root");
+		  	f->cd("accepted");
 			}
 		}
 
-		else if (isample == 6){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_HT-1000Toinf_Summer12.root");
+		else if (mysample == 5){
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_Pt_80_170_EMEnriched_Summer12.root");
 			if (!f) {
-		  	f = new TFile("MC_QCD_HT-1000ToInf_Summer12.root");
-		  	f->cd("MC_QCD_HT-1000ToInf_Summer12.root:/accepted");
+		  	f = new TFile("MC_QCD_Pt_80_170_EMEnriched_Summer12.root");
+		  	f->cd("accepted");
 			}
 		}
 
-		else if (isample == 7){
+		else if (mysample == 6){
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_Pt_170_250_EMEnriched_Summer12.root");
+			if (!f) {
+		  	f = new TFile("MC_QCD_Pt_170_250_EMEnriched_Summer12.root");
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 7){
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_Pt_250_350_EMEnriched_Summer12.root");
+			if (!f) {
+		  	f = new TFile("MC_QCD_Pt_250_350_EMEnriched_Summer12.root");
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 8){
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_Pt_350_EMEnriched_Summer12.root");
+			if (!f) {
+		  	f = new TFile("MC_QCD_Pt_350_EMEnriched_Summer12.root");
+		  	f->cd("accepted");
+			}
+		}
+
+// test -----------------------------------------------------------------   
+		else if (mysample == 9){
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("Test.root");
 			if (!f) {
 		  	f = new TFile("Test.root");
-		  	f->cd("Test.root:/accepted");
+		  	f->cd("accepted");
 			}
 		}
- 
- 
+
+// MC background QCD HT-xToy --------------------------------------------
+		else if (mysample == 10){
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_HT-100To250_Summer12.root");
+			if (!f) {
+		  	f = new TFile("MC_QCD_HT-100To250_Summer12.root");
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 11){
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_HT-250To500_Summer12.root");
+			if (!f) {
+		  	f = new TFile("MC_QCD_HT-250To500_Summer12.root");
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 12){
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_HT-500To1000_Summer12.root");
+			if (!f) {
+		  	f = new TFile("MC_QCD_HT-500To1000_Summer12.root");
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 13){
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_HT-1000Toinf_Summer12.root");
+			if (!f) {
+		  	f = new TFile("MC_QCD_HT-1000ToInf_Summer12.root");
+		  	f->cd("accepted");
+			}
+		}
+
 		tree = (TTree*)gDirectory->Get("events");
   }
 
@@ -618,7 +672,7 @@ void GJetsAnalyzer::Init(TTree *tree) {
   // Set object pointer
 	// ---- global event variables ----------------------------------------
 	isRealData = 0;
-	selRECO = 0;
+//	selRECO = 0;
 	eventNum = 0;
 	runNum = 0;
 	lumi = 0;
@@ -627,35 +681,35 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	nPhotons = 0;
 	nJets = 0;
 //	nRJets = 0;
-	isZlead = 0;
-	isPhotonlead = 0;
+//	isZlead = 0;
+//	isPhotonlead = 0;
 	rho = 0;
 	rho25 = 0;
-	mZj1 = 0;
-	mZj1j2 = 0;
-	mZj1j2j3 = 0;
-	ptZj1 = 0;
-	costhetaZj1 = 0;
+//	mZj1 = 0;
+//	mZj1j2 = 0;
+//	mZj1j2j3 = 0;
+//	ptZj1 = 0;
+//	costhetaZj1 = 0;
 //	costhetaPhotonj1 = 0;
-	mj1j2 = 0;
-	mj1j2j3 = 0;
-	mrj1rj2 = 0;
-	mLep = 0;
-	htLead = 0;
-	j1j2DPhi = 0;
-	j1j3DPhi = 0;
-	j2j3DPhi = 0;
-	j1j2DR = 0;
-	j1j3DR = 0;
-	j2j3DR = 0;
-	jetPtGeMean = 0;
-	jetPtArMean = 0;
+//	mj1j2 = 0;
+//	mj1j2j3 = 0;
+//	mrj1rj2 = 0;
+//	mLep = 0;
+//	htLead = 0;
+//	j1j2DPhi = 0;
+//	j1j3DPhi = 0;
+//	j2j3DPhi = 0;
+//	j1j2DR = 0;
+//	j1j3DR = 0;
+//	j2j3DR = 0;
+//	jetPtGeMean = 0;
+//	jetPtArMean = 0;
 	// ---- met variables -------------------------------------------------
 	pfmet = 0;
 	pfmetPhi = 0;
 	pfhadPt = 0;
 	pfSumEt = 0;
-	HTJetSum = 0;
+//	HTJetSum = 0;
 	// ---- dilepton variables --------------------------------------------
 	llM = 0;
 	llPt = 0;
@@ -747,7 +801,7 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	jetEta = 0;
 	jetPhi = 0;
 	jetE = 0;
-	jetY = 0;
+//	jetY = 0;
 	jetArea = 0;
 	jetBeta = 0;
 	jetQGL = 0;
@@ -760,12 +814,12 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	jetJEC = 0;
 	jetUNC = 0;
 	jetllDPhi = 0;
-	jetCHF = 0;
-	jetPHF = 0;
-	jetNHF = 0;
-	jetMUF = 0;
-	jetELF = 0;
-	jetId = 0;
+//	jetCHF = 0;
+//	jetPHF = 0;
+//	jetNHF = 0;
+//	jetMUF = 0;
+//	jetELF = 0;
+//	jetId = 0;
 	// ---- DR rejected jet variables ------------------------------------
 //	rjetPt = 0;
 //	rjetEta = 0;
@@ -787,26 +841,28 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	vtxZ = 0;
 	vtxNdof = 0;
 	// ---- gen variables ----------------------------------------------
-	selGEN = 0;
+//	selGEN = 0;
 	puINT = 0;
+	puTrueINT = 0;
 	puOOT = 0;
+	puTrueOOT = 0;
 	nLeptonsGEN = 0;
 	nJetsGEN = 0;
-	isZleadGEN = 0;
-	mZj1GEN = 0;
-	ptZj1GEN = 0;
-	costhetaZj1GEN = 0;
-	mj1j2GEN = 0;
-	mLepGEN = 0;
-	htLeadGEN = 0;
-	j1j2DPhiGEN = 0;
-	j1j3DPhiGEN = 0;
-	j2j3DPhiGEN = 0;
-	j1j2DRGEN = 0;
-	j1j3DRGEN = 0;
-	j2j3DRGEN = 0;
-	jetPtGeMeanGEN = 0;
-	jetPtArMeanGEN = 0;
+//	isZleadGEN = 0;
+//	mZj1GEN = 0;
+//	ptZj1GEN = 0;
+//	costhetaZj1GEN = 0;
+//	mj1j2GEN = 0;
+//	mLepGEN = 0;
+//	htLeadGEN = 0;
+//	j1j2DPhiGEN = 0;
+//	j1j3DPhiGEN = 0;
+//	j2j3DPhiGEN = 0;
+//	j1j2DRGEN = 0;
+//	j1j3DRGEN = 0;
+//	j2j3DRGEN = 0;
+//	jetPtGeMeanGEN = 0;
+//	jetPtArMeanGEN = 0;
 	jetVeto = 0;
 	llMGEN = 0;
 	llPtGEN = 0;
@@ -827,7 +883,7 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	jetEGEN = 0;
 	jetVetoGEN = 0;
 	jetllDPhiGEN = 0;
-	HTJetSumGEN = 0;
+//	HTJetSumGEN = 0;
 	HTParSum = 0;
 	mcWeight = 0;
 	nPhotonsGEN = 0;
@@ -855,7 +911,7 @@ void GJetsAnalyzer::Init(TTree *tree) {
 
   // ---- global event variables ----------------------------------------
   fChain->SetBranchAddress("isRealData", &isRealData, &b_isRealData);
-  fChain->SetBranchAddress("selRECO", &selRECO, &b_selRECO);
+//  fChain->SetBranchAddress("selRECO", &selRECO, &b_selRECO);
   fChain->SetBranchAddress("eventNum", &eventNum, &b_eventNum);
   fChain->SetBranchAddress("runNum", &runNum, &b_runNum);
   fChain->SetBranchAddress("lumi", &lumi, &b_lumi);
@@ -864,35 +920,35 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("nPhotons", &nPhotons, &b_nPhotons);
   fChain->SetBranchAddress("nJets", &nJets, &b_nJets);
 //  fChain->SetBranchAddress("nRJets", &nRJets, &b_nRJets);
-  fChain->SetBranchAddress("isZlead", &isZlead, &b_isZlead);
-  fChain->SetBranchAddress("isPhotonlead", &isPhotonlead, &b_isPhotonlead);
+//  fChain->SetBranchAddress("isZlead", &isZlead, &b_isZlead);
+//  fChain->SetBranchAddress("isPhotonlead", &isPhotonlead, &b_isPhotonlead);
   fChain->SetBranchAddress("rho", &rho, &b_rho);
   fChain->SetBranchAddress("rho25", &rho25, &b_rho25);
-  fChain->SetBranchAddress("mZj1", &mZj1, &b_mZj1);
-  fChain->SetBranchAddress("mZj1j2", &mZj1j2, &b_mZj1j2);
-  fChain->SetBranchAddress("mZj1j2j3", &mZj1j2j3, &b_mZj1j2j3);
-  fChain->SetBranchAddress("ptZj1", &ptZj1, &b_ptZj1);
-  fChain->SetBranchAddress("costhetaZj1", &costhetaZj1, &b_costhetaZj1);
+//  fChain->SetBranchAddress("mZj1", &mZj1, &b_mZj1);
+//  fChain->SetBranchAddress("mZj1j2", &mZj1j2, &b_mZj1j2);
+//  fChain->SetBranchAddress("mZj1j2j3", &mZj1j2j3, &b_mZj1j2j3);
+//  fChain->SetBranchAddress("ptZj1", &ptZj1, &b_ptZj1);
+//  fChain->SetBranchAddress("costhetaZj1", &costhetaZj1, &b_costhetaZj1);
 //  fChain->SetBranchAddress("costhetaPhotonj1", &costhetaPhotonj1, &b_costhetaPhotonj1);
-  fChain->SetBranchAddress("mj1j2", &mj1j2, &b_mj1j2);
-  fChain->SetBranchAddress("mj1j2j3", &mj1j2j3, &b_mj1j2j3);
-  fChain->SetBranchAddress("mrj1rj2", &mrj1rj2, &b_mrj1rj2);
-  fChain->SetBranchAddress("mLep", &mLep, &b_mLep);
-  fChain->SetBranchAddress("htLead", &htLead, &b_htLead);
-  fChain->SetBranchAddress("j1j2DPhi", &j1j2DPhi, &b_j1j2DPhi);
-  fChain->SetBranchAddress("j1j3DPhi", &j1j3DPhi, &b_j1j3DPhi);
-  fChain->SetBranchAddress("j2j3DPhi", &j2j3DPhi, &b_j2j3DPhi);
-  fChain->SetBranchAddress("j1j2DR", &j1j2DR, &b_j1j2DR);
-  fChain->SetBranchAddress("j1j3DR", &j1j3DR, &b_j1j3DR);
-  fChain->SetBranchAddress("j2j3DR", &j2j3DR, &b_j2j3DR);
-  fChain->SetBranchAddress("jetPtGeMean", &jetPtGeMean, &b_jetPtGeMean);
-  fChain->SetBranchAddress("jetPtArMean", &jetPtArMean, &b_jetPtArMean);
+//  fChain->SetBranchAddress("mj1j2", &mj1j2, &b_mj1j2);
+//  fChain->SetBranchAddress("mj1j2j3", &mj1j2j3, &b_mj1j2j3);
+//  fChain->SetBranchAddress("mrj1rj2", &mrj1rj2, &b_mrj1rj2);
+//  fChain->SetBranchAddress("mLep", &mLep, &b_mLep);
+//  fChain->SetBranchAddress("htLead", &htLead, &b_htLead);
+//  fChain->SetBranchAddress("j1j2DPhi", &j1j2DPhi, &b_j1j2DPhi);
+//  fChain->SetBranchAddress("j1j3DPhi", &j1j3DPhi, &b_j1j3DPhi);
+//  fChain->SetBranchAddress("j2j3DPhi", &j2j3DPhi, &b_j2j3DPhi);
+//  fChain->SetBranchAddress("j1j2DR", &j1j2DR, &b_j1j2DR);
+//  fChain->SetBranchAddress("j1j3DR", &j1j3DR, &b_j1j3DR);
+//  fChain->SetBranchAddress("j2j3DR", &j2j3DR, &b_j2j3DR);
+//  fChain->SetBranchAddress("jetPtGeMean", &jetPtGeMean, &b_jetPtGeMean);
+//  fChain->SetBranchAddress("jetPtArMean", &jetPtArMean, &b_jetPtArMean);
   // ---- met variables -------------------------------------------------
   fChain->SetBranchAddress("pfmet", &pfmet, &b_pfmet);
   fChain->SetBranchAddress("pfmetPhi", &pfmetPhi, &b_pfmetPhi);
   fChain->SetBranchAddress("pfhadPt", &pfhadPt, &b_pfhadPt);
   fChain->SetBranchAddress("pfSumEt", &pfSumEt, &b_pfSumEt);
-  fChain->SetBranchAddress("HTJetSum", &HTJetSum, &b_HTJetSum);
+//  fChain->SetBranchAddress("HTJetSum", &HTJetSum, &b_HTJetSum);
   // ---- dilepton variables --------------------------------------------
   fChain->SetBranchAddress("llM", &llM, &b_llM);
   fChain->SetBranchAddress("llPt", &llPt, &b_llPt);
@@ -984,7 +1040,7 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("jetEta", &jetEta, &b_jetEta);
   fChain->SetBranchAddress("jetPhi", &jetPhi, &b_jetPhi);
   fChain->SetBranchAddress("jetE", &jetE, &b_jetE);
-  fChain->SetBranchAddress("jetY", &jetY, &b_jetY);
+//  fChain->SetBranchAddress("jetY", &jetY, &b_jetY);
   fChain->SetBranchAddress("jetArea", &jetArea, &b_jetArea);
   fChain->SetBranchAddress("jetBeta", &jetBeta, &b_jetBeta);
   fChain->SetBranchAddress("jetQGL", &jetQGL, &b_jetQGL);
@@ -997,12 +1053,12 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("jetJEC", &jetJEC, &b_jetJEC);
   fChain->SetBranchAddress("jetUNC", &jetUNC, &b_jetUNC);
   fChain->SetBranchAddress("jetllDPhi", &jetllDPhi, &b_jetllDPhi);
-  fChain->SetBranchAddress("jetCHF", &jetCHF, &b_jetCHF);
-  fChain->SetBranchAddress("jetPHF", &jetPHF, &b_jetPHF);
-  fChain->SetBranchAddress("jetNHF", &jetNHF, &b_jetNHF);
-  fChain->SetBranchAddress("jetMUF", &jetMUF, &b_jetMUF);
-  fChain->SetBranchAddress("jetELF", &jetELF, &b_jetELF);
-  fChain->SetBranchAddress("jetId", &jetId, &b_jetId);
+//  fChain->SetBranchAddress("jetCHF", &jetCHF, &b_jetCHF);
+//  fChain->SetBranchAddress("jetPHF", &jetPHF, &b_jetPHF);
+//  fChain->SetBranchAddress("jetNHF", &jetNHF, &b_jetNHF);
+//  fChain->SetBranchAddress("jetMUF", &jetMUF, &b_jetMUF);
+//  fChain->SetBranchAddress("jetELF", &jetELF, &b_jetELF);
+//  fChain->SetBranchAddress("jetId", &jetId, &b_jetId);
   // ---- DR rejected jet variables ------------------------------------
 //  fChain->SetBranchAddress("rjetPt", &rjetPt, &b_rjetPt);
 //  fChain->SetBranchAddress("rjetEta", &rjetEta, &b_rjetEta);
@@ -1024,26 +1080,28 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("vtxZ", &vtxZ, &b_vtxZ);
   fChain->SetBranchAddress("vtxNdof", &vtxNdof, &b_vtxNdof);
   // ---- gen variables ----------------------------------------------
-  fChain->SetBranchAddress("selGEN", &selGEN, &b_selGEN);
+//  fChain->SetBranchAddress("selGEN", &selGEN, &b_selGEN);
   fChain->SetBranchAddress("puINT", &puINT, &b_puINT);
+  fChain->SetBranchAddress("puTrueINT", &puTrueINT, &b_puTrueINT);
   fChain->SetBranchAddress("puOOT", &puOOT, &b_puOOT);
+  fChain->SetBranchAddress("puTrueOOT", &puTrueOOT, &b_puTrueOOT);
   fChain->SetBranchAddress("nLeptonsGEN", &nLeptonsGEN, &b_nLeptonsGEN);
   fChain->SetBranchAddress("nJetsGEN", &nJetsGEN, &b_nJetsGEN);
-  fChain->SetBranchAddress("isZleadGEN", &isZleadGEN, &b_isZleadGEN);
-  fChain->SetBranchAddress("mZj1GEN", &mZj1GEN, &b_mZj1GEN);
-  fChain->SetBranchAddress("ptZj1GEN", &ptZj1GEN, &b_ptZj1GEN);
-  fChain->SetBranchAddress("costhetaZj1GEN", &costhetaZj1GEN, &b_costhetaZj1GEN);
-  fChain->SetBranchAddress("mj1j2GEN", &mj1j2GEN, &b_mj1j2GEN);
-  fChain->SetBranchAddress("mLepGEN", &mLepGEN, &b_mLepGEN);
-  fChain->SetBranchAddress("htLeadGEN", &htLeadGEN, &b_htLeadGEN);
-  fChain->SetBranchAddress("j1j2DPhiGEN", &j1j2DPhiGEN, &b_j1j2DPhiGEN);
-  fChain->SetBranchAddress("j1j3DPhiGEN", &j1j3DPhiGEN, &b_j1j3DPhiGEN);
-  fChain->SetBranchAddress("j2j3DPhiGEN", &j2j3DPhiGEN, &b_j2j3DPhiGEN);
-  fChain->SetBranchAddress("j1j2DRGEN", &j1j2DRGEN, &b_j1j2DRGEN);
-  fChain->SetBranchAddress("j1j3DRGEN", &j1j3DRGEN, &b_j1j3DRGEN);
-  fChain->SetBranchAddress("j2j3DRGEN", &j2j3DRGEN, &b_j2j3DRGEN);
-  fChain->SetBranchAddress("jetPtGeMeanGEN", &jetPtGeMeanGEN, &b_jetPtGeMeanGEN);
-  fChain->SetBranchAddress("jetPtArMeanGEN", &jetPtArMeanGEN, &b_jetPtArMeanGEN);
+//  fChain->SetBranchAddress("isZleadGEN", &isZleadGEN, &b_isZleadGEN);
+//  fChain->SetBranchAddress("mZj1GEN", &mZj1GEN, &b_mZj1GEN);
+//  fChain->SetBranchAddress("ptZj1GEN", &ptZj1GEN, &b_ptZj1GEN);
+//  fChain->SetBranchAddress("costhetaZj1GEN", &costhetaZj1GEN, &b_costhetaZj1GEN);
+//  fChain->SetBranchAddress("mj1j2GEN", &mj1j2GEN, &b_mj1j2GEN);
+//  fChain->SetBranchAddress("mLepGEN", &mLepGEN, &b_mLepGEN);
+//  fChain->SetBranchAddress("htLeadGEN", &htLeadGEN, &b_htLeadGEN);
+//  fChain->SetBranchAddress("j1j2DPhiGEN", &j1j2DPhiGEN, &b_j1j2DPhiGEN);
+//  fChain->SetBranchAddress("j1j3DPhiGEN", &j1j3DPhiGEN, &b_j1j3DPhiGEN);
+//  fChain->SetBranchAddress("j2j3DPhiGEN", &j2j3DPhiGEN, &b_j2j3DPhiGEN);
+//  fChain->SetBranchAddress("j1j2DRGEN", &j1j2DRGEN, &b_j1j2DRGEN);
+//  fChain->SetBranchAddress("j1j3DRGEN", &j1j3DRGEN, &b_j1j3DRGEN);
+//  fChain->SetBranchAddress("j2j3DRGEN", &j2j3DRGEN, &b_j2j3DRGEN);
+//  fChain->SetBranchAddress("jetPtGeMeanGEN", &jetPtGeMeanGEN, &b_jetPtGeMeanGEN);
+//  fChain->SetBranchAddress("jetPtArMeanGEN", &jetPtArMeanGEN, &b_jetPtArMeanGEN);
   fChain->SetBranchAddress("jetVeto", &jetVeto, &b_jetVeto);
   fChain->SetBranchAddress("llMGEN", &llMGEN, &b_llMGEN);
   fChain->SetBranchAddress("llPtGEN", &llPtGEN, &b_llPtGEN);
@@ -1064,7 +1122,7 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("jetEGEN", &jetEGEN, &b_jetEGEN);
   fChain->SetBranchAddress("jetVetoGEN", &jetVetoGEN, &b_jetVetoGEN);
   fChain->SetBranchAddress("jetllDPhiGEN", &jetllDPhiGEN, &b_jetllDPhiGEN);
-  fChain->SetBranchAddress("HTJetSumGEN", &HTJetSumGEN, &b_HTJetSumGEN);
+//  fChain->SetBranchAddress("HTJetSumGEN", &HTJetSumGEN, &b_HTJetSumGEN);
   fChain->SetBranchAddress("HTParSum", &HTParSum, &b_HTParSum);  
   fChain->SetBranchAddress("mcWeight", &mcWeight, &b_mcWeight);
   fChain->SetBranchAddress("nPhotonsGEN", &nPhotonsGEN, &b_nPhotonsGEN);
