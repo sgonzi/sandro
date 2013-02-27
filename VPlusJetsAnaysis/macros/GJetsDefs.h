@@ -74,8 +74,12 @@ TH1F  *ptPhotonGEN_, *ptPhotonREC_, *DeltaRGENREC_,
 			*jetPhi_3_, 
 			*jetE_3_,
 			*DeltaR_photon1_jet1_,
+			*DeltaPhi_photon1_jet1_,
 			*DeltaR_photon1_jet2_,
-			*DeltaR_photon1_jet3_;
+			*DeltaEta_jet1_jet2_,
+			*DeltaPhi_jet1_jet2_,				
+			*DeltaR_photon1_jet3_,
+			*HT_;
 			
 //  ptPhoton_->Sumw2();
 //  etaPhoton_->Sumw2();
@@ -85,11 +89,16 @@ void Book_Histos();
 void Plot_Histos();
 void Zero_Variables();
 void Text_File();
+float deltaEta(float, float);
 float deltaPhi(float, float);
 float deltaR(float, float, float, float);
 
 // variables
-Char_t outputname[100];
+Float_t weight_r;
+string  sample_r;
+Long64_t nentries_r;
+Char_t  outputname[100];
+Char_t  textname[100];
 Int_t		isPhotonlead, photonBit_1;
 Float_t //GENjet1, etaGENjet1,
 				//PhotonGEN_, *ptPhotonREC_, *DeltaRGENREC_, 
@@ -151,8 +160,12 @@ Float_t //GENjet1, etaGENjet1,
 				jetPhi_3, 
 				jetE_3,				
 				DeltaR_photon1_jet1,
+				DeltaPhi_photon1_jet1,
 				DeltaR_photon1_jet2,
-				DeltaR_photon1_jet3;
+				DeltaEta_jet1_jet2,
+				DeltaPhi_jet1_jet2,				
+				DeltaR_photon1_jet3,
+				HT;
 				
 //counters
 Int_t iSelected, iSelected0, iSelected1, iSelected2, iSelected3, iSelected4, iSelected5, iSelected6; 
