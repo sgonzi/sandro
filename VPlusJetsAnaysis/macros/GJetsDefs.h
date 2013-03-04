@@ -1,7 +1,7 @@
 // put definitions here
 
 #include <TH1F.h>
-
+#include <vector>
 // histograms
 /*
 TH1F *ptPhotonGEN_, *ptPhotonREC_; 
@@ -168,5 +168,105 @@ Float_t //GENjet1, etaGENjet1,
 				HT;
 				
 //counters
-Int_t iSelected, iSelected0, iSelected1, iSelected2, iSelected3, iSelected4, iSelected5, iSelected6; 
+Int_t  iSelected0, iSelected1, iSelected2, iSelected3, iSelected4, iSelected5, iSelected6, iSelected7; 
 
+//clean
+//unsigned int jetN, iJetar, iJetcl, conta, conta1;
+
+vector<float>	jetPt_cl,
+							jetEta_cl, 
+							jetPhi_cl,
+							jetE_cl; 
+
+TH1F  *ptPhotonGEN_cl_, *ptPhotonREC_cl_, *DeltaRGENREC_cl_, 
+			*Nvtx_cl_, 
+			*nPhotons_cl_,
+			*isPhotonlead_cl_,
+			*photonPt_1_cl_,
+			*photonE_1_cl_,
+			*photonEta_1_cl_, 
+			*photonPhi_1_cl_, 
+			*photonBit_1_cl_,
+			*photonPassConversionVeto_1_cl_, 
+			*photonPfIsoChargedHad_1_cl_, 
+			*photonPfIsoNeutralHad_1_cl_, 
+			*photonPfIsoPhoton_1_cl_, 
+			*photonPfIsoPhotons03ForCic_1_cl_, 
+			*photonPfIsoNeutrals03ForCic_1_cl_, 
+			*photonPfIsoCharged03ForCicVtx0_1_cl_,
+			*photonPfIsoCharged03BadForCic_1_cl_, 
+			*photonPfIsoPhotons04ForCic_1_cl_, 
+			*photonPfIsoNeutrals04ForCic_1_cl_,
+			*photonPfIsoCharged04ForCicVtx0_1_cl_, 
+			*photonPfIsoCharged04BadForCic_1_cl_,
+			*photonid_sieie_1_cl_,  
+			*photonid_sieip_1_cl_, 
+			*photonid_etawidth_1_cl_, 
+			*photonid_phiwidth_1_cl_, 
+			*photonid_r9_1_cl_, 
+			*photonid_lambdaRatio_1_cl_, 
+			*photonid_s4Ratio_1_cl_,
+			*photonid_e25_1_cl_, 
+			*photonid_sceta_1_cl_, 
+			*photonid_ESEffSigmaRR_1_cl_, 
+			*photonid_hadronicOverEm_1_cl_, 
+			*photonid_hadronicOverEm2012_1_cl_,
+			*photonhcalTowerSumEtConeDR04_1_cl_, 
+			*photonecalRecHitSumEtConeDR04_1_cl_, 
+			*photonnTrkSolidConeDR04_1_cl_,
+			*photontrkSumPtSolidConeDR04_1_cl_, 
+			*photonnTrkHollowConeDR04_1_cl_, 
+			*photontrkSumPtHollowConeDR04_1_cl_, 
+			//PhotonIso_1_cl_,
+			*photonIsoFPRCharged_1_cl_, 
+			*photonIsoFPRNeutral_1_cl_, 
+			*photonIsoFPRPhoton_1_cl_, /**jetPhotonDPhi_,*/ 
+			*nJets_cl_, 
+			*jetPt_1_cl_, 
+			*jetEta_1_cl_, 
+			*jetY_1_cl_,
+			*jetPhi_1_cl_, 
+			*jetE_1_cl_,
+			*jetPt_2_cl_, 
+			*jetEta_2_cl_, 
+			*jetY_2_cl_,
+			*jetPhi_2_cl_, 
+			*jetE_2_cl_,
+			*jetPt_3_cl_, 
+			*jetEta_3_cl_, 
+			*jetY_3_cl_,
+			*jetPhi_3_cl_, 
+			*jetE_3_cl_,
+			*DeltaR_photon1_jet1_cl_,
+			*DeltaPhi_photon1_jet1_cl_,
+			*DeltaR_photon1_jet2_cl_,
+			*DeltaEta_jet1_jet2_cl_,
+			*DeltaPhi_jet1_jet2_cl_,				
+			*DeltaR_photon1_jet3_cl_,
+			*HT_cl_;
+
+Int_t nJets_cl;
+Float_t jetPt_1_cl,
+				jetEta_1_cl,
+				jetY_1_cl,
+				jetPhi_1_cl,
+				jetE_1_cl,
+				jetPt_2_cl,
+				jetEta_2_cl,
+				jetY_2_cl,
+				jetPhi_2_cl,
+				jetE_2_cl,
+				jetPt_3_cl,
+				jetEta_3_cl,
+				jetY_3_cl,
+				jetPhi_3_cl,
+				jetE_3_cl,
+				DeltaR_photon1_jet1_cl,
+				DeltaPhi_photon1_jet1_cl, 
+				DeltaR_photon1_jet2_cl, 
+				DeltaEta_jet1_jet2_cl, 
+				DeltaPhi_jet1_jet2_cl, 
+				DeltaR_photon1_jet3_cl, 
+				HT_cl;
+
+Int_t  iSelected0_cl, iSelected1_cl, iSelected2_cl, iSelected3_cl, iSelected4_cl, iSelected5_cl, iSelected6_cl, iSelected7_cl; 
