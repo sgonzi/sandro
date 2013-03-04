@@ -287,6 +287,14 @@ void GJetsAnalyzer::Loop(){
   iSelected5 = 0;
   iSelected6 = 0;
   iSelected7 = 0;
+  iSelected0_cl = 0;
+  iSelected1_cl = 0;
+  iSelected2_cl = 0;
+  iSelected3_cl = 0;
+  iSelected4_cl = 0;
+  iSelected5_cl = 0;
+  iSelected6_cl = 0;
+  iSelected7_cl = 0;
 //  iSelectedWithWeights = 0;
 
 	Long64_t nentries = fChain->GetEntriesFast();
