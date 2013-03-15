@@ -94,7 +94,7 @@ float deltaPhi(float, float);
 float deltaR(float, float, float, float);
 
 // variables
-Float_t weight_r;
+Float_t weight_r, weight_withPU_r;
 string  sample_r;
 Long64_t nentries_r;
 Char_t  outputname[100];
@@ -169,7 +169,7 @@ Float_t //GENjet1, etaGENjet1,
 				
 //counters
 Int_t  iSelected0, iSelected1, iSelected2, iSelected3, iSelected4, iSelected5, iSelected6, iSelected7; 
-
+Int_t  iSelectedWithWeights0, iSelectedWithWeights1, iSelectedWithWeights2, iSelectedWithWeights3, iSelectedWithWeights4, iSelectedWithWeights5, iSelectedWithWeights6, iSelectedWithWeights7;
 //clean
 //unsigned int jetN, iJetar, iJetcl, conta, conta1;
 
@@ -270,3 +270,4 @@ Float_t jetPt_1_cl,
 				HT_cl;
 
 Int_t  iSelected0_cl, iSelected1_cl, iSelected2_cl, iSelected3_cl, iSelected4_cl, iSelected5_cl, iSelected6_cl, iSelected7_cl; 
+Int_t  iSelectedWithWeights0_cl, iSelectedWithWeights1_cl, iSelectedWithWeights2_cl, iSelectedWithWeights3_cl, iSelectedWithWeights4_cl, iSelectedWithWeights5_cl, iSelectedWithWeights6_cl, iSelectedWithWeights7_cl;

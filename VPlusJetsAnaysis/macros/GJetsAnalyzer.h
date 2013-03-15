@@ -8,7 +8,10 @@
 
 class GJetsAnalyzer {
   public :
-  
+
+		string       folder_samples;
+		string       file_sample;
+//		string       file_address;
   	Int_t        mysample;
 		TTree       *fChain;   //!pointer to the analyzed TTree or TChain
 		Int_t        fCurrent;  //!current Tree number in a TChain
@@ -16,44 +19,22 @@ class GJetsAnalyzer {
 		// Declaration of leaf types
 		// ---- global event variables ----------------------------------------
 		Int_t        isRealData;
-//		Int_t        selRECO;
 		ULong64_t    eventNum;
 		Int_t        runNum;
 		Int_t        lumi;
 		Int_t        nVtx;
 		Int_t        nLeptons;
 		Int_t        nPhotons;
+		Int_t        fwnJets;
 		Int_t        nJets;
-//		Int_t        nRJets;
-//		Int_t        isZlead;
-//		Int_t        isPhotonlead;
 		Float_t      rho;
 		Float_t      rho25;
-//		Float_t      mZj1;
-//		Float_t      mZj1j2;
-//		Float_t      mZj1j2j3;
-//		Float_t      ptZj1;
-//		Float_t      costhetaZj1;
-//		Float_t      costhetaPhotonj1;
-//		Float_t      mj1j2;
-//		Float_t      mj1j2j3;
-//		Float_t      mrj1rj2;
-//		Float_t      mLep;
-//		Float_t      htLead;
-//		Float_t      j1j2DPhi;
-//		Float_t      j1j3DPhi;
-//		Float_t      j2j3DPhi;
-//		Float_t      j1j2DR;
-//		Float_t      j1j3DR;
-//		Float_t      j2j3DR;
-//		Float_t      jetPtGeMean;
-//		Float_t      jetPtArMean;
+		Float_t      rhoQG;
 		// ---- met variables -------------------------------------------------
 		Float_t      pfmet;
 		Float_t      pfmetPhi;
 		Float_t      pfhadPt;
 		Float_t      pfSumEt;
-//		Float_t      HTJetSum;
 		// ---- dilepton variables --------------------------------------------
 		Float_t      llM;
 		Float_t      llPt;
@@ -66,7 +47,6 @@ class GJetsAnalyzer {
 		vector<float>  *photonE;
 		vector<float>  *photonEta;
 		vector<float>  *photonPhi;
-//		vector<float>  *photonIso;
 		vector<float>  *photonPassConversionVeto;
 		vector<float>  *photonPfIsoChargedHad;
 		vector<float>  *photonPfIsoNeutralHad; 
@@ -100,24 +80,7 @@ class GJetsAnalyzer {
 		vector<float>  *photonIsoFPRCharged;
 		vector<float>  *photonIsoFPRNeutral;
 		vector<float>  *photonIsoFPRPhoton;
-//		vector<float>  *photonID;
 		vector<int>  *photonBit;
-//		vector<float>  *pfhadPhoPt;
-//		vector<float>  *mPhotonj1;
-//		vector<float>  *ptPhotonj1;
-//		vector<float>  *jetPhotonDPhi;
-//		vector<float>  *photonPar;
-		// ---- FSRphoton variables ----------------------------------------------
-//		Float_t      FSRphotonPt;
-//		Float_t      FSRphotonE;
-//		Float_t      FSRphotonEta;
-//		Float_t      FSRphotonPhi;
-//		Float_t      FSRphotonIso;
-//		Float_t      FSRphotonID;
-//		Int_t        FSRphotonBit;
-//		Int_t        FSRphotonJet;
-//		vector<float>  *FSRphotonPar;
-//		Float_t      FSRphotonllM;
 		// ---- trigger variables ---------------------------------------------
 		vector<int>    *fired;
 		vector<int>    *prescaleL1;
@@ -139,6 +102,7 @@ class GJetsAnalyzer {
 		vector<float>  *lepPFIsoDBCor;
 		vector<float>  *lepPFIsoRhoCor;
 		vector<int>    *lepChId;
+		vector<float>  *lepR9orChi2ndof;
 		vector<int>    *lepId;
 		// ---- jet variables -------------------------------------------------
 		vector<int>    *jetVeto;
@@ -146,10 +110,16 @@ class GJetsAnalyzer {
 		vector<float>  *jetEta;
 		vector<float>  *jetPhi;
 		vector<float>  *jetE;
-//		vector<float>  *jetY;
 		vector<float>  *jetArea;
 		vector<float>  *jetBeta;
 		vector<float>  *jetQGL;
+		vector<int>    *jetPdgId;
+		vector<int>    *jetChgQC;
+		vector<int>    *jetNeutralPtCut;
+		vector<float>  *jetPtDQC;
+		vector<float>  *jetAxis1QC;
+		vector<float>  *jetAxis2QC;
+		vector<float>  *jetQGMLP;
 		vector<float>  *jetRMS;
 		vector<float>  *jetBtag;
 		vector<float>  *jetTagInfoNVtx;
@@ -159,55 +129,21 @@ class GJetsAnalyzer {
 		vector<float>  *jetJEC;
 		vector<float>  *jetUNC;
 		vector<float>  *jetllDPhi;
-//		vector<float>  *jetCHF;
-//		vector<float>  *jetPHF;
-//		vector<float>  *jetNHF;
-//		vector<float>  *jetMUF;
-//		vector<float>  *jetELF;
-//		vector<int>    *jetId;
-	 // ---- DR rejected jet variables ------------------------------------
-//		vector<float>  *rjetPt;
-//		vector<float>  *rjetEta;
-//		vector<float>  *rjetPhi;
-//		vector<float>  *rjetE;
-//		vector<float>  *rjetY;
-//		vector<float>  *rjetArea;
-//		vector<float>  *rjetBeta;
-//		vector<float>  *rjetBtag;
-//		vector<float>  *rjetJEC;
-//		vector<float>  *rjetUNC;
-//		vector<float>  *rjetCHF;
-//		vector<float>  *rjetPHF;
-//		vector<float>  *rjetNHF;
-//		vector<float>  *rjetMUF;
-//		vector<float>  *rjetELF;
-//		vector<int>    *rjetId;
-		// ---- vertex variables ----------------------------------------------
+	  // ---- forward jets - two leading forward jets -----------------------
+		vector<float>  *fwjetPt;
+		vector<float>  *fwjetEta;
+		vector<float>  *fwjetPhi;
+		vector<float>  *fwjetE;
+	  // ---- vertex variables ----------------------------------------------
 		vector<float>  *vtxZ;
 		vector<float>  *vtxNdof;
-		// ---- gen variables ----------------------------------------------
-//		Int_t        selGEN;
+		// ---- gen variables -------------------------------------------------
 		Int_t        puINT;
-		Int_t        puTrueINT;		
 		Int_t        puOOT;
+		Int_t        puTrueINT;		
 		Int_t        puTrueOOT;
 		Int_t        nLeptonsGEN;
 		Int_t        nJetsGEN;
-//		Int_t        isZleadGEN;
-//		Float_t      mZj1GEN;
-//		Float_t      ptZj1GEN;
-//		Float_t      costhetaZj1GEN;
-//		Float_t      mj1j2GEN;
-//		Float_t      mLepGEN;
-//		Float_t      htLeadGEN;
-//		Float_t      j1j2DPhiGEN;
-//		Float_t      j1j3DPhiGEN;
-//		Float_t      j2j3DPhiGEN;
-//		Float_t      j1j2DRGEN;
-//		Float_t      j1j3DRGEN;
-//		Float_t      j2j3DRGEN;
-//		Float_t      jetPtGeMeanGEN;
-//		Float_t      jetPtArMeanGEN;
 		Float_t      llMGEN;
 		Float_t      llPtGEN;
 		Float_t      llPhiGEN;
@@ -227,14 +163,29 @@ class GJetsAnalyzer {
 		vector<float>  *jetEGEN;
 		vector<int>    *jetVetoGEN;
 		vector<float>  *jetllDPhiGEN;
-//		Float_t      HTJetSumGEN;
+		vector<int>    *jetIdGEN;
+		vector<int>    *jetNpartonsGEN;		
 		Float_t      HTParSum;
 		Float_t      mcWeight;
+    Float_t      qScale;
+    Float_t      alphaQED;
+    Float_t      alphaQCD;
+    Float_t      x1;
+    Float_t      x2;
+    Int_t        pdf1Id;
+    Int_t        pdf2Id;
+    Float_t      scalePDF;
 		Int_t        nPhotonsGEN;
 		Float_t      photonPtGEN;
 		Float_t      photonEGEN;
 		Float_t      photonEtaGEN;
 		Float_t      photonPhiGEN;
+		Float_t      photonIsoPtDR03GEN;
+		Float_t      photonIsoEDR03GEN;
+		Float_t      photonIsoPtDR04GEN;
+		Float_t      photonIsoEDR04GEN;
+		Float_t      photonIsoPtDR05GEN;
+		Float_t      photonIsoEDR05GEN;		
 		Int_t        photonMotherIdGEN;
 		Float_t      photonRECODRGEN;
 		Int_t        VBPartonDM;
@@ -246,11 +197,12 @@ class GJetsAnalyzer {
 		vector<float>  *QGVars;
 		vector<float>  *lepSigmaIEtaIEta;
 		vector<float>  *lepHadronicOverEm;
+		Double_t      eventWeight;
+		Double_t      PUWeight;
 
   	// List of branches
 	  // ---- global event variables ----------------------------------------
   	TBranch      *b_isRealData;
-//  	TBranch      *b_selRECO;
   	TBranch      *b_eventNum;
  		TBranch      *b_runNum;
   	TBranch      *b_lumi;
@@ -258,36 +210,15 @@ class GJetsAnalyzer {
   	TBranch      *b_nLeptons;
   	TBranch      *b_nPhotons;
   	TBranch      *b_nJets;
-//  	TBranch      *b_nRJets;
-//  	TBranch      *b_isZlead;
-//  	TBranch      *b_isPhotonlead;
+  	TBranch      *b_fwnJets;
   	TBranch      *b_rho;
   	TBranch      *b_rho25;
-//  	TBranch      *b_mZj1;
-//  	TBranch      *b_mZj1j2;
-//  	TBranch      *b_mZj1j2j3;
-//  	TBranch      *b_ptZj1;
-//  	TBranch      *b_costhetaZj1;
-//  	TBranch      *b_costhetaPhotonj1;
-//  	TBranch      *b_mj1j2;
-//  	TBranch      *b_mj1j2j3;
-//  	TBranch      *b_mrj1rj2;
-//  	TBranch      *b_mLep;
-//  	TBranch      *b_htLead;
-//  	TBranch      *b_j1j2DPhi;
-//  	TBranch      *b_j1j3DPhi;
-//  	TBranch      *b_j2j3DPhi;
-//  	TBranch      *b_j1j2DR;
-//  	TBranch      *b_j1j3DR;
-//  	TBranch      *b_j2j3DR;
-//  	TBranch      *b_jetPtGeMean;
-//  	TBranch      *b_jetPtArMean;
+  	TBranch      *b_rhoQG;
 	  // ---- met variables -------------------------------------------------
   	TBranch      *b_pfmet;
   	TBranch      *b_pfmetPhi;
   	TBranch      *b_pfhadPt;
   	TBranch      *b_pfSumEt;
-//  	TBranch      *b_HTJetSum;
 	  // ---- dilepton variables -------------------------------------------- 
   	TBranch      *b_llM;
   	TBranch      *b_llPt;
@@ -300,7 +231,6 @@ class GJetsAnalyzer {
   	TBranch      *b_photonE;
   	TBranch      *b_photonEta;
   	TBranch      *b_photonPhi;
-//  	TBranch      *b_photonIso;
   	TBranch      *b_photonPassConversionVeto;
   	TBranch      *b_photonPfIsoChargedHad;
   	TBranch      *b_photonPfIsoNeutralHad; 
@@ -334,24 +264,7 @@ class GJetsAnalyzer {
   	TBranch      *b_photonIsoFPRCharged;
   	TBranch      *b_photonIsoFPRNeutral;
   	TBranch      *b_photonIsoFPRPhoton;
-//  	TBranch      *b_photonID;
   	TBranch      *b_photonBit;
-//  	TBranch      *b_pfhadPhoPt;
-//  	TBranch      *b_mPhotonj1;
-//  	TBranch      *b_ptPhotonj1;
-//  	TBranch      *b_jetPhotonDPhi;
-//  	TBranch      *b_photonPar;
-		// ---- FSRphoton variables ----------------------------------------------
-//  	TBranch      *b_FSRphotonPt;
-//  	TBranch      *b_FSRphotonE;
-//		TBranch      *b_FSRphotonEta;
-//  	TBranch      *b_FSRphotonPhi;
-//  	TBranch      *b_FSRphotonIso;
-//  	TBranch      *b_FSRphotonID;
-//  	TBranch      *b_FSRphotonBit;
-//  	TBranch      *b_FSRphotonJet;
-//  	TBranch      *b_FSRphotonPar;
-//  	TBranch      *b_FSRphotonllM;
 		// ---- trigger variables ---------------------------------------------  
   	TBranch      *b_fired;
   	TBranch      *b_prescaleL1;
@@ -373,16 +286,24 @@ class GJetsAnalyzer {
   	TBranch      *b_lepPFIsoDBCor;
   	TBranch      *b_lepPFIsoRhoCor;
   	TBranch      *b_lepChId;
+  	TBranch      *b_lepR9orChi2ndof;
   	TBranch      *b_lepId;
 	  // ---- jet variables -------------------------------------------------  
+  	TBranch      *b_jetVeto;
   	TBranch      *b_jetPt;
   	TBranch      *b_jetEta;
   	TBranch      *b_jetPhi;
   	TBranch      *b_jetE;
-//  	TBranch      *b_jetY;
   	TBranch      *b_jetArea;
   	TBranch      *b_jetBeta;
   	TBranch      *b_jetQGL;
+  	TBranch      *b_jetPdgId;
+  	TBranch      *b_jetChgQC;
+  	TBranch      *b_jetNeutralPtCut;
+  	TBranch      *b_jetPtDQC;
+  	TBranch      *b_jetAxis1QC;
+  	TBranch      *b_jetAxis2QC;
+  	TBranch      *b_jetQGMLP;	  	  	  	  	
   	TBranch      *b_jetRMS;
   	TBranch      *b_jetBtag;
   	TBranch      *b_jetTagInfoNVtx;
@@ -392,56 +313,29 @@ class GJetsAnalyzer {
   	TBranch      *b_jetJEC;
   	TBranch      *b_jetUNC;
   	TBranch      *b_jetllDPhi;
-//  	TBranch      *b_jetCHF;
-//  	TBranch      *b_jetPHF;
-//  	TBranch      *b_jetNHF;
-//  	TBranch      *b_jetMUF;
-//  	TBranch      *b_jetELF;
-//  	TBranch      *b_jetId;
-	 // ---- DR rejected jet variables ------------------------------------  
-//  	TBranch      *b_rjetPt;
-//  	TBranch      *b_rjetEta;
-//  	TBranch      *b_rjetPhi;
-//  	TBranch      *b_rjetE;
-//  	TBranch      *b_rjetY;
-//  	TBranch      *b_rjetArea;
-//  	TBranch      *b_rjetBeta;
-//  	TBranch      *b_rjetBtag;
-//  	TBranch      *b_rjetJEC;
-//  	TBranch      *b_rjetUNC;
-//  	TBranch      *b_rjetCHF;
-//  	TBranch      *b_rjetPHF;
-//  	TBranch      *b_rjetNHF;
-//  	TBranch      *b_rjetMUF;
-//  	TBranch      *b_rjetELF;
-//  	TBranch      *b_rjetId;
+	  // ---- forward jets - two leading forward jets -----------------------
+	  TBranch      *b_fwjetPt;
+	  TBranch      *b_fwjetEta;
+	  TBranch      *b_fwjetPhi;
+	  TBranch      *b_fwjetE;
 	  // ---- vertex variables ----------------------------------------------  
   	TBranch      *b_vtxZ;
   	TBranch      *b_vtxNdof;
-	  // ---- gen variables ----------------------------------------------
-//  	TBranch      *b_selGEN;
+	  // ---- gen variables -------------------------------------------------
   	TBranch      *b_puINT;
-  	TBranch      *b_puTrueINT;
   	TBranch      *b_puOOT;
+  	TBranch      *b_puTrueINT;
   	TBranch      *b_puTrueOOT;
   	TBranch      *b_nLeptonsGEN;
   	TBranch      *b_nJetsGEN;
-//  	TBranch      *b_isZleadGEN;
-//  	TBranch      *b_mZj1GEN;
-//  	TBranch      *b_ptZj1GEN;
-//  	TBranch      *b_costhetaZj1GEN;
-//  	TBranch      *b_mj1j2GEN;
-//  	TBranch      *b_mLepGEN;
-//  	TBranch      *b_htLeadGEN;
-//  	TBranch      *b_j1j2DPhiGEN;
-//  	TBranch      *b_j1j3DPhiGEN;
-//  	TBranch      *b_j2j3DPhiGEN;
-//  	TBranch      *b_j1j2DRGEN;
-//  	TBranch      *b_j1j3DRGEN;
-//  	TBranch      *b_j2j3DRGEN;
-//  	TBranch      *b_jetPtGeMeanGEN;
-//  	TBranch      *b_jetPtArMeanGEN;
-  	TBranch      *b_jetVeto;
+  	TBranch      *b_qScale;
+  	TBranch      *b_alphaQED;
+  	TBranch      *b_alphaQCD;
+  	TBranch      *b_x1;
+  	TBranch      *b_x2;
+  	TBranch      *b_pdf1Id;
+  	TBranch      *b_pdf2Id;
+  	TBranch      *b_scalePDF;
   	TBranch      *b_llMGEN;
   	TBranch      *b_llPtGEN;
   	TBranch      *b_llPhiGEN;
@@ -461,7 +355,8 @@ class GJetsAnalyzer {
   	TBranch      *b_jetEGEN;
   	TBranch      *b_jetVetoGEN;
   	TBranch      *b_jetllDPhiGEN;
-//  	TBranch      *b_HTJetSumGEN;
+  	TBranch      *b_jetIdGEN;
+  	TBranch      *b_jetNpartonsGEN;
   	TBranch      *b_HTParSum;
   	TBranch      *b_mcWeight;
   	TBranch      *b_nPhotonsGEN;
@@ -469,6 +364,12 @@ class GJetsAnalyzer {
   	TBranch      *b_photonEGEN;
   	TBranch      *b_photonEtaGEN;
   	TBranch      *b_photonPhiGEN;
+  	TBranch      *b_photonIsoPtDR03GEN;
+  	TBranch      *b_photonIsoEDR03GEN;
+  	TBranch      *b_photonIsoPtDR04GEN;
+  	TBranch      *b_photonIsoEDR04GEN;
+  	TBranch      *b_photonIsoPtDR05GEN;
+  	TBranch      *b_photonIsoEDR05GEN;
   	TBranch      *b_photonMotherIdGEN;
   	TBranch      *b_photonRECODRGEN;
   	TBranch      *b_VBPartonDM;
@@ -480,7 +381,8 @@ class GJetsAnalyzer {
   	TBranch      *b_QGVars;
   	TBranch      *b_lepSigmaIEtaIEta;
   	TBranch      *b_lepHadronicOverEm;
-
+  	TBranch      *b_eventWeight;
+  	TBranch      *b_PUWeight;
 	
 		GJetsAnalyzer(TTree *tree = 0, Int_t isample = -1);
 		virtual ~GJetsAnalyzer();
@@ -500,127 +402,292 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 	// if parameter tree is not specified (or zero), connect the file
 	// used to generate this class and read the Tree.
 
+  folder_samples = "samples/";
+  file_sample = "";
+  //file_address = "";
 	mysample = isample;
 	
   if (tree == 0) {
 
-		if (mysample < 0 || mysample > 13){
-		cout << "Error: mysample range is 0-13"<< endl;
+		bool outrange;
+		outrange = mysample < 0 || (mysample > 7 && mysample < 11) || (mysample > 12 && mysample < 21) || (mysample > 26 && mysample < 31) || (mysample > 36 && mysample < 41) || mysample > 44;
+		
+		if (outrange){
+		cout << "Error: mysample is out of range. " << endl;
+		cout << "Choose the sample:" << endl;
+		cout << "----------------------------------------------------- " << endl;
+		cout << "mysample == 0   -> Test" << endl;
+		cout << "-----------------------------------------------------" << endl;
+		cout << "mysample == 1   -> DATA Run2012A-13Jul2012" << endl;
+		cout << "mysample == 2   -> DATA Run2012A-recover-06Aug2012" << endl;
+		cout << "mysample == 3   -> DATA Run2012B-13Jul2012" << endl;
+		cout << "mysample == 4   -> DATA Run2012C-24Aug2012" << endl;
+		cout << "mysample == 5   -> DATA Run2012C-EcalRecover_11Dec2012" << endl;
+		cout << "mysample == 6   -> DATA Run2012C-PromptReco" << endl;
+		cout << "mysample == 7   -> DATA Run2012D-PromptReco" << endl;
+		cout << "-----------------------------------------------------  " << endl;
+		cout << "mysample == 11  -> GJets 200<HT<400" << endl;
+		cout << "mysample == 12  -> Gjets 400<HT<Inf" << endl;
+		cout << "-----------------------------------------------------  " << endl;
+		cout << "mysample == 21  -> QCD EMEnriched 20<Pt<30" << endl;
+		cout << "mysample == 22  -> QCD EMEnriched 30<Pt<80" << endl;
+		cout << "mysample == 23  -> QCD EMEnriched 80<Pt<170" << endl;
+		cout << "mysample == 24  -> QCD EMEnriched 170<Pt<250" << endl;
+		cout << "mysample == 25  -> QCD EMEnriched 250<Pt<350" << endl;
+		cout << "mysample == 26  -> QCD EMEnriched 350<Pt<Inf" << endl;
+		cout << "-----------------------------------------------------  " << endl;
+		cout << "mysample == 31  -> QCD BCtoE 20<Pt<30" << endl;
+		cout << "mysample == 32  -> QCD BCtoE 30<Pt<80" << endl;
+		cout << "mysample == 33  -> QCD BCtoE 80<Pt<170" << endl;
+		cout << "mysample == 34  -> QCD BCtoE 170<Pt<250" << endl;
+		cout << "mysample == 35  -> QCD BCtoE 250<Pt<350" << endl;
+		cout << "mysample == 36  -> QCD BCtoE 350<Pt<Inf" << endl;
+		cout << "-----------------------------------------------------  " << endl;
+		cout << "mysample == 41  -> QCD 100<HT<250" << endl;
+		cout << "mysample == 42  -> QCD 250<HT<500" << endl;
+		cout << "mysample == 43  -> QCD 500<HT<1000" << endl;
+		cout << "mysample == 44  -> QCD 1000<HT<inf" << endl;
+		cout << "-----------------------------------------------------" << endl;
 		}
 		
-// data -----------------------------------------------------------------
-		else if (mysample == 0){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("DATA_all_photons.root");
+// test -----------------------------------------------------------------   
+		if (mysample == 0){
+			const char * file_address = "samples/Test.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
 			if (!f) {
-				f = new TFile("DATA_all_photons.root");
-				f->cd("accepted");
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
 			}
 		}
 
-// MC signal GJets_HT-xToy ----------------------------------------------  
+// data -----------------------------------------------------------------
 		else if (mysample == 1){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_GJets_HT-200To400_Summer12.root");
+			const char * file_address = "samples/Photon_Run2012A-13Jul2012-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
 			if (!f) {
-		  	f = new TFile("MC_GJets_HT-200To400_Summer12.root");
+		  	f = new TFile(file_address);
 		  	f->cd("accepted");
 			}
 		}
 
 		else if (mysample == 2){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_GJets_HT-400ToInf_Summer12.root");
+			const char * file_address = "samples/Photon_Run2012A-recover-06Aug2012-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
 			if (!f) {
-				f = new TFile("MC_GJets_HT-400ToInf_Summer12.root");
-				f->cd("accepted");
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
 			}
 		}
 
-// MC background QCD_Pt_x_y EMEnriched ----------------------------------
 		else if (mysample == 3){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_Pt_20_30_EMEnriched_Summer12.root");
+			const char * file_address = "samples/SinglePhoton_Run2012B-13Jul2012-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
 			if (!f) {
-		  	f = new TFile("MC_QCD_Pt_20_30_EMEnriched_Summer12.root");
+		  	f = new TFile(file_address);
 		  	f->cd("accepted");
 			}
 		}
 
 		else if (mysample == 4){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_Pt_30_80_EMEnriched_Summer12.root");
+			const char * file_address = "samples/SinglePhoton_Run2012C-24Aug2012-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
 			if (!f) {
-		  	f = new TFile("MC_QCD_Pt_30_80_EMEnriched_Summer12.root");
+		  	f = new TFile(file_address);
 		  	f->cd("accepted");
 			}
 		}
 
 		else if (mysample == 5){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_Pt_80_170_EMEnriched_Summer12.root");
+			const char * file_address = "samples/SinglePhoton_Run2012C-EcalRecover_11Dec2012-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
 			if (!f) {
-		  	f = new TFile("MC_QCD_Pt_80_170_EMEnriched_Summer12.root");
+		  	f = new TFile(file_address);
 		  	f->cd("accepted");
 			}
 		}
 
 		else if (mysample == 6){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_Pt_170_250_EMEnriched_Summer12.root");
+			const char * file_address = "samples/SinglePhoton_Run2012C-PromptReco-v2.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
 			if (!f) {
-		  	f = new TFile("MC_QCD_Pt_170_250_EMEnriched_Summer12.root");
+		  	f = new TFile(file_address);
 		  	f->cd("accepted");
 			}
 		}
 
 		else if (mysample == 7){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_Pt_250_350_EMEnriched_Summer12.root");
+			const char * file_address = "samples/SinglePhoton_Run2012D-PromptReco-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
 			if (!f) {
-		  	f = new TFile("MC_QCD_Pt_250_350_EMEnriched_Summer12.root");
+		  	f = new TFile(file_address);
 		  	f->cd("accepted");
 			}
 		}
 
-		else if (mysample == 8){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_Pt_350_EMEnriched_Summer12.root");
-			if (!f) {
-		  	f = new TFile("MC_QCD_Pt_350_EMEnriched_Summer12.root");
-		  	f->cd("accepted");
-			}
-		}
-
-// test -----------------------------------------------------------------   
-		else if (mysample == 9){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("Test.root");
-			if (!f) {
-		  	f = new TFile("Test.root");
-		  	f->cd("accepted");
-			}
-		}
-
-// MC background QCD HT-xToy --------------------------------------------
-		else if (mysample == 10){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_HT-100To250_Summer12.root");
-			if (!f) {
-		  	f = new TFile("MC_QCD_HT-100To250_Summer12.root");
-		  	f->cd("accepted");
-			}
-		}
-
+// MC signal GJets_HT-xToy ----------------------------------------------  
 		else if (mysample == 11){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_HT-250To500_Summer12.root");
+			const char * file_address = "samples/GJets_HT-200To400_8TeV-madgraph_v2_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
 			if (!f) {
-		  	f = new TFile("MC_QCD_HT-250To500_Summer12.root");
+		  	f = new TFile(file_address);
 		  	f->cd("accepted");
 			}
 		}
 
 		else if (mysample == 12){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_HT-500To1000_Summer12.root");
+			const char * file_address = "samples/GJets_HT-400ToInf_8TeV-madgraph_v3_Summer12_DR53X-PU_S10_START53_V7C-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
 			if (!f) {
-		  	f = new TFile("MC_QCD_HT-500To1000_Summer12.root");
+		  	f = new TFile(file_address);
 		  	f->cd("accepted");
 			}
 		}
 
-		else if (mysample == 13){
-			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("MC_QCD_HT-1000Toinf_Summer12.root");
+// MC background QCD_Pt_x_y EMEnriched ----------------------------------
+		else if (mysample == 21){
+			const char * file_address = "samples/QCD_Pt_20_30_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
 			if (!f) {
-		  	f = new TFile("MC_QCD_HT-1000ToInf_Summer12.root");
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 22){
+			const char * file_address = "samples/QCD_Pt_30_80_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 23){
+			const char * file_address = "samples/QCD_Pt_80_170_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 24){
+			const char * file_address = "samples/QCD_Pt_170_250_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 25){
+			const char * file_address = "samples/QCD_Pt_250_350_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 26){
+			const char * file_address = "samples/QCD_Pt_350_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+// MC background QCD_Pt_x_y BCtoE ----------------------------------
+		else if (mysample == 31){
+			const char * file_address = "samples/QCD_Pt_20_30_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			cout << file_address << endl;
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 32){
+			const char * file_address = "samples/QCD_Pt_30_80_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 33){
+			const char * file_address = "samples/QCD_Pt_80_170_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 34){
+			const char * file_address = "samples/QCD_Pt_170_250_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 35){
+			const char * file_address = "samples/QCD_Pt_250_350_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 36){
+			const char * file_address = "samples/QCD_Pt_350_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v2.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+
+// MC background QCD HT-xToy --------------------------------------------
+		else if (mysample == 41){
+			const char * file_address = "samples/QCD_HT-100To250_TuneZ2star_8TeV-madgraph-pythia_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 42){
+			const char * file_address = "samples/QCD_HT-250To500_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 43){
+			const char * file_address = "samples/QCD_HT-500To1000_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 44){
+			const char * file_address = "samples/QCD_HT-1000ToInf_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
 		  	f->cd("accepted");
 			}
 		}
@@ -672,44 +739,22 @@ void GJetsAnalyzer::Init(TTree *tree) {
   // Set object pointer
 	// ---- global event variables ----------------------------------------
 	isRealData = 0;
-//	selRECO = 0;
 	eventNum = 0;
 	runNum = 0;
 	lumi = 0;
 	nVtx = 0;
 	nLeptons = 0;
 	nPhotons = 0;
+	fwnJets = 0;
 	nJets = 0;
-//	nRJets = 0;
-//	isZlead = 0;
-//	isPhotonlead = 0;
 	rho = 0;
 	rho25 = 0;
-//	mZj1 = 0;
-//	mZj1j2 = 0;
-//	mZj1j2j3 = 0;
-//	ptZj1 = 0;
-//	costhetaZj1 = 0;
-//	costhetaPhotonj1 = 0;
-//	mj1j2 = 0;
-//	mj1j2j3 = 0;
-//	mrj1rj2 = 0;
-//	mLep = 0;
-//	htLead = 0;
-//	j1j2DPhi = 0;
-//	j1j3DPhi = 0;
-//	j2j3DPhi = 0;
-//	j1j2DR = 0;
-//	j1j3DR = 0;
-//	j2j3DR = 0;
-//	jetPtGeMean = 0;
-//	jetPtArMean = 0;
+	rhoQG = 0;
 	// ---- met variables -------------------------------------------------
 	pfmet = 0;
 	pfmetPhi = 0;
 	pfhadPt = 0;
 	pfSumEt = 0;
-//	HTJetSum = 0;
 	// ---- dilepton variables --------------------------------------------
 	llM = 0;
 	llPt = 0;
@@ -717,12 +762,11 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	llDPhi = 0;
 	llY = 0;
 	llEta = 0;
-		// ---- photon variables ----------------------------------------------
+	// ---- photon variables ----------------------------------------------
 	photonPt = 0;
 	photonE = 0;
 	photonEta = 0;
 	photonPhi = 0;
-//	photonIso = 0;
 	photonPassConversionVeto = 0;
 	photonPfIsoChargedHad = 0;
 	photonPfIsoNeutralHad = 0; 
@@ -756,24 +800,7 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	photonIsoFPRCharged = 0;
 	photonIsoFPRNeutral = 0;
 	photonIsoFPRPhoton = 0;
-//	photonID = 0;
 	photonBit = 0;
-//	pfhadPhoPt = 0;
-//	mPhotonj1 = 0;
-//	ptPhotonj1 = 0;
-//	jetPhotonDPhi = 0;
-//	photonPar = 0;
-	// ---- FSRphoton variables ----------------------------------------------
-//	FSRphotonPt = 0;
-//	FSRphotonE = 0;
-//	FSRphotonEta = 0;
-//	FSRphotonPhi = 0;
-//	FSRphotonIso = 0;
-//	FSRphotonID = 0;
-//	FSRphotonBit = 0;
-//	FSRphotonJet = 0;
-//	FSRphotonPar = 0;
-//	FSRphotonllM = 0;
 	// ---- trigger variables ---------------------------------------------
 	fired = 0;
 	prescaleL1 = 0;
@@ -795,16 +822,24 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	lepPFIsoDBCor = 0;
 	lepPFIsoRhoCor = 0;
 	lepChId = 0;
+	lepR9orChi2ndof = 0;
 	lepId = 0;
 	// ---- jet variables -------------------------------------------------
+	jetVeto = 0;
 	jetPt = 0;
 	jetEta = 0;
 	jetPhi = 0;
 	jetE = 0;
-//	jetY = 0;
 	jetArea = 0;
 	jetBeta = 0;
 	jetQGL = 0;
+	jetPdgId = 0;
+	jetChgQC = 0;
+	jetNeutralPtCut = 0;
+	jetPtDQC = 0;
+	jetAxis1QC = 0;
+	jetAxis2QC = 0;
+	jetQGMLP = 0;	
 	jetRMS = 0;
 	jetBtag = 0;
 	jetTagInfoNVtx = 0;
@@ -814,56 +849,21 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	jetJEC = 0;
 	jetUNC = 0;
 	jetllDPhi = 0;
-//	jetCHF = 0;
-//	jetPHF = 0;
-//	jetNHF = 0;
-//	jetMUF = 0;
-//	jetELF = 0;
-//	jetId = 0;
-	// ---- DR rejected jet variables ------------------------------------
-//	rjetPt = 0;
-//	rjetEta = 0;
-//	rjetPhi = 0;
-//	rjetE = 0;
-//	rjetY = 0;
-//	rjetArea = 0;
-//	rjetBeta = 0;
-//	rjetBtag = 0;
-//	rjetJEC = 0;
-//	rjetUNC = 0;
-//	rjetCHF = 0;
-//	rjetPHF = 0;
-//	rjetNHF = 0;
-//	rjetMUF = 0;
-//	rjetELF = 0;
-//	rjetId = 0;
+  // ---- forward jets - two leading forward jets------------------------
+  fwjetPt = 0;
+	fwjetEta = 0;
+	fwjetPhi = 0;
+	fwjetE = 0;
 	// ---- vertex variables ----------------------------------------------
 	vtxZ = 0;
 	vtxNdof = 0;
-	// ---- gen variables ----------------------------------------------
-//	selGEN = 0;
+	// ---- gen variables -------------------------------------------------
 	puINT = 0;
-	puTrueINT = 0;
 	puOOT = 0;
+	puTrueINT = 0;
 	puTrueOOT = 0;
 	nLeptonsGEN = 0;
 	nJetsGEN = 0;
-//	isZleadGEN = 0;
-//	mZj1GEN = 0;
-//	ptZj1GEN = 0;
-//	costhetaZj1GEN = 0;
-//	mj1j2GEN = 0;
-//	mLepGEN = 0;
-//	htLeadGEN = 0;
-//	j1j2DPhiGEN = 0;
-//	j1j3DPhiGEN = 0;
-//	j2j3DPhiGEN = 0;
-//	j1j2DRGEN = 0;
-//	j1j3DRGEN = 0;
-//	j2j3DRGEN = 0;
-//	jetPtGeMeanGEN = 0;
-//	jetPtArMeanGEN = 0;
-	jetVeto = 0;
 	llMGEN = 0;
 	llPtGEN = 0;
 	llPhiGEN = 0;
@@ -883,14 +883,29 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	jetEGEN = 0;
 	jetVetoGEN = 0;
 	jetllDPhiGEN = 0;
-//	HTJetSumGEN = 0;
+	jetIdGEN = 0;
+	jetNpartonsGEN = 0;
 	HTParSum = 0;
 	mcWeight = 0;
+	qScale = 0;
+	alphaQED = 0;
+	alphaQCD = 0;
+	x1 = 0;
+	x2 = 0;
+	pdf1Id = 0;
+	pdf2Id = 0;
+	scalePDF = 0;
 	nPhotonsGEN = 0;
 	photonPtGEN = 0;
 	photonEGEN = 0;
 	photonEtaGEN = 0;
 	photonPhiGEN = 0;
+	photonIsoPtDR03GEN = 0;
+	photonIsoEDR03GEN = 0;
+	photonIsoPtDR04GEN = 0;
+	photonIsoEDR04GEN = 0;
+	photonIsoPtDR05GEN = 0;
+	photonIsoEDR05GEN = 0;
 	photonMotherIdGEN = 0;
 	photonRECODRGEN = 0;
 	VBPartonDM = 0;
@@ -902,6 +917,8 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	QGVars = 0;
 	lepSigmaIEtaIEta = 0;
 	lepHadronicOverEm = 0;
+	eventWeight = 0;
+	PUWeight = 0;
 
   // Set branch addresses and branch pointers
   if (!tree) return;
@@ -911,7 +928,6 @@ void GJetsAnalyzer::Init(TTree *tree) {
 
   // ---- global event variables ----------------------------------------
   fChain->SetBranchAddress("isRealData", &isRealData, &b_isRealData);
-//  fChain->SetBranchAddress("selRECO", &selRECO, &b_selRECO);
   fChain->SetBranchAddress("eventNum", &eventNum, &b_eventNum);
   fChain->SetBranchAddress("runNum", &runNum, &b_runNum);
   fChain->SetBranchAddress("lumi", &lumi, &b_lumi);
@@ -919,36 +935,15 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("nLeptons", &nLeptons, &b_nLeptons);
   fChain->SetBranchAddress("nPhotons", &nPhotons, &b_nPhotons);
   fChain->SetBranchAddress("nJets", &nJets, &b_nJets);
-//  fChain->SetBranchAddress("nRJets", &nRJets, &b_nRJets);
-//  fChain->SetBranchAddress("isZlead", &isZlead, &b_isZlead);
-//  fChain->SetBranchAddress("isPhotonlead", &isPhotonlead, &b_isPhotonlead);
+  fChain->SetBranchAddress("fwnJets", &fwnJets, &b_fwnJets); //$
   fChain->SetBranchAddress("rho", &rho, &b_rho);
   fChain->SetBranchAddress("rho25", &rho25, &b_rho25);
-//  fChain->SetBranchAddress("mZj1", &mZj1, &b_mZj1);
-//  fChain->SetBranchAddress("mZj1j2", &mZj1j2, &b_mZj1j2);
-//  fChain->SetBranchAddress("mZj1j2j3", &mZj1j2j3, &b_mZj1j2j3);
-//  fChain->SetBranchAddress("ptZj1", &ptZj1, &b_ptZj1);
-//  fChain->SetBranchAddress("costhetaZj1", &costhetaZj1, &b_costhetaZj1);
-//  fChain->SetBranchAddress("costhetaPhotonj1", &costhetaPhotonj1, &b_costhetaPhotonj1);
-//  fChain->SetBranchAddress("mj1j2", &mj1j2, &b_mj1j2);
-//  fChain->SetBranchAddress("mj1j2j3", &mj1j2j3, &b_mj1j2j3);
-//  fChain->SetBranchAddress("mrj1rj2", &mrj1rj2, &b_mrj1rj2);
-//  fChain->SetBranchAddress("mLep", &mLep, &b_mLep);
-//  fChain->SetBranchAddress("htLead", &htLead, &b_htLead);
-//  fChain->SetBranchAddress("j1j2DPhi", &j1j2DPhi, &b_j1j2DPhi);
-//  fChain->SetBranchAddress("j1j3DPhi", &j1j3DPhi, &b_j1j3DPhi);
-//  fChain->SetBranchAddress("j2j3DPhi", &j2j3DPhi, &b_j2j3DPhi);
-//  fChain->SetBranchAddress("j1j2DR", &j1j2DR, &b_j1j2DR);
-//  fChain->SetBranchAddress("j1j3DR", &j1j3DR, &b_j1j3DR);
-//  fChain->SetBranchAddress("j2j3DR", &j2j3DR, &b_j2j3DR);
-//  fChain->SetBranchAddress("jetPtGeMean", &jetPtGeMean, &b_jetPtGeMean);
-//  fChain->SetBranchAddress("jetPtArMean", &jetPtArMean, &b_jetPtArMean);
+  fChain->SetBranchAddress("rhoQG", &rhoQG, &b_rhoQG);  //$
   // ---- met variables -------------------------------------------------
   fChain->SetBranchAddress("pfmet", &pfmet, &b_pfmet);
   fChain->SetBranchAddress("pfmetPhi", &pfmetPhi, &b_pfmetPhi);
   fChain->SetBranchAddress("pfhadPt", &pfhadPt, &b_pfhadPt);
   fChain->SetBranchAddress("pfSumEt", &pfSumEt, &b_pfSumEt);
-//  fChain->SetBranchAddress("HTJetSum", &HTJetSum, &b_HTJetSum);
   // ---- dilepton variables --------------------------------------------
   fChain->SetBranchAddress("llM", &llM, &b_llM);
   fChain->SetBranchAddress("llPt", &llPt, &b_llPt);
@@ -961,7 +956,6 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("photonE", &photonE, &b_photonE);
   fChain->SetBranchAddress("photonEta", &photonEta, &b_photonEta);
   fChain->SetBranchAddress("photonPhi", &photonPhi, &b_photonPhi);
-//  fChain->SetBranchAddress("photonIso", &photonIso, &b_photonIso);
   fChain->SetBranchAddress("photonPassConversionVeto", &photonPassConversionVeto, &b_photonPassConversionVeto);
   fChain->SetBranchAddress("photonPfIsoChargedHad", &photonPfIsoChargedHad, &b_photonPfIsoChargedHad);
   fChain->SetBranchAddress("photonPfIsoNeutralHad", &photonPfIsoNeutralHad, &b_photonPfIsoNeutralHad);
@@ -995,24 +989,7 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("photonIsoFPRCharged", &photonIsoFPRCharged, &b_photonIsoFPRCharged);
   fChain->SetBranchAddress("photonIsoFPRNeutral", &photonIsoFPRNeutral, &b_photonIsoFPRNeutral);
   fChain->SetBranchAddress("photonIsoFPRPhoton", &photonIsoFPRPhoton, &b_photonIsoFPRPhoton);
-//  fChain->SetBranchAddress("photonID", &photonID, &b_photonID);
   fChain->SetBranchAddress("photonBit", &photonBit, &b_photonBit);
-//  fChain->SetBranchAddress("pfhadPhoPt", &pfhadPhoPt, &b_pfhadPhoPt);
-//  fChain->SetBranchAddress("mPhotonj1", &mPhotonj1, &b_mPhotonj1);
-//  fChain->SetBranchAddress("ptPhotonj1", &ptPhotonj1, &b_ptPhotonj1);
-//  fChain->SetBranchAddress("jetPhotonDPhi", &jetPhotonDPhi, &b_jetPhotonDPhi);
-//  fChain->SetBranchAddress("photonPar", &photonPar, &b_photonPar);
-  // ---- FSRphoton variables ----------------------------------------------
-//  fChain->SetBranchAddress("FSRphotonPt", &FSRphotonPt, &b_FSRphotonPt);
-//  fChain->SetBranchAddress("FSRphotonE", &FSRphotonE, &b_FSRphotonE);
-//  fChain->SetBranchAddress("FSRphotonEta", &FSRphotonEta, &b_FSRphotonEta);
-//  fChain->SetBranchAddress("FSRphotonPhi", &FSRphotonPhi, &b_FSRphotonPhi);
-//  fChain->SetBranchAddress("FSRphotonIso", &FSRphotonIso, &b_FSRphotonIso);
-//  fChain->SetBranchAddress("FSRphotonID", &FSRphotonID, &b_FSRphotonID);
-//  fChain->SetBranchAddress("FSRphotonBit", &FSRphotonBit, &b_FSRphotonBit);
-//  fChain->SetBranchAddress("FSRphotonJet", &FSRphotonJet, &b_FSRphotonJet);
-//  fChain->SetBranchAddress("FSRphotonPar", &FSRphotonPar, &b_FSRphotonPar);
-//  fChain->SetBranchAddress("FSRphotonllM", &FSRphotonllM, &b_FSRphotonllM);
   // ---- trigger variables ---------------------------------------------
   fChain->SetBranchAddress("fired", &fired, &b_fired);
   fChain->SetBranchAddress("prescaleL1", &prescaleL1, &b_prescaleL1);
@@ -1034,16 +1011,24 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("lepPFIsoDBCor", &lepPFIsoDBCor, &b_lepPFIsoDBCor);
   fChain->SetBranchAddress("lepPFIsoRhoCor", &lepPFIsoRhoCor, &b_lepPFIsoRhoCor);
   fChain->SetBranchAddress("lepChId", &lepChId, &b_lepChId);
+  fChain->SetBranchAddress("lepR9orChi2ndof", &lepR9orChi2ndof, &b_lepR9orChi2ndof); //$
   fChain->SetBranchAddress("lepId", &lepId, &b_lepId);
   // ---- jet variables -------------------------------------------------
+  fChain->SetBranchAddress("jetVeto", &jetVeto, &b_jetVeto); //$
   fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);
   fChain->SetBranchAddress("jetEta", &jetEta, &b_jetEta);
   fChain->SetBranchAddress("jetPhi", &jetPhi, &b_jetPhi);
   fChain->SetBranchAddress("jetE", &jetE, &b_jetE);
-//  fChain->SetBranchAddress("jetY", &jetY, &b_jetY);
   fChain->SetBranchAddress("jetArea", &jetArea, &b_jetArea);
   fChain->SetBranchAddress("jetBeta", &jetBeta, &b_jetBeta);
   fChain->SetBranchAddress("jetQGL", &jetQGL, &b_jetQGL);
+  fChain->SetBranchAddress("jetPdgId", &jetPdgId, &b_jetPdgId); //$
+  fChain->SetBranchAddress("jetChgQC", &jetChgQC, &b_jetChgQC); //$ 
+  fChain->SetBranchAddress("jetNeutralPtCut", &jetNeutralPtCut, &b_jetNeutralPtCut); //$
+  fChain->SetBranchAddress("jetPtDQC", &jetPtDQC, &b_jetPtDQC); //$
+  fChain->SetBranchAddress("jetAxis1QC", &jetAxis1QC, &b_jetAxis1QC); //$
+  fChain->SetBranchAddress("jetAxis2QC", &jetAxis2QC, &b_jetAxis2QC); //$
+  fChain->SetBranchAddress("jetQGMLP", &jetQGMLP, &b_jetQGMLP); //$
   fChain->SetBranchAddress("jetRMS", &jetRMS, &b_jetRMS);
   fChain->SetBranchAddress("jetBtag", &jetBtag, &b_jetBtag);
   fChain->SetBranchAddress("jetTagInfoNVtx", &jetTagInfoNVtx, &b_jetTagInfoNVtx);
@@ -1053,56 +1038,21 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("jetJEC", &jetJEC, &b_jetJEC);
   fChain->SetBranchAddress("jetUNC", &jetUNC, &b_jetUNC);
   fChain->SetBranchAddress("jetllDPhi", &jetllDPhi, &b_jetllDPhi);
-//  fChain->SetBranchAddress("jetCHF", &jetCHF, &b_jetCHF);
-//  fChain->SetBranchAddress("jetPHF", &jetPHF, &b_jetPHF);
-//  fChain->SetBranchAddress("jetNHF", &jetNHF, &b_jetNHF);
-//  fChain->SetBranchAddress("jetMUF", &jetMUF, &b_jetMUF);
-//  fChain->SetBranchAddress("jetELF", &jetELF, &b_jetELF);
-//  fChain->SetBranchAddress("jetId", &jetId, &b_jetId);
-  // ---- DR rejected jet variables ------------------------------------
-//  fChain->SetBranchAddress("rjetPt", &rjetPt, &b_rjetPt);
-//  fChain->SetBranchAddress("rjetEta", &rjetEta, &b_rjetEta);
-//  fChain->SetBranchAddress("rjetPhi", &rjetPhi, &b_rjetPhi);
-//  fChain->SetBranchAddress("rjetE", &rjetE, &b_rjetE);
-//  fChain->SetBranchAddress("rjetY", &rjetY, &b_rjetY);
-//  fChain->SetBranchAddress("rjetArea", &rjetArea, &b_rjetArea);
-//  fChain->SetBranchAddress("rjetBeta", &rjetBeta, &b_rjetBeta);
-//  fChain->SetBranchAddress("rjetBtag", &rjetBtag, &b_rjetBtag);
-//  fChain->SetBranchAddress("rjetJEC", &rjetJEC, &b_rjetJEC);
-//  fChain->SetBranchAddress("rjetUNC", &rjetUNC, &b_rjetUNC);
-//  fChain->SetBranchAddress("rjetCHF", &rjetCHF, &b_rjetCHF);
-//  fChain->SetBranchAddress("rjetPHF", &rjetPHF, &b_rjetPHF);
-//  fChain->SetBranchAddress("rjetNHF", &rjetNHF, &b_rjetNHF);
-//  fChain->SetBranchAddress("rjetMUF", &rjetMUF, &b_rjetMUF);
-//  fChain->SetBranchAddress("rjetELF", &rjetELF, &b_rjetELF);
-//  fChain->SetBranchAddress("rjetId", &rjetId, &b_rjetId);
+ //-----forward jets - two leading forward jets
+  fChain->SetBranchAddress("fwjetPt", &fwjetPt, &b_fwjetPt); //$
+  fChain->SetBranchAddress("fwjetEta", &fwjetEta, &b_fwjetEta); //$
+  fChain->SetBranchAddress("fwjetPhi", &fwjetPhi, &b_fwjetPhi); //$
+  fChain->SetBranchAddress("fwjetE", &fwjetE, &b_fwjetE); //$
   // ---- vertex variables ----------------------------------------------
   fChain->SetBranchAddress("vtxZ", &vtxZ, &b_vtxZ);
   fChain->SetBranchAddress("vtxNdof", &vtxNdof, &b_vtxNdof);
   // ---- gen variables ----------------------------------------------
-//  fChain->SetBranchAddress("selGEN", &selGEN, &b_selGEN);
   fChain->SetBranchAddress("puINT", &puINT, &b_puINT);
+  fChain->SetBranchAddress("puOOT", &puOOT, &b_puOOT); //$
   fChain->SetBranchAddress("puTrueINT", &puTrueINT, &b_puTrueINT);
-  fChain->SetBranchAddress("puOOT", &puOOT, &b_puOOT);
   fChain->SetBranchAddress("puTrueOOT", &puTrueOOT, &b_puTrueOOT);
   fChain->SetBranchAddress("nLeptonsGEN", &nLeptonsGEN, &b_nLeptonsGEN);
   fChain->SetBranchAddress("nJetsGEN", &nJetsGEN, &b_nJetsGEN);
-//  fChain->SetBranchAddress("isZleadGEN", &isZleadGEN, &b_isZleadGEN);
-//  fChain->SetBranchAddress("mZj1GEN", &mZj1GEN, &b_mZj1GEN);
-//  fChain->SetBranchAddress("ptZj1GEN", &ptZj1GEN, &b_ptZj1GEN);
-//  fChain->SetBranchAddress("costhetaZj1GEN", &costhetaZj1GEN, &b_costhetaZj1GEN);
-//  fChain->SetBranchAddress("mj1j2GEN", &mj1j2GEN, &b_mj1j2GEN);
-//  fChain->SetBranchAddress("mLepGEN", &mLepGEN, &b_mLepGEN);
-//  fChain->SetBranchAddress("htLeadGEN", &htLeadGEN, &b_htLeadGEN);
-//  fChain->SetBranchAddress("j1j2DPhiGEN", &j1j2DPhiGEN, &b_j1j2DPhiGEN);
-//  fChain->SetBranchAddress("j1j3DPhiGEN", &j1j3DPhiGEN, &b_j1j3DPhiGEN);
-//  fChain->SetBranchAddress("j2j3DPhiGEN", &j2j3DPhiGEN, &b_j2j3DPhiGEN);
-//  fChain->SetBranchAddress("j1j2DRGEN", &j1j2DRGEN, &b_j1j2DRGEN);
-//  fChain->SetBranchAddress("j1j3DRGEN", &j1j3DRGEN, &b_j1j3DRGEN);
-//  fChain->SetBranchAddress("j2j3DRGEN", &j2j3DRGEN, &b_j2j3DRGEN);
-//  fChain->SetBranchAddress("jetPtGeMeanGEN", &jetPtGeMeanGEN, &b_jetPtGeMeanGEN);
-//  fChain->SetBranchAddress("jetPtArMeanGEN", &jetPtArMeanGEN, &b_jetPtArMeanGEN);
-  fChain->SetBranchAddress("jetVeto", &jetVeto, &b_jetVeto);
   fChain->SetBranchAddress("llMGEN", &llMGEN, &b_llMGEN);
   fChain->SetBranchAddress("llPtGEN", &llPtGEN, &b_llPtGEN);
   fChain->SetBranchAddress("llPhiGEN", &llPhiGEN, &b_llPhiGEN);
@@ -1122,14 +1072,29 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("jetEGEN", &jetEGEN, &b_jetEGEN);
   fChain->SetBranchAddress("jetVetoGEN", &jetVetoGEN, &b_jetVetoGEN);
   fChain->SetBranchAddress("jetllDPhiGEN", &jetllDPhiGEN, &b_jetllDPhiGEN);
-//  fChain->SetBranchAddress("HTJetSumGEN", &HTJetSumGEN, &b_HTJetSumGEN);
+  fChain->SetBranchAddress("jetIdGEN", &jetIdGEN, &b_jetIdGEN);
+  fChain->SetBranchAddress("jetNpartonsGEN", &jetNpartonsGEN, &b_jetNpartonsGEN);
   fChain->SetBranchAddress("HTParSum", &HTParSum, &b_HTParSum);  
   fChain->SetBranchAddress("mcWeight", &mcWeight, &b_mcWeight);
+  fChain->SetBranchAddress("qScale", &qScale, &b_qScale); //$
+  fChain->SetBranchAddress("alphaQED", &alphaQED, &b_alphaQED); //$
+  fChain->SetBranchAddress("alphaQCD", &alphaQCD, &b_alphaQCD); //$
+  fChain->SetBranchAddress("x1", &x1, &b_x1); //$
+  fChain->SetBranchAddress("x2", &x2, &b_x2); //$
+  fChain->SetBranchAddress("pdf1Id", &pdf1Id, &b_pdf1Id); //$
+  fChain->SetBranchAddress("pdf2Id", &pdf2Id, &b_pdf2Id); //$
+  fChain->SetBranchAddress("scalePDF", &scalePDF, &b_scalePDF); //$  
   fChain->SetBranchAddress("nPhotonsGEN", &nPhotonsGEN, &b_nPhotonsGEN);
   fChain->SetBranchAddress("photonPtGEN", &photonPtGEN, &b_photonPtGEN);
   fChain->SetBranchAddress("photonEGEN", &photonEGEN, &b_photonEGEN);
   fChain->SetBranchAddress("photonEtaGEN", &photonEtaGEN, &b_photonEtaGEN);
   fChain->SetBranchAddress("photonPhiGEN", &photonPhiGEN, &b_photonPhiGEN);
+  fChain->SetBranchAddress("photonIsoPtDR03GEN", &photonIsoPtDR03GEN, &b_photonIsoPtDR03GEN); //$
+  fChain->SetBranchAddress("photonIsoEDR03GEN", &photonIsoEDR03GEN, &b_photonIsoEDR03GEN); //$
+  fChain->SetBranchAddress("photonIsoPtDR04GEN", &photonIsoPtDR04GEN, &b_photonIsoPtDR04GEN); //$
+  fChain->SetBranchAddress("photonIsoEDR04GEN", &photonIsoEDR04GEN, &b_photonIsoEDR04GEN); //$
+  fChain->SetBranchAddress("photonIsoPtDR05GEN", &photonIsoPtDR05GEN, &b_photonIsoPtDR05GEN); //$
+  fChain->SetBranchAddress("photonIsoEDR05GEN", &photonIsoEDR05GEN, &b_photonIsoEDR05GEN); //$
   fChain->SetBranchAddress("photonMotherIdGEN", &photonMotherIdGEN, &b_photonMotherIdGEN);
   fChain->SetBranchAddress("photonRECODRGEN", &photonRECODRGEN, &b_photonRECODRGEN);
   fChain->SetBranchAddress("VBPartonDM", &VBPartonDM, &b_VBPartonDM);
@@ -1138,9 +1103,10 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("VBPartonPt", &VBPartonPt, &b_VBPartonPt);
   fChain->SetBranchAddress("VBPartonEta", &VBPartonEta, &b_VBPartonEta);
   fChain->SetBranchAddress("VBPartonPhi", &VBPartonPhi, &b_VBPartonPhi);
-  fChain->SetBranchAddress("QGVars", &QGVars, &b_QGVars);
   fChain->SetBranchAddress("lepSigmaIEtaIEta", &lepSigmaIEtaIEta, &b_lepSigmaIEtaIEta);
   fChain->SetBranchAddress("lepHadronicOverEm", &lepHadronicOverEm, &b_lepHadronicOverEm);
+  fChain->SetBranchAddress("eventWeight", &eventWeight, &b_eventWeight); 
+  fChain->SetBranchAddress("PUWeight", &PUWeight, &b_PUWeight);
   Notify();
 }
 
