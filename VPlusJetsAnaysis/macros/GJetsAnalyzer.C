@@ -11,6 +11,8 @@
 #include <TCanvas.h>
 #include <TMath.h>
 #include <fstream>
+#include <DataFormats/Math/interface/deltaPhi.h>
+#include <DataFormats/Math/interface/deltaR.h>
 //#ifdef __MAKECINT__
 //#pragma link C++ class vector<float>+;
 //#endif
@@ -47,7 +49,7 @@ void GJetsAnalyzer::Loop(){
 
   Float_t weight = 1; 
 	Float_t weight_withPU = 1;
-  Int_t itype = 2;   // identifica histo con analisi diverse 
+  Int_t itype = 4;   // identifica histo con analisi diverse 
 
   // choose the sample:
 	// -----------------------------------------------------  
@@ -443,11 +445,16 @@ void GJetsAnalyzer::Loop(){
   weight_r = weight;
 	sample_r = sample;
 
+	bool isMC = false;
+	if (mysample == 0 || mysample > 7) isMC = true;
+
   if (fChain == 0) return;
 
   // ================ initialize and book histograms
   TFile *fhistos= new TFile(outputname, "RECREATE");
   Book_Histos();
+ 
+// #### normal selection - start
   iSelected0 = 0;
   iSelected1 = 0;
   iSelected2 = 0;
@@ -465,24 +472,67 @@ void GJetsAnalyzer::Loop(){
   iSelectedWithWeights5 = 0;
   iSelectedWithWeights6 = 0;
   iSelectedWithWeights7 = 0;
-  
-  iSelected0_cl = 0;
-  iSelected1_cl = 0;
-  iSelected2_cl = 0;
-  iSelected3_cl = 0;
-  iSelected4_cl = 0;
-  iSelected5_cl = 0;
-  iSelected6_cl = 0;
-  iSelected7_cl = 0;
+// #### normal selection - finish  
+ 
+// #### cleaning new: jet vs. ALL photons - start  
+  iSelected0_cl_new_ALL = 0;
+  iSelected1_cl_new_ALL = 0;
+  iSelected2_cl_new_ALL = 0;
+  iSelected3_cl_new_ALL = 0;
+  iSelected4_cl_new_ALL = 0;
+  iSelected5_cl_new_ALL = 0;
+  iSelected6_cl_new_ALL = 0;
+  iSelected7_cl_new_ALL = 0;
 
-  iSelectedWithWeights0_cl = 0;
-  iSelectedWithWeights1_cl = 0;
-  iSelectedWithWeights2_cl = 0;
-  iSelectedWithWeights3_cl = 0;
-  iSelectedWithWeights4_cl = 0;
-  iSelectedWithWeights5_cl = 0;
-  iSelectedWithWeights6_cl = 0;
-  iSelectedWithWeights7_cl = 0;
+  iSelectedWithWeights0_cl_new_ALL = 0;
+  iSelectedWithWeights1_cl_new_ALL = 0;
+  iSelectedWithWeights2_cl_new_ALL = 0;
+  iSelectedWithWeights3_cl_new_ALL = 0;
+  iSelectedWithWeights4_cl_new_ALL = 0;
+  iSelectedWithWeights5_cl_new_ALL = 0;
+  iSelectedWithWeights6_cl_new_ALL = 0;
+  iSelectedWithWeights7_cl_new_ALL = 0;
+// #### cleaning new: jet vs. ALL photons - finish
+
+// #### cleaning new: jet vs. LEADING photon - start  
+  iSelected0_cl_new_LEA = 0;
+  iSelected1_cl_new_LEA = 0;
+  iSelected2_cl_new_LEA = 0;
+  iSelected3_cl_new_LEA = 0;
+  iSelected4_cl_new_LEA = 0;
+  iSelected5_cl_new_LEA = 0;
+  iSelected6_cl_new_LEA = 0;
+  iSelected7_cl_new_LEA = 0;
+
+  iSelectedWithWeights0_cl_new_LEA = 0;
+  iSelectedWithWeights1_cl_new_LEA = 0;
+  iSelectedWithWeights2_cl_new_LEA = 0;
+  iSelectedWithWeights3_cl_new_LEA = 0;
+  iSelectedWithWeights4_cl_new_LEA = 0;
+  iSelectedWithWeights5_cl_new_LEA = 0;
+  iSelectedWithWeights6_cl_new_LEA = 0;
+  iSelectedWithWeights7_cl_new_LEA = 0;
+// #### cleaning new: jet vs. LEADING photon - finish
+
+// #### cleaning old - start
+  iSelected0_cl_old = 0;
+  iSelected1_cl_old = 0;
+  iSelected2_cl_old = 0;
+  iSelected3_cl_old = 0;
+  iSelected4_cl_old = 0;
+  iSelected5_cl_old = 0;
+  iSelected6_cl_old = 0;
+  iSelected7_cl_old = 0;
+
+  iSelectedWithWeights0_cl_old = 0;
+  iSelectedWithWeights1_cl_old = 0;
+  iSelectedWithWeights2_cl_old = 0;
+  iSelectedWithWeights3_cl_old = 0;
+  iSelectedWithWeights4_cl_old = 0;
+  iSelectedWithWeights5_cl_old = 0;
+  iSelectedWithWeights6_cl_old = 0;
+  iSelectedWithWeights7_cl_old = 0;
+// #### cleaning old - finish
 
 //  iSelectedWithWeights = 0;
 
@@ -502,12 +552,13 @@ void GJetsAnalyzer::Loop(){
     if(jentry%100000 == 0) cout << jentry << endl;
     Zero_Variables();
 
-/*
+
     // ============ selection for photon at GEN level
+/*
     // take request of jet, as done by Jessica
     // if (selGEN && nPhotonsGEN > 0 && photonPtGEN > 150. && TMath::Abs(photonEtaGEN) < 3. && nJetsGEN > 0) {
 
-    if (selGEN && nPhotonsGEN > 0 && photonPtGEN > 150. && TMath::Abs(photonEtaGEN) < 3.) { //da aggiungere isEBEEGap()
+    if (selGEN && nPhotonsGEN > 0 && photonPtGEN > 150. && TMath::Abs(photonEtaGEN) < 3.) { 
           
       ptGENjet1 = jetPtGEN->at(0);
       etaGENjet1 = jetEtaGEN->at(0);
@@ -535,12 +586,35 @@ void GJetsAnalyzer::Loop(){
       } // end DummyTrue  
     } // end GEN cuts
 */
-//cout << "-----inizio-------" << endl;
-//cout << "qui 4" << endl;
 
 		// ---- objects position ----------------------------------------------
-		if(nPhotons > 0 && nJets > 0 && isTriggerMatchedFamily4 /*da cancellare*/) {
-	
+
+		// --- GEN
+		if (isMC){
+
+			if (nPhotonsGEN > 0){
+
+				// jets selection
+				if (nJetsGEN > 0 && jetPtGEN->size()){
+
+					jetPtGEN_1 = jetPtGEN->at(0);
+					jetEtaGEN_1 =jetEtaGEN->at(0);
+					jetPhiGEN_1 = jetPhiGEN->at(0);
+					jetEGEN_1 =jetEGEN->at(0);
+
+					HTGEN = 0;
+					for(unsigned int j = 0; j < jetPtGEN->size(); j++) {
+	     		  HTGEN += jetPtGEN->at(j);
+					}
+				}
+			}
+		}
+		
+		// --- REC
+//		if(nPhotons > 0 && nJets > 0 && isTriggerMatchedFamily4 /*da cancellare*/) {
+		if(nPhotons > 0 && photonPt->size()/*da cancellare*/) {
+
+			// #### normal selection - start	
 			// ---- photons
 			photonPt_1 = photonPt->at(0);
 			photonE_1 = photonE->at(0);
@@ -589,107 +663,251 @@ void GJetsAnalyzer::Loop(){
 			photonIsoFPRPhoton_1 = photonIsoFPRPhoton->at(0);
 			photonBit_1 = photonBit->at(0);
 
-			// ---- jets
-
-			jetPt_1 = jetPt->at(0);
-			jetEta_1 = jetEta->at(0);
-			jetPhi_1 = jetPhi->at(0);           
-			jetE_1 = jetE->at(0);
+			if (nJets > 0){
+				// ---- jets
+				jetPt_1 = jetPt->at(0);
+				jetEta_1 = jetEta->at(0);
+				jetPhi_1 = jetPhi->at(0);           
+				jetE_1 = jetE->at(0);
 		
-			if(nJets > 1){  
-				jetPt_2 = jetPt->at(1);
-				jetEta_2 = jetEta->at(1);
-				jetPhi_2 = jetPhi->at(1);           
-				jetE_2 = jetE->at(1);
-			}
+				if(nJets > 1){  
+					jetPt_2 = jetPt->at(1);
+					jetEta_2 = jetEta->at(1);
+					jetPhi_2 = jetPhi->at(1);           
+					jetE_2 = jetE->at(1);
+				}
 				
-			if(nJets > 2){  
-				jetPt_3 = jetPt->at(2);
-				jetEta_3 = jetEta->at(2);
-				jetPhi_3 = jetPhi->at(2);           
-				jetE_3 = jetE->at(2);		
-			}
+				if(nJets > 2){  
+					jetPt_3 = jetPt->at(2);
+					jetEta_3 = jetEta->at(2);
+					jetPhi_3 = jetPhi->at(2);           
+					jetE_3 = jetE->at(2);		
+				}
 
-     	// ---- angular  
-			DeltaR_photon1_jet1 = deltaR(photonEta_1, photonPhi_1, jetEta_1, jetPhi_1);
-			DeltaPhi_photon1_jet1 = deltaPhi(photonPhi_1, jetPhi_1);
+	     	// ---- angular  
+				DeltaR_photon1_jet1 = deltaR(photonEta_1, photonPhi_1, jetEta_1, jetPhi_1);
+				DeltaEta_photon1_jet1 = deltaEta(photonEta_1, jetEta_1);
+				DeltaPhi_photon1_jet1 = deltaPhi(photonPhi_1, jetPhi_1);
 
-			if(nJets > 1){  
-				DeltaR_photon1_jet2 = deltaR(photonEta_1, photonPhi_1, jetEta_2, jetPhi_2);
-				DeltaEta_jet1_jet2 = deltaEta(jetEta_1, jetEta_2);
-				DeltaPhi_jet1_jet2 = deltaPhi(jetPhi_1, jetPhi_2);
-			}
-			if(nJets > 2){  
-				DeltaR_photon1_jet3 = deltaR(photonEta_1, photonPhi_1, jetEta_3, jetPhi_3);
-			}
+				if(nJets > 1){  
+					DeltaR_photon1_jet2 = deltaR(photonEta_1, photonPhi_1, jetEta_2, jetPhi_2);
+					DeltaR_jet1_jet2 = deltaR(jetEta_1, jetEta_2, jetPhi_1, jetPhi_2);
+					DeltaEta_jet1_jet2 = deltaEta(jetEta_1, jetEta_2);
+					DeltaPhi_jet1_jet2 = deltaPhi(jetPhi_1, jetPhi_2);
+				}
+				if(nJets > 2){  
+					DeltaR_photon1_jet3 = deltaR(photonEta_1, photonPhi_1, jetEta_3, jetPhi_3);
+				}
 
-     	// ---- other  				
-			HT = 0;
-			for(unsigned int j = 0; j < jetPt->size(); j++) {
-     	  HT += jetPt->at(j);
+     		// ---- other  				
+				HT = 0;
+				for(unsigned int j = 0; j < jetPt->size(); j++) {
+     		  HT += jetPt->at(j);
+				}
 			}
-			
-			// ---- clean
-			nJets_cl = 0;
+			// #### normal selection - finish
+
+/*
+			// #### cleaning new: jet vs. ALL photons - start
+			nJets_cl_new_ALL = 0;
+
+			for (int iJetar = 0; iJetar < nJets; iJetar++) {
+				bool close = false;
+				for (int jPhoar = 0; jPhoar < nPhotons; ++jPhoar){
+					if ( deltaR(photonEta->at(jPhoar), photonPhi->at(jPhoar), jetEta->at(iJetar), jetPhi->at(iJetar)) < 0.4) {
+						close = true;
+						break;
+					}
+				}	
+				if (!close){
+					jetPt_cl_new_ALL.push_back(jetPt->at(iJetar));
+					jetEta_cl_new_ALL.push_back(jetEta->at(iJetar));
+					jetPhi_cl_new_ALL.push_back(jetPhi->at(iJetar));
+					jetE_cl_new_ALL.push_back(jetE->at(iJetar));
+					nJets_cl_new_ALL += 1;
+				}
+			}
+	
+			// ---- jets clean new
+			if(nJets_cl_new_ALL > 0){ 
+				jetPt_1_cl_new_ALL = jetPt_cl_new_ALL.at(0);
+				jetEta_1_cl_new_ALL = jetEta_cl_new_ALL.at(0);
+				jetPhi_1_cl_new_ALL = jetPhi_cl_new_ALL.at(0);  
+				jetE_1_cl_new_ALL = jetE_cl_new_ALL.at(0);
+
+				if(nJets_cl_new_ALL > 1){  
+					jetPt_2_cl_new_ALL = jetPt_cl_new_ALL.at(1);
+					jetEta_2_cl_new_ALL = jetEta_cl_new_ALL.at(1);
+					jetPhi_2_cl_new_ALL = jetPhi_cl_new_ALL.at(1);           
+					jetE_2_cl_new_ALL = jetE_cl_new_ALL.at(1);
+				}
+				
+				if(nJets_cl_new_ALL > 2){  
+					jetPt_3_cl_new_ALL = jetPt_cl_new_ALL.at(2);
+					jetEta_3_cl_new_ALL = jetEta_cl_new_ALL.at(2);
+					jetPhi_3_cl_new_ALL = jetPhi_cl_new_ALL.at(2);           
+					jetE_3_cl_new_ALL = jetE_cl_new_ALL.at(2);		
+				}
+
+     		// ---- angular clean new
+				DeltaR_photon1_jet1_cl_new_ALL = deltaR(photonEta_1, photonPhi_1, jetEta_1_cl_new_ALL, jetPhi_1_cl_new_ALL);
+				DeltaPhi_photon1_jet1_cl_new_ALL = deltaPhi(photonPhi_1, jetPhi_1_cl_new_ALL);
+
+				if(nJets_cl_new_ALL > 1){  
+					DeltaR_photon1_jet2_cl_new_ALL = deltaR(photonEta_1, photonPhi_1, jetEta_2_cl_new_ALL, jetPhi_2_cl_new_ALL);
+					DeltaR_jet1_jet2_cl_new_ALL = deltaR(jetEta_1_cl_new_ALL, jetEta_2_cl_new_ALL, jetPhi_1_cl_new_ALL, jetPhi_2_cl_new_ALL);					
+					DeltaEta_jet1_jet2_cl_new_ALL = deltaEta(jetEta_1_cl_new_ALL, jetEta_2_cl_new_ALL);
+					DeltaPhi_jet1_jet2_cl_new_ALL = deltaPhi(jetPhi_1_cl_new_ALL, jetPhi_2_cl_new_ALL);
+				}
+				if(nJets_cl_new_ALL > 2){  
+					DeltaR_photon1_jet3_cl_new_ALL = deltaR(photonEta_1, photonPhi_1, jetEta_3_cl_new_ALL, jetPhi_3_cl_new_ALL);
+				}
+
+     		// ---- other clean	new	
+				HT_cl_new_ALL = 0;
+				for(unsigned int j = 0; j < jetPt_cl_new_ALL.size(); j++) {
+     	  	HT_cl_new_ALL += jetPt_cl_new_ALL.at(j);
+				}
+
+     	  jetPt_cl_new_ALL.clear();
+     	  jetEta_cl_new_ALL.clear(); 
+				jetPhi_cl_new_ALL.clear();
+				jetE_cl_new_ALL.clear();	
+			}
+			// #### cleaning new: jet vs. ALL photons - finish
+*/
+
+/*
+			// #### cleaning new: jet vs. LEADING photon - start
+			nJets_cl_new_LEA = 0;
+
+			for (int iJetar = 0; iJetar < nJets; iJetar++) {
+				bool close = false;
+					if ( deltaR(photonEta->at(0), photonPhi->at(0), jetEta->at(iJetar), jetPhi->at(iJetar)) < 0.4 ) {
+						close = true;
+					}
+				if (!close){
+					jetPt_cl_new_LEA.push_back(jetPt->at(iJetar));
+					jetEta_cl_new_LEA.push_back(jetEta->at(iJetar));
+					jetPhi_cl_new_LEA.push_back(jetPhi->at(iJetar));
+					jetE_cl_new_LEA.push_back(jetE->at(iJetar));
+					nJets_cl_new_LEA += 1;
+				}
+			}
+	
+			// ---- jets clean new
+			if(nJets_cl_new_LEA > 0){ 
+				jetPt_1_cl_new_LEA = jetPt_cl_new_LEA.at(0);
+				jetEta_1_cl_new_LEA = jetEta_cl_new_LEA.at(0);
+				jetPhi_1_cl_new_LEA = jetPhi_cl_new_LEA.at(0);  
+				jetE_1_cl_new_LEA = jetE_cl_new_LEA.at(0);
+
+				if(nJets_cl_new_LEA > 1){  
+					jetPt_2_cl_new_LEA = jetPt_cl_new_LEA.at(1);
+					jetEta_2_cl_new_LEA = jetEta_cl_new_LEA.at(1);
+					jetPhi_2_cl_new_LEA = jetPhi_cl_new_LEA.at(1);           
+					jetE_2_cl_new_LEA = jetE_cl_new_LEA.at(1);
+				}
+				
+				if(nJets_cl_new_LEA > 2){  
+					jetPt_3_cl_new_LEA = jetPt_cl_new_LEA.at(2);
+					jetEta_3_cl_new_LEA = jetEta_cl_new_LEA.at(2);
+					jetPhi_3_cl_new_LEA = jetPhi_cl_new_LEA.at(2);           
+					jetE_3_cl_new_LEA = jetE_cl_new_LEA.at(2);		
+				}
+
+     		// ---- angular clean new
+				DeltaR_photon1_jet1_cl_new_LEA = deltaR(photonEta_1, photonPhi_1, jetEta_1_cl_new_LEA, jetPhi_1_cl_new_LEA);
+				DeltaPhi_photon1_jet1_cl_new_LEA = deltaPhi(photonPhi_1, jetPhi_1_cl_new_LEA);
+
+				if(nJets_cl_new_LEA > 1){  
+					DeltaR_photon1_jet2_cl_new_LEA = deltaR(photonEta_1, photonPhi_1, jetEta_2_cl_new_LEA, jetPhi_2_cl_new_LEA);
+					DeltaR_jet1_jet2_cl_new_LEA = deltaR(jetEta_1_cl_new_LEA, jetEta_2_cl_new_LEA, jetPhi_1_cl_new_LEA, jetPhi_2_cl_new_LEA);					
+					DeltaEta_jet1_jet2_cl_new_LEA = deltaEta(jetEta_1_cl_new_LEA, jetEta_2_cl_new_LEA);
+					DeltaPhi_jet1_jet2_cl_new_LEA = deltaPhi(jetPhi_1_cl_new_LEA, jetPhi_2_cl_new_LEA);
+				}
+				if(nJets_cl_new_LEA > 2){  
+					DeltaR_photon1_jet3_cl_new_LEA = deltaR(photonEta_1, photonPhi_1, jetEta_3_cl_new_LEA, jetPhi_3_cl_new_LEA);
+				}
+
+     		// ---- other clean	new	
+				HT_cl_new_LEA = 0;
+				for(unsigned int j = 0; j < jetPt_cl_new_LEA.size(); j++) {
+     	  	HT_cl_new_LEA += jetPt_cl_new_LEA.at(j);
+				}
+
+     	  jetPt_cl_new_LEA.clear();
+     	  jetEta_cl_new_LEA.clear(); 
+				jetPhi_cl_new_LEA.clear();
+				jetE_cl_new_LEA.clear();	
+			}
+			// #### cleaning new: jet vs. LEADING photon - finish
+*/
+
+			// #### cleaning old - start
+			nJets_cl_old = 0;
 
 			for (unsigned int iJetar = 0; iJetar < jetVeto->size(); iJetar++) {
 				bool close = (jetVeto->at(iJetar))&4;
 //				cout << "close(" << iJetar << ") = " << close << endl;
 				if (close!=1){
 //cout << "jetPt->at(" << iJetar << ") = " << jetPt->at(iJetar) << endl;
-					jetPt_cl.push_back(jetPt->at(iJetar));
-					jetEta_cl.push_back(jetEta->at(iJetar));
-					jetPhi_cl.push_back(jetPhi->at(iJetar));
-					jetE_cl.push_back(jetE->at(iJetar));
-					nJets_cl += 1;
+					jetPt_cl_old.push_back(jetPt->at(iJetar));
+					jetEta_cl_old.push_back(jetEta->at(iJetar));
+					jetPhi_cl_old.push_back(jetPhi->at(iJetar));
+					jetE_cl_old.push_back(jetE->at(iJetar));
+					nJets_cl_old += 1;
 				}
 			}	
 			
-			// ---- jets clean
-			if(nJets_cl > 0){ 
-				jetPt_1_cl = jetPt_cl.at(0);
-				jetEta_1_cl = jetEta_cl.at(0);
-				jetPhi_1_cl = jetPhi_cl.at(0);  
-				jetE_1_cl = jetE_cl.at(0);
+			// ---- jets clean old
+			if(nJets_cl_old > 0){ 
+				jetPt_1_cl_old = jetPt_cl_old.at(0);
+				jetEta_1_cl_old = jetEta_cl_old.at(0);
+				jetPhi_1_cl_old = jetPhi_cl_old.at(0);  
+				jetE_1_cl_old = jetE_cl_old.at(0);
 
-				if(nJets_cl > 1){  
-					jetPt_2_cl = jetPt_cl.at(1);
-					jetEta_2_cl = jetEta_cl.at(1);
-					jetPhi_2_cl = jetPhi_cl.at(1);           
-					jetE_2_cl = jetE_cl.at(1);
+				if(nJets_cl_old > 1){  
+					jetPt_2_cl_old = jetPt_cl_old.at(1);
+					jetEta_2_cl_old = jetEta_cl_old.at(1);
+					jetPhi_2_cl_old = jetPhi_cl_old.at(1);           
+					jetE_2_cl_old = jetE_cl_old.at(1);
 				}
 				
-				if(nJets_cl > 2){  
-					jetPt_3_cl = jetPt_cl.at(2);
-					jetEta_3_cl = jetEta_cl.at(2);
-					jetPhi_3_cl = jetPhi_cl.at(2);           
-					jetE_3_cl = jetE_cl.at(2);		
+				if(nJets_cl_old > 2){  
+					jetPt_3_cl_old = jetPt_cl_old.at(2);
+					jetEta_3_cl_old = jetEta_cl_old.at(2);
+					jetPhi_3_cl_old = jetPhi_cl_old.at(2);           
+					jetE_3_cl_old = jetE_cl_old.at(2);		
 				}
 
-     		// ---- angular clean
-				DeltaR_photon1_jet1_cl = deltaR(photonEta_1, photonPhi_1, jetEta_1_cl, jetPhi_1_cl);
-				DeltaPhi_photon1_jet1_cl = deltaPhi(photonPhi_1, jetPhi_1_cl);
+     		// ---- angular clean old
+				DeltaR_photon1_jet1_cl_old = deltaR(photonEta_1, photonPhi_1, jetEta_1_cl_old, jetPhi_1_cl_old);
+				DeltaEta_photon1_jet1_cl_old = deltaEta(photonEta_1, jetEta_1_cl_old);
+				DeltaPhi_photon1_jet1_cl_old = deltaPhi(photonPhi_1, jetPhi_1_cl_old);
 
-				if(nJets_cl > 1){  
-					DeltaR_photon1_jet2_cl = deltaR(photonEta_1, photonPhi_1, jetEta_2_cl, jetPhi_2_cl);
-					DeltaEta_jet1_jet2_cl = deltaEta(jetEta_1_cl, jetEta_2_cl);
-					DeltaPhi_jet1_jet2_cl = deltaPhi(jetPhi_1_cl, jetPhi_2_cl);
+				if(nJets_cl_old > 1){  
+					DeltaR_photon1_jet2_cl_old = deltaR(photonEta_1, photonPhi_1, jetEta_2_cl_old, jetPhi_2_cl_old);
+					DeltaR_jet1_jet2_cl_old = deltaR(jetEta_1_cl_old, jetEta_2_cl_old, jetPhi_1_cl_old, jetPhi_2_cl_old);					
+					DeltaEta_jet1_jet2_cl_old = deltaEta(jetEta_1_cl_old, jetEta_2_cl_old);
+					DeltaPhi_jet1_jet2_cl_old = deltaPhi(jetPhi_1_cl_old, jetPhi_2_cl_old);
 				}
-				if(nJets_cl > 2){  
-					DeltaR_photon1_jet3_cl = deltaR(photonEta_1, photonPhi_1, jetEta_3_cl, jetPhi_3_cl);
-				}
-
-     		// ---- other clean			
-				HT_cl = 0;
-				for(unsigned int j = 0; j < jetPt_cl.size(); j++) {
-     	  	HT_cl += jetPt_cl.at(j);
+				if(nJets_cl_old > 2){  
+					DeltaR_photon1_jet3_cl_old = deltaR(photonEta_1, photonPhi_1, jetEta_3_cl_old, jetPhi_3_cl_old);
 				}
 
-     	  jetPt_cl.clear();
-     	  jetEta_cl.clear(); 
-				jetPhi_cl.clear();
-				jetE_cl.clear();	
+     		// ---- other clean	old	
+				HT_cl_old = 0;
+				for(unsigned int j = 0; j < jetPt_cl_old.size(); j++) {
+     	  	HT_cl_old += jetPt_cl_old.at(j);
+				}
+
+     	  jetPt_cl_old.clear();
+     	  jetEta_cl_old.clear(); 
+				jetPhi_cl_old.clear();
+				jetE_cl_old.clear();	
 			}
+			// #### cleaning old - finish
 
 		 	// ======= weight
 			if(mysample < 8){  //data
@@ -701,250 +919,950 @@ void GJetsAnalyzer::Loop(){
 		  weight_withPU_r = weight_withPU;
 
 		}	// end of objects position 
-					
+
+		// =========== GEN selection
+		if (isMC){
+
+			// photonGEN selection		
+			if (nPhotonsGEN > 0){
+
+			// photonGEN kinematic selection		
+				if (photonPtGEN > 180. && (TMath::Abs(photonEtaGEN) < 2.5) && !(1.4442 < TMath::Abs(photonEtaGEN) && TMath::Abs(photonEtaGEN)< 1.566)) {
+
+				// jetsGEN selection
+					if (nJetsGEN > 0 && jetPtGEN->size()){
+
+					// jetsGEN kinematic selection
+						if (jetPtGEN_1 > 50. && TMath::Abs(jetEtaGEN_1) < 2.5){
+
+							nPhotonsGEN_->Fill(nPhotonsGEN, 1);
+							photonPtGEN_->Fill(photonPtGEN, 1);
+							photonEtaGEN_->Fill(photonEtaGEN, 1);
+							photonPhiGEN_->Fill(photonPhiGEN, 1);
+							photonEGEN_->Fill(photonEGEN, 1);
+
+							nJetsGEN_->Fill(nJetsGEN, 1);
+				
+							jetPtGEN_1_->Fill(jetPtGEN_1, 1);
+							jetEtaGEN_1_->Fill(jetEtaGEN_1, 1);
+							jetPhiGEN_1_->Fill(jetPhiGEN_1, 1);
+							jetEGEN_1_->Fill(jetEGEN_1, 1);
+
+							HTGEN_->Fill(HTGEN, 1);
+							HTParSum_->Fill(HTParSum, 1);
+						}
+					}
+				}
+			}
+		}		
+						
 		// =========== Analysis selection
 		// at least one jet with pt > 50 GeV and eta < 2.5
 		// and that the photon is in the barrel (photonBit |= (it->isEB() << 0) => (*photonBit)[0]&1) con 2^0 = 1
 		// and has a pt greater than 150.;
-		if(nPhotons > 0 && nJets > 0) { 
+
+		// #### normal selection - start
+		// photon selection
+		if(nPhotons > 0) { 
 			
 			iSelected0++;
 			iSelectedWithWeights0 = iSelectedWithWeights0 + weight_withPU;
 
-			if (jetPt_1 > 50. && TMath::Abs(jetEta_1) < 2.5 && photonPt_1 > 160. && (photonBit_1&1) && isTriggerMatchedFamily4) {
-
-				iSelected1++;
+			// photon quality selection: Barrel - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
+			if((*photonPassConversionVeto)[0] == 1){ 
+			 	iSelected1++;				 
 				iSelectedWithWeights1 = iSelectedWithWeights1 + weight_withPU;
-
-				// quality selection: Barrel - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
-				if((*photonPassConversionVeto)[0] == 1){ 
-				 	iSelected2++;				 
-					iSelectedWithWeights2 = iSelectedWithWeights2 + weight_withPU;
-				 	 if((*photonid_hadronicOverEm2012)[0] < 0.05){
-				 	  iSelected3++;
-  					iSelectedWithWeights3 = iSelectedWithWeights3 + weight_withPU;
-					 	if((*photonid_sieie)[0] < 0.011){ 
+				if((*photonid_hadronicOverEm2012)[0] < 0.05){
+			 	  iSelected2++;
+ 					iSelectedWithWeights2 = iSelectedWithWeights2 + weight_withPU;
+				 	if((*photonid_sieie)[0] < 0.011){ 
+				    iSelected3++;
+   					iSelectedWithWeights3 = iSelectedWithWeights3 + weight_withPU;
+			 	  	if((*photonPfIsoChargedHad)[0] < 1.5){ 
 					    iSelected4++;
     					iSelectedWithWeights4 = iSelectedWithWeights4 + weight_withPU;
-				 	  	if((*photonPfIsoChargedHad)[0] < 1.5){ 
+			 	 			if((*photonPfIsoNeutralHad)[0] < (1.0 + 0.04*photonPt_1)){
 						    iSelected5++;
 	    					iSelectedWithWeights5 = iSelectedWithWeights5 + weight_withPU;
-				 	 			if((*photonPfIsoNeutralHad)[0] < (1.0 + 0.04*photonPt_1)){
+			 	 				if((*photonPfIsoPhoton)[0] < (0.7 + 0.005*photonPt_1)){
 							    iSelected6++;
-		    					iSelectedWithWeights6 = iSelectedWithWeights6 + weight_withPU;
-				 	 				if((*photonPfIsoPhoton)[0] < (0.7 + 0.005*photonPt_1)){
-								    iSelected7++;
-										iSelectedWithWeights7 = iSelectedWithWeights7 + weight_withPU;
-										Nvtx_->Fill(nVtx, weight_withPU);
-										
-										nPhotons_->Fill(nPhotons, weight_withPU);
-//									photonPt_1_->Fill((*photonPt)[0], weight_withPU);
-										photonPt_1_->Fill(photonPt_1, weight_withPU);
-										photonE_1_->Fill(photonE_1, weight_withPU);
-										photonEta_1_->Fill(photonEta_1, weight_withPU);
-										photonPhi_1_->Fill(photonPhi_1, weight_withPU);
-										photonBit_1_->Fill(photonBit_1, weight_withPU);
-										photonPassConversionVeto_1_->Fill(photonPassConversionVeto_1, weight_withPU);
-										photonPfIsoChargedHad_1_->Fill(photonPfIsoChargedHad_1, weight_withPU);
-										photonPfIsoNeutralHad_1_->Fill(photonPfIsoNeutralHad_1, weight_withPU);
-										photonPfIsoPhoton_1_->Fill(photonPfIsoPhoton_1, weight_withPU);
-										photonPfIsoPhotons03ForCic_1_->Fill(photonPfIsoPhotons03ForCic_1, weight_withPU);
-										photonPfIsoNeutrals03ForCic_1_->Fill(photonPfIsoNeutrals03ForCic_1, weight_withPU);
-										photonPfIsoCharged03ForCicVtx0_1_->Fill(photonPfIsoCharged03ForCicVtx0_1, weight_withPU);
-										photonPfIsoCharged03BadForCic_1_->Fill(photonPfIsoCharged03BadForCic_1, weight_withPU);
-										photonPfIsoPhotons04ForCic_1_->Fill(photonPfIsoPhotons04ForCic_1, weight_withPU);
-										photonPfIsoNeutrals04ForCic_1_->Fill(photonPfIsoNeutrals04ForCic_1, weight_withPU);
-										photonPfIsoCharged04ForCicVtx0_1_->Fill(photonPfIsoCharged04ForCicVtx0_1, weight_withPU);
-										photonPfIsoCharged04BadForCic_1_->Fill(photonPfIsoCharged04BadForCic_1, weight_withPU);
-										photonid_sieie_1_->Fill(photonid_sieie_1, weight_withPU);
-										photonid_sieip_1_->Fill(photonid_sieip_1, weight_withPU);
-										photonid_etawidth_1_->Fill(photonid_etawidth_1, weight_withPU);
-										photonid_phiwidth_1_->Fill(photonid_phiwidth_1, weight_withPU);
-										photonid_r9_1_->Fill(photonid_r9_1, weight_withPU);
-										photonid_lambdaRatio_1_->Fill(photonid_lambdaRatio_1, weight_withPU);
-										photonid_s4Ratio_1_->Fill(photonid_s4Ratio_1, weight_withPU);
-										photonid_e25_1_->Fill(photonid_e25_1, weight_withPU);
-										photonid_sceta_1_->Fill(photonid_sceta_1, weight_withPU);
-										photonid_ESEffSigmaRR_1_->Fill(photonid_ESEffSigmaRR_1, weight_withPU);
-										photonid_hadronicOverEm_1_->Fill(photonid_hadronicOverEm_1, weight_withPU);
-										photonid_hadronicOverEm2012_1_->Fill(photonid_hadronicOverEm2012_1, weight_withPU);
-										photonhcalTowerSumEtConeDR04_1_->Fill(photonhcalTowerSumEtConeDR04_1, weight_withPU);
-										photonecalRecHitSumEtConeDR04_1_->Fill(photonecalRecHitSumEtConeDR04_1, weight_withPU);
-										photonnTrkSolidConeDR04_1_->Fill(photonnTrkSolidConeDR04_1, weight_withPU);
-										photontrkSumPtSolidConeDR04_1_->Fill(photontrkSumPtSolidConeDR04_1, weight_withPU);
-										photonnTrkHollowConeDR04_1_->Fill(photonnTrkHollowConeDR04_1, weight_withPU);
-										photontrkSumPtHollowConeDR04_1_->Fill(photontrkSumPtHollowConeDR04_1, weight_withPU);
-										photonIsoFPRCharged_1_->Fill(photonIsoFPRCharged_1, weight_withPU);
-										photonIsoFPRNeutral_1_->Fill(photonIsoFPRNeutral_1, weight_withPU);
-										photonIsoFPRPhoton_1_->Fill(photonIsoFPRPhoton_1, weight_withPU);
+									iSelectedWithWeights6 = iSelectedWithWeights6 + weight_withPU;
 
-										nJets_->Fill(nJets, weight_withPU);
-			
-										jetPt_1_->Fill(jetPt_1, weight_withPU);
-										jetEta_1_->Fill(jetEta_1, weight_withPU);
-										jetPhi_1_->Fill(jetPhi_1, weight_withPU);
-										jetE_1_->Fill(jetE_1, weight_withPU);
+									// photon kinematic selection
+									if (photonPt_1 > 180. && (photonBit_1&1) && isTriggerMatchedFamily4) {
 
-										if(nJets > 1){
-											jetPt_2_->Fill(jetPt_2, weight_withPU);
-											jetEta_2_->Fill(jetEta_2, weight_withPU);
-											jetPhi_2_->Fill(jetPhi_2, weight_withPU);
-											jetE_2_->Fill(jetE_2, weight_withPU);
-										}
+										// jets selection
+										if (nJets > 0){
 
-										if(nJets > 2){										
-											jetPt_3_->Fill(jetPt_3, weight_withPU);
-											jetEta_3_->Fill(jetEta_3, weight_withPU);
-											jetPhi_3_->Fill(jetPhi_3, weight_withPU);
-											jetE_3_->Fill(jetE_3, weight_withPU);
-										}
-										
-										DeltaR_photon1_jet1_->Fill(DeltaR_photon1_jet1, weight_withPU);
-										DeltaPhi_photon1_jet1_->Fill(DeltaPhi_photon1_jet1, weight_withPU);
+											// jets kinematic selection
+											if (jetPt_1 > 50. && TMath::Abs(jetEta_1) < 2.5) {
 
-										if(nJets > 1){	
-											DeltaR_photon1_jet2_->Fill(DeltaR_photon1_jet2, weight_withPU);
-											DeltaEta_jet1_jet2_->Fill(DeltaEta_jet1_jet2, weight_withPU);
-											DeltaPhi_jet1_jet2_->Fill(DeltaPhi_jet1_jet2, weight_withPU);
-										}
+												// HT selection
+												if (HT>250) {
 
-										if(nJets > 2){												
-											DeltaR_photon1_jet3_->Fill(DeltaR_photon1_jet3, weight_withPU);
-										}
+													iSelected7++;
+													iSelectedWithWeights7 = iSelectedWithWeights7 + weight_withPU;
 
-										HT_->Fill(HT, weight_withPU);
+													Nvtx_->Fill(nVtx, weight_withPU);
+											
+													nPhotons_->Fill(nPhotons, weight_withPU);
+//												photonPt_1_->Fill((*photonPt)[0], weight_withPU);
+													photonPt_1_->Fill(photonPt_1, weight_withPU);
+													photonE_1_->Fill(photonE_1, weight_withPU);
+													photonEta_1_->Fill(photonEta_1, weight_withPU);
+													photonPhi_1_->Fill(photonPhi_1, weight_withPU);
+													photonBit_1_->Fill(photonBit_1, weight_withPU);
+													photonPassConversionVeto_1_->Fill(photonPassConversionVeto_1, weight_withPU);
+													photonPfIsoChargedHad_1_->Fill(photonPfIsoChargedHad_1, weight_withPU);
+													photonPfIsoNeutralHad_1_->Fill(photonPfIsoNeutralHad_1, weight_withPU);
+													photonPfIsoPhoton_1_->Fill(photonPfIsoPhoton_1, weight_withPU);
+													photonPfIsoPhotons03ForCic_1_->Fill(photonPfIsoPhotons03ForCic_1, weight_withPU);
+													photonPfIsoNeutrals03ForCic_1_->Fill(photonPfIsoNeutrals03ForCic_1, weight_withPU);
+													photonPfIsoCharged03ForCicVtx0_1_->Fill(photonPfIsoCharged03ForCicVtx0_1, weight_withPU);
+													photonPfIsoCharged03BadForCic_1_->Fill(photonPfIsoCharged03BadForCic_1, weight_withPU);
+													photonPfIsoPhotons04ForCic_1_->Fill(photonPfIsoPhotons04ForCic_1, weight_withPU);
+													photonPfIsoNeutrals04ForCic_1_->Fill(photonPfIsoNeutrals04ForCic_1, weight_withPU);
+													photonPfIsoCharged04ForCicVtx0_1_->Fill(photonPfIsoCharged04ForCicVtx0_1, weight_withPU);
+													photonPfIsoCharged04BadForCic_1_->Fill(photonPfIsoCharged04BadForCic_1, weight_withPU);
+													photonid_sieie_1_->Fill(photonid_sieie_1, weight_withPU);
+													photonid_sieip_1_->Fill(photonid_sieip_1, weight_withPU);
+													photonid_etawidth_1_->Fill(photonid_etawidth_1, weight_withPU);
+													photonid_phiwidth_1_->Fill(photonid_phiwidth_1, weight_withPU);
+													photonid_r9_1_->Fill(photonid_r9_1, weight_withPU);
+													photonid_lambdaRatio_1_->Fill(photonid_lambdaRatio_1, weight_withPU);
+													photonid_s4Ratio_1_->Fill(photonid_s4Ratio_1, weight_withPU);
+													photonid_e25_1_->Fill(photonid_e25_1, weight_withPU);
+													photonid_sceta_1_->Fill(photonid_sceta_1, weight_withPU);
+													photonid_ESEffSigmaRR_1_->Fill(photonid_ESEffSigmaRR_1, weight_withPU);
+													photonid_hadronicOverEm_1_->Fill(photonid_hadronicOverEm_1, weight_withPU);
+													photonid_hadronicOverEm2012_1_->Fill(photonid_hadronicOverEm2012_1, weight_withPU);
+													photonhcalTowerSumEtConeDR04_1_->Fill(photonhcalTowerSumEtConeDR04_1, weight_withPU);
+													photonecalRecHitSumEtConeDR04_1_->Fill(photonecalRecHitSumEtConeDR04_1, weight_withPU);
+													photonnTrkSolidConeDR04_1_->Fill(photonnTrkSolidConeDR04_1, weight_withPU);
+													photontrkSumPtSolidConeDR04_1_->Fill(photontrkSumPtSolidConeDR04_1, weight_withPU);
+													photonnTrkHollowConeDR04_1_->Fill(photonnTrkHollowConeDR04_1, weight_withPU);
+													photontrkSumPtHollowConeDR04_1_->Fill(photontrkSumPtHollowConeDR04_1, weight_withPU);
+													photonIsoFPRCharged_1_->Fill(photonIsoFPRCharged_1/photonPt_1, weight_withPU);
+													photonIsoFPRNeutral_1_->Fill(photonIsoFPRNeutral_1/photonPt_1, weight_withPU);
+													photonIsoFPRPhoton_1_->Fill(photonIsoFPRPhoton_1/photonPt_1, weight_withPU);
+	
+													nJets_->Fill(nJets, weight_withPU);
 				
-									}
-								}
-							}
-						}
-					}
-				} // end quality selection
-			} // end selection with 1 jet
-      // if (Cut(ientry) < 0) continue;
-		} // end if preselection
+													jetPt_1_->Fill(jetPt_1, weight_withPU);
+													jetEta_1_->Fill(jetEta_1, weight_withPU);
+													jetPhi_1_->Fill(jetPhi_1, weight_withPU);
+													jetE_1_->Fill(jetE_1, weight_withPU);
 		
-		//------cleaning
+													if(nJets > 1){
+														jetPt_2_->Fill(jetPt_2, weight_withPU);
+														jetEta_2_->Fill(jetEta_2, weight_withPU);
+														jetPhi_2_->Fill(jetPhi_2, weight_withPU);
+														jetE_2_->Fill(jetE_2, weight_withPU);
+													}
 
-		if(nPhotons > 0 && nJets_cl > 0) { 
-			
-			iSelected0_cl++;
-			iSelectedWithWeights0_cl = iSelectedWithWeights0_cl + weight_withPU;
-
-			if (jetPt_1_cl > 50. && TMath::Abs(jetEta_1_cl) < 2.5 && photonPt_1 > 160. && (photonBit_1&1) && isTriggerMatchedFamily4) {
-
-				iSelected1_cl++;
-				iSelectedWithWeights1_cl = iSelectedWithWeights1_cl + weight_withPU;
-				
-				// quality selection: Barrel - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
-				if((*photonPassConversionVeto)[0] == 1){ 
-					iSelected2_cl++;				 
-					iSelectedWithWeights2_cl = iSelectedWithWeights2_cl + weight_withPU;				 	 
-				 	 if((*photonid_hadronicOverEm2012)[0] < 0.05){
-				 	  iSelected3_cl++;
-						iSelectedWithWeights3_cl = iSelectedWithWeights3_cl + weight_withPU;				 	  
-					 	if((*photonid_sieie)[0] < 0.011){ 
-					    iSelected4_cl++;
-							iSelectedWithWeights4_cl = iSelectedWithWeights4_cl + weight_withPU;					    
-				 	  	if((*photonPfIsoChargedHad)[0] < 1.5){ 
-						    iSelected5_cl++;
-								iSelectedWithWeights5_cl = iSelectedWithWeights5_cl + weight_withPU;
-				 	 			if((*photonPfIsoNeutralHad)[0] < (1.0 + 0.04*photonPt_1)){
-							    iSelected6_cl++;
-									iSelectedWithWeights6_cl = iSelectedWithWeights6_cl + weight_withPU;
-				 	 				if((*photonPfIsoPhoton)[0] < (0.7 + 0.005*photonPt_1)){
-								    iSelected7_cl++;
-										iSelectedWithWeights7_cl = iSelectedWithWeights7_cl + weight_withPU;
-										Nvtx_cl_->Fill(nVtx, weight_withPU);
+													if(nJets > 2){										
+														jetPt_3_->Fill(jetPt_3, weight_withPU);
+														jetEta_3_->Fill(jetEta_3, weight_withPU);
+														jetPhi_3_->Fill(jetPhi_3, weight_withPU);
+														jetE_3_->Fill(jetE_3, weight_withPU);
+													}
 										
-										nPhotons_cl_->Fill(nPhotons, weight_withPU);
-//									photonPt_1_cl_->Fill((*photonPt)[0], weight_withPU);
-										photonPt_1_cl_->Fill(photonPt_1, weight_withPU);
-										photonE_1_cl_->Fill(photonE_1, weight_withPU);
-										photonEta_1_cl_->Fill(photonEta_1, weight_withPU);
-										photonPhi_1_cl_->Fill(photonPhi_1, weight_withPU);
-										photonBit_1_cl_->Fill(photonBit_1, weight_withPU);
-										photonPassConversionVeto_1_cl_->Fill(photonPassConversionVeto_1, weight_withPU);
-										photonPfIsoChargedHad_1_cl_->Fill(photonPfIsoChargedHad_1, weight_withPU);
-										photonPfIsoNeutralHad_1_cl_->Fill(photonPfIsoNeutralHad_1, weight_withPU);
-										photonPfIsoPhoton_1_cl_->Fill(photonPfIsoPhoton_1, weight_withPU);
-										photonPfIsoPhotons03ForCic_1_cl_->Fill(photonPfIsoPhotons03ForCic_1, weight_withPU);
-										photonPfIsoNeutrals03ForCic_1_cl_->Fill(photonPfIsoNeutrals03ForCic_1, weight_withPU);
-										photonPfIsoCharged03ForCicVtx0_1_cl_->Fill(photonPfIsoCharged03ForCicVtx0_1, weight_withPU);
-										photonPfIsoCharged03BadForCic_1_cl_->Fill(photonPfIsoCharged03BadForCic_1, weight_withPU);
-										photonPfIsoPhotons04ForCic_1_cl_->Fill(photonPfIsoPhotons04ForCic_1, weight_withPU);
-										photonPfIsoNeutrals04ForCic_1_cl_->Fill(photonPfIsoNeutrals04ForCic_1, weight_withPU);
-										photonPfIsoCharged04ForCicVtx0_1_cl_->Fill(photonPfIsoCharged04ForCicVtx0_1, weight_withPU);
-										photonPfIsoCharged04BadForCic_1_cl_->Fill(photonPfIsoCharged04BadForCic_1, weight_withPU);
-										photonid_sieie_1_cl_->Fill(photonid_sieie_1, weight_withPU);
-										photonid_sieip_1_cl_->Fill(photonid_sieip_1, weight_withPU);
-										photonid_etawidth_1_cl_->Fill(photonid_etawidth_1, weight_withPU);
-										photonid_phiwidth_1_cl_->Fill(photonid_phiwidth_1, weight_withPU);
-										photonid_r9_1_cl_->Fill(photonid_r9_1, weight_withPU);
-										photonid_lambdaRatio_1_cl_->Fill(photonid_lambdaRatio_1, weight_withPU);
-										photonid_s4Ratio_1_cl_->Fill(photonid_s4Ratio_1, weight_withPU);
-										photonid_e25_1_cl_->Fill(photonid_e25_1, weight_withPU);
-										photonid_sceta_1_cl_->Fill(photonid_sceta_1, weight_withPU);
-										photonid_ESEffSigmaRR_1_cl_->Fill(photonid_ESEffSigmaRR_1, weight_withPU);
-										photonid_hadronicOverEm_1_cl_->Fill(photonid_hadronicOverEm_1, weight_withPU);
-										photonid_hadronicOverEm2012_1_cl_->Fill(photonid_hadronicOverEm2012_1, weight_withPU);
-										photonhcalTowerSumEtConeDR04_1_cl_->Fill(photonhcalTowerSumEtConeDR04_1, weight_withPU);
-										photonecalRecHitSumEtConeDR04_1_cl_->Fill(photonecalRecHitSumEtConeDR04_1, weight_withPU);
-										photonnTrkSolidConeDR04_1_cl_->Fill(photonnTrkSolidConeDR04_1, weight_withPU);
-										photontrkSumPtSolidConeDR04_1_cl_->Fill(photontrkSumPtSolidConeDR04_1, weight_withPU);
-										photonnTrkHollowConeDR04_1_cl_->Fill(photonnTrkHollowConeDR04_1, weight_withPU);
-										photontrkSumPtHollowConeDR04_1_cl_->Fill(photontrkSumPtHollowConeDR04_1, weight_withPU);
-										photonIsoFPRCharged_1_cl_->Fill(photonIsoFPRCharged_1, weight_withPU);
-										photonIsoFPRNeutral_1_cl_->Fill(photonIsoFPRNeutral_1, weight_withPU);
-										photonIsoFPRPhoton_1_cl_->Fill(photonIsoFPRPhoton_1, weight_withPU);
+													DeltaR_photon1_jet1_->Fill(DeltaR_photon1_jet1, weight_withPU);
+													DeltaEta_photon1_jet1_->Fill(DeltaEta_photon1_jet1, weight_withPU);
+													DeltaPhi_photon1_jet1_->Fill(DeltaPhi_photon1_jet1, weight_withPU);
+		
+													if(nJets > 1){	
+														DeltaR_photon1_jet2_->Fill(DeltaR_photon1_jet2, weight_withPU);
+														DeltaR_jet1_jet2_->Fill(DeltaR_jet1_jet2, weight_withPU);
+														DeltaEta_jet1_jet2_->Fill(DeltaEta_jet1_jet2, weight_withPU);
+														DeltaPhi_jet1_jet2_->Fill(DeltaPhi_jet1_jet2, weight_withPU);
+													}
 
-										nJets_cl_->Fill(nJets_cl, weight_withPU);
-			
-										jetPt_1_cl_->Fill(jetPt_1_cl, weight_withPU);
-										jetEta_1_cl_->Fill(jetEta_1_cl, weight_withPU);
-										jetPhi_1_cl_->Fill(jetPhi_1_cl, weight_withPU);
-										jetE_1_cl_->Fill(jetE_1_cl, weight_withPU);
+													if(nJets > 2){												
+														DeltaR_photon1_jet3_->Fill(DeltaR_photon1_jet3, weight_withPU);
+													}
 
-										if(nJets > 1){
-											jetPt_2_cl_->Fill(jetPt_2_cl, weight_withPU);
-											jetEta_2_cl_->Fill(jetEta_2_cl, weight_withPU);
-											jetPhi_2_cl_->Fill(jetPhi_2_cl, weight_withPU);
-											jetE_2_cl_->Fill(jetE_2_cl, weight_withPU);
-										}
-
-										if(nJets > 2){										
-											jetPt_3_cl_->Fill(jetPt_3_cl, weight_withPU);
-											jetEta_3_cl_->Fill(jetEta_3_cl, weight_withPU);
-											jetPhi_3_cl_->Fill(jetPhi_3_cl, weight_withPU);
-											jetE_3_cl_->Fill(jetE_3_cl, weight_withPU);
-										}
-										
-										DeltaR_photon1_jet1_cl_->Fill(DeltaR_photon1_jet1_cl, weight_withPU);
-										DeltaPhi_photon1_jet1_cl_->Fill(DeltaPhi_photon1_jet1_cl, weight_withPU);
-
-										if(nJets > 1){	
-											DeltaR_photon1_jet2_cl_->Fill(DeltaR_photon1_jet2_cl, weight_withPU);
-											DeltaEta_jet1_jet2_cl_->Fill(DeltaEta_jet1_jet2_cl, weight_withPU);
-											DeltaPhi_jet1_jet2_cl_->Fill(DeltaPhi_jet1_jet2_cl, weight_withPU);
-										}
-
-										if(nJets > 2){												
-											DeltaR_photon1_jet3_cl_->Fill(DeltaR_photon1_jet3_cl, weight_withPU);
-										}
-
-										HT_cl_->Fill(HT_cl, weight_withPU);
-				
-									}
+													HT_->Fill(HT, weight_withPU);
+											
+												} // end HT selection
+											} // end jets kinematic selection
+										} // end jets selection
+									} // end photon kinematic selection
 								}
 							}
 						}
+					} 
+				} 
+			} // end photon quality selection
+      	// if (Cut(ientry) < 0) continue;
+		} // end photon selection
+		// #### normal selection - finish
+
+		// #### cleaning new: jets vs. ALL photons - start
+		// photon selection
+		if(nPhotons > 0) { 
+			
+			iSelected0_cl_new_ALL++;
+			iSelectedWithWeights0_cl_new_ALL = iSelectedWithWeights0_cl_new_ALL + weight_withPU;
+
+			// photon quality selection: Barrel - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
+			if((*photonPassConversionVeto)[0] == 1){ 
+				iSelected1_cl_new_ALL++;				 
+				iSelectedWithWeights1_cl_new_ALL = iSelectedWithWeights1_cl_new_ALL + weight_withPU;				 	 
+				if((*photonid_hadronicOverEm2012)[0] < 0.05){
+			 	  iSelected2_cl_new_ALL++;
+					iSelectedWithWeights2_cl_new_ALL = iSelectedWithWeights2_cl_new_ALL + weight_withPU;				 	  
+				 	if((*photonid_sieie)[0] < 0.011){ 
+				    iSelected3_cl_new_ALL++;
+						iSelectedWithWeights3_cl_new_ALL = iSelectedWithWeights3_cl_new_ALL + weight_withPU;					    
+			 	  	if((*photonPfIsoChargedHad)[0] < 1.5){ 
+					    iSelected4_cl_new_ALL++;
+							iSelectedWithWeights4_cl_new_ALL = iSelectedWithWeights4_cl_new_ALL + weight_withPU;
+			 	 			if((*photonPfIsoNeutralHad)[0] < (1.0 + 0.04*photonPt_1)){
+						    iSelected5_cl_new_ALL++;
+								iSelectedWithWeights5_cl_new_ALL = iSelectedWithWeights5_cl_new_ALL + weight_withPU;
+			 	 				if((*photonPfIsoPhoton)[0] < (0.7 + 0.005*photonPt_1)){
+							    iSelected6_cl_new_ALL++;
+									iSelectedWithWeights6_cl_new_ALL = iSelectedWithWeights6_cl_new_ALL + weight_withPU;
+
+			            // photon kinematic selection
+									if ( photonPt_1 > 180. && (photonBit_1&1) && isTriggerMatchedFamily4) {
+
+										// #### jetVeto: jets vs. ALL photons - start
+										nJets_cl_new_ALL = 0;
+
+//cout << "------inizio ALL ------" << endl;
+//cout << "nJets = " << nJets << endl;
+//cout << "jetPt->size() = " << jetPt->size() << endl;
+//for (unsigned int conta = 0; conta < jetPt->size(); conta++){
+//	cout << "jetPt->at(" << conta << ") = " << jetPt->at(conta) << endl;
+//}
+//cout << "nPhotons = " << nPhotons << endl;
+//cout << "photonPt->size() = " << photonPt->size() << endl;
+//for (unsigned int conta1 = 0; conta1 < photonPt->size(); conta1++){
+//	cout << "photonPt->at(" << conta1 << ") = " << photonPt->at(conta1) << endl;
+//}
+										for (int iJetar = 0; iJetar < nJets; iJetar++) {
+											bool close = false;
+											for (int jPhoar = 0; jPhoar < nPhotons; ++jPhoar){
+												if ( deltaR(photonEta->at(jPhoar), photonPhi->at(jPhoar), jetEta->at(iJetar), jetPhi->at(iJetar)) < 0.4) {
+													close = true;
+//cout << "close(jet= " << iJetar << ", photon = " << jPhoar <<") = " << close << endl;
+													break;
+												}
+											}	
+											if (!close){
+												jetPt_cl_new_ALL.push_back(jetPt->at(iJetar));
+												jetEta_cl_new_ALL.push_back(jetEta->at(iJetar));
+												jetPhi_cl_new_ALL.push_back(jetPhi->at(iJetar));
+												jetE_cl_new_ALL.push_back(jetE->at(iJetar));
+												nJets_cl_new_ALL += 1;
+											}
+										}
+//cout << "nJets_cl_new_ALL = " << nJets_cl_new_ALL << endl;
+//cout << "jetPt_cl_new_ALL.size() = " << jetPt_cl_new_ALL.size() << endl;
+//for (unsigned int conta2 = 0; conta2 < jetPt_cl_new_ALL.size(); conta2++){
+//	cout << "jetPt_cl_new_ALL.at(" << conta2 << ") = " << jetPt_cl_new_ALL.at(conta2) << endl;
+//}
+//cout << "-------fine ALL-------" << endl;
+
+										// ---- jets clean new
+										if(nJets_cl_new_ALL > 0){ 
+											jetPt_1_cl_new_ALL = jetPt_cl_new_ALL.at(0);
+											jetEta_1_cl_new_ALL = jetEta_cl_new_ALL.at(0);
+											jetPhi_1_cl_new_ALL = jetPhi_cl_new_ALL.at(0);  
+											jetE_1_cl_new_ALL = jetE_cl_new_ALL.at(0);
+
+											if(nJets_cl_new_ALL > 1){  
+												jetPt_2_cl_new_ALL = jetPt_cl_new_ALL.at(1);
+												jetEta_2_cl_new_ALL = jetEta_cl_new_ALL.at(1);
+												jetPhi_2_cl_new_ALL = jetPhi_cl_new_ALL.at(1);           
+												jetE_2_cl_new_ALL = jetE_cl_new_ALL.at(1);
+											}
+				
+											if(nJets_cl_new_ALL > 2){  
+												jetPt_3_cl_new_ALL = jetPt_cl_new_ALL.at(2);
+												jetEta_3_cl_new_ALL = jetEta_cl_new_ALL.at(2);
+												jetPhi_3_cl_new_ALL = jetPhi_cl_new_ALL.at(2);           
+												jetE_3_cl_new_ALL = jetE_cl_new_ALL.at(2);		
+											}
+
+ 					    				// ---- angular clean new
+											DeltaR_photon1_jet1_cl_new_ALL = deltaR(photonEta_1, photonPhi_1, jetEta_1_cl_new_ALL, jetPhi_1_cl_new_ALL);
+											DeltaEta_photon1_jet1_cl_new_ALL = deltaEta(photonEta_1, jetEta_1_cl_new_ALL);
+											DeltaPhi_photon1_jet1_cl_new_ALL = deltaPhi(photonPhi_1, jetPhi_1_cl_new_ALL);
+
+											if(nJets_cl_new_ALL > 1){  
+												DeltaR_photon1_jet2_cl_new_ALL = deltaR(photonEta_1, photonPhi_1, jetEta_2_cl_new_ALL, jetPhi_2_cl_new_ALL);
+												DeltaR_jet1_jet2_cl_new_ALL = deltaR(jetEta_1_cl_new_ALL, jetEta_2_cl_new_ALL, jetPhi_1_cl_new_ALL, jetPhi_2_cl_new_ALL);					
+												DeltaEta_jet1_jet2_cl_new_ALL = deltaEta(jetEta_1_cl_new_ALL, jetEta_2_cl_new_ALL);
+												DeltaPhi_jet1_jet2_cl_new_ALL = deltaPhi(jetPhi_1_cl_new_ALL, jetPhi_2_cl_new_ALL);
+											}
+											if(nJets_cl_new_ALL > 2){  
+												DeltaR_photon1_jet3_cl_new_ALL = deltaR(photonEta_1, photonPhi_1, jetEta_3_cl_new_ALL, jetPhi_3_cl_new_ALL);
+											}
+
+	    					 			// ---- other clean	new	
+											HT_cl_new_ALL = 0;
+											for(unsigned int j = 0; j < jetPt_cl_new_ALL.size(); j++) {
+	    					 	  		HT_cl_new_ALL += jetPt_cl_new_ALL.at(j);
+											}
+
+	     	  						jetPt_cl_new_ALL.clear();
+	     	  						jetEta_cl_new_ALL.clear(); 
+											jetPhi_cl_new_ALL.clear();
+											jetE_cl_new_ALL.clear();	
+										}
+										// #### jetVeto: jets vs. ALL photons - finish
+
+										// jets selection
+										if (nJets_cl_new_ALL > 0) {
+
+											// jets kinematic selection
+											if (jetPt_1_cl_new_ALL > 50. && TMath::Abs(jetEta_1_cl_new_ALL) < 2.5 ) {
+
+												// HT selection									
+												if (HT_cl_new_ALL > 250){
+
+													iSelected7_cl_new_ALL++;
+													iSelectedWithWeights7_cl_new_ALL = iSelectedWithWeights7_cl_new_ALL + weight_withPU;
+					
+													Nvtx_cl_new_ALL_->Fill(nVtx, weight_withPU);
+										
+													nPhotons_cl_new_ALL_->Fill(nPhotons, weight_withPU);
+//												photonPt_1_cl_new_ALL_->Fill((*photonPt)[0], weight_withPU);
+													photonPt_1_cl_new_ALL_->Fill(photonPt_1, weight_withPU);
+													photonE_1_cl_new_ALL_->Fill(photonE_1, weight_withPU);
+													photonEta_1_cl_new_ALL_->Fill(photonEta_1, weight_withPU);
+													photonPhi_1_cl_new_ALL_->Fill(photonPhi_1, weight_withPU);
+													photonBit_1_cl_new_ALL_->Fill(photonBit_1, weight_withPU);
+													photonPassConversionVeto_1_cl_new_ALL_->Fill(photonPassConversionVeto_1, weight_withPU);
+													photonPfIsoChargedHad_1_cl_new_ALL_->Fill(photonPfIsoChargedHad_1, weight_withPU);
+													photonPfIsoNeutralHad_1_cl_new_ALL_->Fill(photonPfIsoNeutralHad_1, weight_withPU);
+													photonPfIsoPhoton_1_cl_new_ALL_->Fill(photonPfIsoPhoton_1, weight_withPU);
+													photonPfIsoPhotons03ForCic_1_cl_new_ALL_->Fill(photonPfIsoPhotons03ForCic_1, weight_withPU);
+													photonPfIsoNeutrals03ForCic_1_cl_new_ALL_->Fill(photonPfIsoNeutrals03ForCic_1, weight_withPU);
+													photonPfIsoCharged03ForCicVtx0_1_cl_new_ALL_->Fill(photonPfIsoCharged03ForCicVtx0_1, weight_withPU);
+													photonPfIsoCharged03BadForCic_1_cl_new_ALL_->Fill(photonPfIsoCharged03BadForCic_1, weight_withPU);
+													photonPfIsoPhotons04ForCic_1_cl_new_ALL_->Fill(photonPfIsoPhotons04ForCic_1, weight_withPU);
+													photonPfIsoNeutrals04ForCic_1_cl_new_ALL_->Fill(photonPfIsoNeutrals04ForCic_1, weight_withPU);
+													photonPfIsoCharged04ForCicVtx0_1_cl_new_ALL_->Fill(photonPfIsoCharged04ForCicVtx0_1, weight_withPU);
+													photonPfIsoCharged04BadForCic_1_cl_new_ALL_->Fill(photonPfIsoCharged04BadForCic_1, weight_withPU);
+													photonid_sieie_1_cl_new_ALL_->Fill(photonid_sieie_1, weight_withPU);
+													photonid_sieip_1_cl_new_ALL_->Fill(photonid_sieip_1, weight_withPU);
+													photonid_etawidth_1_cl_new_ALL_->Fill(photonid_etawidth_1, weight_withPU);
+													photonid_phiwidth_1_cl_new_ALL_->Fill(photonid_phiwidth_1, weight_withPU);
+													photonid_r9_1_cl_new_ALL_->Fill(photonid_r9_1, weight_withPU);
+													photonid_lambdaRatio_1_cl_new_ALL_->Fill(photonid_lambdaRatio_1, weight_withPU);
+													photonid_s4Ratio_1_cl_new_ALL_->Fill(photonid_s4Ratio_1, weight_withPU);
+													photonid_e25_1_cl_new_ALL_->Fill(photonid_e25_1, weight_withPU);
+													photonid_sceta_1_cl_new_ALL_->Fill(photonid_sceta_1, weight_withPU);
+													photonid_ESEffSigmaRR_1_cl_new_ALL_->Fill(photonid_ESEffSigmaRR_1, weight_withPU);
+													photonid_hadronicOverEm_1_cl_new_ALL_->Fill(photonid_hadronicOverEm_1, weight_withPU);
+													photonid_hadronicOverEm2012_1_cl_new_ALL_->Fill(photonid_hadronicOverEm2012_1, weight_withPU);
+													photonhcalTowerSumEtConeDR04_1_cl_new_ALL_->Fill(photonhcalTowerSumEtConeDR04_1, weight_withPU);
+													photonecalRecHitSumEtConeDR04_1_cl_new_ALL_->Fill(photonecalRecHitSumEtConeDR04_1, weight_withPU);
+													photonnTrkSolidConeDR04_1_cl_new_ALL_->Fill(photonnTrkSolidConeDR04_1, weight_withPU);
+													photontrkSumPtSolidConeDR04_1_cl_new_ALL_->Fill(photontrkSumPtSolidConeDR04_1, weight_withPU);
+													photonnTrkHollowConeDR04_1_cl_new_ALL_->Fill(photonnTrkHollowConeDR04_1, weight_withPU);
+													photontrkSumPtHollowConeDR04_1_cl_new_ALL_->Fill(photontrkSumPtHollowConeDR04_1, weight_withPU);
+													photonIsoFPRCharged_1_cl_new_ALL_->Fill(photonIsoFPRCharged_1/photonPt_1, weight_withPU);
+													photonIsoFPRNeutral_1_cl_new_ALL_->Fill(photonIsoFPRNeutral_1/photonPt_1, weight_withPU);
+													photonIsoFPRPhoton_1_cl_new_ALL_->Fill(photonIsoFPRPhoton_1/photonPt_1, weight_withPU);
+
+													nJets_cl_new_ALL_->Fill(nJets_cl_new_ALL, weight_withPU);
+					
+													jetPt_1_cl_new_ALL_->Fill(jetPt_1_cl_new_ALL, weight_withPU);
+													jetEta_1_cl_new_ALL_->Fill(jetEta_1_cl_new_ALL, weight_withPU);
+													jetPhi_1_cl_new_ALL_->Fill(jetPhi_1_cl_new_ALL, weight_withPU);
+													jetE_1_cl_new_ALL_->Fill(jetE_1_cl_new_ALL, weight_withPU);
+			
+													if(nJets_cl_new_ALL > 1){
+														jetPt_2_cl_new_ALL_->Fill(jetPt_2_cl_new_ALL, weight_withPU);
+														jetEta_2_cl_new_ALL_->Fill(jetEta_2_cl_new_ALL, weight_withPU);
+														jetPhi_2_cl_new_ALL_->Fill(jetPhi_2_cl_new_ALL, weight_withPU);
+														jetE_2_cl_new_ALL_->Fill(jetE_2_cl_new_ALL, weight_withPU);
+													}
+			
+													if(nJets_cl_new_ALL > 2){										
+														jetPt_3_cl_new_ALL_->Fill(jetPt_3_cl_new_ALL, weight_withPU);
+														jetEta_3_cl_new_ALL_->Fill(jetEta_3_cl_new_ALL, weight_withPU);
+														jetPhi_3_cl_new_ALL_->Fill(jetPhi_3_cl_new_ALL, weight_withPU);
+														jetE_3_cl_new_ALL_->Fill(jetE_3_cl_new_ALL, weight_withPU);
+													}
+													
+													DeltaR_photon1_jet1_cl_new_ALL_->Fill(DeltaR_photon1_jet1_cl_new_ALL, weight_withPU);
+													DeltaEta_photon1_jet1_cl_new_ALL_->Fill(DeltaEta_photon1_jet1_cl_new_ALL, weight_withPU);													
+													DeltaPhi_photon1_jet1_cl_new_ALL_->Fill(DeltaPhi_photon1_jet1_cl_new_ALL, weight_withPU);
+			
+													if(nJets_cl_new_ALL > 1){	
+														DeltaR_photon1_jet2_cl_new_ALL_->Fill(DeltaR_photon1_jet2_cl_new_ALL, weight_withPU);
+														DeltaR_jet1_jet2_cl_new_ALL_->Fill(DeltaR_jet1_jet2_cl_new_ALL, weight_withPU);
+														DeltaEta_jet1_jet2_cl_new_ALL_->Fill(DeltaEta_jet1_jet2_cl_new_ALL, weight_withPU);
+														DeltaPhi_jet1_jet2_cl_new_ALL_->Fill(DeltaPhi_jet1_jet2_cl_new_ALL, weight_withPU);
+													}
+	
+													if(nJets_cl_new_ALL > 2){												
+														DeltaR_photon1_jet3_cl_new_ALL_->Fill(DeltaR_photon1_jet3_cl_new_ALL, weight_withPU);
+													}
+	
+													HT_cl_new_ALL_->Fill(HT_cl_new_ALL, weight_withPU);
+						
+												} // end HT selection
+											} // end jets kinematic selection
+										} // end jets selection
+									}	// end photon kinematic selection
+								}
+							}
+						}
+					} 
+				} 
+			} // end photon quality selection
+      	// if (Cut(ientry) < 0) continue;
+		} // end photon selection
+		// #### cleaning new: jets vs. ALL photons - finish	
+
+		// #### cleaning new: jets vs. LEADING photon - start
+		// photon selection
+		if(nPhotons > 0) { 
+			
+			iSelected0_cl_new_LEA++;
+			iSelectedWithWeights0_cl_new_LEA = iSelectedWithWeights0_cl_new_LEA + weight_withPU;
+
+			// photon quality selection: Barrel - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
+			if((*photonPassConversionVeto)[0] == 1){ 
+				iSelected1_cl_new_LEA++;				 
+				iSelectedWithWeights1_cl_new_LEA = iSelectedWithWeights1_cl_new_LEA + weight_withPU;				 	 
+				if((*photonid_hadronicOverEm2012)[0] < 0.05){
+			 	  iSelected2_cl_new_LEA++;
+					iSelectedWithWeights2_cl_new_LEA = iSelectedWithWeights2_cl_new_LEA + weight_withPU;				 	  
+				 	if((*photonid_sieie)[0] < 0.011){ 
+				    iSelected3_cl_new_LEA++;
+						iSelectedWithWeights3_cl_new_LEA = iSelectedWithWeights3_cl_new_LEA + weight_withPU;					    
+			 	  	if((*photonPfIsoChargedHad)[0] < 1.5){ 
+					    iSelected4_cl_new_LEA++;
+							iSelectedWithWeights4_cl_new_LEA = iSelectedWithWeights4_cl_new_LEA + weight_withPU;
+			 	 			if((*photonPfIsoNeutralHad)[0] < (1.0 + 0.04*photonPt_1)){
+						    iSelected5_cl_new_LEA++;
+								iSelectedWithWeights5_cl_new_LEA = iSelectedWithWeights5_cl_new_LEA + weight_withPU;
+			 	 				if((*photonPfIsoPhoton)[0] < (0.7 + 0.005*photonPt_1)){
+							    iSelected6_cl_new_LEA++;
+									iSelectedWithWeights6_cl_new_LEA = iSelectedWithWeights6_cl_new_LEA + weight_withPU;
+
+			            // photon kinematic selection
+									if (photonPt_1 > 180. && (photonBit_1&1) && isTriggerMatchedFamily4) {
+	
+										// #### jetVeto: jets vs. LEADING photon - start
+										nJets_cl_new_LEA = 0;
+//cout << "------inizio LEA ------" << endl;
+//cout << "nJets = " << nJets << endl;
+//cout << "jetPt->size() = " << jetPt->size() << endl;
+//for (unsigned int conta = 0; conta < jetPt->size(); conta++){
+//	cout << "jetPt->at(" << conta << ") = " << jetPt->at(conta) << endl;
+//}
+//cout << "nPhotons = " << nPhotons << endl;
+//cout << "photonPt->size() = " << photonPt->size() << endl;
+//for (unsigned int conta1 = 0; conta1 < photonPt->size(); conta1++){
+//	cout << "photonPt->at(" << conta1 << ") = " << photonPt->at(conta1) << endl;
+//}
+										for (int iJetar = 0; iJetar < nJets; iJetar++) {
+											bool close = false;
+//cout << "deltaR (photon 0, jet " << iJetar << ") = " << deltaR(photonEta->at(0), photonPhi->at(0), jetEta->at(iJetar), jetPhi->at(iJetar)) << endl;											
+											if ( deltaR(photonEta->at(0), photonPhi->at(0), jetEta->at(iJetar), jetPhi->at(iJetar)) < 0.4 ) {
+												close = true;
+//cout << "close(jet= " << iJetar << ", photon = 0) = " << close << endl;
+											}
+											if (!close){
+												jetPt_cl_new_LEA.push_back(jetPt->at(iJetar));
+												jetEta_cl_new_LEA.push_back(jetEta->at(iJetar));
+												jetPhi_cl_new_LEA.push_back(jetPhi->at(iJetar));
+												jetE_cl_new_LEA.push_back(jetE->at(iJetar));
+												nJets_cl_new_LEA += 1;
+											}
+										}
+//cout << "nJets_cl_new_LEA = " << nJets_cl_new_LEA << endl;
+//cout << "jetPt_cl_new_LEA.size() = " << jetPt_cl_new_LEA.size() << endl;
+//for (unsigned int conta2 = 0; conta2 < jetPt_cl_new_LEA.size(); conta2++){
+//	cout << "jetPt_cl_new_LEA.at(" << conta2 << ") = " << jetPt_cl_new_LEA.at(conta2) << endl;
+//}
+//cout << "-------fine LEA-------" << endl;	
+
+										// ---- jets clean new
+										if(nJets_cl_new_LEA > 0){ 
+											jetPt_1_cl_new_LEA = jetPt_cl_new_LEA.at(0);
+											jetEta_1_cl_new_LEA = jetEta_cl_new_LEA.at(0);
+											jetPhi_1_cl_new_LEA = jetPhi_cl_new_LEA.at(0);  
+											jetE_1_cl_new_LEA = jetE_cl_new_LEA.at(0);
+
+											if(nJets_cl_new_LEA > 1){  
+												jetPt_2_cl_new_LEA = jetPt_cl_new_LEA.at(1);
+												jetEta_2_cl_new_LEA = jetEta_cl_new_LEA.at(1);
+												jetPhi_2_cl_new_LEA = jetPhi_cl_new_LEA.at(1);           
+												jetE_2_cl_new_LEA = jetE_cl_new_LEA.at(1);
+											}
+				
+											if(nJets_cl_new_LEA > 2){  
+												jetPt_3_cl_new_LEA = jetPt_cl_new_LEA.at(2);
+												jetEta_3_cl_new_LEA = jetEta_cl_new_LEA.at(2);
+												jetPhi_3_cl_new_LEA = jetPhi_cl_new_LEA.at(2);           
+												jetE_3_cl_new_LEA = jetE_cl_new_LEA.at(2);		
+											}
+
+     									// ---- angular clean new
+											DeltaR_photon1_jet1_cl_new_LEA = deltaR(photonEta_1, photonPhi_1, jetEta_1_cl_new_LEA, jetPhi_1_cl_new_LEA);
+											DeltaEta_photon1_jet1_cl_new_LEA = deltaEta(photonEta_1, jetEta_1_cl_new_LEA);											
+											DeltaPhi_photon1_jet1_cl_new_LEA = deltaPhi(photonPhi_1, jetPhi_1_cl_new_LEA);
+
+											if(nJets_cl_new_LEA > 1){  
+												DeltaR_photon1_jet2_cl_new_LEA = deltaR(photonEta_1, photonPhi_1, jetEta_2_cl_new_LEA, jetPhi_2_cl_new_LEA);
+												DeltaR_jet1_jet2_cl_new_LEA = deltaR(jetEta_1_cl_new_LEA, jetEta_2_cl_new_LEA, jetPhi_1_cl_new_LEA, jetPhi_2_cl_new_LEA);					
+												DeltaEta_jet1_jet2_cl_new_LEA = deltaEta(jetEta_1_cl_new_LEA, jetEta_2_cl_new_LEA);
+												DeltaPhi_jet1_jet2_cl_new_LEA = deltaPhi(jetPhi_1_cl_new_LEA, jetPhi_2_cl_new_LEA);
+											}
+											if(nJets_cl_new_LEA > 2){  
+												DeltaR_photon1_jet3_cl_new_LEA = deltaR(photonEta_1, photonPhi_1, jetEta_3_cl_new_LEA, jetPhi_3_cl_new_LEA);
+											}
+
+     									// ---- other clean	new	
+											HT_cl_new_LEA = 0;
+											for(unsigned int j = 0; j < jetPt_cl_new_LEA.size(); j++) {
+     	  								HT_cl_new_LEA += jetPt_cl_new_LEA.at(j);
+											}
+
+     	  							jetPt_cl_new_LEA.clear();
+     	  							jetEta_cl_new_LEA.clear(); 
+											jetPhi_cl_new_LEA.clear();
+											jetE_cl_new_LEA.clear();	
+										}
+										// #### jetVeto: jets vs. LEADING photon - finish	
+	
+			            	// jets selection
+										if (nJets_cl_new_LEA > 0){									
+
+			            		// jets kinematic selection
+											if (jetPt_1_cl_new_LEA > 50. && TMath::Abs(jetEta_1_cl_new_LEA) < 2.5 ) {
+									
+												// HT selection									
+												if (HT_cl_new_LEA > 250){
+
+													iSelected7_cl_new_LEA++;
+													iSelectedWithWeights7_cl_new_LEA = iSelectedWithWeights7_cl_new_LEA + weight_withPU;
+						
+													Nvtx_cl_new_LEA_->Fill(nVtx, weight_withPU);
+										
+													nPhotons_cl_new_LEA_->Fill(nPhotons, weight_withPU);
+//												photonPt_1_cl_new_LEA_->Fill((*photonPt)[0], weight_withPU);
+													photonPt_1_cl_new_LEA_->Fill(photonPt_1, weight_withPU);
+													photonE_1_cl_new_LEA_->Fill(photonE_1, weight_withPU);
+													photonEta_1_cl_new_LEA_->Fill(photonEta_1, weight_withPU);
+													photonPhi_1_cl_new_LEA_->Fill(photonPhi_1, weight_withPU);
+													photonBit_1_cl_new_LEA_->Fill(photonBit_1, weight_withPU);
+													photonPassConversionVeto_1_cl_new_LEA_->Fill(photonPassConversionVeto_1, weight_withPU);
+													photonPfIsoChargedHad_1_cl_new_LEA_->Fill(photonPfIsoChargedHad_1, weight_withPU);
+													photonPfIsoNeutralHad_1_cl_new_LEA_->Fill(photonPfIsoNeutralHad_1, weight_withPU);
+													photonPfIsoPhoton_1_cl_new_LEA_->Fill(photonPfIsoPhoton_1, weight_withPU);
+													photonPfIsoPhotons03ForCic_1_cl_new_LEA_->Fill(photonPfIsoPhotons03ForCic_1, weight_withPU);
+													photonPfIsoNeutrals03ForCic_1_cl_new_LEA_->Fill(photonPfIsoNeutrals03ForCic_1, weight_withPU);
+													photonPfIsoCharged03ForCicVtx0_1_cl_new_LEA_->Fill(photonPfIsoCharged03ForCicVtx0_1, weight_withPU);
+													photonPfIsoCharged03BadForCic_1_cl_new_LEA_->Fill(photonPfIsoCharged03BadForCic_1, weight_withPU);
+													photonPfIsoPhotons04ForCic_1_cl_new_LEA_->Fill(photonPfIsoPhotons04ForCic_1, weight_withPU);
+													photonPfIsoNeutrals04ForCic_1_cl_new_LEA_->Fill(photonPfIsoNeutrals04ForCic_1, weight_withPU);
+													photonPfIsoCharged04ForCicVtx0_1_cl_new_LEA_->Fill(photonPfIsoCharged04ForCicVtx0_1, weight_withPU);
+													photonPfIsoCharged04BadForCic_1_cl_new_LEA_->Fill(photonPfIsoCharged04BadForCic_1, weight_withPU);
+													photonid_sieie_1_cl_new_LEA_->Fill(photonid_sieie_1, weight_withPU);
+													photonid_sieip_1_cl_new_LEA_->Fill(photonid_sieip_1, weight_withPU);
+													photonid_etawidth_1_cl_new_LEA_->Fill(photonid_etawidth_1, weight_withPU);
+													photonid_phiwidth_1_cl_new_LEA_->Fill(photonid_phiwidth_1, weight_withPU);
+													photonid_r9_1_cl_new_LEA_->Fill(photonid_r9_1, weight_withPU);
+													photonid_lambdaRatio_1_cl_new_LEA_->Fill(photonid_lambdaRatio_1, weight_withPU);
+													photonid_s4Ratio_1_cl_new_LEA_->Fill(photonid_s4Ratio_1, weight_withPU);
+													photonid_e25_1_cl_new_LEA_->Fill(photonid_e25_1, weight_withPU);
+													photonid_sceta_1_cl_new_LEA_->Fill(photonid_sceta_1, weight_withPU);
+													photonid_ESEffSigmaRR_1_cl_new_LEA_->Fill(photonid_ESEffSigmaRR_1, weight_withPU);
+													photonid_hadronicOverEm_1_cl_new_LEA_->Fill(photonid_hadronicOverEm_1, weight_withPU);
+													photonid_hadronicOverEm2012_1_cl_new_LEA_->Fill(photonid_hadronicOverEm2012_1, weight_withPU);
+													photonhcalTowerSumEtConeDR04_1_cl_new_LEA_->Fill(photonhcalTowerSumEtConeDR04_1, weight_withPU);
+													photonecalRecHitSumEtConeDR04_1_cl_new_LEA_->Fill(photonecalRecHitSumEtConeDR04_1, weight_withPU);
+													photonnTrkSolidConeDR04_1_cl_new_LEA_->Fill(photonnTrkSolidConeDR04_1, weight_withPU);
+													photontrkSumPtSolidConeDR04_1_cl_new_LEA_->Fill(photontrkSumPtSolidConeDR04_1, weight_withPU);
+													photonnTrkHollowConeDR04_1_cl_new_LEA_->Fill(photonnTrkHollowConeDR04_1, weight_withPU);
+													photontrkSumPtHollowConeDR04_1_cl_new_LEA_->Fill(photontrkSumPtHollowConeDR04_1, weight_withPU);
+													photonIsoFPRCharged_1_cl_new_LEA_->Fill(photonIsoFPRCharged_1/photonPt_1, weight_withPU);
+													photonIsoFPRNeutral_1_cl_new_LEA_->Fill(photonIsoFPRNeutral_1/photonPt_1, weight_withPU);
+													photonIsoFPRPhoton_1_cl_new_LEA_->Fill(photonIsoFPRPhoton_1/photonPt_1, weight_withPU);
+	
+													nJets_cl_new_LEA_->Fill(nJets_cl_new_LEA, weight_withPU);
+						
+													jetPt_1_cl_new_LEA_->Fill(jetPt_1_cl_new_LEA, weight_withPU);
+													jetEta_1_cl_new_LEA_->Fill(jetEta_1_cl_new_LEA, weight_withPU);
+													jetPhi_1_cl_new_LEA_->Fill(jetPhi_1_cl_new_LEA, weight_withPU);
+													jetE_1_cl_new_LEA_->Fill(jetE_1_cl_new_LEA, weight_withPU);
+		
+													if(nJets_cl_new_LEA > 1){
+														jetPt_2_cl_new_LEA_->Fill(jetPt_2_cl_new_LEA, weight_withPU);
+														jetEta_2_cl_new_LEA_->Fill(jetEta_2_cl_new_LEA, weight_withPU);
+														jetPhi_2_cl_new_LEA_->Fill(jetPhi_2_cl_new_LEA, weight_withPU);
+														jetE_2_cl_new_LEA_->Fill(jetE_2_cl_new_LEA, weight_withPU);
+													}
+	
+													if(nJets_cl_new_LEA > 2){										
+														jetPt_3_cl_new_LEA_->Fill(jetPt_3_cl_new_LEA, weight_withPU);
+														jetEta_3_cl_new_LEA_->Fill(jetEta_3_cl_new_LEA, weight_withPU);
+														jetPhi_3_cl_new_LEA_->Fill(jetPhi_3_cl_new_LEA, weight_withPU);
+														jetE_3_cl_new_LEA_->Fill(jetE_3_cl_new_LEA, weight_withPU);
+													}
+											
+													DeltaR_photon1_jet1_cl_new_LEA_->Fill(DeltaR_photon1_jet1_cl_new_LEA, weight_withPU);
+													DeltaEta_photon1_jet1_cl_new_LEA_->Fill(DeltaEta_photon1_jet1_cl_new_LEA, weight_withPU);													
+													DeltaPhi_photon1_jet1_cl_new_LEA_->Fill(DeltaPhi_photon1_jet1_cl_new_LEA, weight_withPU);
+			
+													if(nJets_cl_new_LEA > 1){	
+														DeltaR_photon1_jet2_cl_new_LEA_->Fill(DeltaR_photon1_jet2_cl_new_LEA, weight_withPU);
+														DeltaR_jet1_jet2_cl_new_LEA_->Fill(DeltaR_jet1_jet2_cl_new_LEA, weight_withPU);
+														DeltaEta_jet1_jet2_cl_new_LEA_->Fill(DeltaEta_jet1_jet2_cl_new_LEA, weight_withPU);
+														DeltaPhi_jet1_jet2_cl_new_LEA_->Fill(DeltaPhi_jet1_jet2_cl_new_LEA, weight_withPU);
+													}
+	
+													if(nJets_cl_new_LEA > 2){												
+														DeltaR_photon1_jet3_cl_new_LEA_->Fill(DeltaR_photon1_jet3_cl_new_LEA, weight_withPU);
+													}
+	
+													HT_cl_new_LEA_->Fill(HT_cl_new_LEA, weight_withPU);
+							
+												} // end HT selection
+											}	// end jets kinematic selection
+										}	// end jets selection
+									}	// end photon kinematic selection
+								}
+							}
+						}
+					} 
+				} 
+			} // end photon quality selection
+      // if (Cut(ientry) < 0) continue;
+		} // // end photon selection
+		// #### cleaning new: jets vs. LEADING photon - finish	
+
+		// #### cleaning new: photon class - start
+		// photon selection
+//cout << "nPhotons = "<< nPhotons << endl;
+//cout << "photonPt->size() = " << photonPt->size()<< endl;
+		if(nPhotons > 0 && photonPt->size()) { 
+
+			iSelected0_True++;
+			iSelectedWithWeights0_True = iSelectedWithWeights0_True + weight_withPU;
+
+			TruephotonsN = 0;	
+			for(unsigned int t = 0; t < photonPt->size(); t++) {
+//cout << "qui 1"<< endl;
+			// photon quality selection: Barrel - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
+				if((*photonPassConversionVeto)[t] == 1){ 
+//cout << "qui 2"<< endl;
+				iSelected1_True++;				 
+				iSelectedWithWeights1_True = iSelectedWithWeights1_True + weight_withPU;				 	 
+					if((*photonid_hadronicOverEm2012)[t] < 0.05){
+//cout << "qui 3"<< endl;					
+				 	  iSelected2_True++;
+						iSelectedWithWeights2_True = iSelectedWithWeights2_True + weight_withPU;				 	  
+					 	if((*photonid_sieie)[t] < 0.011){ 
+//cout << "qui 4"<< endl;					 	
+					    iSelected3_True++;
+							iSelectedWithWeights3_True = iSelectedWithWeights3_True + weight_withPU;					    
+				 	  	if((*photonPfIsoChargedHad)[t] < 1.5){ 
+//cout << "qui 5"<< endl;
+						    iSelected4_True++;
+								iSelectedWithWeights4_True = iSelectedWithWeights4_True + weight_withPU;
+				 	 			if((*photonPfIsoNeutralHad)[t] < (1.0 + 0.04*photonPt_1)){
+//cout << "qui 6"<< endl;
+							    iSelected5_True++;
+									iSelectedWithWeights5_True = iSelectedWithWeights5_True + weight_withPU;
+				 	 				if((*photonPfIsoPhoton)[t] < (0.7 + 0.005*photonPt_1)){
+//cout << "qui 7"<< endl;
+								    iSelected6_True++;
+										iSelectedWithWeights6_True = iSelectedWithWeights6_True + weight_withPU;
+
+ 	    	  					Truephoton_Pt.push_back(photonPt->at(t));
+ 	    	  					Truephoton_Eta.push_back(photonEta->at(t)); 
+										Truephoton_Phi.push_back(photonPhi->at(t));
+										Truephoton_E.push_back(photonE->at(t));
+										TruephotonsN+=1;
+//cout << "qui 8"<< endl;										
+										
+									}
+								}
+							}									
+						}
+					} 
+				}   
+			}
+//cout << "qui 9"<< endl;										
+			// photon kinematic selection
+			if (Truephoton_Pt.size() && Truephoton_Pt.at(0)> 180. && (TMath::Abs(Truephoton_Eta.at(0)) < 2.5 && !(1.4442 < TMath::Abs(Truephoton_Eta.at(0)) && TMath::Abs(Truephoton_Eta.at(0))< 1.566)) && isTriggerMatchedFamily4) {
+//cout << "qui 10"<< endl;											
+				// #### jetVeto: jets vs. TRUE photon - start
+				nJets_True = 0;
+				for (int iJetar = 0; iJetar < nJets; iJetar++) {
+					bool close = false;
+					if ( deltaR(Truephoton_Eta.at(0), Truephoton_Phi.at(0), jetEta->at(iJetar), jetPhi->at(iJetar)) < 0.4 ) {
+						close = true;
 					}
+					if (!close){
+						jetPt_True.push_back(jetPt->at(iJetar));
+						jetEta_True.push_back(jetEta->at(iJetar));
+						jetPhi_True.push_back(jetPhi->at(iJetar));
+						jetE_True.push_back(jetE->at(iJetar));
+						nJets_True += 1;
+					}
+				}
+
+				// ---- jets clean new
+				if(nJets_True > 0){ 
+					jetPt_1_True = jetPt_True.at(0);
+					jetEta_1_True = jetEta_True.at(0);
+					jetPhi_1_True = jetPhi_True.at(0);  
+					jetE_1_True = jetE_True.at(0);
+
+					if(nJets_True > 1){  
+						jetPt_2_True = jetPt_True.at(1);
+						jetEta_2_True = jetEta_True.at(1);
+						jetPhi_2_True = jetPhi_True.at(1);           
+						jetE_2_True = jetE_True.at(1);
+					}
+				
+					if(nJets_True > 2){  
+						jetPt_3_True = jetPt_True.at(2);
+						jetEta_3_True = jetEta_True.at(2);
+						jetPhi_3_True = jetPhi_True.at(2);           
+						jetE_3_True = jetE_True.at(2);		
+					}
+
+					// ---- angular clean new
+					DeltaR_photon1_jet1_True = deltaR(Truephoton_Eta.at(0), Truephoton_Phi.at(0), jetEta_1_True, jetPhi_1_True);
+					DeltaEta_photon1_jet1_True = deltaEta(Truephoton_Eta.at(0), jetEta_1_True);											
+					DeltaPhi_photon1_jet1_True = deltaPhi(Truephoton_Phi.at(0), jetPhi_1_True);
+
+					if(nJets_True > 1){  
+						DeltaR_photon1_jet2_True = deltaR(Truephoton_Eta.at(0), Truephoton_Phi.at(0), jetEta_2_True, jetPhi_2_True);
+						DeltaR_jet1_jet2_True = deltaR(jetEta_1_True, jetEta_2_True, jetPhi_1_True, jetPhi_2_True);					
+						DeltaEta_jet1_jet2_True = deltaEta(jetEta_1_True, jetEta_2_True);
+						DeltaPhi_jet1_jet2_True = deltaPhi(jetPhi_1_True, jetPhi_2_True);
+					}
+					if(nJets_True > 2){  
+						DeltaR_photon1_jet3_True = deltaR(Truephoton_Eta.at(0), Truephoton_Phi.at(0), jetEta_3_True, jetPhi_3_True);
+					}
+
+					// ---- other clean	new	
+					HT_True = 0;
+					for(unsigned int j = 0; j < jetPt_True.size(); j++) {
+						HT_True += jetPt_True.at(j);
+					}
+
+					jetPt_True.clear();
+					jetEta_True.clear(); 
+					jetPhi_True.clear();
+					jetE_True.clear();	
+				}
+				// #### jetVeto: jets vs. TRUE photon - finish	
+	
+				// jets selection
+				if (nJets_True > 0){									
+
+		 			// jets kinematic selection
+					if (jetPt_1_True > 50. && TMath::Abs(jetEta_1_True) < 2.5 ) {
+									
+						// HT selection									
+						if (HT_True > 250){
+
+							iSelected7_True++;
+							iSelectedWithWeights7_True = iSelectedWithWeights7_True + weight_withPU;
+													
+							nPhotons_True_->Fill(TruephotonsN, weight_withPU);
+//						photonPt_1_True_->Fill((*photonPt)[0], weight_withPU);
+							photonPt_1_True_->Fill(Truephoton_Pt.at(0), weight_withPU);
+							photonE_1_True_->Fill(Truephoton_E.at(0), weight_withPU);
+							photonEta_1_True_->Fill(Truephoton_Eta.at(0), weight_withPU);
+							photonPhi_1_True_->Fill(Truephoton_Phi.at(0), weight_withPU);
+		
+							nJets_True_->Fill(nJets_True, weight_withPU);
+							
+							jetPt_1_True_->Fill(jetPt_1_True, weight_withPU);
+							jetEta_1_True_->Fill(jetEta_1_True, weight_withPU);
+							jetPhi_1_True_->Fill(jetPhi_1_True, weight_withPU);
+							jetE_1_True_->Fill(jetE_1_True, weight_withPU);
+			
+							if(nJets_True > 1 && jetPt_2_True > 50. && TMath::Abs(jetEta_2_True) < 2.5){
+								jetPt_2_True_->Fill(jetPt_2_True, weight_withPU);
+								jetEta_2_True_->Fill(jetEta_2_True, weight_withPU);
+								jetPhi_2_True_->Fill(jetPhi_2_True, weight_withPU);
+								jetE_2_True_->Fill(jetE_2_True, weight_withPU);
+							}
+	
+							if(nJets_True > 2 && jetPt_3_True > 50. && TMath::Abs(jetEta_3_True) < 2.5){										
+								jetPt_3_True_->Fill(jetPt_3_True, weight_withPU);
+								jetEta_3_True_->Fill(jetEta_3_True, weight_withPU);
+								jetPhi_3_True_->Fill(jetPhi_3_True, weight_withPU);
+								jetE_3_True_->Fill(jetE_3_True, weight_withPU);
+							}
+											
+							DeltaR_photon1_jet1_True_->Fill(DeltaR_photon1_jet1_True, weight_withPU);
+							DeltaEta_photon1_jet1_True_->Fill(DeltaEta_photon1_jet1_True, weight_withPU);													
+							DeltaPhi_photon1_jet1_True_->Fill(DeltaPhi_photon1_jet1_True, weight_withPU);
+			
+							if(nJets_True > 1 && jetPt_2_True > 50. && TMath::Abs(jetEta_2_True) < 2.5){	
+								DeltaR_photon1_jet2_True_->Fill(DeltaR_photon1_jet2_True, weight_withPU);
+								DeltaR_jet1_jet2_True_->Fill(DeltaR_jet1_jet2_True, weight_withPU);
+								DeltaEta_jet1_jet2_True_->Fill(DeltaEta_jet1_jet2_True, weight_withPU);
+								DeltaPhi_jet1_jet2_True_->Fill(DeltaPhi_jet1_jet2_True, weight_withPU);
+							}
+	
+							if(nJets_True > 2 && jetPt_3_True > 50. && TMath::Abs(jetEta_3_True) < 2.5){												
+								DeltaR_photon1_jet3_True_->Fill(DeltaR_photon1_jet3_True, weight_withPU);
+							}
+	
+							HT_True_->Fill(HT_True, weight_withPU);
+							
+						} // end HT selection
+					}	// end jets kinematic selection
+				}	// end jets selection
+			}	// end photon kinematic selection
+//			cout << "qui 11"<< endl;										
+      // if (Cut(ientry) < 0) continue;
+ 	    Truephoton_Pt.clear();
+			Truephoton_Eta.clear(); 
+			Truephoton_Phi.clear();
+			Truephoton_E.clear();
+		} // // end photon selection
+		// #### cleaning new: photon class - - finish	
+
+
+		// #### cleaning old - start
+		if(nPhotons > 0 && nJets_cl_old > 0) { 
+			
+			iSelected0_cl_old++;
+			iSelectedWithWeights0_cl_old = iSelectedWithWeights0_cl_old + weight_withPU;
+
+			// quality selection: Barrel - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
+			if((*photonPassConversionVeto)[0] == 1){ 
+				iSelected1_cl_old++;				 
+				iSelectedWithWeights1_cl_old = iSelectedWithWeights1_cl_old + weight_withPU;				 	 
+			 	 if((*photonid_hadronicOverEm2012)[0] < 0.05){
+			 	  iSelected2_cl_old++;
+					iSelectedWithWeights2_cl_old = iSelectedWithWeights2_cl_old + weight_withPU;				 	  
+				 	if((*photonid_sieie)[0] < 0.011){ 
+				    iSelected3_cl_old++;
+						iSelectedWithWeights3_cl_old = iSelectedWithWeights3_cl_old + weight_withPU;					    
+			 	  	if((*photonPfIsoChargedHad)[0] < 1.5){ 
+					    iSelected4_cl_old++;
+							iSelectedWithWeights4_cl_old = iSelectedWithWeights4_cl_old + weight_withPU;
+			 	 			if((*photonPfIsoNeutralHad)[0] < (1.0 + 0.04*photonPt_1)){
+						    iSelected5_cl_old++;
+								iSelectedWithWeights5_cl_old = iSelectedWithWeights5_cl_old + weight_withPU;
+			 	 				if((*photonPfIsoPhoton)[0] < (0.7 + 0.005*photonPt_1)){
+							    iSelected6_cl_old++;
+									iSelectedWithWeights6_cl_old = iSelectedWithWeights6_cl_old + weight_withPU;
+
+			            // kinematic selection
+									if (jetPt_1_cl_old > 50. && TMath::Abs(jetEta_1_cl_old) < 2.5 && photonPt_1 > 180. && (photonBit_1&1) && isTriggerMatchedFamily4) {
+									
+										// HT selection									
+										if (HT_cl_old > 250){
+
+											iSelected7_cl_old++;
+											iSelectedWithWeights7_cl_old = iSelectedWithWeights7_cl_old + weight_withPU;
+					
+											Nvtx_cl_old_->Fill(nVtx, weight_withPU);
+										
+											nPhotons_cl_old_->Fill(nPhotons, weight_withPU);
+//										photonPt_1_cl_old_->Fill((*photonPt)[0], weight_withPU);
+											photonPt_1_cl_old_->Fill(photonPt_1, weight_withPU);
+											photonE_1_cl_old_->Fill(photonE_1, weight_withPU);
+											photonEta_1_cl_old_->Fill(photonEta_1, weight_withPU);
+											photonPhi_1_cl_old_->Fill(photonPhi_1, weight_withPU);
+											photonBit_1_cl_old_->Fill(photonBit_1, weight_withPU);
+											photonPassConversionVeto_1_cl_old_->Fill(photonPassConversionVeto_1, weight_withPU);
+											photonPfIsoChargedHad_1_cl_old_->Fill(photonPfIsoChargedHad_1, weight_withPU);
+											photonPfIsoNeutralHad_1_cl_old_->Fill(photonPfIsoNeutralHad_1, weight_withPU);
+											photonPfIsoPhoton_1_cl_old_->Fill(photonPfIsoPhoton_1, weight_withPU);
+											photonPfIsoPhotons03ForCic_1_cl_old_->Fill(photonPfIsoPhotons03ForCic_1, weight_withPU);
+											photonPfIsoNeutrals03ForCic_1_cl_old_->Fill(photonPfIsoNeutrals03ForCic_1, weight_withPU);
+											photonPfIsoCharged03ForCicVtx0_1_cl_old_->Fill(photonPfIsoCharged03ForCicVtx0_1, weight_withPU);
+											photonPfIsoCharged03BadForCic_1_cl_old_->Fill(photonPfIsoCharged03BadForCic_1, weight_withPU);
+											photonPfIsoPhotons04ForCic_1_cl_old_->Fill(photonPfIsoPhotons04ForCic_1, weight_withPU);
+											photonPfIsoNeutrals04ForCic_1_cl_old_->Fill(photonPfIsoNeutrals04ForCic_1, weight_withPU);
+											photonPfIsoCharged04ForCicVtx0_1_cl_old_->Fill(photonPfIsoCharged04ForCicVtx0_1, weight_withPU);
+											photonPfIsoCharged04BadForCic_1_cl_old_->Fill(photonPfIsoCharged04BadForCic_1, weight_withPU);
+											photonid_sieie_1_cl_old_->Fill(photonid_sieie_1, weight_withPU);
+											photonid_sieip_1_cl_old_->Fill(photonid_sieip_1, weight_withPU);
+											photonid_etawidth_1_cl_old_->Fill(photonid_etawidth_1, weight_withPU);
+											photonid_phiwidth_1_cl_old_->Fill(photonid_phiwidth_1, weight_withPU);
+											photonid_r9_1_cl_old_->Fill(photonid_r9_1, weight_withPU);
+											photonid_lambdaRatio_1_cl_old_->Fill(photonid_lambdaRatio_1, weight_withPU);
+											photonid_s4Ratio_1_cl_old_->Fill(photonid_s4Ratio_1, weight_withPU);
+											photonid_e25_1_cl_old_->Fill(photonid_e25_1, weight_withPU);
+											photonid_sceta_1_cl_old_->Fill(photonid_sceta_1, weight_withPU);
+											photonid_ESEffSigmaRR_1_cl_old_->Fill(photonid_ESEffSigmaRR_1, weight_withPU);
+											photonid_hadronicOverEm_1_cl_old_->Fill(photonid_hadronicOverEm_1, weight_withPU);
+											photonid_hadronicOverEm2012_1_cl_old_->Fill(photonid_hadronicOverEm2012_1, weight_withPU);
+											photonhcalTowerSumEtConeDR04_1_cl_old_->Fill(photonhcalTowerSumEtConeDR04_1, weight_withPU);
+											photonecalRecHitSumEtConeDR04_1_cl_old_->Fill(photonecalRecHitSumEtConeDR04_1, weight_withPU);
+											photonnTrkSolidConeDR04_1_cl_old_->Fill(photonnTrkSolidConeDR04_1, weight_withPU);
+											photontrkSumPtSolidConeDR04_1_cl_old_->Fill(photontrkSumPtSolidConeDR04_1, weight_withPU);
+											photonnTrkHollowConeDR04_1_cl_old_->Fill(photonnTrkHollowConeDR04_1, weight_withPU);
+											photontrkSumPtHollowConeDR04_1_cl_old_->Fill(photontrkSumPtHollowConeDR04_1, weight_withPU);
+											photonIsoFPRCharged_1_cl_old_->Fill(photonIsoFPRCharged_1/photonPt_1, weight_withPU);
+											photonIsoFPRNeutral_1_cl_old_->Fill(photonIsoFPRNeutral_1/photonPt_1, weight_withPU);
+											photonIsoFPRPhoton_1_cl_old_->Fill(photonIsoFPRPhoton_1/photonPt_1, weight_withPU);
+
+											nJets_cl_old_->Fill(nJets_cl_old, weight_withPU);
+				
+											jetPt_1_cl_old_->Fill(jetPt_1_cl_old, weight_withPU);
+											jetEta_1_cl_old_->Fill(jetEta_1_cl_old, weight_withPU);
+											jetPhi_1_cl_old_->Fill(jetPhi_1_cl_old, weight_withPU);
+											jetE_1_cl_old_->Fill(jetE_1_cl_old, weight_withPU);
+	
+											if(nJets_cl_old > 1){
+												jetPt_2_cl_old_->Fill(jetPt_2_cl_old, weight_withPU);
+												jetEta_2_cl_old_->Fill(jetEta_2_cl_old, weight_withPU);
+												jetPhi_2_cl_old_->Fill(jetPhi_2_cl_old, weight_withPU);
+												jetE_2_cl_old_->Fill(jetE_2_cl_old, weight_withPU);
+											}
+	
+											if(nJets_cl_old > 2){										
+												jetPt_3_cl_old_->Fill(jetPt_3_cl_old, weight_withPU);
+												jetEta_3_cl_old_->Fill(jetEta_3_cl_old, weight_withPU);
+												jetPhi_3_cl_old_->Fill(jetPhi_3_cl_old, weight_withPU);
+												jetE_3_cl_old_->Fill(jetE_3_cl_old, weight_withPU);
+											}
+											
+											DeltaR_photon1_jet1_cl_old_->Fill(DeltaR_photon1_jet1_cl_old, weight_withPU);
+											DeltaEta_photon1_jet1_cl_old_->Fill(DeltaEta_photon1_jet1_cl_old, weight_withPU);
+											DeltaPhi_photon1_jet1_cl_old_->Fill(DeltaPhi_photon1_jet1_cl_old, weight_withPU);
+	
+											if(nJets_cl_old > 1){	
+												DeltaR_photon1_jet2_cl_old_->Fill(DeltaR_photon1_jet2_cl_old, weight_withPU);
+												DeltaR_jet1_jet2_cl_old_->Fill(DeltaR_jet1_jet2_cl_old, weight_withPU);
+												DeltaEta_jet1_jet2_cl_old_->Fill(DeltaEta_jet1_jet2_cl_old, weight_withPU);
+												DeltaPhi_jet1_jet2_cl_old_->Fill(DeltaPhi_jet1_jet2_cl_old, weight_withPU);
+											}
+	
+											if(nJets_cl_old > 2){												
+												DeltaR_photon1_jet3_cl_old_->Fill(DeltaR_photon1_jet3_cl_old, weight_withPU);
+											}
+
+											HT_cl_old_->Fill(HT_cl_old, weight_withPU);
+					
+										} // end HT selection
+									}	// end kinematic selection
+								}
+							}
+						}
+					} 
 				} // end quality selection
 			} // end selection with 1 jet
-//cout << "qui 3" << endl;
       // if (Cut(ientry) < 0) continue;
 		} // end if preselection
-//cout << "-----fine---------" << endl;		
+		// #### cleaning old - finish	
+
 	} // end loop on entries
 
 	// ====================================terminate and plot
@@ -960,19 +1878,42 @@ void GJetsAnalyzer::Loop(){
 	cout << "Number of selected events 7, unweighted = " << iSelected7 << endl;
 	cout << "Number of selected events, unweighted = " << iSelected7 << endl;
 	cout << "Number of selected events, weighted = " << iSelected7*weight << endl;
-	cout << "Cleaning: " << endl;
+	cout << "cleaning new: jet vs. ALL photons: " << endl;
 	cout << "nentries (with preselection in the PATZJetsExpress analyzer) = " << nentries_r << endl;
-	cout << "Number of selected events 0, unweighted = " << iSelected0_cl << endl;
-	cout << "Number of selected events 1, unweighted = " << iSelected1_cl << endl;
-	cout << "Number of selected events 2, unweighted = " << iSelected2_cl << endl;
-	cout << "Number of selected events 3, unweighted = " << iSelected3_cl << endl;
-	cout << "Number of selected events 4, unweighted = " << iSelected4_cl << endl;
-	cout << "Number of selected events 5, unweighted = " << iSelected5_cl << endl;
-	cout << "Number of selected events 6, unweighted = " << iSelected6_cl << endl;
-	cout << "Number of selected events 6, unweighted = " << iSelected6_cl << endl;
-	cout << "Number of selected events 7, unweighted = " << iSelected7_cl << endl;
-	cout << "Number of selected events, unweighted = " << iSelected7_cl << endl;
-	cout << "Number of selected events, weighted = " << iSelected7_cl*weight_r << endl;
+	cout << "Number of selected events 0, unweighted = " << iSelected0_cl_new_ALL << endl;
+	cout << "Number of selected events 1, unweighted = " << iSelected1_cl_new_ALL << endl;
+	cout << "Number of selected events 2, unweighted = " << iSelected2_cl_new_ALL << endl;
+	cout << "Number of selected events 3, unweighted = " << iSelected3_cl_new_ALL << endl;
+	cout << "Number of selected events 4, unweighted = " << iSelected4_cl_new_ALL << endl;
+	cout << "Number of selected events 5, unweighted = " << iSelected5_cl_new_ALL << endl;
+	cout << "Number of selected events 6, unweighted = " << iSelected6_cl_new_ALL << endl;
+	cout << "Number of selected events 7, unweighted = " << iSelected7_cl_new_ALL << endl;
+	cout << "Number of selected events, unweighted = " << iSelected7_cl_new_ALL << endl;
+	cout << "Number of selected events, weighted = " << iSelected7_cl_new_ALL*weight_r << endl;
+	cout << "cleaning new: jet vs. LEADING photon: " << endl;
+	cout << "nentries (with preselection in the PATZJetsExpress analyzer) = " << nentries_r << endl;
+	cout << "Number of selected events 0, unweighted = " << iSelected0_cl_new_LEA << endl;
+	cout << "Number of selected events 1, unweighted = " << iSelected1_cl_new_LEA << endl;
+	cout << "Number of selected events 2, unweighted = " << iSelected2_cl_new_LEA << endl;
+	cout << "Number of selected events 3, unweighted = " << iSelected3_cl_new_LEA << endl;
+	cout << "Number of selected events 4, unweighted = " << iSelected4_cl_new_LEA << endl;
+	cout << "Number of selected events 5, unweighted = " << iSelected5_cl_new_LEA << endl;
+	cout << "Number of selected events 6, unweighted = " << iSelected6_cl_new_LEA << endl;
+	cout << "Number of selected events 7, unweighted = " << iSelected7_cl_new_LEA << endl;
+	cout << "Number of selected events, unweighted = " << iSelected7_cl_new_LEA << endl;
+	cout << "Number of selected events, weighted = " << iSelected7_cl_new_LEA*weight_r << endl;
+	cout << "Cleaning old: " << endl;
+	cout << "nentries (with preselection in the PATZJetsExpress analyzer) = " << nentries_r << endl;
+	cout << "Number of selected events 0, unweighted = " << iSelected0_cl_old << endl;
+	cout << "Number of selected events 1, unweighted = " << iSelected1_cl_old << endl;
+	cout << "Number of selected events 2, unweighted = " << iSelected2_cl_old << endl;
+	cout << "Number of selected events 3, unweighted = " << iSelected3_cl_old << endl;
+	cout << "Number of selected events 4, unweighted = " << iSelected4_cl_old << endl;
+	cout << "Number of selected events 5, unweighted = " << iSelected5_cl_old << endl;
+	cout << "Number of selected events 6, unweighted = " << iSelected6_cl_old << endl;
+	cout << "Number of selected events 7, unweighted = " << iSelected7_cl_old << endl;
+	cout << "Number of selected events, unweighted = " << iSelected7_cl_old << endl;
+	cout << "Number of selected events, weighted = " << iSelected7_cl_old*weight_r << endl;
 	fhistos->Write();
 	if (plothistos == 1){
 		Plot_Histos();  
@@ -994,12 +1935,29 @@ void Book_Histos(){
   ptPhotonREC_= new TH1F("ptPhotonREC_","p_{T} of the REC photon (GEN selection)",2,150.,200.);
   DeltaRGENREC_=new TH1F("DeltaRGENREC_","DeltaR Gen-REC photon", 50, 0., 0.01);
 */
+//	if(isMC){
+		nPhotonsGEN_ = new TH1F("nPhotonsGEN_","N Photons GEN", 50, 0, 50);
+		photonPtGEN_ = new TH1F("photonPtGEN_","Photon GEN p_{T}", 200, 0., 1200.);
+		photonEtaGEN_ = new TH1F("photonEtaGEN_","Photon GEN #eta", 50, -1.4442, 1.4442);
+		photonPhiGEN_ = new TH1F("photonPhiGEN_","Photon GEN #varphi", 50, -3.1416, 3.1416);
+		photonEGEN_ = new TH1F("photonEGEN_","Photon GEN E", 200, 0., 1200.);
+
+		jetPtGEN_1_ = new TH1F("jetPtGEN_1_","Jet 1 GEN p_{T} ", 200, 0., 1200.);							
+		jetEtaGEN_1_ = new TH1F("jetEtaGEN_1_","Jet 1 GEN #eta ", 50, -2.5, 2.5);
+		jetPhiGEN_1_ = new TH1F("jetPhiGEN_1_","Jet 1 GEN #varphi ", 50, -3.1416, 3.1416);
+		jetEGEN_1_ = new TH1F("jetEGEN_1_", "jet 1 GEN E", 300, 0., 1050.);
+		nJetsGEN_ = new TH1F("nJetsGEN_","N Jets GEN", 10, 0, 10);
+		HTGEN_ = new TH1F("HTGEN_","H_{T} GEN", 100, 0, 1250);
+		HTParSum_	= new TH1F("HTParSum_","H_{T} Partons Sum", 100, 0, 1250);			
+//	}
+	
+// #### normal selection - start
   Nvtx_ = new TH1F("Nvtx_","Number of vertices ", 50, 0, 50);
 
 	nPhotons_ = new TH1F("nPhotons_","N Photons ", 10, 0, 10);
 	photonPt_1_ = new TH1F("photonPt_1_","Photon p_{T} ", 200, 0., 1200.);
 	photonE_1_ = new TH1F("photonE_1_","Photon E ", 200, 0., 1200.);
-	photonEta_1_ = new TH1F("photonEta_1_","Photon #eta ", 50, -2.7, 2.7);
+	photonEta_1_ = new TH1F("photonEta_1_","Photon #eta ", 50, -1.4442, 1.4442);
 	photonPhi_1_ = new TH1F("photonPhi_1_","Photon #varphi ", 50, -3.1416, 3.1416);
 	photonBit_1_ = new TH1F("photonBit_1_","Photon bit ", 100, 0., 1000.);
 
@@ -1023,7 +1981,7 @@ void Book_Histos(){
 	photonid_lambdaRatio_1_ = new TH1F("photonid_lambdaRatio_1_", "photon ID: #lambda Ratio", 50, 0, 1);
 	photonid_s4Ratio_1_ = new TH1F("photonid_s4Ratio_1_","photon ID: s4 Ratio", 50, 0, 1);
 	photonid_e25_1_ = new TH1F("photonid_e25_1_", "photon ID: #rho25", 50, 0, 1200);
-	photonid_sceta_1_ = new TH1F("photonid_sceta_1_", "photon ID: SC #eta", 50, -2.7, 2.7);
+	photonid_sceta_1_ = new TH1F("photonid_sceta_1_", "photon ID: SC #eta", 50, -2.5, 2.5);
 	photonid_ESEffSigmaRR_1_ = new TH1F("photonid_ESEffSigmaRR_1_", "photon ID: ESEffSigmaRR", 10, 0, 1);
 	photonid_hadronicOverEm_1_ = new TH1F("photonid_hadronicOverEm_1_", "photon ID: hadronicOverEm", 50, 0, 1);
 	photonid_hadronicOverEm2012_1_ = new TH1F("photonid_hadronicOverEm2012_1_", "photon ID: hadronicOverEm2012", 50, 0, 0.5);
@@ -1032,117 +1990,317 @@ void Book_Histos(){
 	photonnTrkSolidConeDR04_1_ = new TH1F("photonnTrkSolidConeDR04_1_", "photon nTrkSolidConeDR04", 30, 0, 30);
 	photontrkSumPtSolidConeDR04_1_ = new TH1F("photontrkSumPtSolidConeDR04_1_","photon trkSumPtSolidConeDR04", 100, 0, 500);
 	photonnTrkHollowConeDR04_1_ = new TH1F("photonnTrkHollowConeDR04_1_", "photon nTrkHollowConeDR04", 30, 0, 30) ;
-	photontrkSumPtHollowConeDR04_1_ = new TH1F("photontrkSumPtHollowConeDR04_", "photon trkSumPtHollowConeDR04", 100, 0, 100);
+	photontrkSumPtHollowConeDR04_1_ = new TH1F("photontrkSumPtHollowConeDR04_1_", "photon trkSumPtHollowConeDR04", 100, 0, 100);
 	
 	//PhotonIso
-	photonIsoFPRCharged_1_ = new TH1F("photonIsoFPRCharged_1_", "photon IsoFPRCharged", 40, 0, 40); //with FOOT PRINT REMOVAL FROM MP
-	photonIsoFPRNeutral_1_ = new TH1F("photonIsoFPRNeutral_1_", "photon IsoFPRNeutral", 40, 0, 20);
-	photonIsoFPRPhoton_1_ = new TH1F("photonIsoFPRPhoton_1_", "photon IsoFPRPhoton", 40, 0, 40);
+	photonIsoFPRCharged_1_ = new TH1F("photonIsoFPRCharged_1_", "photon IsoFPRCharged/p_{T}", 40, 0, 40); //with FOOT PRINT REMOVAL FROM MP
+	photonIsoFPRNeutral_1_ = new TH1F("photonIsoFPRNeutral_1_", "photon IsoFPRNeutral/p_{T}", 40, 0, 20);
+	photonIsoFPRPhoton_1_ = new TH1F("photonIsoFPRPhoton_1_", "photon IsoFPRPhoton/p_{T}", 40, 0, 40);
 //jetPhotonDPhi_1_;
 
 	nJets_ = new TH1F("nJets_","N Jets ", 10, 0, 10);
 
-	jetPt_1_ = new TH1F("jetPt_1_","Jet 1 p_{T} ", 300, 0., 1050.);
-	jetEta_1_ = new TH1F("jetEta_1_","Jet 1 #eta ", 50, -2.6, 2.6);
+	jetPt_1_ = new TH1F("jetPt_1_","Jet 1 p_{T} ", 200, 0., 1200.);
+	jetEta_1_ = new TH1F("jetEta_1_","Jet 1 #eta ", 50, -2.5, 2.5);
 	jetPhi_1_ = new TH1F("jetPhi_1_","Jet 1 #varphi ", 50, -3.1416, 3.1416);
 	jetE_1_ = new TH1F("jetE_1_", "jet 1 E", 300, 0., 1050.);
 
-	jetPt_2_ = new TH1F("jetPt_2_","Jet 2 p_{T} ", 300, 0., 1050.);
-	jetEta_2_ = new TH1F("jetEta_2_","Jet 2 #eta ", 50, -2.6, 2.6);
+	jetPt_2_ = new TH1F("jetPt_2_","Jet 2 p_{T} ", 200, 0., 1200.);
+	jetEta_2_ = new TH1F("jetEta_2_","Jet 2 #eta ", 50, -2.5, 2.5);
 	jetPhi_2_ = new TH1F("jetPhi_2_","Jet 2 #varphi ", 50, -3.1416, 3.1416);
 	jetE_2_ = new TH1F("jetE_2_", "jet 2 E", 300, 0., 1050.);
 
-	jetPt_3_ = new TH1F("jetPt_3_","Jet 3 p_{T} ", 300, 0., 1050.);
-	jetEta_3_ = new TH1F("jetEta_3_","Jet 3 #eta ", 50, -2.6, 2.6);
+	jetPt_3_ = new TH1F("jetPt_3_","Jet 3 p_{T} ", 200, 0., 1200.);
+	jetEta_3_ = new TH1F("jetEta_3_","Jet 3 #eta ", 50, -2.5, 2.5);
 	jetPhi_3_ = new TH1F("jetPhi_3_","Jet 3 #varphi ", 50, -3.1416, 3.1416);
 	jetE_3_ = new TH1F("jetE_3_", "jet 3 E", 300, 0., 1050.);
 
-	DeltaR_photon1_jet1_ = new TH1F("DeltaR_photon1_jet1_","#DeltaR photon1-jet1", 30, 0, 6);
-	DeltaPhi_photon1_jet1_ = new TH1F("DeltaPhi_photon1_jet1_","#Delta#varphi photon1-jet1", 50, 0, 3.1416);
+	DeltaR_photon1_jet1_ = new TH1F("DeltaR_photon1_jet1_","#DeltaR #gamma1-jet1", 30, 0, 6);
+	DeltaEta_photon1_jet1_ = new TH1F("DeltaEta_photon1_jet1_","#Delta#eta #gamma1-jet1", 50, 0, 5);
+	DeltaPhi_photon1_jet1_ = new TH1F("DeltaPhi_photon1_jet1_","#Delta#varphi #gamma1-jet1", 50, 0, 3.1416);
 
-	DeltaR_photon1_jet2_ = new TH1F("DeltaR_photon1_jet2_","#DeltaR photon1-jet2", 30, 0, 6);
+	DeltaR_photon1_jet2_ = new TH1F("DeltaR_photon1_jet2_","#DeltaR #gamma1-jet2", 30, 0, 6);
+	DeltaR_jet1_jet2_ = new TH1F("DeltaR_jet1_jet2_","#Delta#R jet1-jet2", 30, 0, 6);
 	DeltaEta_jet1_jet2_ = new TH1F("DeltaEta_jet1_jet2_","#Delta#eta jet1-jet2", 50, 0, 5);
 	DeltaPhi_jet1_jet2_ = new TH1F("DeltaPhi_jet1_jet2_","#Delta#varphi jet1-jet2", 50, 0, 3.1416);
 
-	DeltaR_photon1_jet3_ = new TH1F("DeltaR_photon1_jet3_","#DeltaR photon1-jet3", 30, 0, 6);
+	DeltaR_photon1_jet3_ = new TH1F("DeltaR_photon1_jet3_","#DeltaR #gamma1-jet3", 30, 0, 6);
 
-	HT_ = new TH1F("HT_","H_{T}", 100, 0, 1300);
+	HT_ = new TH1F("HT_","H_{T}", 100, 0, 1250);
+// #### normal selection - finish
 
-// -- cleaning
-  Nvtx_cl_ = new TH1F("Nvtx_cl_","Number of vertices ", 50, 0, 50);
+// #### cleaning new: jet vs. ALL photons - start	
+  Nvtx_cl_new_ALL_ = new TH1F("Nvtx_cl_new_ALL_","Number of vertices ", 50, 0, 50);
 
-	nPhotons_cl_ = new TH1F("nPhotons_cl_","N Photons ", 10, 0, 10);
-	photonPt_1_cl_ = new TH1F("photonPt_1_cl_","Photon p_{T} ", 200, 0., 1200.);
-	photonE_1_cl_ = new TH1F("photonE_1_cl_","Photon E ", 200, 0., 1200.);
-	photonEta_1_cl_ = new TH1F("photonEta_1_cl_","Photon #eta ", 50, -2.7, 2.7);
-	photonPhi_1_cl_ = new TH1F("photonPhi_1_cl_","Photon #varphi ", 50, -3.1416, 3.1416);
-	photonBit_1_cl_ = new TH1F("photonBit_1_cl_","Photon bit ", 100, 0., 1000.);
+	nPhotons_cl_new_ALL_ = new TH1F("nPhotons_cl_new_ALL_","N Photons ", 10, 0, 10);
+	photonPt_1_cl_new_ALL_ = new TH1F("photonPt_1_cl_new_ALL_","Photon p_{T} ", 200, 0., 1200.);
+	photonE_1_cl_new_ALL_ = new TH1F("photonE_1_cl_new_ALL_","Photon E ", 200, 0., 1200.);
+	photonEta_1_cl_new_ALL_ = new TH1F("photonEta_1_cl_new_ALL_","Photon #eta ", 50, -1.4442, 1.4442);
+	photonPhi_1_cl_new_ALL_ = new TH1F("photonPhi_1_cl_new_ALL_","Photon #varphi ", 50, -3.1416, 3.1416);
+	photonBit_1_cl_new_ALL_ = new TH1F("photonBit_1_cl_new_ALL_","Photon bit ", 100, 0., 1000.);
 	
-	photonPassConversionVeto_1_cl_ = new TH1F("photonPassConversionVeto_1_cl_","photonPassConversionVeto ", 10, -2, 2);
-	photonPfIsoChargedHad_1_cl_ = new TH1F("photonPfIsoChargedHad_1_cl_", "photon PfIsoChargedHad", 50, 0, 2);
-	photonPfIsoNeutralHad_1_cl_ = new TH1F("photonPfIsoNeutralHad_1_cl_", "photon PfIsoNeutralHad", 30, 0, 30);
-	photonPfIsoPhoton_1_cl_ = new TH1F("photonPfIsoPhoton_1_cl_", "photon PfIsoPhoton", 20, 0, 4);
-  photonPfIsoPhotons03ForCic_1_cl_ = new TH1F("photonPfIsoPhotons03ForCic_1_cl_", "photon PfIsoPhotons03ForCic", 50, 0, 100);
-	photonPfIsoNeutrals03ForCic_1_cl_ = new TH1F("photonPfIsoNeutrals03ForCic_1_cl_","photon PfIsoNeutrals03ForCic", 40, 0, 20);
-	photonPfIsoCharged03ForCicVtx0_1_cl_ = new TH1F("photonPfIsoCharged03ForCicVtx0_1_cl_", "photon PfIsoCharged03ForCicVtx0", 50, 0, 100);
-	photonPfIsoCharged03BadForCic_1_cl_ = new TH1F("photonPfIsoCharged03BadForCic_1_cl_", "photon PfIsoCharged03BadForCic", 50, 0, 100);
-	photonPfIsoPhotons04ForCic_1_cl_ = new TH1F("photonPfIsoPhotons04ForCic_1_cl_", "photon PfIsoPhotons04ForCic", 50, 0, 100);
-	photonPfIsoNeutrals04ForCic_1_cl_ = new TH1F("photonPfIsoNeutrals04ForCic_1_cl_", "photon PfIsoNeutrals04ForCic", 40, 0, 20);
-	photonPfIsoCharged04ForCicVtx0_1_cl_ = new TH1F("photonPfIsoCharged04ForCicVtx0_1_cl_", "photon PfIsoCharged04ForCicVtx0", 50, 0, 100);
-	photonPfIsoCharged04BadForCic_1_cl_ = new TH1F("photonPfIsoCharged04BadForCic_1_cl_", "photonPfIsoCharged04BadForCic", 50, 0, 100);
-	photonid_sieie_1_cl_ = new TH1F("photonid_sieie_1_cl_", "photon ID: #sigma_{i#etai#eta}", 40, 0., 0.015);
-	photonid_sieip_1_cl_ = new TH1F("photonid_sieip_1_cl_", "photon ID: #sigma_{i#etai#varphi}", 20, 0, 0.01);
-	photonid_etawidth_1_cl_ = new TH1F("photonid_etawidth_1_cl_", "photon ID: #eta width", 30, 0, 0.02);
-	photonid_phiwidth_1_cl_ = new TH1F("photonid_phiwidth_1_cl_", "photon ID: #varphi width", 30, 0, 0.1);
-	photonid_r9_1_cl_ = new TH1F("photonid_r9_1_cl_", "photon ID: r9", 50, 0, 1);
-	photonid_lambdaRatio_1_cl_ = new TH1F("photonid_lambdaRatio_1_cl_", "photon ID: #lambda Ratio", 50, 0, 1);
-	photonid_s4Ratio_1_cl_ = new TH1F("photonid_s4Ratio_1_cl_","photon ID: s4 Ratio", 50, 0, 1);
-	photonid_e25_1_cl_ = new TH1F("photonid_e25_1_cl_", "photon ID: #rho25", 50, 0, 1200);
-	photonid_sceta_1_cl_ = new TH1F("photonid_sceta_1_cl_", "photon ID: SC #eta", 50, -2.7, 2.7);
-	photonid_ESEffSigmaRR_1_cl_ = new TH1F("photonid_ESEffSigmaRR_1_cl_", "photon ID: ESEffSigmaRR", 10, 0, 1);
-	photonid_hadronicOverEm_1_cl_ = new TH1F("photonid_hadronicOverEm_1_cl_", "photon ID: hadronicOverEm", 50, 0, 1);
-	photonid_hadronicOverEm2012_1_cl_ = new TH1F("photonid_hadronicOverEm2012_1_cl_", "photon ID: hadronicOverEm2012", 50, 0, 0.5);
-	photonhcalTowerSumEtConeDR04_1_cl_ = new TH1F("photonhcalTowerSumEtConeDR04_1_cl_","photon hcalTowerSumEtConeDR04", 100, 0, 100);
-	photonecalRecHitSumEtConeDR04_1_cl_ = new TH1F("photonecalRecHitSumEtConeDR04_1_cl_", "photon ecalRecHitSumEtConeDR04", 100, 0, 100);
-	photonnTrkSolidConeDR04_1_cl_ = new TH1F("photonnTrkSolidConeDR04_1_cl_", "photon nTrkSolidConeDR04", 30, 0, 30);
-	photontrkSumPtSolidConeDR04_1_cl_ = new TH1F("photontrkSumPtSolidConeDR04_1_cl_","photon trkSumPtSolidConeDR04", 100, 0, 500);
-	photonnTrkHollowConeDR04_1_cl_ = new TH1F("photonnTrkHollowConeDR04_1_cl_", "photon nTrkHollowConeDR04", 30, 0, 30) ;
-	photontrkSumPtHollowConeDR04_1_cl_ = new TH1F("photontrkSumPtHollowConeDR04_cl_", "photon trkSumPtHollowConeDR04", 100, 0, 100);
+	photonPassConversionVeto_1_cl_new_ALL_ = new TH1F("photonPassConversionVeto_1_cl_new_ALL_","photonPassConversionVeto ", 10, -2, 2);
+	photonPfIsoChargedHad_1_cl_new_ALL_ = new TH1F("photonPfIsoChargedHad_1_cl_new_ALL_", "photon PfIsoChargedHad", 50, 0, 2);
+	photonPfIsoNeutralHad_1_cl_new_ALL_ = new TH1F("photonPfIsoNeutralHad_1_cl_new_ALL_", "photon PfIsoNeutralHad", 30, 0, 30);
+	photonPfIsoPhoton_1_cl_new_ALL_ = new TH1F("photonPfIsoPhoton_1_cl_new_ALL_", "photon PfIsoPhoton", 20, 0, 4);
+  photonPfIsoPhotons03ForCic_1_cl_new_ALL_ = new TH1F("photonPfIsoPhotons03ForCic_1_cl_new_ALL_", "photon PfIsoPhotons03ForCic", 50, 0, 100);
+	photonPfIsoNeutrals03ForCic_1_cl_new_ALL_ = new TH1F("photonPfIsoNeutrals03ForCic_1_cl_new_ALL_","photon PfIsoNeutrals03ForCic", 40, 0, 20);
+	photonPfIsoCharged03ForCicVtx0_1_cl_new_ALL_ = new TH1F("photonPfIsoCharged03ForCicVtx0_1_cl_new_ALL_", "photon PfIsoCharged03ForCicVtx0", 50, 0, 100);
+	photonPfIsoCharged03BadForCic_1_cl_new_ALL_ = new TH1F("photonPfIsoCharged03BadForCic_1_cl_new_ALL_", "photon PfIsoCharged03BadForCic", 50, 0, 100);
+	photonPfIsoPhotons04ForCic_1_cl_new_ALL_ = new TH1F("photonPfIsoPhotons04ForCic_1_cl_new_ALL_", "photon PfIsoPhotons04ForCic", 50, 0, 100);
+	photonPfIsoNeutrals04ForCic_1_cl_new_ALL_ = new TH1F("photonPfIsoNeutrals04ForCic_1_cl_new_ALL_", "photon PfIsoNeutrals04ForCic", 40, 0, 20);
+	photonPfIsoCharged04ForCicVtx0_1_cl_new_ALL_ = new TH1F("photonPfIsoCharged04ForCicVtx0_1_cl_new_ALL_", "photon PfIsoCharged04ForCicVtx0", 50, 0, 100);
+	photonPfIsoCharged04BadForCic_1_cl_new_ALL_ = new TH1F("photonPfIsoCharged04BadForCic_1_cl_new_ALL_", "photonPfIsoCharged04BadForCic", 50, 0, 100);
+	photonid_sieie_1_cl_new_ALL_ = new TH1F("photonid_sieie_1_cl_new_ALL_", "photon ID: #sigma_{i#etai#eta}", 40, 0., 0.015);
+	photonid_sieip_1_cl_new_ALL_ = new TH1F("photonid_sieip_1_cl_new_ALL_", "photon ID: #sigma_{i#etai#varphi}", 20, 0, 0.01);
+	photonid_etawidth_1_cl_new_ALL_ = new TH1F("photonid_etawidth_1_cl_new_ALL_", "photon ID: #eta width", 30, 0, 0.02);
+	photonid_phiwidth_1_cl_new_ALL_ = new TH1F("photonid_phiwidth_1_cl_new_ALL_", "photon ID: #varphi width", 30, 0, 0.1);
+	photonid_r9_1_cl_new_ALL_ = new TH1F("photonid_r9_1_cl_new_ALL_", "photon ID: r9", 50, 0, 1);
+	photonid_lambdaRatio_1_cl_new_ALL_ = new TH1F("photonid_lambdaRatio_1_cl_new_ALL_", "photon ID: #lambda Ratio", 50, 0, 1);
+	photonid_s4Ratio_1_cl_new_ALL_ = new TH1F("photonid_s4Ratio_1_cl_new_ALL_","photon ID: s4 Ratio", 50, 0, 1);
+	photonid_e25_1_cl_new_ALL_ = new TH1F("photonid_e25_1_cl_new_ALL_", "photon ID: #rho25", 50, 0, 1200);
+	photonid_sceta_1_cl_new_ALL_ = new TH1F("photonid_sceta_1_cl_new_ALL_", "photon ID: SC #eta", 50, -2.5, 2.5);
+	photonid_ESEffSigmaRR_1_cl_new_ALL_ = new TH1F("photonid_ESEffSigmaRR_1_cl_new_ALL_", "photon ID: ESEffSigmaRR", 10, 0, 1);
+	photonid_hadronicOverEm_1_cl_new_ALL_ = new TH1F("photonid_hadronicOverEm_1_cl_new_ALL_", "photon ID: hadronicOverEm", 50, 0, 1);
+	photonid_hadronicOverEm2012_1_cl_new_ALL_ = new TH1F("photonid_hadronicOverEm2012_1_cl_new_ALL_", "photon ID: hadronicOverEm2012", 50, 0, 0.5);
+	photonhcalTowerSumEtConeDR04_1_cl_new_ALL_ = new TH1F("photonhcalTowerSumEtConeDR04_1_cl_new_ALL_","photon hcalTowerSumEtConeDR04", 100, 0, 100);
+	photonecalRecHitSumEtConeDR04_1_cl_new_ALL_ = new TH1F("photonecalRecHitSumEtConeDR04_1_cl_new_ALL_", "photon ecalRecHitSumEtConeDR04", 100, 0, 100);
+	photonnTrkSolidConeDR04_1_cl_new_ALL_ = new TH1F("photonnTrkSolidConeDR04_1_cl_new_ALL_", "photon nTrkSolidConeDR04", 30, 0, 30);
+	photontrkSumPtSolidConeDR04_1_cl_new_ALL_ = new TH1F("photontrkSumPtSolidConeDR04_1_cl_new_ALL_","photon trkSumPtSolidConeDR04", 100, 0, 500);
+	photonnTrkHollowConeDR04_1_cl_new_ALL_ = new TH1F("photonnTrkHollowConeDR04_1_cl_new_ALL_", "photon nTrkHollowConeDR04", 30, 0, 30) ;
+	photontrkSumPtHollowConeDR04_1_cl_new_ALL_ = new TH1F("photontrkSumPtHollowConeDR04_1_cl_new_ALL_", "photon trkSumPtHollowConeDR04", 100, 0, 100);
 	
 	//PhotonIso
-	photonIsoFPRCharged_1_cl_ = new TH1F("photonIsoFPRCharged_1_cl_", "photon IsoFPRCharged", 40, 0, 40); //with FOOT PRINT REMOVAL FROM MP
-	photonIsoFPRNeutral_1_cl_ = new TH1F("photonIsoFPRNeutral_1_cl_", "photon IsoFPRNeutral", 40, 0, 20);
-	photonIsoFPRPhoton_1_cl_ = new TH1F("photonIsoFPRPhoton_1_cl_", "photon IsoFPRPhoton", 40, 0, 40);
+	photonIsoFPRCharged_1_cl_new_ALL_ = new TH1F("photonIsoFPRCharged_1_cl_new_ALL_", "photon IsoFPRCharged/p_{T}", 40, 0, 40); //with FOOT PRINT REMOVAL FROM MP
+	photonIsoFPRNeutral_1_cl_new_ALL_ = new TH1F("photonIsoFPRNeutral_1_cl_new_ALL_", "photon IsoFPRNeutral/p_{T}", 40, 0, 20);
+	photonIsoFPRPhoton_1_cl_new_ALL_ = new TH1F("photonIsoFPRPhoton_1_cl_new_ALL_", "photon IsoFPRPhoton/p_{T}", 40, 0, 40);
 
 
-	nJets_cl_ = new TH1F("nJets_cl_","N Jets ", 10, 0, 10);
+	nJets_cl_new_ALL_ = new TH1F("nJets_cl_new_ALL_","N Jets ", 10, 0, 10);
 
-	jetPt_1_cl_ = new TH1F("jetPt_1_cl_","Jet 1 p_{T} ", 300, 0., 1050.);
-	jetEta_1_cl_ = new TH1F("jetEta_1_cl_","Jet 1 #eta ", 50, -2.6, 2.6);
-	jetPhi_1_cl_ = new TH1F("jetPhi_1_cl_","Jet 1 #varphi ", 50, -3.1416, 3.1416);
-	jetE_1_cl_ = new TH1F("jetE_1_cl_", "jet 1 E", 300, 0., 1050.);
+	jetPt_1_cl_new_ALL_ = new TH1F("jetPt_1_cl_new_ALL_","Jet 1 p_{T} ", 200, 0., 1200.);
+	jetEta_1_cl_new_ALL_ = new TH1F("jetEta_1_cl_new_ALL_","Jet 1 #eta ", 50, -2.5, 2.5);
+	jetPhi_1_cl_new_ALL_ = new TH1F("jetPhi_1_cl_new_ALL_","Jet 1 #varphi ", 50, -3.1416, 3.1416);
+	jetE_1_cl_new_ALL_ = new TH1F("jetE_1_cl_new_ALL_", "jet 1 E", 300, 0., 1050.);
 
-	jetPt_2_cl_ = new TH1F("jetPt_2_cl_","Jet 2 p_{T} ", 300, 0., 1050.);
-	jetEta_2_cl_ = new TH1F("jetEta_2_cl_","Jet 2 #eta ", 50, -2.6, 2.6);
-	jetPhi_2_cl_ = new TH1F("jetPhi_2_cl_","Jet 2 #varphi ", 50, -3.1416, 3.1416);
-	jetE_2_cl_ = new TH1F("jetE_2_cl_", "jet 2 E", 300, 0., 1050.);
+	jetPt_2_cl_new_ALL_ = new TH1F("jetPt_2_cl_new_ALL_","Jet 2 p_{T} ", 200, 0., 1200.);
+	jetEta_2_cl_new_ALL_ = new TH1F("jetEta_2_cl_new_ALL_","Jet 2 #eta ", 50, -2.5, 2.5);
+	jetPhi_2_cl_new_ALL_ = new TH1F("jetPhi_2_cl_new_ALL_","Jet 2 #varphi ", 50, -3.1416, 3.1416);
+	jetE_2_cl_new_ALL_ = new TH1F("jetE_2_cl_new_ALL_", "jet 2 E", 300, 0., 1050.);
 
-	jetPt_3_cl_ = new TH1F("jetPt_3_cl_","Jet 3 p_{T} ", 300, 0., 1050.);
-	jetEta_3_cl_ = new TH1F("jetEta_3_cl_","Jet 3 #eta ", 50, -2.6, 2.6);
-	jetPhi_3_cl_ = new TH1F("jetPhi_3_cl_","Jet 3 #varphi ", 50, -3.1416, 3.1416);
-	jetE_3_cl_ = new TH1F("jetE_3_cl_", "jet 3 E", 300, 0., 1050.);
+	jetPt_3_cl_new_ALL_ = new TH1F("jetPt_3_cl_new_ALL_","Jet 3 p_{T} ", 200, 0., 1200.);
+	jetEta_3_cl_new_ALL_ = new TH1F("jetEta_3_cl_new_ALL_","Jet 3 #eta ", 50, -2.5, 2.5);
+	jetPhi_3_cl_new_ALL_ = new TH1F("jetPhi_3_cl_new_ALL_","Jet 3 #varphi ", 50, -3.1416, 3.1416);
+	jetE_3_cl_new_ALL_ = new TH1F("jetE_3_cl_new_ALL_", "jet 3 E", 300, 0., 1050.);
 
-	DeltaR_photon1_jet1_cl_ = new TH1F("DeltaR_photon1_jet1_cl_","#DeltaR photon1-jet1", 30, 0, 6);
-	DeltaPhi_photon1_jet1_cl_ = new TH1F("DeltaPhi_photon1_jet1_cl_","#Delta#varphi photon1-jet1", 50, 0, 3.1416);
+	DeltaR_photon1_jet1_cl_new_ALL_ = new TH1F("DeltaR_photon1_jet1_cl_new_ALL_","#DeltaR #gamma1-jet1", 30, 0, 6);
+	DeltaEta_photon1_jet1_cl_new_ALL_ = new TH1F("DeltaEta_photon1_jet1_cl_new_ALL_","#Delta#eta #gamma1-jet1", 50, 0, 5);
+	DeltaPhi_photon1_jet1_cl_new_ALL_ = new TH1F("DeltaPhi_photon1_jet1_cl_new_ALL_","#Delta#varphi #gamma1-jet1", 50, 0, 3.1416);
 
-	DeltaR_photon1_jet2_cl_ = new TH1F("DeltaR_photon1_jet2_cl_","#DeltaR photon1-jet2", 30, 0, 6);
-	DeltaEta_jet1_jet2_cl_ = new TH1F("DeltaEta_jet1_jet2_cl_","#Delta#eta jet1-jet2", 50, 0, 5);
-	DeltaPhi_jet1_jet2_cl_ = new TH1F("DeltaPhi_jet1_jet2_cl_","#Delta#varphi jet1-jet2", 50, 0, 3.1416);
+	DeltaR_photon1_jet2_cl_new_ALL_ = new TH1F("DeltaR_photon1_jet2_cl_new_ALL_","#DeltaR #gamma1-jet2", 30, 0, 6);
+	DeltaR_jet1_jet2_cl_new_ALL_ = new TH1F("DeltaR_jet1_jet2_cl_new_ALL_","#Delta#R jet1-jet2", 30, 0, 6);
+	DeltaEta_jet1_jet2_cl_new_ALL_ = new TH1F("DeltaEta_jet1_jet2_cl_new_ALL_","#Delta#eta jet1-jet2", 50, 0, 5);
+	DeltaPhi_jet1_jet2_cl_new_ALL_ = new TH1F("DeltaPhi_jet1_jet2_cl_new_ALL_","#Delta#varphi jet1-jet2", 50, 0, 3.1416);
 
-	DeltaR_photon1_jet3_cl_ = new TH1F("DeltaR_photon1_jet3_cl_","#DeltaR photon1-jet3", 30, 0, 6);
+	DeltaR_photon1_jet3_cl_new_ALL_ = new TH1F("DeltaR_photon1_jet3_cl_new_ALL_","#DeltaR #gamma1-jet3", 30, 0, 6);
 
-	HT_cl_ = new TH1F("HT_cl_","H_{T}", 100, 0, 1300);
- 
+	HT_cl_new_ALL_ = new TH1F("HT_cl_new_ALL_","H_{T}", 100, 0, 1250);
+// #### cleaning new: jet vs. ALL photons - finish
+
+// #### cleaning new: jet vs. LEADING photon - start	
+  Nvtx_cl_new_LEA_ = new TH1F("Nvtx_cl_new_LEA_","Number of vertices ", 50, 0, 50);
+
+	nPhotons_cl_new_LEA_ = new TH1F("nPhotons_cl_new_LEA_","N Photons ", 10, 0, 10);
+	photonPt_1_cl_new_LEA_ = new TH1F("photonPt_1_cl_new_LEA_","Photon p_{T} ", 200, 0., 1200.);
+	photonE_1_cl_new_LEA_ = new TH1F("photonE_1_cl_new_LEA_","Photon E ", 200, 0., 1200.);
+	photonEta_1_cl_new_LEA_ = new TH1F("photonEta_1_cl_new_LEA_","Photon #eta ", 50, -1.4442, 1.4442);
+	photonPhi_1_cl_new_LEA_ = new TH1F("photonPhi_1_cl_new_LEA_","Photon #varphi ", 50, -3.1416, 3.1416);
+	photonBit_1_cl_new_LEA_ = new TH1F("photonBit_1_cl_new_LEA_","Photon bit ", 100, 0., 1000.);
+	
+	photonPassConversionVeto_1_cl_new_LEA_ = new TH1F("photonPassConversionVeto_1_cl_new_LEA_","photonPassConversionVeto ", 10, -2, 2);
+	photonPfIsoChargedHad_1_cl_new_LEA_ = new TH1F("photonPfIsoChargedHad_1_cl_new_LEA_", "photon PfIsoChargedHad", 50, 0, 2);
+	photonPfIsoNeutralHad_1_cl_new_LEA_ = new TH1F("photonPfIsoNeutralHad_1_cl_new_LEA_", "photon PfIsoNeutralHad", 30, 0, 30);
+	photonPfIsoPhoton_1_cl_new_LEA_ = new TH1F("photonPfIsoPhoton_1_cl_new_LEA_", "photon PfIsoPhoton", 20, 0, 4);
+  photonPfIsoPhotons03ForCic_1_cl_new_LEA_ = new TH1F("photonPfIsoPhotons03ForCic_1_cl_new_LEA_", "photon PfIsoPhotons03ForCic", 50, 0, 100);
+	photonPfIsoNeutrals03ForCic_1_cl_new_LEA_ = new TH1F("photonPfIsoNeutrals03ForCic_1_cl_new_LEA_","photon PfIsoNeutrals03ForCic", 40, 0, 20);
+	photonPfIsoCharged03ForCicVtx0_1_cl_new_LEA_ = new TH1F("photonPfIsoCharged03ForCicVtx0_1_cl_new_LEA_", "photon PfIsoCharged03ForCicVtx0", 50, 0, 100);
+	photonPfIsoCharged03BadForCic_1_cl_new_LEA_ = new TH1F("photonPfIsoCharged03BadForCic_1_cl_new_LEA_", "photon PfIsoCharged03BadForCic", 50, 0, 100);
+	photonPfIsoPhotons04ForCic_1_cl_new_LEA_ = new TH1F("photonPfIsoPhotons04ForCic_1_cl_new_LEA_", "photon PfIsoPhotons04ForCic", 50, 0, 100);
+	photonPfIsoNeutrals04ForCic_1_cl_new_LEA_ = new TH1F("photonPfIsoNeutrals04ForCic_1_cl_new_LEA_", "photon PfIsoNeutrals04ForCic", 40, 0, 20);
+	photonPfIsoCharged04ForCicVtx0_1_cl_new_LEA_ = new TH1F("photonPfIsoCharged04ForCicVtx0_1_cl_new_LEA_", "photon PfIsoCharged04ForCicVtx0", 50, 0, 100);
+	photonPfIsoCharged04BadForCic_1_cl_new_LEA_ = new TH1F("photonPfIsoCharged04BadForCic_1_cl_new_LEA_", "photonPfIsoCharged04BadForCic", 50, 0, 100);
+	photonid_sieie_1_cl_new_LEA_ = new TH1F("photonid_sieie_1_cl_new_LEA_", "photon ID: #sigma_{i#etai#eta}", 40, 0., 0.015);
+	photonid_sieip_1_cl_new_LEA_ = new TH1F("photonid_sieip_1_cl_new_LEA_", "photon ID: #sigma_{i#etai#varphi}", 20, 0, 0.01);
+	photonid_etawidth_1_cl_new_LEA_ = new TH1F("photonid_etawidth_1_cl_new_LEA_", "photon ID: #eta width", 30, 0, 0.02);
+	photonid_phiwidth_1_cl_new_LEA_ = new TH1F("photonid_phiwidth_1_cl_new_LEA_", "photon ID: #varphi width", 30, 0, 0.1);
+	photonid_r9_1_cl_new_LEA_ = new TH1F("photonid_r9_1_cl_new_LEA_", "photon ID: r9", 50, 0, 1);
+	photonid_lambdaRatio_1_cl_new_LEA_ = new TH1F("photonid_lambdaRatio_1_cl_new_LEA_", "photon ID: #lambda Ratio", 50, 0, 1);
+	photonid_s4Ratio_1_cl_new_LEA_ = new TH1F("photonid_s4Ratio_1_cl_new_LEA_","photon ID: s4 Ratio", 50, 0, 1);
+	photonid_e25_1_cl_new_LEA_ = new TH1F("photonid_e25_1_cl_new_LEA_", "photon ID: #rho25", 50, 0, 1200);
+	photonid_sceta_1_cl_new_LEA_ = new TH1F("photonid_sceta_1_cl_new_LEA_", "photon ID: SC #eta", 50, -2.5, 2.5);
+	photonid_ESEffSigmaRR_1_cl_new_LEA_ = new TH1F("photonid_ESEffSigmaRR_1_cl_new_LEA_", "photon ID: ESEffSigmaRR", 10, 0, 1);
+	photonid_hadronicOverEm_1_cl_new_LEA_ = new TH1F("photonid_hadronicOverEm_1_cl_new_LEA_", "photon ID: hadronicOverEm", 50, 0, 1);
+	photonid_hadronicOverEm2012_1_cl_new_LEA_ = new TH1F("photonid_hadronicOverEm2012_1_cl_new_LEA_", "photon ID: hadronicOverEm2012", 50, 0, 0.5);
+	photonhcalTowerSumEtConeDR04_1_cl_new_LEA_ = new TH1F("photonhcalTowerSumEtConeDR04_1_cl_new_LEA_","photon hcalTowerSumEtConeDR04", 100, 0, 100);
+	photonecalRecHitSumEtConeDR04_1_cl_new_LEA_ = new TH1F("photonecalRecHitSumEtConeDR04_1_cl_new_LEA_", "photon ecalRecHitSumEtConeDR04", 100, 0, 100);
+	photonnTrkSolidConeDR04_1_cl_new_LEA_ = new TH1F("photonnTrkSolidConeDR04_1_cl_new_LEA_", "photon nTrkSolidConeDR04", 30, 0, 30);
+	photontrkSumPtSolidConeDR04_1_cl_new_LEA_ = new TH1F("photontrkSumPtSolidConeDR04_1_cl_new_LEA_","photon trkSumPtSolidConeDR04", 100, 0, 500);
+	photonnTrkHollowConeDR04_1_cl_new_LEA_ = new TH1F("photonnTrkHollowConeDR04_1_cl_new_LEA_", "photon nTrkHollowConeDR04", 30, 0, 30) ;
+	photontrkSumPtHollowConeDR04_1_cl_new_LEA_ = new TH1F("photontrkSumPtHollowConeDR04_1_cl_new_LEA_", "photon trkSumPtHollowConeDR04", 100, 0, 100);
+	
+	//PhotonIso
+	photonIsoFPRCharged_1_cl_new_LEA_ = new TH1F("photonIsoFPRCharged_1_cl_new_LEA_", "photon IsoFPRCharged/p_{T}", 40, 0, 40); //with FOOT PRINT REMOVAL FROM MP
+	photonIsoFPRNeutral_1_cl_new_LEA_ = new TH1F("photonIsoFPRNeutral_1_cl_new_LEA_", "photon IsoFPRNeutral/p_{T}", 40, 0, 20);
+	photonIsoFPRPhoton_1_cl_new_LEA_ = new TH1F("photonIsoFPRPhoton_1_cl_new_LEA_", "photon IsoFPRPhoton/p_{T}", 40, 0, 40);
+
+
+	nJets_cl_new_LEA_ = new TH1F("nJets_cl_new_LEA_","N Jets ", 10, 0, 10);
+
+	jetPt_1_cl_new_LEA_ = new TH1F("jetPt_1_cl_new_LEA_","Jet 1 p_{T} ", 200, 0., 1200.);
+	jetEta_1_cl_new_LEA_ = new TH1F("jetEta_1_cl_new_LEA_","Jet 1 #eta ", 50, -2.5, 2.5);
+	jetPhi_1_cl_new_LEA_ = new TH1F("jetPhi_1_cl_new_LEA_","Jet 1 #varphi ", 50, -3.1416, 3.1416);
+	jetE_1_cl_new_LEA_ = new TH1F("jetE_1_cl_new_LEA_", "jet 1 E", 300, 0., 1050.);
+
+	jetPt_2_cl_new_LEA_ = new TH1F("jetPt_2_cl_new_LEA_","Jet 2 p_{T} ", 200, 0., 1200.);
+	jetEta_2_cl_new_LEA_ = new TH1F("jetEta_2_cl_new_LEA_","Jet 2 #eta ", 50, -2.5, 2.5);
+	jetPhi_2_cl_new_LEA_ = new TH1F("jetPhi_2_cl_new_LEA_","Jet 2 #varphi ", 50, -3.1416, 3.1416);
+	jetE_2_cl_new_LEA_ = new TH1F("jetE_2_cl_new_LEA_", "jet 2 E", 300, 0., 1050.);
+
+	jetPt_3_cl_new_LEA_ = new TH1F("jetPt_3_cl_new_LEA_","Jet 3 p_{T} ", 200, 0., 1200.);
+	jetEta_3_cl_new_LEA_ = new TH1F("jetEta_3_cl_new_LEA_","Jet 3 #eta ", 50, -2.5, 2.5);
+	jetPhi_3_cl_new_LEA_ = new TH1F("jetPhi_3_cl_new_LEA_","Jet 3 #varphi ", 50, -3.1416, 3.1416);
+	jetE_3_cl_new_LEA_ = new TH1F("jetE_3_cl_new_LEA_", "jet 3 E", 300, 0., 1050.);
+
+	DeltaR_photon1_jet1_cl_new_LEA_ = new TH1F("DeltaR_photon1_jet1_cl_new_LEA_","#DeltaR #gamma1-jet1", 30, 0, 6);
+	DeltaEta_photon1_jet1_cl_new_LEA_ = new TH1F("DeltaEta_photon1_jet1_cl_new_LEA_","#Delta#eta #gamma1-jet1", 50, 0, 5);
+	DeltaPhi_photon1_jet1_cl_new_LEA_ = new TH1F("DeltaPhi_photon1_jet1_cl_new_LEA_","#Delta#varphi #gamma1-jet1", 50, 0, 3.1416);
+
+	DeltaR_photon1_jet2_cl_new_LEA_ = new TH1F("DeltaR_photon1_jet2_cl_new_LEA_","#DeltaR #gamma1-jet2", 30, 0, 6);
+	DeltaR_jet1_jet2_cl_new_LEA_ = new TH1F("DeltaR_jet1_jet2_cl_new_LEA_","#Delta#R jet1-jet2", 30, 0, 6);
+	DeltaEta_jet1_jet2_cl_new_LEA_ = new TH1F("DeltaEta_jet1_jet2_cl_new_LEA_","#Delta#eta jet1-jet2", 50, 0, 5);
+	DeltaPhi_jet1_jet2_cl_new_LEA_ = new TH1F("DeltaPhi_jet1_jet2_cl_new_LEA_","#Delta#varphi jet1-jet2", 50, 0, 3.1416);
+
+	DeltaR_photon1_jet3_cl_new_LEA_ = new TH1F("DeltaR_photon1_jet3_cl_new_LEA_","#DeltaR #gamma1-jet3", 30, 0, 6);
+
+	HT_cl_new_LEA_ = new TH1F("HT_cl_new_LEA_","H_{T}", 100, 0, 1250);
+// #### cleaning new: jet vs. LEADING photon - finish
+
+// #### cleaning new: photon class - start
+
+	nPhotons_True_ = new TH1F("nPhotons_True_","N Photons ", 10, 0, 10);
+	photonPt_1_True_ = new TH1F("photonPt_1_True_","Photon p_{T} ", 200, 0., 1200.);
+	photonE_1_True_ = new TH1F("photonE_1_True_","Photon E ", 200, 0., 1200.);
+	photonEta_1_True_ = new TH1F("photonEta_1_True_","Photon #eta ", 50, -1.4442, 1.4442);
+	photonPhi_1_True_ = new TH1F("photonPhi_1_True_","Photon #varphi ", 50, -3.1416, 3.1416);
+
+	nJets_True_ = new TH1F("nJets_True_","N Jets ", 10, 0, 10);
+
+	jetPt_1_True_ = new TH1F("jetPt_1_True_","Jet 1 p_{T} ", 200, 0., 1200.);
+	jetEta_1_True_ = new TH1F("jetEta_1_True_","Jet 1 #eta ", 50, -2.5, 2.5);
+	jetPhi_1_True_ = new TH1F("jetPhi_1_True_","Jet 1 #varphi ", 50, -3.1416, 3.1416);
+	jetE_1_True_ = new TH1F("jetE_1_True_", "jet 1 E", 300, 0., 1050.);
+
+	jetPt_2_True_ = new TH1F("jetPt_2_True_","Jet 2 p_{T} ", 200, 0., 1200.);
+	jetEta_2_True_ = new TH1F("jetEta_2_True_","Jet 2 #eta ", 50, -2.5, 2.5);
+	jetPhi_2_True_ = new TH1F("jetPhi_2_True_","Jet 2 #varphi ", 50, -3.1416, 3.1416);
+	jetE_2_True_ = new TH1F("jetE_2_True_", "jet 2 E", 300, 0., 1050.);
+
+	jetPt_3_True_ = new TH1F("jetPt_3_True_","Jet 3 p_{T} ", 200, 0., 1200.);
+	jetEta_3_True_ = new TH1F("jetEta_3_True_","Jet 3 #eta ", 50, -2.5, 2.5);
+	jetPhi_3_True_ = new TH1F("jetPhi_3_True_","Jet 3 #varphi ", 50, -3.1416, 3.1416);
+	jetE_3_True_ = new TH1F("jetE_3_True_", "jet 3 E", 300, 0., 1050.);
+
+	DeltaR_photon1_jet1_True_ = new TH1F("DeltaR_photon1_jet1_True_","#DeltaR #gamma1-jet1", 30, 0, 6);
+	DeltaEta_photon1_jet1_True_ = new TH1F("DeltaEta_photon1_jet1_True_","#Delta#eta #gamma1-jet1", 50, 0, 5);
+	DeltaPhi_photon1_jet1_True_ = new TH1F("DeltaPhi_photon1_jet1_True_","#Delta#varphi #gamma1-jet1", 50, 0, 3.1416);
+
+	DeltaR_photon1_jet2_True_ = new TH1F("DeltaR_photon1_jet2_True_","#DeltaR #gamma1-jet2", 30, 0, 6);
+	DeltaR_jet1_jet2_True_ = new TH1F("DeltaR_jet1_jet2_True_","#Delta#R jet1-jet2", 30, 0, 6);
+	DeltaEta_jet1_jet2_True_ = new TH1F("DeltaEta_jet1_jet2_True_","#Delta#eta jet1-jet2", 50, 0, 5);
+	DeltaPhi_jet1_jet2_True_ = new TH1F("DeltaPhi_jet1_jet2_True_","#Delta#varphi jet1-jet2", 50, 0, 3.1416);
+
+	DeltaR_photon1_jet3_True_ = new TH1F("DeltaR_photon1_jet3_True_","#DeltaR #gamma1-jet3", 30, 0, 6);
+
+	HT_True_ = new TH1F("HT_True_","H_{T}", 100, 0, 1250);
+// #### cleaning new: photon class - finish
+
+
+// #### cleaning old - start	
+  Nvtx_cl_old_ = new TH1F("Nvtx_cl_old_","Number of vertices ", 50, 0, 50);
+
+	nPhotons_cl_old_ = new TH1F("nPhotons_cl_old_","N Photons ", 10, 0, 10);
+	photonPt_1_cl_old_ = new TH1F("photonPt_1_cl_old_","Photon p_{T} ", 200, 0., 1200.);
+	photonE_1_cl_old_ = new TH1F("photonE_1_cl_old_","Photon E ", 200, 0., 1200.);
+	photonEta_1_cl_old_ = new TH1F("photonEta_1_cl_old_","Photon #eta ", 50, -1.4442, 1.4442);
+	photonPhi_1_cl_old_ = new TH1F("photonPhi_1_cl_old_","Photon #varphi ", 50, -3.1416, 3.1416);
+	photonBit_1_cl_old_ = new TH1F("photonBit_1_cl_old_","Photon bit ", 100, 0., 1000.);
+	
+	photonPassConversionVeto_1_cl_old_ = new TH1F("photonPassConversionVeto_1_cl_old_","photonPassConversionVeto ", 10, -2, 2);
+	photonPfIsoChargedHad_1_cl_old_ = new TH1F("photonPfIsoChargedHad_1_cl_old_", "photon PfIsoChargedHad", 50, 0, 2);
+	photonPfIsoNeutralHad_1_cl_old_ = new TH1F("photonPfIsoNeutralHad_1_cl_old_", "photon PfIsoNeutralHad", 30, 0, 30);
+	photonPfIsoPhoton_1_cl_old_ = new TH1F("photonPfIsoPhoton_1_cl_old_", "photon PfIsoPhoton", 20, 0, 4);
+  photonPfIsoPhotons03ForCic_1_cl_old_ = new TH1F("photonPfIsoPhotons03ForCic_1_cl_old_", "photon PfIsoPhotons03ForCic", 50, 0, 100);
+	photonPfIsoNeutrals03ForCic_1_cl_old_ = new TH1F("photonPfIsoNeutrals03ForCic_1_cl_old_","photon PfIsoNeutrals03ForCic", 40, 0, 20);
+	photonPfIsoCharged03ForCicVtx0_1_cl_old_ = new TH1F("photonPfIsoCharged03ForCicVtx0_1_cl_old_", "photon PfIsoCharged03ForCicVtx0", 50, 0, 100);
+	photonPfIsoCharged03BadForCic_1_cl_old_ = new TH1F("photonPfIsoCharged03BadForCic_1_cl_old_", "photon PfIsoCharged03BadForCic", 50, 0, 100);
+	photonPfIsoPhotons04ForCic_1_cl_old_ = new TH1F("photonPfIsoPhotons04ForCic_1_cl_old_", "photon PfIsoPhotons04ForCic", 50, 0, 100);
+	photonPfIsoNeutrals04ForCic_1_cl_old_ = new TH1F("photonPfIsoNeutrals04ForCic_1_cl_old_", "photon PfIsoNeutrals04ForCic", 40, 0, 20);
+	photonPfIsoCharged04ForCicVtx0_1_cl_old_ = new TH1F("photonPfIsoCharged04ForCicVtx0_1_cl_old_", "photon PfIsoCharged04ForCicVtx0", 50, 0, 100);
+	photonPfIsoCharged04BadForCic_1_cl_old_ = new TH1F("photonPfIsoCharged04BadForCic_1_cl_old_", "photonPfIsoCharged04BadForCic", 50, 0, 100);
+	photonid_sieie_1_cl_old_ = new TH1F("photonid_sieie_1_cl_old_", "photon ID: #sigma_{i#etai#eta}", 40, 0., 0.015);
+	photonid_sieip_1_cl_old_ = new TH1F("photonid_sieip_1_cl_old_", "photon ID: #sigma_{i#etai#varphi}", 20, 0, 0.01);
+	photonid_etawidth_1_cl_old_ = new TH1F("photonid_etawidth_1_cl_old_", "photon ID: #eta width", 30, 0, 0.02);
+	photonid_phiwidth_1_cl_old_ = new TH1F("photonid_phiwidth_1_cl_old_", "photon ID: #varphi width", 30, 0, 0.1);
+	photonid_r9_1_cl_old_ = new TH1F("photonid_r9_1_cl_old_", "photon ID: r9", 50, 0, 1);
+	photonid_lambdaRatio_1_cl_old_ = new TH1F("photonid_lambdaRatio_1_cl_old_", "photon ID: #lambda Ratio", 50, 0, 1);
+	photonid_s4Ratio_1_cl_old_ = new TH1F("photonid_s4Ratio_1_cl_old_","photon ID: s4 Ratio", 50, 0, 1);
+	photonid_e25_1_cl_old_ = new TH1F("photonid_e25_1_cl_old_", "photon ID: #rho25", 50, 0, 1200);
+	photonid_sceta_1_cl_old_ = new TH1F("photonid_sceta_1_cl_old_", "photon ID: SC #eta", 50, -2.5, 2.5);
+	photonid_ESEffSigmaRR_1_cl_old_ = new TH1F("photonid_ESEffSigmaRR_1_cl_old_", "photon ID: ESEffSigmaRR", 10, 0, 1);
+	photonid_hadronicOverEm_1_cl_old_ = new TH1F("photonid_hadronicOverEm_1_cl_old_", "photon ID: hadronicOverEm", 50, 0, 1);
+	photonid_hadronicOverEm2012_1_cl_old_ = new TH1F("photonid_hadronicOverEm2012_1_cl_old_", "photon ID: hadronicOverEm2012", 50, 0, 0.5);
+	photonhcalTowerSumEtConeDR04_1_cl_old_ = new TH1F("photonhcalTowerSumEtConeDR04_1_cl_old_","photon hcalTowerSumEtConeDR04", 100, 0, 100);
+	photonecalRecHitSumEtConeDR04_1_cl_old_ = new TH1F("photonecalRecHitSumEtConeDR04_1_cl_old_", "photon ecalRecHitSumEtConeDR04", 100, 0, 100);
+	photonnTrkSolidConeDR04_1_cl_old_ = new TH1F("photonnTrkSolidConeDR04_1_cl_old_", "photon nTrkSolidConeDR04", 30, 0, 30);
+	photontrkSumPtSolidConeDR04_1_cl_old_ = new TH1F("photontrkSumPtSolidConeDR04_1_cl_old_","photon trkSumPtSolidConeDR04", 100, 0, 500);
+	photonnTrkHollowConeDR04_1_cl_old_ = new TH1F("photonnTrkHollowConeDR04_1_cl_old_", "photon nTrkHollowConeDR04", 30, 0, 30) ;
+	photontrkSumPtHollowConeDR04_1_cl_old_ = new TH1F("photontrkSumPtHollowConeDR04_1_cl_old_", "photon trkSumPtHollowConeDR04", 100, 0, 100);
+	
+	//PhotonIso
+	photonIsoFPRCharged_1_cl_old_ = new TH1F("photonIsoFPRCharged_1_cl_old_", "photon IsoFPRCharged/p_{T}", 40, 0, 40); //with FOOT PRINT REMOVAL FROM MP
+	photonIsoFPRNeutral_1_cl_old_ = new TH1F("photonIsoFPRNeutral_1_cl_old_", "photon IsoFPRNeutral/p_{T}", 40, 0, 20);
+	photonIsoFPRPhoton_1_cl_old_ = new TH1F("photonIsoFPRPhoton_1_cl_old_", "photon IsoFPRPhoton/p_{T}", 40, 0, 40);
+
+	nJets_cl_old_ = new TH1F("nJets_cl_old_","N Jets ", 10, 0, 10);
+
+	jetPt_1_cl_old_ = new TH1F("jetPt_1_cl_old_","Jet 1 p_{T} ", 200, 0., 1200.);
+	jetEta_1_cl_old_ = new TH1F("jetEta_1_cl_old_","Jet 1 #eta ", 50, -2.5, 2.5);
+	jetPhi_1_cl_old_ = new TH1F("jetPhi_1_cl_old_","Jet 1 #varphi ", 50, -3.1416, 3.1416);
+	jetE_1_cl_old_ = new TH1F("jetE_1_cl_old_", "jet 1 E", 300, 0., 1050.);
+
+	jetPt_2_cl_old_ = new TH1F("jetPt_2_cl_old_","Jet 2 p_{T} ", 200, 0., 1200.);
+	jetEta_2_cl_old_ = new TH1F("jetEta_2_cl_old_","Jet 2 #eta ", 50, -2.5, 2.5);
+	jetPhi_2_cl_old_ = new TH1F("jetPhi_2_cl_old_","Jet 2 #varphi ", 50, -3.1416, 3.1416);
+	jetE_2_cl_old_ = new TH1F("jetE_2_cl_old_", "jet 2 E", 300, 0., 1050.);
+
+	jetPt_3_cl_old_ = new TH1F("jetPt_3_cl_old_","Jet 3 p_{T} ", 200, 0., 1200.);
+	jetEta_3_cl_old_ = new TH1F("jetEta_3_cl_old_","Jet 3 #eta ", 50, -2.5, 2.5);
+	jetPhi_3_cl_old_ = new TH1F("jetPhi_3_cl_old_","Jet 3 #varphi ", 50, -3.1416, 3.1416);
+	jetE_3_cl_old_ = new TH1F("jetE_3_cl_old_", "jet 3 E", 300, 0., 1050.);
+
+	DeltaR_photon1_jet1_cl_old_ = new TH1F("DeltaR_photon1_jet1_cl_old_","#DeltaR #gamma1-jet1", 30, 0, 6);
+	DeltaEta_photon1_jet1_cl_old_ = new TH1F("DeltaEta_photon1_jet1_cl_old_","#Delta#eta #gamma1-jet1", 50, 0, 5);
+	DeltaPhi_photon1_jet1_cl_old_ = new TH1F("DeltaPhi_photon1_jet1_cl_old_","#Delta#varphi #gamma1-jet1", 50, 0, 3.1416);
+
+	DeltaR_photon1_jet2_cl_old_ = new TH1F("DeltaR_photon1_jet2_cl_old_","#DeltaR #gamma1-jet2", 30, 0, 6);
+	DeltaR_jet1_jet2_cl_old_ = new TH1F("DeltaR_jet1_jet2_cl_old_","#Delta#R jet1-jet2", 30, 0, 6);
+	DeltaEta_jet1_jet2_cl_old_ = new TH1F("DeltaEta_jet1_jet2_cl_old_","#Delta#eta jet1-jet2", 50, 0, 5);
+	DeltaPhi_jet1_jet2_cl_old_ = new TH1F("DeltaPhi_jet1_jet2_cl_old_","#Delta#varphi jet1-jet2", 50, 0, 3.1416);
+
+	DeltaR_photon1_jet3_cl_old_ = new TH1F("DeltaR_photon1_jet3_cl_old_","#DeltaR #gamma1-jet3", 30, 0, 6);
+
+	HT_cl_old_ = new TH1F("HT_cl_old_","H_{T}", 100, 0, 1250);
+// #### cleaning old - finish
 
 //  ptPhoton_->Sumw2();
 //  etaPhoton_->Sumw2();
@@ -1334,13 +2492,15 @@ void Plot_Histos(){
 
   TCanvas *c11 = new TCanvas("c11", "Delta R photon1-jets", 10, 10, 700, 700);
   gPad->SetLogy();
-  c11->Divide(3,1);
+  c11->Divide(2,2);
   c11->cd(1);
 	DeltaR_photon1_jet1_->Draw();
   c11->cd(2);
 	DeltaR_photon1_jet2_->Draw();
   c11->cd(3);
 	DeltaR_photon1_jet3_->Draw();
+  c11->cd(4);
+	HT_->Draw();
 
   TCanvas *c12 = new TCanvas("c12", "Angular variables", 10, 10, 700, 700);
   gPad->SetLogy();
@@ -1348,12 +2508,11 @@ void Plot_Histos(){
   c12->cd(1);
 	DeltaPhi_photon1_jet1_->Draw();
   c12->cd(2);
-	DeltaEta_jet1_jet2_->Draw();
+	DeltaR_jet1_jet2_->Draw();
   c12->cd(3);
-	DeltaPhi_jet1_jet2_->Draw();
+	DeltaEta_jet1_jet2_->Draw();
   c12->cd(4);
-	HT_->Draw();
-
+	DeltaPhi_jet1_jet2_->Draw();
 		
   cout << "...plots: quick check finished. " << endl;
 
@@ -1367,7 +2526,7 @@ float deltaEta(float eta1, float eta2) {
   return absresult;
 }
 
-
+/*
 float deltaPhi(float phi1, float phi2) { 
 
   float result = phi1 - phi2;
@@ -1376,14 +2535,14 @@ float deltaPhi(float phi1, float phi2) {
   float absresult = TMath::Abs(result);
   return absresult;
 }
-
-
+*/
+/*
 float deltaR(float eta1, float eta2, float phi1, float phi2) { 
 
 	float result = sqrt(pow(eta1 - eta2, 2) + pow(phi1 - phi2, 2));
   return result;
 }
-
+*/
 
 void Zero_Variables(){
 }
@@ -1404,23 +2563,45 @@ void Text_File(){
 	text << "Number of selected events 4, unweighted = " << iSelected4 << endl;
 	text << "Number of selected events 5, unweighted = " << iSelected5 << endl;
 	text << "Number of selected events 6, unweighted = " << iSelected6 << endl;
-	text << "Number of selected events 6, unweighted = " << iSelected6 << endl;
 	text << "Number of selected events 7, unweighted = " << iSelected7 << endl;
 	text << "Number of selected events, unweighted = " << iSelected7 << endl;
 	text << "Number of selected events, weighted = " << iSelected7*weight_r << endl;
-	text << "Cleaning: " << endl;
+	text << "cleaning new: jet vs. ALL photons: " << endl;
   text << "nentries (with preselection in the PATZJetsExpress analyzer) = " << nentries_r << endl;
-	text << "Number of selected events 0, unweighted = " << iSelected0_cl << endl;
-	text << "Number of selected events 1, unweighted = " << iSelected1_cl << endl;
-	text << "Number of selected events 2, unweighted = " << iSelected2_cl << endl;
-	text << "Number of selected events 3, unweighted = " << iSelected3_cl << endl;
-	text << "Number of selected events 4, unweighted = " << iSelected4_cl << endl;
-	text << "Number of selected events 5, unweighted = " << iSelected5_cl << endl;
-	text << "Number of selected events 6, unweighted = " << iSelected6_cl << endl;
-	text << "Number of selected events 6, unweighted = " << iSelected6_cl << endl;
-	text << "Number of selected events 7, unweighted = " << iSelected7_cl << endl;
-	text << "Number of selected events, unweighted = " << iSelected7_cl << endl;
-	text << "Number of selected events, weighted = " << iSelected7_cl*weight_r << endl;
+	text << "Number of selected events 0, unweighted = " << iSelected0_cl_new_ALL << endl;
+	text << "Number of selected events 1, unweighted = " << iSelected1_cl_new_ALL << endl;
+	text << "Number of selected events 2, unweighted = " << iSelected2_cl_new_ALL << endl;
+	text << "Number of selected events 3, unweighted = " << iSelected3_cl_new_ALL << endl;
+	text << "Number of selected events 4, unweighted = " << iSelected4_cl_new_ALL << endl;
+	text << "Number of selected events 5, unweighted = " << iSelected5_cl_new_ALL << endl;
+	text << "Number of selected events 6, unweighted = " << iSelected6_cl_new_ALL << endl;
+	text << "Number of selected events 7, unweighted = " << iSelected7_cl_new_ALL << endl;
+	text << "Number of selected events, unweighted = " << iSelected7_cl_new_ALL << endl;
+	text << "Number of selected events, weighted = " << iSelected7_cl_new_ALL*weight_r << endl;
+	text << "cleaning new: jet vs. LEADING photon: " << endl;
+  text << "nentries (with preselection in the PATZJetsExpress analyzer) = " << nentries_r << endl;
+	text << "Number of selected events 0, unweighted = " << iSelected0_cl_new_LEA << endl;
+	text << "Number of selected events 1, unweighted = " << iSelected1_cl_new_LEA << endl;
+	text << "Number of selected events 2, unweighted = " << iSelected2_cl_new_LEA << endl;
+	text << "Number of selected events 3, unweighted = " << iSelected3_cl_new_LEA << endl;
+	text << "Number of selected events 4, unweighted = " << iSelected4_cl_new_LEA << endl;
+	text << "Number of selected events 5, unweighted = " << iSelected5_cl_new_LEA << endl;
+	text << "Number of selected events 6, unweighted = " << iSelected6_cl_new_LEA << endl;
+	text << "Number of selected events 7, unweighted = " << iSelected7_cl_new_LEA << endl;
+	text << "Number of selected events, unweighted = " << iSelected7_cl_new_LEA << endl;
+	text << "Number of selected events, weighted = " << iSelected7_cl_new_LEA*weight_r << endl;
+	text << "Cleaning old: " << endl;
+  text << "nentries (with preselection in the PATZJetsExpress analyzer) = " << nentries_r << endl;
+	text << "Number of selected events 0, unweighted = " << iSelected0_cl_old << endl;
+	text << "Number of selected events 1, unweighted = " << iSelected1_cl_old << endl;
+	text << "Number of selected events 2, unweighted = " << iSelected2_cl_old << endl;
+	text << "Number of selected events 3, unweighted = " << iSelected3_cl_old << endl;
+	text << "Number of selected events 4, unweighted = " << iSelected4_cl_old << endl;
+	text << "Number of selected events 5, unweighted = " << iSelected5_cl_old << endl;
+	text << "Number of selected events 6, unweighted = " << iSelected6_cl_old << endl;
+	text << "Number of selected events 7, unweighted = " << iSelected7_cl_old << endl;
+	text << "Number of selected events, unweighted = " << iSelected7_cl_old << endl;
+	text << "Number of selected events, weighted = " << iSelected7_cl_old*weight_r << endl;
 	text.close();
 	cout << "...writing text file finished. " << endl;
 	}

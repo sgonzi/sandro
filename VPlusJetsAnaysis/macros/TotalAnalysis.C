@@ -4,7 +4,7 @@
 void TotalAnalysis(){
 
 // data -----------------------------------------------------------------
-/*	
+
 	GJetsAnalyzer DATA_Run2012A_13Jul2012(0,1);
 	DATA_Run2012A_13Jul2012.Loop();
 	
@@ -33,7 +33,7 @@ void TotalAnalysis(){
 	
 	GJetsAnalyzer MC_GJets_HT_400ToInf(0,12);
 	MC_GJets_HT_400ToInf.Loop();
-*/
+
 // MC background QCD_Pt_x_y EMEnriched ----------------------------------
 	
 	GJetsAnalyzer MC_QCD_Pt_20_30_EMEnriched(0,21);
