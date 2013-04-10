@@ -12,6 +12,8 @@ class GJetsAnalyzer {
 		string       folder_samples;
 		string       file_sample;
 //		string       file_address;
+		bool         isTEST;
+		bool         isMC;
   	Int_t        mysample;
 		TTree       *fChain;   //!pointer to the analyzed TTree or TChain
 		Int_t        fCurrent;  //!current Tree number in a TChain
@@ -394,6 +396,10 @@ class GJetsAnalyzer {
 		virtual Int_t    Cut(Long64_t entry);
   	virtual void     Loop();
 
+  	virtual void     Book_Histos();
+  	virtual void     Plot_Histos();
+  	virtual void     Text_File();
+  	
 };
 #endif
 
@@ -406,6 +412,12 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
   file_sample = "";
   //file_address = "";
 	mysample = isample;
+
+	isTEST = false;
+	if (mysample == 0) isTEST = true;
+
+	isMC = false;
+	if (mysample == 0 || mysample > 7) isMC = true;
 	
   if (tree == 0) {
 
@@ -601,7 +613,6 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 // MC background QCD_Pt_x_y BCtoE ----------------------------------
 		else if (mysample == 31){
 			const char * file_address = "samples/QCD_Pt_20_30_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
-			cout << file_address << endl;
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
 			if (!f) {
 		  	f = new TFile(file_address);
@@ -917,9 +928,11 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	QGVars = 0;
 	lepSigmaIEtaIEta = 0;
 	lepHadronicOverEm = 0;
-	eventWeight = 0;
-	PUWeight = 0;
-
+	if(isMC && !isTEST){
+		eventWeight = 0;
+		PUWeight = 0;
+	}
+	
   // Set branch addresses and branch pointers
   if (!tree) return;
   fChain = tree;
@@ -1105,8 +1118,10 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("VBPartonPhi", &VBPartonPhi, &b_VBPartonPhi);
   fChain->SetBranchAddress("lepSigmaIEtaIEta", &lepSigmaIEtaIEta, &b_lepSigmaIEtaIEta);
   fChain->SetBranchAddress("lepHadronicOverEm", &lepHadronicOverEm, &b_lepHadronicOverEm);
-  fChain->SetBranchAddress("eventWeight", &eventWeight, &b_eventWeight); 
-  fChain->SetBranchAddress("PUWeight", &PUWeight, &b_PUWeight);
+	if(isMC && !isTEST){
+	  fChain->SetBranchAddress("eventWeight", &eventWeight, &b_eventWeight); 
+	  fChain->SetBranchAddress("PUWeight", &PUWeight, &b_PUWeight);
+	}
   Notify();
 }
 
@@ -1134,7 +1149,7 @@ Int_t GJetsAnalyzer::Cut(Long64_t entry) {
 	// This function may be called from Loop.
 	// returns  1 if entry is accepted.
 	// returns -1 otherwise.
-//	cout << "entry = " << entry << endl;
+	cout << "entry = " << entry << endl;
   return 1;
 }
 

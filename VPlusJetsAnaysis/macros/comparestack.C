@@ -124,13 +124,14 @@ void setMYStyle() {
 }
 
 
-void comparestack(char* titleh, char* namevariable){
+void comparestack(const char* titleh, const char* namevariable){
 
   // Usage is: .L comparestack.C+
   //       ie: comparestack("ptPhoton_","P_{T}^{#gamma} [GeV]")
 
 	setMYStyle();
 	
+//	string DATA_Run2012A_13Jul2012_name;
 	Char_t DATA_Run2012A_13Jul2012_name[100];
 	Char_t DATA_Run2012A_recover_06Aug2012_name[100];
 	Char_t DATA_Run2012B_13Jul2012_name[100];
@@ -163,7 +164,7 @@ void comparestack(char* titleh, char* namevariable){
 	Char_t QCD_HT_1000ToInf_name[100];
 */
 
-	Int_t itype = 4; // identifica histo con analisi diverse
+	Int_t itype = 6; // identifica histo con analisi diverse
 	string png_folder = "png_plots/";
 	string png_string = ".png";
 	string root_folder = "root_plots/";
@@ -259,7 +260,7 @@ void comparestack(char* titleh, char* namevariable){
 */
 
 
-	Char_t titlehisto[100],titlecanvas[100];
+	Char_t titlehisto[100];
 
 	strcpy(titlehisto,titleh);
 	cout << "Analyzing Histogram " << titlehisto << endl;
