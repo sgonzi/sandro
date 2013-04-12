@@ -13,6 +13,9 @@
 #include <fstream>
 #include <DataFormats/Math/interface/deltaPhi.h>
 #include <DataFormats/Math/interface/deltaR.h>
+#include <TLorentzVector.h>
+#include <../../../QCDAnalysis/Tools/interface/EventShapeLorentz.h>
+
 //#ifdef __MAKECINT__
 //#pragma link C++ class vector<float>+;
 //#endif
@@ -44,8 +47,9 @@
 
 void GJetsAnalyzer::Loop(){
 
-	bool RedAn = false; // analysis with a reuced entries number
-  Int_t plothistos = 0; // please select which plots to show
+	bool RedAn = true; // analysis with a reuced entries number
+	string geo = "endcaps"; // barrel or endcaps
+  Int_t plothistos = 1; // please select which plots to show
   Int_t textfile = 1; // if you want a text report for each sample
   Int_t itype = 7;   // it identifies histos with different analysis 
 
@@ -92,10 +96,14 @@ void GJetsAnalyzer::Loop(){
 
   Float_t weight = 1; 
 	Float_t weight_withPU = 1;
+
+	//since the Z can be also forward if the momenta of the leptons are
+	//added up - choose a very big value
+  double fCut_eta_central = 150894;
 	
 	string sample = "";
-	string histos = "_histos_%d";
-	string report = "_report_%d";
+	string histos = "_histos_%d_";
+	string report = "_report_%d_";
 	string root = ".root";
 	string txt = ".txt";
 	
@@ -104,8 +112,8 @@ void GJetsAnalyzer::Loop(){
 // test -----------------------------------------------------------------
   if (mysample == 0){
   	sample = "TEST";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
     weight = 1.;
     cout << "Running on " << sample << endl;
     cout << "Weight is " << weight << endl;
@@ -114,8 +122,8 @@ void GJetsAnalyzer::Loop(){
 // data -----------------------------------------------------------------
   else if (mysample == 1) {
   	sample = "DATA_Run2012A-13Jul2012";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
     weight = 1.;
     cout << "Running on " << sample << endl;
     cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
@@ -123,8 +131,8 @@ void GJetsAnalyzer::Loop(){
   
   else if (mysample == 2) {
   	sample = "DATA_Run2012A-recover-06Aug2012";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
     weight = 1.;
     cout << "Running on " << sample << endl;
     cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
@@ -132,8 +140,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 3) {
   	sample = "DATA_Run2012B-13Jul2012";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
     weight = 1.;
     cout << "Running on " << sample << endl;
     cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
@@ -141,8 +149,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 4) {
   	sample = "DATA_Run2012C-24Aug2012";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
     weight = 1.;
     cout << "Running on " << sample << endl;
     cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
@@ -150,8 +158,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 5) {
   	sample = "DATA_Run2012C-EcalRecover_11Dec2012";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
     weight = 1.;
     cout << "Running on " << sample << endl;
     cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
@@ -159,8 +167,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 6) {
   	sample = "DATA_Run2012C-PromptReco";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
     weight = 1.;
     cout << "Running on " << sample << endl;
     cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
@@ -168,8 +176,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 7) {
   	sample = "DATA_Run2012D-PromptReco";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
     weight = 1.;
     cout << "Running on " << sample << endl;
     cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
@@ -178,8 +186,8 @@ void GJetsAnalyzer::Loop(){
 // MC signal GJets_HT-xToy ----------------------------------------------
   else if (mysample == 11){ 
   	sample = "MC_GJets_HT-200To400";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);   
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);   
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 57311030;
 //		xsec = 960.5;
 		xsec = 1008.03; //da cambiare
@@ -193,8 +201,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 12){
   	sample = "MC_GJets_HT-400ToInf";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 41872600;
 //		xsec = 107.5;
 		xsec = 105.418;	//da cambiare
@@ -209,8 +217,8 @@ void GJetsAnalyzer::Loop(){
 // MC background QCD_Pt_x_y EMEnriched ----------------------------------
   else if (mysample == 21){
   	sample = "MC_QCD_Pt_20_30_EMEnriched";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 35040695;
 //		xsec = 2.886E8;
 		xsec = 2.88651E8; //da cambiare
@@ -224,8 +232,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 22){
   	sample = "MC_QCD_Pt_30_80_EMEnriched";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 33088888;
 //		xsec = 7.433E7;
 		xsec = 7.43031E7; //da cambiare
@@ -239,8 +247,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 23){
   	sample = "MC_QCD_Pt_80_170_EMEnriched";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 34542763;
 //		xsec = 1191000.0;
 		xsec = 1.19391E6; //da cambiare
@@ -254,8 +262,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 24){
   	sample = "MC_QCD_Pt_170_250_EMEnriched";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 31697066;
 //		xsec = 30990.0;
 		xsec = 30980.0; //da cambiare
@@ -269,8 +277,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 25){
   	sample = "MC_QCD_Pt_250_350_EMEnriched";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 34611322;
 //		xsec = 	4250.0;
 		xsec = 	4245.29; //da cambiare
@@ -284,8 +292,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 26){
   	sample = "MC_QCD_Pt_350_EMEnriched";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 34080562;
 //		xsec = 	810.0;
 		xsec = 	810.454; //da cambiare
@@ -300,8 +308,8 @@ void GJetsAnalyzer::Loop(){
 // MC background QCD_Pt_x_y BCtoE ---------------------------------------
   else if (mysample == 31){
   	sample = "MC_QCD_Pt_20_30_BCtoE";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 1740229;
 		xsec = 2.886E8;
 		FiltEff = 5.8E-4;		
@@ -314,8 +322,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 32){
   	sample = "MC_QCD_Pt_30_80_BCtoE";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 1998152 ;
 		xsec = 	7.424E7;
 		FiltEff = 0.00225;		
@@ -328,8 +336,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 33){
   	sample = "MC_QCD_Pt_80_170_BCtoE";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 1945525;
 		xsec = 1191000.0;
 		FiltEff = 0.0109;
@@ -342,8 +350,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 34){
   	sample = "MC_QCD_Pt_170_250_BCtoE";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 1948112;
 		xsec = 	30980.0; 
 		FiltEff = 0.0204;		
@@ -356,8 +364,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 35){
   	sample = "MC_QCD_Pt_250_350_BCtoE";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 2026521 ;
 		xsec = 	4250.0;
 		FiltEff = 0.0243;		
@@ -370,8 +378,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 36){
   	sample = "MC_QCD_Pt_350_BCtoE";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 1948532 ;
 		xsec = 	811.0;
 		FiltEff = 0.0295;
@@ -386,8 +394,8 @@ void GJetsAnalyzer::Loop(){
 // MC background QCD HT-xToy --------------------------------------------
   else if (mysample == 41){
   	sample = "MC_QCD_HT-100To250";
-    sprintf(outputname, (sample+histos+root).c_str(), itype); 
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype); 
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 50129518;
 //		xsec = 1.036E7;
 		xsec = 1.0515E7; //da cambiare
@@ -401,8 +409,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 42){
   	sample = "MC_QCD_HT-250To500";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 27062078;
 //		xsec = 	276000.0;
 		xsec = 	276000.0; //da cambiare
@@ -416,8 +424,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 43){
   	sample = "MC_QCD_HT-500To1000";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 30536845;
 //		xsec = 8426.0;
 		xsec = 8631.07; //da cambiare
@@ -431,8 +439,8 @@ void GJetsAnalyzer::Loop(){
 
   else if (mysample == 44){
   	sample = "MC_QCD_HT-1000ToInf";
-    sprintf(outputname, (sample+histos+root).c_str(), itype);
-    sprintf(textname, (sample+report+txt).c_str(), itype);
+    sprintf(outputname, (sample+histos+geo+root).c_str(), itype);
+    sprintf(textname, (sample+report+geo+txt).c_str(), itype);
 		nEvents = 13843863;
 //		xsec = 204.0;
 		xsec = 210.585; //da cambiare
@@ -467,7 +475,7 @@ void GJetsAnalyzer::Loop(){
 	//loop on entries
 	Long64_t nentries;
 	if(RedAn){
-		nentries = 100000; // analysis with a reuced entries number
+		nentries = 500000; // analysis with a reuced entries number
 	}
 	else{	  
 		nentries = fChain->GetEntriesFast();
@@ -528,22 +536,34 @@ void GJetsAnalyzer::Loop(){
 						  SelectedJetsGEN_E.push_back(jetEGEN->at(iJetGENPos));
 						  SelectedJetsGEN_Eta.push_back(jetEtaGEN->at(iJetGENPos));
 						  SelectedJetsGEN_Phi.push_back(jetPhiGEN->at(iJetGENPos));
-							SelectedJetsGEN_N += 1;
-	
-							SelectedJetsGEN_HT = 0;
-							for(unsigned int zJetGENPos = 0; zJetGENPos < SelectedJetsGEN_Pt.size(); zJetGENPos++) {
-								SelectedJetsGEN_HT += SelectedJetsGEN_Pt.at(zJetGENPos);
-							}
+							SelectedJetsGEN_N += 1;	
 						} // end jets kinematic selection
 					} // end selection of cleaned jets vs. PhotonGEN
 				}
 			} // end jetVeto: jetsGEN vs. PhotonGEN
 
+			// collectives jetsGEN properties - aggiunta inizio
+			SelectedJetsGEN_HT = 0;
+			for(unsigned int zJetGENPos = 0; zJetGENPos < SelectedJetsGEN_Pt.size(); zJetGENPos++) {
+				SelectedJetsGEN_HT += SelectedJetsGEN_Pt.at(zJetGENPos);
+			} // end collectives jetsGEN properties - aggiunta fine
+
 			// photonGEN selection		
 			if (nPhotonsGEN > 0){
 
 				// photonGEN kinematic selection		
-				if (photonPtGEN > 180. && ((TMath::Abs(photonEtaGEN) < 2.5) && !(1.4442 < TMath::Abs(photonEtaGEN) && TMath::Abs(photonEtaGEN)< 1.566))) {
+				bool geo_selGEN = false;
+				if (geo == "barrel") {
+					geo_selGEN = TMath::Abs(photonEtaGEN) < 1.479;
+				}
+				else if (geo == "endcaps"){
+					geo_selGEN = TMath::Abs(photonEtaGEN) > 1.479 && TMath::Abs(photonEtaGEN) < 3.;
+				}
+				else {
+				cout << "Error: Wrong geometry string writed" << endl;
+				}
+				
+				if (photonPtGEN > 180. && geo_selGEN) {
 
 					// kin JetsGEN (cleaned vs. photonGEN) selection
 					if (SelectedJetsGEN_N > 0){
@@ -599,6 +619,20 @@ void GJetsAnalyzer::Loop(){
 			// SelectedPhotons collection selection 
 			for(unsigned int iPhoPos = 0; iPhoPos < photonPt->size(); iPhoPos++) {
 
+			photonPfIso = 0;
+			photonPfIso_ov_Pt = 0;
+			photonPfIso = photonPfIsoChargedHad->at(iPhoPos) + photonPfIsoNeutralHad->at(iPhoPos) + photonPfIsoPhoton->at(iPhoPos);
+			photonPfIso_ov_Pt = photonPfIso/photonPt->at(iPhoPos);
+
+			photonIsoFPRCharged_ov_Pt = 0;
+			photonIsoFPRNeutral_ov_Pt = 0;
+			photonIsoFPRPhoton_ov_Pt = 0;
+			photonIsoFPRCharged_ov_Pt = photonIsoFPRCharged->at(iPhoPos)/photonPt->at(iPhoPos);
+			photonIsoFPRNeutral_ov_Pt = photonIsoFPRNeutral->at(iPhoPos)/photonPt->at(iPhoPos);
+			photonIsoFPRPhoton_ov_Pt = photonIsoFPRPhoton->at(iPhoPos)/photonPt->at(iPhoPos);
+
+			bool geo_quality_sel = false;
+			if (geo == "barrel") {
 				// photon quality selection: Barrel - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
 				if(photonPassConversionVeto->at(iPhoPos) == 1){ 
 					if(photonid_hadronicOverEm2012->at(iPhoPos) < 0.05){
@@ -606,68 +640,110 @@ void GJetsAnalyzer::Loop(){
 				 	  	if(photonPfIsoChargedHad->at(iPhoPos) < 1.5){ 
 				 	 			if(photonPfIsoNeutralHad->at(iPhoPos) < (1.0 + 0.04*photonPt->at(iPhoPos))){
 				 	 				if(photonPfIsoPhoton->at(iPhoPos) < (0.7 + 0.005*photonPt->at(iPhoPos))){
-										
-										IDIsoPhotons_N += 1;
-										
-										// photon kinematic selection
-										if (photonPt->at(iPhoPos) > 180. && (photonBit->at(iPhoPos)&1)) {
-										
-											SelectedPhotons_Pt.push_back(photonPt->at(iPhoPos));
-											SelectedPhotons_E.push_back(photonE->at(iPhoPos));
- 	    	  						SelectedPhotons_Eta.push_back(photonEta->at(iPhoPos)); 
-											SelectedPhotons_Phi.push_back(photonPhi->at(iPhoPos));
-	
-											SelectedPhotons_PassConversionVeto.push_back(photonPassConversionVeto->at(iPhoPos));
-											SelectedPhotons_PfIsoChargedHad.push_back(photonPfIsoChargedHad->at(iPhoPos)); 
-											SelectedPhotons_PfIsoNeutralHad.push_back(photonPfIsoNeutralHad->at(iPhoPos)); 
-											SelectedPhotons_PfIsoPhoton.push_back(photonPfIsoPhoton->at(iPhoPos));
-		
-											SelectedPhotons_PfIsoPhotons03ForCic.push_back(photonPfIsoPhotons03ForCic->at(iPhoPos)); 
-											SelectedPhotons_PfIsoNeutrals03ForCic.push_back(photonPfIsoNeutrals03ForCic->at(iPhoPos)); 
-											SelectedPhotons_PfIsoCharged03ForCicVtx0.push_back(photonPfIsoCharged03ForCicVtx0->at(iPhoPos)); 
-											SelectedPhotons_PfIsoCharged03BadForCic.push_back(photonPfIsoCharged03BadForCic->at(iPhoPos));
-		
-											SelectedPhotons_PfIsoPhotons04ForCic.push_back(photonPfIsoPhotons04ForCic->at(iPhoPos)); 
-											SelectedPhotons_PfIsoNeutrals04ForCic.push_back(photonPfIsoNeutrals04ForCic->at(iPhoPos));
-											SelectedPhotons_PfIsoCharged04ForCicVtx0.push_back(photonPfIsoCharged04ForCicVtx0->at(iPhoPos)); 
-											SelectedPhotons_PfIsoCharged04BadForCic.push_back(photonPfIsoCharged04BadForCic->at(iPhoPos));
-		
-											SelectedPhotons_id_sieie.push_back(photonid_sieie->at(iPhoPos));  
-											SelectedPhotons_id_sieip.push_back(photonid_sieip->at(iPhoPos)); 
-											SelectedPhotons_id_etawidth.push_back(photonid_etawidth->at(iPhoPos)); 
-											SelectedPhotons_id_phiwidth.push_back(photonid_phiwidth->at(iPhoPos)); 
-											SelectedPhotons_id_r9.push_back(photonid_r9->at(iPhoPos));
-		
-											SelectedPhotons_id_lambdaRatio.push_back(photonid_lambdaRatio->at(iPhoPos)); 
-											SelectedPhotons_id_s4Ratio.push_back(photonid_s4Ratio->at(iPhoPos));
-											SelectedPhotons_id_e25.push_back(photonid_e25->at(iPhoPos));
-											SelectedPhotons_id_sceta.push_back(photonid_sceta->at(iPhoPos));
-			 
-											SelectedPhotons_id_ESEffSigmaRR.push_back(photonid_ESEffSigmaRR->at(iPhoPos));
-											SelectedPhotons_id_hadronicOverEm.push_back(photonid_hadronicOverEm->at(iPhoPos));
-											SelectedPhotons_id_hadronicOverEm2012.push_back(photonid_hadronicOverEm2012->at(iPhoPos));
-		
-											SelectedPhotons_hcalTowerSumEtConeDR04.push_back(photonhcalTowerSumEtConeDR04->at(iPhoPos));
-											SelectedPhotons_ecalRecHitSumEtConeDR04.push_back(photonecalRecHitSumEtConeDR04->at(iPhoPos));
-											SelectedPhotons_nTrkSolidConeDR04.push_back(photonnTrkSolidConeDR04->at(iPhoPos));
-											SelectedPhotons_trkSumPtSolidConeDR04.push_back(photontrkSumPtSolidConeDR04->at(iPhoPos)); 
-											SelectedPhotons_nTrkHollowConeDR04.push_back(photonnTrkHollowConeDR04->at(iPhoPos));
-											SelectedPhotons_trkSumPtHollowConeDR04.push_back(photontrkSumPtHollowConeDR04->at(iPhoPos));
-
-											SelectedPhotons_IsoFPRCharged.push_back(photonIsoFPRCharged->at(iPhoPos));
-											SelectedPhotons_IsoFPRNeutral.push_back(photonIsoFPRNeutral->at(iPhoPos));
-											SelectedPhotons_IsoFPRPhoton.push_back(photonIsoFPRPhoton->at(iPhoPos));
-											SelectedPhotons_Bit.push_back(photonBit->at(iPhoPos));
-
-											SelectedPhotons_N+=1;
-
-										} // end photon kinematic selection
+										geo_quality_sel = true;
 									}
 								}
-							}									
+							}
 						}
-					} 
-				} // end photon quality selection: Barrel - Medium (80%)
+					}
+				}
+			}						
+			else if (geo == "endcaps"){
+				// photon quality selection: Endcaps - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
+				if(photonPassConversionVeto->at(iPhoPos) == 1){ 
+					if(photonid_hadronicOverEm2012->at(iPhoPos) < 0.05){
+					 	if(photonid_sieie->at(iPhoPos) < 0.033){ 
+				 	  	if(photonPfIsoChargedHad->at(iPhoPos) < 1.2){ 
+				 	 			if(photonPfIsoNeutralHad->at(iPhoPos) < (1.5 + 0.04*photonPt->at(iPhoPos))){
+				 	 				if(photonPfIsoPhoton->at(iPhoPos) < (1.0 + 0.005*photonPt->at(iPhoPos))){
+										geo_quality_sel = true;
+									}
+								}
+							}
+						}
+					}
+				}
+			}	
+			else {
+				cout << "Error: Wrong geometry string writed" << endl;
+			}
+						
+			// photon quality selection
+			if(geo_quality_sel){ 
+										
+				IDIsoPhotons_N += 1;
+																				
+				// photon kinematic selection
+				bool geo_sel = false;
+				if (geo == "barrel") {
+					geo_sel = photonBit->at(iPhoPos)&1;
+				}
+				else if (geo == "endcaps"){
+					geo_sel = photonBit->at(iPhoPos)&2;
+				}
+				else {
+				cout << "Error: Wrong geometry string writed" << endl;
+				}
+
+				if (photonPt->at(iPhoPos) > 180. && geo_sel) {
+										
+					SelectedPhotons_Pt.push_back(photonPt->at(iPhoPos));
+					SelectedPhotons_E.push_back(photonE->at(iPhoPos));
+ 	    		SelectedPhotons_Eta.push_back(photonEta->at(iPhoPos)); 
+					SelectedPhotons_Phi.push_back(photonPhi->at(iPhoPos));
+	
+					SelectedPhotons_PassConversionVeto.push_back(photonPassConversionVeto->at(iPhoPos));
+					SelectedPhotons_PfIsoChargedHad.push_back(photonPfIsoChargedHad->at(iPhoPos)); 
+					SelectedPhotons_PfIsoNeutralHad.push_back(photonPfIsoNeutralHad->at(iPhoPos)); 
+					SelectedPhotons_PfIsoPhoton.push_back(photonPfIsoPhoton->at(iPhoPos));
+											
+					SelectedPhotons_PfIso.push_back(photonPfIso);
+					SelectedPhotons_PfIso_ov_Pt.push_back(photonPfIso_ov_Pt);
+		
+					SelectedPhotons_PfIsoPhotons03ForCic.push_back(photonPfIsoPhotons03ForCic->at(iPhoPos)); 
+					SelectedPhotons_PfIsoNeutrals03ForCic.push_back(photonPfIsoNeutrals03ForCic->at(iPhoPos)); 
+					SelectedPhotons_PfIsoCharged03ForCicVtx0.push_back(photonPfIsoCharged03ForCicVtx0->at(iPhoPos)); 
+					SelectedPhotons_PfIsoCharged03BadForCic.push_back(photonPfIsoCharged03BadForCic->at(iPhoPos));
+		
+					SelectedPhotons_PfIsoPhotons04ForCic.push_back(photonPfIsoPhotons04ForCic->at(iPhoPos)); 
+					SelectedPhotons_PfIsoNeutrals04ForCic.push_back(photonPfIsoNeutrals04ForCic->at(iPhoPos));
+					SelectedPhotons_PfIsoCharged04ForCicVtx0.push_back(photonPfIsoCharged04ForCicVtx0->at(iPhoPos)); 
+					SelectedPhotons_PfIsoCharged04BadForCic.push_back(photonPfIsoCharged04BadForCic->at(iPhoPos));
+		
+					SelectedPhotons_id_sieie.push_back(photonid_sieie->at(iPhoPos));  
+					SelectedPhotons_id_sieip.push_back(photonid_sieip->at(iPhoPos)); 
+					SelectedPhotons_id_etawidth.push_back(photonid_etawidth->at(iPhoPos)); 
+					SelectedPhotons_id_phiwidth.push_back(photonid_phiwidth->at(iPhoPos)); 
+					SelectedPhotons_id_r9.push_back(photonid_r9->at(iPhoPos));
+		
+					SelectedPhotons_id_lambdaRatio.push_back(photonid_lambdaRatio->at(iPhoPos)); 
+					SelectedPhotons_id_s4Ratio.push_back(photonid_s4Ratio->at(iPhoPos));
+					SelectedPhotons_id_e25.push_back(photonid_e25->at(iPhoPos));
+					SelectedPhotons_id_sceta.push_back(photonid_sceta->at(iPhoPos));
+			 
+					SelectedPhotons_id_ESEffSigmaRR.push_back(photonid_ESEffSigmaRR->at(iPhoPos));
+					SelectedPhotons_id_hadronicOverEm.push_back(photonid_hadronicOverEm->at(iPhoPos));
+					SelectedPhotons_id_hadronicOverEm2012.push_back(photonid_hadronicOverEm2012->at(iPhoPos));
+		
+					SelectedPhotons_hcalTowerSumEtConeDR04.push_back(photonhcalTowerSumEtConeDR04->at(iPhoPos));
+					SelectedPhotons_ecalRecHitSumEtConeDR04.push_back(photonecalRecHitSumEtConeDR04->at(iPhoPos));
+					SelectedPhotons_nTrkSolidConeDR04.push_back(photonnTrkSolidConeDR04->at(iPhoPos));
+					SelectedPhotons_trkSumPtSolidConeDR04.push_back(photontrkSumPtSolidConeDR04->at(iPhoPos)); 
+					SelectedPhotons_nTrkHollowConeDR04.push_back(photonnTrkHollowConeDR04->at(iPhoPos));
+					SelectedPhotons_trkSumPtHollowConeDR04.push_back(photontrkSumPtHollowConeDR04->at(iPhoPos));
+
+					SelectedPhotons_IsoFPRCharged.push_back(photonIsoFPRCharged->at(iPhoPos));
+					SelectedPhotons_IsoFPRNeutral.push_back(photonIsoFPRNeutral->at(iPhoPos));
+					SelectedPhotons_IsoFPRPhoton.push_back(photonIsoFPRPhoton->at(iPhoPos));
+					SelectedPhotons_IsoFPRCharged_ov_Pt.push_back(photonIsoFPRCharged_ov_Pt);
+					SelectedPhotons_IsoFPRNeutral_ov_Pt.push_back(photonIsoFPRNeutral_ov_Pt);
+					SelectedPhotons_IsoFPRPhoton_ov_Pt.push_back(photonIsoFPRPhoton_ov_Pt);
+					SelectedPhotons_Bit.push_back(photonBit->at(iPhoPos));
+
+					SelectedPhotons_N+=1;
+
+					} // end photon kinematic selection
+				} // end photon quality selection
 			} // end SelectedPhotons collection selection
 		}	// end photon selection
 
@@ -706,11 +782,6 @@ void GJetsAnalyzer::Loop(){
 					CleanedJets_Pt.push_back(jetPt->at(iJetPos));						
 					CleanedJets_N += 1;
 
-					CleanedJets_HT = 0;
-					for(unsigned int jJetPos = 0; jJetPos < CleanedJets_Pt.size(); jJetPos++) {
-						CleanedJets_HT += CleanedJets_Pt.at(jJetPos);
-					}
-
 					// jets kinematic selection
 					if(jetPt->at(iJetPos) > 50. && TMath::Abs(jetEta->at(iJetPos)) < 2.5 ){	
 					  SelectedJets_Pt.push_back(jetPt->at(iJetPos));
@@ -718,21 +789,36 @@ void GJetsAnalyzer::Loop(){
 					  SelectedJets_Eta.push_back(jetEta->at(iJetPos));
 					  SelectedJets_Phi.push_back(jetPhi->at(iJetPos));
 						SelectedJets_N += 1;
-	
-						SelectedJets_HT = 0;
-						for(unsigned int zJetPos = 0; zJetPos < SelectedJets_Pt.size(); zJetPos++) {
-							SelectedJets_HT += SelectedJets_Pt.at(zJetPos);
-						}
 					} // end jets kinematic selection
 				} // end selection of cleaned jets vs. ALL SelectedPhotons
 			}
 		} // jetVeto: jets vs. SelectedPhotons
 
+		// collectives jets properties - aggiunta inizio
+		CleanedJets_HT = 0;
+		for(unsigned int jJetPos = 0; jJetPos < CleanedJets_Pt.size(); jJetPos++) {
+			CleanedJets_HT += CleanedJets_Pt.at(jJetPos);
+		}
+
+		SelectedJets_HT = 0;
+		for(unsigned int zJetPos = 0; zJetPos < SelectedJets_Pt.size(); zJetPos++) {
+			SelectedJets_HT += SelectedJets_Pt.at(zJetPos);
+			TLorentzVector PtEtaPhiE_tmp = TLorentzVector(0,0,0,0);
+			PtEtaPhiE_tmp.SetPtEtaPhiE(SelectedJets_Pt.at(zJetPos), SelectedJets_Eta.at(zJetPos), SelectedJets_Phi.at(zJetPos), SelectedJets_E.at(zJetPos));
+			vPtEtaPhiE.push_back(PtEtaPhiE_tmp);
+		}
+		EventShapeLorentz* myEvshp = new EventShapeLorentz(vPtEtaPhiE, fCut_eta_central ,1);      	    
+		myEvshpV = myEvshp->getEventShapes();
+		TA = myEvshp->getThrustAxis();
+		Grouping = myEvshp->getGrouping();
+		Grouping_test = myEvshp->getGrouping_C();
+		delete myEvshp;
+		// end collectives jets properties - aggiunta fine
+				
 		// =========== Analysis selection
 		// (photonBit |= (it->isEB() << 0) => (*photonBit)[0]&1) con 2^0 = 1
 		iSelected0++;
 		iSelectedWithWeights0 = iSelectedWithWeights0 + weight_withPU;
-
 
 		// ID+Iso+kin Photons selection (then, on the LEADING one)    
 		if (SelectedPhotons_N > 0){
@@ -786,6 +872,9 @@ void GJetsAnalyzer::Loop(){
 						SelectedPhotons_PfIsoNeutralHad_1_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_withPU);
 						SelectedPhotons_PfIsoPhoton_1_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_withPU);
 
+						SelectedPhotons_PfIso_1_->Fill(SelectedPhotons_PfIso.at(0), weight_withPU);
+						SelectedPhotons_PfIso_ov_Pt_1_->Fill(SelectedPhotons_PfIso_ov_Pt.at(0), weight_withPU);
+
 						SelectedPhotons_PfIsoPhotons03ForCic_1_->Fill(SelectedPhotons_PfIsoPhotons03ForCic.at(0), weight_withPU);
 						SelectedPhotons_PfIsoNeutrals03ForCic_1_->Fill(SelectedPhotons_PfIsoNeutrals03ForCic.at(0), weight_withPU);
 						SelectedPhotons_PfIsoCharged03ForCicVtx0_1_->Fill(SelectedPhotons_PfIsoCharged03ForCicVtx0.at(0), weight_withPU);
@@ -818,9 +907,12 @@ void GJetsAnalyzer::Loop(){
 						SelectedPhotons_nTrkHollowConeDR04_1_->Fill(SelectedPhotons_nTrkHollowConeDR04.at(0), weight_withPU);
 						SelectedPhotons_trkSumPtHollowConeDR04_1_->Fill(SelectedPhotons_trkSumPtHollowConeDR04.at(0), weight_withPU);
 
-						SelectedPhotons_IsoFPRCharged_1_->Fill((SelectedPhotons_IsoFPRCharged.at(0)/SelectedPhotons_Pt.at(0)), weight_withPU);
-						SelectedPhotons_IsoFPRNeutral_1_->Fill((SelectedPhotons_IsoFPRNeutral.at(0)/SelectedPhotons_Pt.at(0)), weight_withPU);
-						SelectedPhotons_IsoFPRPhoton_1_->Fill((SelectedPhotons_IsoFPRPhoton.at(0)/SelectedPhotons_Pt.at(0)), weight_withPU);
+						SelectedPhotons_IsoFPRCharged_1_->Fill(SelectedPhotons_IsoFPRCharged.at(0), weight_withPU);
+						SelectedPhotons_IsoFPRNeutral_1_->Fill(SelectedPhotons_IsoFPRNeutral.at(0), weight_withPU);
+						SelectedPhotons_IsoFPRPhoton_1_->Fill(SelectedPhotons_IsoFPRPhoton.at(0), weight_withPU);
+						SelectedPhotons_IsoFPRCharged_ov_Pt_1_->Fill(SelectedPhotons_IsoFPRCharged_ov_Pt.at(0), weight_withPU);
+						SelectedPhotons_IsoFPRNeutral_ov_Pt_1_->Fill(SelectedPhotons_IsoFPRNeutral_ov_Pt.at(0), weight_withPU);
+						SelectedPhotons_IsoFPRPhoton_ov_Pt_1_->Fill(SelectedPhotons_IsoFPRPhoton_ov_Pt.at(0), weight_withPU);
 						SelectedPhotons_Bit_1_->Fill(SelectedPhotons_Bit.at(0), weight_withPU);
 				
 						CleanedJetsLEA_N_->Fill(CleanedJetsLEA_N, weight_withPU);
@@ -873,6 +965,27 @@ void GJetsAnalyzer::Loop(){
 						CleanedJets_HT_->Fill(CleanedJets_HT, weight_withPU);
 						SelectedJets_HT_->Fill(SelectedJets_HT, weight_withPU);
 
+						phiTA = atan2(TA[1],TA[0]);
+						dphi_TA_BAxis = deltaPhi(phiTA, SelectedPhotons_Phi.at(0));
+//						if(dphi_TA_BAxis > M_PI/2.0){
+//							dphi_TA_BAxis = M_PI-dphi_TA_BAxis;
+//						}
+						dphi_TA_J1Axis = deltaPhi(phiTA, SelectedJets_Phi.at(0));
+//						if(dphi_TA_J1Axis > M_PI/2.0){
+//							dphi_TA_J1Axis=M_PI-dphi_TA_J1Axis;
+//						}
+						if(myEvshpV[2] <= 0){
+							myEvshpV[2] = 10e-15;
+						}	
+						thrust = myEvshpV[2];
+						broad = myEvshpV[6];
+						S3 = myEvshpV[8];
+						S4 = myEvshpV[9];
+
+						thrust_->Fill(thrust, weight_withPU);
+						broad_->Fill(broad, weight_withPU);
+						S3_->Fill(S3, weight_withPU);
+						S4_->Fill(S4, weight_withPU);
 					} // end HT selection
 				} // end trigger Matching selection
 			}	// end kin Jets (cleaned vs. Photons) selection 
@@ -893,6 +1006,8 @@ void GJetsAnalyzer::Loop(){
 		SelectedJets_Eta.clear();
 		SelectedJets_Phi.clear();
 
+		vPtEtaPhiE.clear();
+
 		// clean photons
 		IDIsoPhotons_N = 0;
 		SelectedPhotons_N = 0;
@@ -906,6 +1021,9 @@ void GJetsAnalyzer::Loop(){
 		SelectedPhotons_PfIsoChargedHad.clear(); 
 		SelectedPhotons_PfIsoNeutralHad.clear(); 
 		SelectedPhotons_PfIsoPhoton.clear();
+		
+		SelectedPhotons_PfIso.clear();
+		SelectedPhotons_PfIso_ov_Pt.clear();
 	
 		SelectedPhotons_PfIsoPhotons03ForCic.clear(); 
 		SelectedPhotons_PfIsoNeutrals03ForCic.clear(); 
@@ -942,6 +1060,10 @@ void GJetsAnalyzer::Loop(){
 		SelectedPhotons_IsoFPRCharged.clear();
 		SelectedPhotons_IsoFPRNeutral.clear();
 		SelectedPhotons_IsoFPRPhoton.clear();
+		SelectedPhotons_IsoFPRCharged_ov_Pt.clear();
+		SelectedPhotons_IsoFPRNeutral_ov_Pt.clear();
+		SelectedPhotons_IsoFPRPhoton_ov_Pt.clear();
+
 		SelectedPhotons_Bit.clear();
 
     // if (Cut(ientry) < 0) continue;
@@ -975,24 +1097,24 @@ void GJetsAnalyzer::Book_Histos(){
 	// book the histograms
 	if(isMC){
 		nPhotonsGEN_ = new TH1F("nPhotonsGEN_","Photons GEN N", 50, 0, 50);
-		photonPtGEN_ = new TH1F("photonPtGEN_","Photon GEN p_{T}", 200, 0., 1200.);
-		photonEGEN_ = new TH1F("photonEGEN_","Photon GEN E", 200, 0., 1200.);
-		photonEtaGEN_ = new TH1F("photonEtaGEN_","Photon GEN #eta", 50, -1.4442, 1.4442);
-		photonPhiGEN_ = new TH1F("photonPhiGEN_","Photon GEN #varphi", 50, -3.1416, 3.1416);
+		photonPtGEN_ = new TH1F("photonPtGEN_","Photon GEN p_{T}", 400, 0., 4000.);
+		photonEGEN_ = new TH1F("photonEGEN_","Photon GEN E", 400, 0., 4000.);
+		photonEtaGEN_ = new TH1F("photonEtaGEN_","Photon GEN #eta", 3000, -3, 3);
+		photonPhiGEN_ = new TH1F("photonPhiGEN_","Photon GEN #varphi", 1000, -3.1416, 3.1416);
 
 		CleanedJetsGEN_N_ = new TH1F("CleanedJetsGEN_N_","Cleaned Jets GEN N", 10, 0, 10);
 		SelectedJetsGEN_N_ = new TH1F("SelectedJetsGEN_N_","Selected Jets GEN N", 10, 0, 10);
 
-		SelectedJets_PtGEN_1_ = new TH1F("SelectedJets_PtGEN_1_","Jet 1 GEN p_{T} ", 200, 0., 1200.);							
-		SelectedJets_EGEN_1_ = new TH1F("SelectedJets_EGEN_1_", "jet 1 GEN E", 300, 0., 1050.);
-		SelectedJets_EtaGEN_1_ = new TH1F("SelectedJets_EtaGEN_1_","Jet 1 GEN #eta ", 50, -2.5, 2.5);
-		SelectedJets_PhiGEN_1_ = new TH1F("SelectedJets_PhiGEN_1_","Jet 1 GEN #varphi ", 50, -3.1416, 3.1416);
+		SelectedJets_PtGEN_1_ = new TH1F("SelectedJets_PtGEN_1_","Jet 1 GEN p_{T} ", 400, 0., 4000.);							
+		SelectedJets_EGEN_1_ = new TH1F("SelectedJets_EGEN_1_", "jet 1 GEN E", 400, 0., 4000.);
+		SelectedJets_EtaGEN_1_ = new TH1F("SelectedJets_EtaGEN_1_","Jet 1 GEN #eta ", 3000, -3, 3);
+		SelectedJets_PhiGEN_1_ = new TH1F("SelectedJets_PhiGEN_1_","Jet 1 GEN #varphi ", 1000, -3.1416, 3.1416);
 
 
-		CleanedJetsGEN_HT_ = new TH1F("CleanedJetsGEN_HT_","Cleaned Jets H_{T} GEN", 100, 0, 1250);
-		SelectedJetsGEN_HT_ = new TH1F("SelectedJetsGEN_HT_","Selected Jets H_{T} GEN", 100, 0, 1250);
+		CleanedJetsGEN_HT_ = new TH1F("CleanedJetsGEN_HT_","Cleaned Jets H_{T} GEN", 400, 0, 4000);
+		SelectedJetsGEN_HT_ = new TH1F("SelectedJetsGEN_HT_","Selected Jets H_{T} GEN", 400, 0, 4000);
 		
-		HTParSum_	= new TH1F("HTParSum_","H_{T} Partons Sum", 100, 0, 1250);			
+		HTParSum_	= new TH1F("HTParSum_","H_{T} Partons Sum", 400, 0, 4000);			
 	}
 
 	IDIsoPhotons_N_ = new TH1F("IDIsoPhotons_N_","ID-Iso Photons N", 10, 0, 10);
@@ -1000,92 +1122,103 @@ void GJetsAnalyzer::Book_Histos(){
 	
   Nvtx_ = new TH1F("Nvtx_","Number of vertices ", 50, 0, 50);
 
-	SelectedPhotons_Pt_1_ = new TH1F("SelectedPhotons_Pt_1_","Photon p_{T} ", 200, 0., 1200.);
-	SelectedPhotons_E_1_ = new TH1F("SelectedPhotons_E_1_","Photon E ", 200, 0., 1200.);
-	SelectedPhotons_Eta_1_ = new TH1F("SelectedPhotons_Eta_1_","Photon #eta ", 50, -1.4442, 1.4442);
-	SelectedPhotons_Phi_1_ = new TH1F("SelectedPhotons_Phi_1_","Photon #varphi ", 50, -3.1416, 3.1416);
+	SelectedPhotons_Pt_1_ = new TH1F("SelectedPhotons_Pt_1_","Photon p_{T} ", 400, 0., 4000.);
+	SelectedPhotons_E_1_ = new TH1F("SelectedPhotons_E_1_","Photon E ", 400, 0., 4000.);
+	SelectedPhotons_Eta_1_ = new TH1F("SelectedPhotons_Eta_1_","Photon #eta ", 3000, -3, 3);
+	SelectedPhotons_Phi_1_ = new TH1F("SelectedPhotons_Phi_1_","Photon #varphi ", 1000, -3.1416, 3.1416);
 	SelectedPhotons_Bit_1_ = new TH1F("SelectedPhotons_Bit_1_","Photon bit ", 100, 0., 1000.);
 
 	SelectedPhotons_PassConversionVeto_1_ = new TH1F("SelectedPhotons_PassConversionVeto_1_","photonPassConversionVeto ", 10, -2, 2);
-	SelectedPhotons_PfIsoChargedHad_1_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_", "photon PfIsoChargedHad", 50, 0, 2);
-	SelectedPhotons_PfIsoNeutralHad_1_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_", "photon PfIsoNeutralHad", 30, 0, 30);
-	SelectedPhotons_PfIsoPhoton_1_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_", "photon PfIsoPhoton", 20, 0, 4);
-  SelectedPhotons_PfIsoPhotons03ForCic_1_ = new TH1F("SelectedPhotons_PfIsoPhotons03ForCic_1_", "photon PfIsoPhotons03ForCic", 50, 0, 100);
-	SelectedPhotons_PfIsoNeutrals03ForCic_1_ = new TH1F("SelectedPhotons_PfIsoNeutrals03ForCic_1_","photon PfIsoNeutrals03ForCic", 40, 0, 20);
-	SelectedPhotons_PfIsoCharged03ForCicVtx0_1_ = new TH1F("SelectedPhotons_PfIsoCharged03ForCicVtx0_1_", "photon PfIsoCharged03ForCicVtx0", 50, 0, 100);
-	SelectedPhotons_PfIsoCharged03BadForCic_1_ = new TH1F("SelectedPhotons_PfIsoCharged03BadForCic_1_", "photon PfIsoCharged03BadForCic", 50, 0, 100);
-	SelectedPhotons_PfIsoPhotons04ForCic_1_ = new TH1F("SelectedPhotons_PfIsoPhotons04ForCic_1_", "photon PfIsoPhotons04ForCic", 50, 0, 100);
-	SelectedPhotons_PfIsoNeutrals04ForCic_1_ = new TH1F("SelectedPhotons_PfIsoNeutrals04ForCic_1_", "photon PfIsoNeutrals04ForCic", 40, 0, 20);
-	SelectedPhotons_PfIsoCharged04ForCicVtx0_1_ = new TH1F("SelectedPhotons_PfIsoCharged04ForCicVtx0_1_", "photon PfIsoCharged04ForCicVtx0", 50, 0, 100);
-	SelectedPhotons_PfIsoCharged04BadForCic_1_ = new TH1F("SelectedPhotons_PfIsoCharged04BadForCic_1_", "photonPfIsoCharged04BadForCic", 50, 0, 100);
-	SelectedPhotons_id_sieie_1_ = new TH1F("SelectedPhotons_id_sieie_1_", "photon ID: #sigma_{i#etai#eta}", 40, 0., 0.015);
-	SelectedPhotons_id_sieip_1_ = new TH1F("SelectedPhotons_id_sieip_1_", "photon ID: #sigma_{i#etai#varphi}", 20, 0, 0.01);
-	SelectedPhotons_id_etawidth_1_ = new TH1F("SelectedPhotons_id_etawidth_1_", "photon ID: #eta width", 30, 0, 0.02);
-	SelectedPhotons_id_phiwidth_1_ = new TH1F("SelectedPhotons_id_phiwidth_1_", "photon ID: #varphi width", 30, 0, 0.1);
-	SelectedPhotons_id_r9_1_ = new TH1F("SelectedPhotons_id_r9_1_", "photon ID: r9", 50, 0, 1);
-	SelectedPhotons_id_lambdaRatio_1_ = new TH1F("SelectedPhotons_id_lambdaRatio_1_", "photon ID: #lambda Ratio", 50, 0, 1);
-	SelectedPhotons_id_s4Ratio_1_ = new TH1F("SelectedPhotons_id_s4Ratio_1_","photon ID: s4 Ratio", 50, 0, 1);
-	SelectedPhotons_id_e25_1_ = new TH1F("SelectedPhotons_id_e25_1_", "photon ID: #rho25", 50, 0, 1200);
-	SelectedPhotons_id_sceta_1_ = new TH1F("SelectedPhotons_id_sceta_1_", "photon ID: SC #eta", 50, -2.5, 2.5);
-	SelectedPhotons_id_ESEffSigmaRR_1_ = new TH1F("SelectedPhotons_id_ESEffSigmaRR_1_", "photon ID: ESEffSigmaRR", 10, 0, 1);
-	SelectedPhotons_id_hadronicOverEm_1_ = new TH1F("SelectedPhotons_id_hadronicOverEm_1_", "photon ID: hadronicOverEm", 50, 0, 1);
-	SelectedPhotons_id_hadronicOverEm2012_1_ = new TH1F("SelectedPhotons_id_hadronicOverEm2012_1_", "photon ID: hadronicOverEm2012", 50, 0, 0.5);
-	SelectedPhotons_hcalTowerSumEtConeDR04_1_ = new TH1F("SelectedPhotons_hcalTowerSumEtConeDR04_1_","photon hcalTowerSumEtConeDR04", 100, 0, 100);
-	SelectedPhotons_ecalRecHitSumEtConeDR04_1_ = new TH1F("SelectedPhotons_ecalRecHitSumEtConeDR04_1_", "photon ecalRecHitSumEtConeDR04", 100, 0, 100);
-	SelectedPhotons_nTrkSolidConeDR04_1_ = new TH1F("SelectedPhotons_nTrkSolidConeDR04_1_", "photon nTrkSolidConeDR04", 30, 0, 30);
-	SelectedPhotons_trkSumPtSolidConeDR04_1_ = new TH1F("SelectedPhotons_trkSumPtSolidConeDR04_1_","photon trkSumPtSolidConeDR04", 100, 0, 500);
-	SelectedPhotons_nTrkHollowConeDR04_1_ = new TH1F("SelectedPhotons_nTrkHollowConeDR04_1_", "photon nTrkHollowConeDR04", 30, 0, 30) ;
-	SelectedPhotons_trkSumPtHollowConeDR04_1_ = new TH1F("SelectedPhotons_trkSumPtHollowConeDR04_1_", "photon trkSumPtHollowConeDR04", 100, 0, 100);
-	SelectedPhotons_IsoFPRCharged_1_ = new TH1F("SelectedPhotons_IsoFPRCharged_1_", "photon IsoFPRCharged/p_{T}", 40, 0, 40); 
-	SelectedPhotons_IsoFPRNeutral_1_ = new TH1F("SelectedPhotons_IsoFPRNeutral_1_", "photon IsoFPRNeutral/p_{T}", 40, 0, 20);
-	SelectedPhotons_IsoFPRPhoton_1_ = new TH1F("SelectedPhotons_IsoFPRPhoton_1_", "photon IsoFPRPhoton/p_{T}", 40, 0, 40);
+	SelectedPhotons_PfIsoChargedHad_1_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_", "photon PfIsoChargedHad", 2000, 0, 200);
+	SelectedPhotons_PfIsoNeutralHad_1_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_", "photon PfIsoNeutralHad", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_", "photon PfIsoPhoton", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_ = new TH1F("SelectedPhotons_PfIso_1_", "photon PfIso", 2000, 0, 200);
+	SelectedPhotons_PfIso_ov_Pt_1_ = new TH1F("SelectedPhotons_PfIso_ov_Pt_1_", "photon PfIso/p_{T} ", 100, 0, 0.2);
+  SelectedPhotons_PfIsoPhotons03ForCic_1_ = new TH1F("SelectedPhotons_PfIsoPhotons03ForCic_1_", "photon PfIsoPhotons03ForCic", 2000, 0, 200);
+	SelectedPhotons_PfIsoNeutrals03ForCic_1_ = new TH1F("SelectedPhotons_PfIsoNeutrals03ForCic_1_","photon PfIsoNeutrals03ForCic", 2000, 0, 200);
+	SelectedPhotons_PfIsoCharged03ForCicVtx0_1_ = new TH1F("SelectedPhotons_PfIsoCharged03ForCicVtx0_1_", "photon PfIsoCharged03ForCicVtx0", 2000, 0, 200);
+	SelectedPhotons_PfIsoCharged03BadForCic_1_ = new TH1F("SelectedPhotons_PfIsoCharged03BadForCic_1_", "photon PfIsoCharged03BadForCic", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhotons04ForCic_1_ = new TH1F("SelectedPhotons_PfIsoPhotons04ForCic_1_", "photon PfIsoPhotons04ForCic", 2000, 0, 200);
+	SelectedPhotons_PfIsoNeutrals04ForCic_1_ = new TH1F("SelectedPhotons_PfIsoNeutrals04ForCic_1_", "photon PfIsoNeutrals04ForCic", 2000, 0, 200);
+	SelectedPhotons_PfIsoCharged04ForCicVtx0_1_ = new TH1F("SelectedPhotons_PfIsoCharged04ForCicVtx0_1_", "photon PfIsoCharged04ForCicVtx0", 2000, 0, 200);
+	SelectedPhotons_PfIsoCharged04BadForCic_1_ = new TH1F("SelectedPhotons_PfIsoCharged04BadForCic_1_", "photonPfIsoCharged04BadForCic", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_ = new TH1F("SelectedPhotons_id_sieie_1_", "photon ID: #sigma_{i#etai#eta}", 400, 0., 0.040);
+	SelectedPhotons_id_sieip_1_ = new TH1F("SelectedPhotons_id_sieip_1_", "photon ID: #sigma_{i#etai#varphi}", 400, 0, 0.04);
+	SelectedPhotons_id_etawidth_1_ = new TH1F("SelectedPhotons_id_etawidth_1_", "photon ID: #eta width", 400, 0, 0.04);
+	SelectedPhotons_id_phiwidth_1_ = new TH1F("SelectedPhotons_id_phiwidth_1_", "photon ID: #varphi width", 200, 0, 0.2);
+	SelectedPhotons_id_r9_1_ = new TH1F("SelectedPhotons_id_r9_1_", "photon ID: r9", 200, 0, 2);
+	SelectedPhotons_id_lambdaRatio_1_ = new TH1F("SelectedPhotons_id_lambdaRatio_1_", "photon ID: #lambda Ratio", 200, 0, 2);
+	SelectedPhotons_id_s4Ratio_1_ = new TH1F("SelectedPhotons_id_s4Ratio_1_","photon ID: s4 Ratio", 200, 0, 2);
+	SelectedPhotons_id_e25_1_ = new TH1F("SelectedPhotons_id_e25_1_", "photon ID: #rho25", 400, 0, 4000);
+	SelectedPhotons_id_sceta_1_ = new TH1F("SelectedPhotons_id_sceta_1_", "photon ID: SC #eta", 3000, -3, 3);
+	SelectedPhotons_id_ESEffSigmaRR_1_ = new TH1F("SelectedPhotons_id_ESEffSigmaRR_1_", "photon ID: ESEffSigmaRR", 200, 0, 2);
+	SelectedPhotons_id_hadronicOverEm_1_ = new TH1F("SelectedPhotons_id_hadronicOverEm_1_", "photon ID: hadronicOverEm", 4000, 0, 0.4);
+	SelectedPhotons_id_hadronicOverEm2012_1_ = new TH1F("SelectedPhotons_id_hadronicOverEm2012_1_", "photon ID: hadronicOverEm2012", 4000, 0, 0.4);
+	SelectedPhotons_hcalTowerSumEtConeDR04_1_ = new TH1F("SelectedPhotons_hcalTowerSumEtConeDR04_1_","photon hcalTowerSumEtConeDR04", 1000, 0, 1000);
+	SelectedPhotons_ecalRecHitSumEtConeDR04_1_ = new TH1F("SelectedPhotons_ecalRecHitSumEtConeDR04_1_", "photon ecalRecHitSumEtConeDR04", 1000, 0, 1000);
+	SelectedPhotons_nTrkSolidConeDR04_1_ = new TH1F("SelectedPhotons_nTrkSolidConeDR04_1_", "photon nTrkSolidConeDR04", 1000, 0, 1000);
+	SelectedPhotons_trkSumPtSolidConeDR04_1_ = new TH1F("SelectedPhotons_trkSumPtSolidConeDR04_1_","photon trkSumPtSolidConeDR04", 1000, 0, 1000);
+	SelectedPhotons_nTrkHollowConeDR04_1_ = new TH1F("SelectedPhotons_nTrkHollowConeDR04_1_", "photon nTrkHollowConeDR04", 100, 0, 100) ;
+	SelectedPhotons_trkSumPtHollowConeDR04_1_ = new TH1F("SelectedPhotons_trkSumPtHollowConeDR04_1_", "photon trkSumPtHollowConeDR04", 1000, 0, 1000);
+	SelectedPhotons_IsoFPRCharged_1_ = new TH1F("SelectedPhotons_IsoFPRCharged_1_", "photon IsoFPRCharged", 2000, 0, 200); 
+	SelectedPhotons_IsoFPRNeutral_1_ = new TH1F("SelectedPhotons_IsoFPRNeutral_1_", "photon IsoFPRNeutral", 2000, 0, 200);
+	SelectedPhotons_IsoFPRPhoton_1_ = new TH1F("SelectedPhotons_IsoFPRPhoton_1_", "photon IsoFPRPhoton", 2000, 0, 200);
+	SelectedPhotons_IsoFPRCharged_ov_Pt_1_ = new TH1F("SelectedPhotons_IsoFPRCharged_ov_Pt_1_", "photon IsoFPRCharged/p_{T}", 100, 0, 0.2); 
+	SelectedPhotons_IsoFPRNeutral_ov_Pt_1_ = new TH1F("SelectedPhotons_IsoFPRNeutral_ov_Pt_1_", "photon IsoFPRNeutral/p_{T}", 100, 0, 0.2);
+	SelectedPhotons_IsoFPRPhoton_ov_Pt_1_ = new TH1F("SelectedPhotons_IsoFPRPhoton_ov_Pt_1_", "photon IsoFPRPhoton/p_{T}", 100, 0, 0.2);
+
 
 	CleanedJetsLEA_N_ = new TH1F("CleanedJetsLEA_N_","Cleaned Jets LEA N ", 10, 0, 10);
 	SelectedJetsLEA_N_ = new TH1F("SelectedJetsLEA_N_","Selected Jets LEA N", 10, 0, 10);
 	CleanedJets_N_ = new TH1F("CleanedJets_N_","Cleaned Jets N ", 10, 0, 10);
 	SelectedJets_N_ = new TH1F("SelectedJets_N_","Selected Jets N", 10, 0, 10);
 	
-	SelectedJets_Pt_1_ = new TH1F("SelectedJets_Pt_1_","Jet 1 p_{T} ", 200, 0., 1200.);
-	SelectedJets_E_1_ = new TH1F("SelectedJets_E_1_", "jet 1 E", 300, 0., 1050.);
-	SelectedJets_Eta_1_ = new TH1F("SelectedJets_Eta_1_","Jet 1 #eta ", 50, -2.5, 2.5);
-	SelectedJets_Phi_1_ = new TH1F("SelectedJets_Phi_1_","Jet 1 #varphi ", 50, -3.1416, 3.1416);
+	SelectedJets_Pt_1_ = new TH1F("SelectedJets_Pt_1_","Jet 1 p_{T} ", 400, 0., 4000.);
+	SelectedJets_E_1_ = new TH1F("SelectedJets_E_1_", "jet 1 E", 400, 0., 4000.);
+	SelectedJets_Eta_1_ = new TH1F("SelectedJets_Eta_1_","Jet 1 #eta ", 3000, -3, 3);
+	SelectedJets_Phi_1_ = new TH1F("SelectedJets_Phi_1_","Jet 1 #varphi ", 1000, -3.1416, 3.1416);
 
 
 	DeltaR_photon1_jet1_ = new TH1F("DeltaR_photon1_jet1_","#DeltaR #gamma1-jet1", 30, 0, 6);
 	DeltaEta_photon1_jet1_ = new TH1F("DeltaEta_photon1_jet1_","#Delta#eta #gamma1-jet1", 50, 0, 5);
 	DeltaPhi_photon1_jet1_ = new TH1F("DeltaPhi_photon1_jet1_","#Delta#varphi #gamma1-jet1", 50, 0, 3.1416);
 
-	SelectedJets_Pt_2_ = new TH1F("SelectedJets_Pt_2_","Jet 2 p_{T} ", 200, 0., 1200.);
-	SelectedJets_E_2_ = new TH1F("SelectedJets_E_2_", "jet 2 E", 300, 0., 1050.);
-	SelectedJets_Eta_2_ = new TH1F("SelectedJets_Eta_2_","Jet 2 #eta ", 50, -2.5, 2.5);
-	SelectedJets_Phi_2_ = new TH1F("SelectedJets_Phi_2_","Jet 2 #varphi ", 50, -3.1416, 3.1416);
+	SelectedJets_Pt_2_ = new TH1F("SelectedJets_Pt_2_","Jet 2 p_{T} ", 400, 0., 4000.);
+	SelectedJets_E_2_ = new TH1F("SelectedJets_E_2_", "jet 2 E", 400, 0., 4000.);
+	SelectedJets_Eta_2_ = new TH1F("SelectedJets_Eta_2_","Jet 2 #eta ", 3000, -3, 3);
+	SelectedJets_Phi_2_ = new TH1F("SelectedJets_Phi_2_","Jet 2 #varphi ", 1000, -3.1416, 3.1416);
 
 
 	DeltaR_photon1_jet2_ = new TH1F("DeltaR_photon1_jet2_","#DeltaR #gamma1-jet2", 30, 0, 6);
-	DeltaR_jet1_jet2_ = new TH1F("DeltaR_jet1_jet2_","#Delta#R jet1-jet2", 30, 0, 6);
+	DeltaR_jet1_jet2_ = new TH1F("DeltaR_jet1_jet2_","#DeltaR jet1-jet2", 30, 0, 6);
 	DeltaEta_jet1_jet2_ = new TH1F("DeltaEta_jet1_jet2_","#Delta#eta jet1-jet2", 50, 0, 5);
 	DeltaPhi_jet1_jet2_ = new TH1F("DeltaPhi_jet1_jet2_","#Delta#varphi jet1-jet2", 50, 0, 3.1416);
 
-	SelectedJets_Pt_3_ = new TH1F("SelectedJets_Pt_3_","Jet 3 p_{T} ", 200, 0., 1200.);
-	SelectedJets_E_3_ = new TH1F("SelectedJets_E_3_", "jet 3 E", 300, 0., 1050.);
-	SelectedJets_Eta_3_ = new TH1F("SelectedJets_Eta_3_","Jet 3 #eta ", 50, -2.5, 2.5);
-	SelectedJets_Phi_3_ = new TH1F("SelectedJets_Phi_3_","Jet 3 #varphi ", 50, -3.1416, 3.1416);
+	SelectedJets_Pt_3_ = new TH1F("SelectedJets_Pt_3_","Jet 3 p_{T} ", 400, 0., 4000.);
+	SelectedJets_E_3_ = new TH1F("SelectedJets_E_3_", "jet 3 E", 400, 0., 4000.);
+	SelectedJets_Eta_3_ = new TH1F("SelectedJets_Eta_3_","Jet 3 #eta ", 3000, -3, 3);
+	SelectedJets_Phi_3_ = new TH1F("SelectedJets_Phi_3_","Jet 3 #varphi ", 1000, -3.1416, 3.1416);
 
 
 	DeltaR_photon1_jet3_ = new TH1F("DeltaR_photon1_jet3_","#DeltaR #gamma1-jet3", 30, 0, 6);
 
-	CleanedJets_HT_ = new TH1F("CleanedJets_HT_","Cleaned Jets H_{T}", 100, 0, 1250);
-	SelectedJets_HT_ = new TH1F("SelectedJets_HT_","Selected Jets H_{T}", 100, 0, 1250);
+	CleanedJets_HT_ = new TH1F("CleanedJets_HT_","Cleaned Jets H_{T}", 400, 0, 4000);
+	SelectedJets_HT_ = new TH1F("SelectedJets_HT_","Selected Jets H_{T}", 400, 0, 4000);
 
 	CleanedJetsLEA_preHT_N_ = new TH1F("CleanedJetsLEA_preHT_N_","Cleaned Jets LEA N pre-H_{T}", 10, 0, 10);
 	SelectedJetsLEA_preHT_N_ = new TH1F("SelectedJetsLEA_preHT_N_","Selected Jets LEA N pre-H_{T}", 10, 0, 10);
 	CleanedJets_preHT_N_= new TH1F("CleanedJets_preHT_N_","Cleaned Jets N pre-H_{T}", 10, 0, 10);
 	SelectedJets_preHT_N_= new TH1F("SelectedJets_preHT_N_","Selected Jets N pre-H_{T}", 10, 0, 10);
-	SelectedJets_preHT_Pt_1_= new TH1F("SelectedJets_preHT_Pt_1_","Jet 1 p_{T} pre-H_{T}", 200, 0., 1200.);
-	SelectedJets_preHT_Pt_2_ = new TH1F("SelectedJets_preHT_Pt_2_","Jet 2 p_{T} pre-H_{T}", 200, 0., 1200.);
-	SelectedJets_preHT_Pt_3_ = new TH1F("SelectedJets_preHT_Pt_3_","Jet 3 p_{T} pre-H_{T}", 200, 0., 1200.);
-	CleanedJets_preHT_HT_= new TH1F("CleanedJets_preHT_HT_","Cleaned Jets H_{T} pre-H_{T}", 100, 0, 1250);
-	SelectedJets_preHT_HT_= new TH1F("SelectedJets_preHT_HT_","Selected Jets H_{T} pre-H_{T}", 100, 0, 1250);
+	SelectedJets_preHT_Pt_1_= new TH1F("SelectedJets_preHT_Pt_1_","Jet 1 p_{T} pre-H_{T}", 400, 0., 4000.);
+	SelectedJets_preHT_Pt_2_ = new TH1F("SelectedJets_preHT_Pt_2_","Jet 2 p_{T} pre-H_{T}", 400, 0., 4000.);
+	SelectedJets_preHT_Pt_3_ = new TH1F("SelectedJets_preHT_Pt_3_","Jet 3 p_{T} pre-H_{T}", 400, 0., 4000.);
+	CleanedJets_preHT_HT_= new TH1F("CleanedJets_preHT_HT_","Cleaned Jets H_{T} pre-H_{T}", 400, 0, 4000);
+	SelectedJets_preHT_HT_= new TH1F("SelectedJets_preHT_HT_","Selected Jets H_{T} pre-H_{T}", 400, 0, 4000);
+
+	thrust_ = new TH1F("thrust_","thrust", 50, -3.1416, 3.1416);
+	broad_ = new TH1F("broad_","broad", 50, -3.1416, 3.1416);
+	S3_ = new TH1F("S3_","S3", 50, -3.1416, 3.1416);
+	S4_ = new TH1F("S4_","S4", 50, -3.1416, 3.1416);
 
 //  ptPhoton_->Sumw2();
 //  etaPhoton_->Sumw2();
@@ -1100,25 +1233,26 @@ void GJetsAnalyzer::Plot_Histos(){
   // plot few histograms at the end, for check
   cout << "Plots: quick check... " << endl;
 
-	bool plot_gen_01 = false;
-	bool plot_gen_02 = false;
-	bool plot_gen_03 = false;
+	bool plot_gen_01 = true;
+	bool plot_gen_02 = true;
+	bool plot_gen_03 = true;
 
 	bool plot_01 = true;
-	bool plot_02 = false;
-	bool plot_03 = false;
-	bool plot_04 = false;		
-	bool plot_05 = false;
-	bool plot_06 = false;
-	bool plot_07 = false;
-	bool plot_08 = false;
-	bool plot_09 = false;
-	bool plot_10 = false;
-	bool plot_11 = false;	
-	bool plot_12 = false;	
-	bool plot_13 = false;	
-	bool plot_14 = false;
+	bool plot_02 = true;
+	bool plot_03 = true;
+	bool plot_04 = true;		
+	bool plot_05 = true;
+	bool plot_06 = true;
+	bool plot_07 = true;
+	bool plot_08 = true;
+	bool plot_09 = true;
+	bool plot_10 = true;
+	bool plot_11 = true;	
+	bool plot_12 = true;	
+	bool plot_13 = true;	
+	bool plot_14 = true;
 	bool plot_15 = false;
+	bool plot_16 = false;
 			
   gStyle->SetOptStat(1111111);
 
@@ -1193,7 +1327,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_02){	  
 	  TCanvas *c02 = new TCanvas("c02", "photon Isolation", 10, 10, 700, 700);
   	gPad->SetLogy();
-  	c02->Divide(2,2);
+  	c02->Divide(3,2);
   	c02->cd(1);
   	SelectedPhotons_PassConversionVeto_1_->Draw();
   	c02->cd(2);
@@ -1202,6 +1336,10 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_PfIsoNeutralHad_1_->Draw();
   	c02->cd(4);
   	SelectedPhotons_PfIsoPhoton_1_->Draw();
+  	c02->cd(5);
+		SelectedPhotons_PfIso_1_->Draw();
+  	c02->cd(6);
+		SelectedPhotons_PfIso_ov_Pt_1_->Draw();
 	}
 
 	if(plot_03){	
@@ -1283,13 +1421,19 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_07){	
   	TCanvas *c07 = new TCanvas("c07", "photon Isolation FPR", 10, 10, 700, 700);
   	gPad->SetLogy();
-  	c07->Divide(3,1);
+  	c07->Divide(3,2);
   	c07->cd(1);
 		SelectedPhotons_IsoFPRCharged_1_->Draw(); 
   	c07->cd(2);
 		SelectedPhotons_IsoFPRNeutral_1_->Draw(); 
   	c07->cd(3);
 		SelectedPhotons_IsoFPRPhoton_1_->Draw();
+  	c07->cd(4);
+		SelectedPhotons_IsoFPRCharged_ov_Pt_1_->Draw(); 
+  	c07->cd(5);
+		SelectedPhotons_IsoFPRNeutral_ov_Pt_1_->Draw(); 
+  	c07->cd(6);
+		SelectedPhotons_IsoFPRPhoton_ov_Pt_1_->Draw();
 	}
 
 	if(plot_08){	
@@ -1388,7 +1532,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 			
 	if(plot_15){	
-  	TCanvas *c15 = new TCanvas("c14", "Variables pre-H_T cut", 10, 10, 700, 700);
+  	TCanvas *c15 = new TCanvas("c15", "Variables pre-H_T cut", 10, 10, 700, 700);
   	gPad->SetLogy();
   	c15->Divide(2,5);
   	c15->cd(1);
@@ -1410,6 +1554,20 @@ void GJetsAnalyzer::Plot_Histos(){
   	c15->cd(9);
   	SelectedJets_preHT_HT_->Draw();
   	c15->cd(10);
+	}
+
+	if(plot_16){	
+  	TCanvas *c16 = new TCanvas("c16", "Event shape variables", 10, 10, 700, 700);
+  	gPad->SetLogy();
+  	c16->Divide(2,2);
+  	c16->cd(1);
+		thrust_->Draw();
+  	c16->cd(2);
+		broad_->Draw();
+  	c16->cd(3);
+		S3_->Draw();
+  	c16->cd(4);
+		S4_->Draw();
 	}
 	
   cout << "...plots: quick check finished. " << endl;

@@ -2,6 +2,7 @@
 
 #include <TH1F.h>
 #include <vector>
+#include <TLorentzVector.h>
 
 void Zero_Variables();
 //void Book_Histos();
@@ -16,6 +17,13 @@ string  sample_r;
 Long64_t nentries_r;
 Char_t  outputname[100];
 Char_t  textname[100];
+
+Float_t photonPfIso,
+				photonPfIso_ov_Pt,
+				photonIsoFPRCharged_ov_Pt,
+				photonIsoFPRNeutral_ov_Pt,
+				photonIsoFPRPhoton_ov_Pt;
+				
 Float_t	CleanedJetsGEN_N,
         CleanedJetsGEN_HT,
         SelectedJetsGEN_N,
@@ -58,6 +66,8 @@ vector<float> CleanedJetsGEN_Pt,
 							SelectedPhotons_PfIsoChargedHad, 
 							SelectedPhotons_PfIsoNeutralHad, 
 							SelectedPhotons_PfIsoPhoton,
+							SelectedPhotons_PfIso,
+							SelectedPhotons_PfIso_ov_Pt,
 							SelectedPhotons_PfIsoPhotons03ForCic, 
 							SelectedPhotons_PfIsoNeutrals03ForCic, 
 							SelectedPhotons_PfIsoCharged03ForCicVtx0, 
@@ -87,6 +97,9 @@ vector<float> CleanedJetsGEN_Pt,
 							SelectedPhotons_IsoFPRCharged,
 							SelectedPhotons_IsoFPRNeutral,
 							SelectedPhotons_IsoFPRPhoton,
+							SelectedPhotons_IsoFPRCharged_ov_Pt,
+							SelectedPhotons_IsoFPRNeutral_ov_Pt,
+							SelectedPhotons_IsoFPRPhoton_ov_Pt,
 							SelectedPhotons_Bit,
 							CleanedJets_Pt,
 							SelectedJets_Pt,
@@ -94,6 +107,20 @@ vector<float> CleanedJetsGEN_Pt,
 							SelectedJets_Phi,
 							SelectedJets_E;
 
+vector<TLorentzVector> vPtEtaPhiE;
+vector<double> myEvshpV,
+							 TA;
+vector<int> Grouping,
+						Grouping_test;
+
+Float_t phiTA,
+				dphi_TA_BAxis,
+				dphi_TA_J1Axis,
+				thrust,
+				broad,
+				S3,
+				S4;						
+						
 // histograms
 TH1F 	*nPhotonsGEN_,
 			*photonPtGEN_,
@@ -120,7 +147,9 @@ TH1F 	*nPhotonsGEN_,
 			*SelectedPhotons_PassConversionVeto_1_, 
 			*SelectedPhotons_PfIsoChargedHad_1_,
 			*SelectedPhotons_PfIsoNeutralHad_1_, 
-			*SelectedPhotons_PfIsoPhoton_1_, 
+			*SelectedPhotons_PfIsoPhoton_1_,
+			*SelectedPhotons_PfIso_1_,
+			*SelectedPhotons_PfIso_ov_Pt_1_, 
 			*SelectedPhotons_PfIsoPhotons03ForCic_1_, 
 			*SelectedPhotons_PfIsoNeutrals03ForCic_1_, 
 			*SelectedPhotons_PfIsoCharged03ForCicVtx0_1_, 
@@ -149,7 +178,10 @@ TH1F 	*nPhotonsGEN_,
 			*SelectedPhotons_trkSumPtHollowConeDR04_1_, 
 			*SelectedPhotons_IsoFPRCharged_1_, 
 			*SelectedPhotons_IsoFPRNeutral_1_, 
-			*SelectedPhotons_IsoFPRPhoton_1_, 
+			*SelectedPhotons_IsoFPRPhoton_1_,
+			*SelectedPhotons_IsoFPRCharged_ov_Pt_1_, 
+			*SelectedPhotons_IsoFPRNeutral_ov_Pt_1_, 
+			*SelectedPhotons_IsoFPRPhoton_ov_Pt_1_,
 			*CleanedJetsLEA_N_,
 			*SelectedJetsLEA_N_,
 			*CleanedJets_N_, 
@@ -184,7 +216,11 @@ TH1F 	*nPhotonsGEN_,
 			*SelectedJets_preHT_Pt_2_,
 			*SelectedJets_preHT_Pt_3_,
 			*CleanedJets_preHT_HT_,
-			*SelectedJets_preHT_HT_; 
+			*SelectedJets_preHT_HT_,
+			*thrust_,
+			*broad_,
+			*S3_,
+			*S4_;
 
 Int_t  iSelected0, iSelected1, iSelected2, iSelected3, iSelected4; 
 Int_t  iSelectedWithWeights0, iSelectedWithWeights1, iSelectedWithWeights2, iSelectedWithWeights3, iSelectedWithWeights4;

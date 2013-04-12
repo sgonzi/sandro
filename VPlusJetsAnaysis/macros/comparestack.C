@@ -124,10 +124,10 @@ void setMYStyle() {
 }
 
 
-void comparestack(const char* titleh, const char* namevariable){
+void comparestack(const char* titleh, const char* namevariable, const int rebin){
 
   // Usage is: .L comparestack.C+
-  //       ie: comparestack("ptPhoton_","P_{T}^{#gamma} [GeV]")
+  //       ie: comparestack("ptPhoton_","P_{T}^{#gamma} [GeV], 1")
 
 	setMYStyle();
 	
@@ -268,18 +268,31 @@ void comparestack(const char* titleh, const char* namevariable){
 
 //--- data -----------------------------------------------------------------
 	TH1F *DATA_Run2012A_13Jul2012_histo=(TH1F*)DATA_Run2012A_13Jul2012_file->Get(titlehisto);
+	DATA_Run2012A_13Jul2012_histo->Rebin(rebin);
 	cout << "DATA_Run2012A_13Jul2012 entries = " << DATA_Run2012A_13Jul2012_histo->Integral() << endl;  
+
 	TH1F *DATA_Run2012A_recover_06Aug2012_histo=(TH1F*)DATA_Run2012A_recover_06Aug2012_file->Get(titlehisto);
+	DATA_Run2012A_recover_06Aug2012_histo->Rebin(rebin);
 	cout << "DATA_Run2012A_recover_06Aug2012 entries = " << DATA_Run2012A_recover_06Aug2012_histo->Integral() << endl;  
+
 	TH1F *DATA_Run2012B_13Jul2012_histo=(TH1F*)DATA_Run2012B_13Jul2012_file->Get(titlehisto);
+	DATA_Run2012B_13Jul2012_histo->Rebin(rebin);
 	cout << "DATA_Run2012B_13Jul2012 entries = " << DATA_Run2012B_13Jul2012_histo->Integral() << endl;  
+
 	TH1F *DATA_Run2012C_24Aug2012_histo=(TH1F*)DATA_Run2012C_24Aug2012_file->Get(titlehisto);
+	DATA_Run2012C_24Aug2012_histo->Rebin(rebin);
 	cout << "DATA_Run2012C_24Aug2012 entries = " << DATA_Run2012C_24Aug2012_histo->Integral() << endl;  
+
 	TH1F *DATA_Run2012C_EcalRecover_11Dec2012_histo=(TH1F*)DATA_Run2012C_EcalRecover_11Dec2012_file->Get(titlehisto);
+	DATA_Run2012C_EcalRecover_11Dec2012_histo->Rebin(rebin);
 	cout << "DATA_Run2012C_EcalRecover_11Dec2012 entries = " << DATA_Run2012C_EcalRecover_11Dec2012_histo->Integral() << endl;  
+
 	TH1F *DATA_Run2012C_PromptReco_histo=(TH1F*)DATA_Run2012C_PromptReco_file->Get(titlehisto);
+	DATA_Run2012C_PromptReco_histo->Rebin(rebin);
 	cout << "DATA_Run2012C_PromptReco entries = " << DATA_Run2012C_PromptReco_histo->Integral() << endl;  
+
 	TH1F *DATA_Run2012D_PromptReco_histo=(TH1F*)DATA_Run2012D_PromptReco_file->Get(titlehisto);
+	DATA_Run2012D_PromptReco_histo->Rebin(rebin);
 	cout << "DATA_Run2012D_PromptReco entries = " << DATA_Run2012D_PromptReco_histo->Integral() << endl;  
 
 	TH1F *DATA_total_histo = (TH1F*) DATA_Run2012A_13Jul2012_histo->Clone("DATA_total_histo");
@@ -292,9 +305,11 @@ void comparestack(const char* titleh, const char* namevariable){
 				
 //--- MC signal GJets_HT-xToy ----------------------------------------------
 	TH1F *GJets_HT_200To400_histo=(TH1F*)GJets_HT_200To400_file->Get(titlehisto);
+	GJets_HT_200To400_histo->Rebin(rebin);
 	cout << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
 
 	TH1F *GJets_HT_400ToInf_histo=(TH1F*)GJets_HT_400ToInf_file->Get(titlehisto);
+	GJets_HT_400ToInf_histo->Rebin(rebin);
 	cout << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
 
 	TH1F *GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_200To400_histo->Clone("GJets_HT_xToy_total_histo");
@@ -305,21 +320,27 @@ void comparestack(const char* titleh, const char* namevariable){
 
 //--- MC background QCD_Pt_x_y EMEnriched ----------------------------------
 	TH1F *QCD_Pt_20_30_EMEnriched_histo=(TH1F*)QCD_Pt_20_30_EMEnriched_file->Get(titlehisto);
+	QCD_Pt_20_30_EMEnriched_histo->Rebin(rebin);
 	cout << "CD_Pt_20_30_EMEnriched entries = " << QCD_Pt_20_30_EMEnriched_histo->Integral() << endl;
 
 	TH1F *QCD_Pt_30_80_EMEnriched_histo=(TH1F*)QCD_Pt_30_80_EMEnriched_file->Get(titlehisto);
+	QCD_Pt_30_80_EMEnriched_histo->Rebin(rebin);
 	cout << "QCD_Pt_30_80_EMEnriched entries = " << QCD_Pt_30_80_EMEnriched_histo->Integral() << endl;
 
 	TH1F *QCD_Pt_80_170_EMEnriched_histo=(TH1F*)QCD_Pt_80_170_EMEnriched_file->Get(titlehisto);
+	QCD_Pt_80_170_EMEnriched_histo->Rebin(rebin);
 	cout << "QCD_Pt_80_170_EMEnriched entries = " << QCD_Pt_80_170_EMEnriched_histo->Integral() << endl;
 
 	TH1F *QCD_Pt_170_250_EMEnriched_histo=(TH1F*)QCD_Pt_170_250_EMEnriched_file->Get(titlehisto);
+	QCD_Pt_170_250_EMEnriched_histo->Rebin(rebin);
 	cout << "QCD_Pt_170_250_EMEnriched entries = " << QCD_Pt_170_250_EMEnriched_histo->Integral() << endl;
 
 	TH1F *QCD_Pt_250_350_EMEnriched_histo=(TH1F*)QCD_Pt_250_350_EMEnriched_file->Get(titlehisto);
+	QCD_Pt_250_350_EMEnriched_histo->Rebin(rebin);
 	cout << "QCD_Pt_250_350_EMEnriched entries = " << QCD_Pt_250_350_EMEnriched_histo->Integral() << endl;
 
 	TH1F *QCD_Pt_350_EMEnriched_histo=(TH1F*)QCD_Pt_350_EMEnriched_file->Get(titlehisto);
+	QCD_Pt_350_EMEnriched_histo->Rebin(rebin);
 	cout << "QCD_Pt_350_EMEnriched entries = " << QCD_Pt_350_EMEnriched_histo->Integral() << endl;
 
 	TH1F *QCD_Pt_x_y_EMEnriched_total_histo = (TH1F*) QCD_Pt_20_30_EMEnriched_histo->Clone("QCD_Pt_x_y_EMEnriched_total_histo");
@@ -335,21 +356,27 @@ void comparestack(const char* titleh, const char* namevariable){
 
 //--- MC background QCD_Pt_x_y BCtoE ----------------------------------
 	TH1F *QCD_Pt_20_30_BCtoE_histo=(TH1F*)QCD_Pt_20_30_BCtoE_file->Get(titlehisto);
+	QCD_Pt_20_30_BCtoE_histo->Rebin(rebin);
 	cout << "QCD_Pt_20_30_BCtoE entries = " << QCD_Pt_20_30_BCtoE_histo->Integral() << endl;
 
 	TH1F *QCD_Pt_30_80_BCtoE_histo=(TH1F*)QCD_Pt_30_80_BCtoE_file->Get(titlehisto);
+	QCD_Pt_30_80_BCtoE_histo->Rebin(rebin);
 	cout << "QCD_Pt_30_80_BCtoE entries = " << QCD_Pt_30_80_BCtoE_histo->Integral() << endl;
 
 	TH1F *QCD_Pt_80_170_BCtoE_histo=(TH1F*)QCD_Pt_80_170_BCtoE_file->Get(titlehisto);
+	QCD_Pt_80_170_BCtoE_histo->Rebin(rebin);
 	cout << "QCD_Pt_80_170_BCtoE entries = " << QCD_Pt_80_170_BCtoE_histo->Integral() << endl;
 
 	TH1F *QCD_Pt_170_250_BCtoE_histo=(TH1F*)QCD_Pt_170_250_BCtoE_file->Get(titlehisto);
+	QCD_Pt_170_250_BCtoE_histo->Rebin(rebin);
 	cout << "QCD_Pt_170_250_BCtoE entries = " << QCD_Pt_170_250_BCtoE_histo->Integral() << endl;
 
 	TH1F *QCD_Pt_250_350_BCtoE_histo=(TH1F*)QCD_Pt_250_350_BCtoE_file->Get(titlehisto);
+	QCD_Pt_250_350_BCtoE_histo->Rebin(rebin);
 	cout << "QCD_Pt_250_350_BCtoE entries = " << QCD_Pt_250_350_BCtoE_histo->Integral() << endl;
 
 	TH1F *QCD_Pt_350_BCtoE_histo=(TH1F*)QCD_Pt_350_BCtoE_file->Get(titlehisto);
+	QCD_Pt_350_BCtoE_histo->Rebin(rebin);
 	cout << "QCD_Pt_350_BCtoE entries = " << QCD_Pt_350_BCtoE_histo->Integral() << endl;
 
 	TH1F *QCD_Pt_x_y_BCtoE_total_histo = (TH1F*) QCD_Pt_20_30_BCtoE_histo->Clone("QCD_Pt_x_y_BCtoE_total_histo");
