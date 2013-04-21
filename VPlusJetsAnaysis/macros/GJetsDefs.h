@@ -101,11 +101,14 @@ vector<float> CleanedJetsGEN_Pt,
 							SelectedPhotons_IsoFPRNeutral_ov_Pt,
 							SelectedPhotons_IsoFPRPhoton_ov_Pt,
 							SelectedPhotons_Bit,
+							SelectedPhotons_TeP_SF,
 							CleanedJets_Pt,
 							SelectedJets_Pt,
 							SelectedJets_Eta,
 							SelectedJets_Phi,
 							SelectedJets_E;
+
+vector<float> SelectedPhotons_ScaleFactors;
 
 vector<TLorentzVector> vPtEtaPhiE;
 vector<double> myEvshpV,
@@ -119,8 +122,12 @@ Float_t phiTA,
 				thrust,
 				broad,
 				S3,
-				S4;						
-						
+				S4,
+				ln_thrust,
+				ln_broad,
+				ln_S3,
+				ln_S4;
+								
 // histograms
 TH1F 	*nPhotonsGEN_,
 			*photonPtGEN_,
@@ -136,6 +143,7 @@ TH1F 	*nPhotonsGEN_,
       *CleanedJetsGEN_HT_,
       *SelectedJetsGEN_HT_,
 			*HTParSum_,
+			*pre_photonIsoPtDR03GEN_,
 			*IDIsoPhotons_N_, 
 			*SelectedPhotons_N_, 
 			*Nvtx_, 
@@ -143,7 +151,8 @@ TH1F 	*nPhotonsGEN_,
 			*SelectedPhotons_E_1_, 
 			*SelectedPhotons_Eta_1_, 
 			*SelectedPhotons_Phi_1_, 
-			*SelectedPhotons_Bit_1_, 
+			*SelectedPhotons_Bit_1_,
+			*SelectedPhotons_TeP_SF_1_,
 			*SelectedPhotons_PassConversionVeto_1_, 
 			*SelectedPhotons_PfIsoChargedHad_1_,
 			*SelectedPhotons_PfIsoNeutralHad_1_, 
@@ -220,8 +229,13 @@ TH1F 	*nPhotonsGEN_,
 			*thrust_,
 			*broad_,
 			*S3_,
-			*S4_;
+			*S4_,
+			*ln_thrust_,
+			*ln_broad_,
+			*ln_S3_,
+			*ln_S4_,
+			*photonIsoPtDR03GEN_;
 
 Int_t  iSelected0, iSelected1, iSelected2, iSelected3, iSelected4; 
-Int_t  iSelectedWithWeights0, iSelectedWithWeights1, iSelectedWithWeights2, iSelectedWithWeights3, iSelectedWithWeights4;
+// Int_t  iSelectedWithWeights0, iSelectedWithWeights1, iSelectedWithWeights2, iSelectedWithWeights3, iSelectedWithWeights4;
 // #### cleaning new: photon class - finish

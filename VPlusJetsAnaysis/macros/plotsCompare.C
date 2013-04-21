@@ -126,11 +126,15 @@ void plotsCompare3(){
 //	comparestack("CleanedJets_preHT_HT_","Cleaned Jets H_{T} pre-H_{T}", 4, 0, 3000);
 	comparestack("SelectedJets_preHT_HT_","Selected Jets H_{T} pre-H_{T}", 4, 0, 3000);
 
-	comparestack("thrust_","thrust", 1, -999, -999);
-	comparestack("broad_","broad", 1, -999, -999);
-	comparestack("S3_","S3", 1, -999, -999);
-	comparestack("S4_","S4", 1, -999, -999);
-	
+	comparestack("thrust_","thrust", 100, 0, 0.5);
+	comparestack("broad_","broad", 100, 0, 1);
+	comparestack("S3_","S3", 70, -2, 5);
+	comparestack("S4_","S4", 140, -1.2, 0.2);
+
+	comparestack("ln_thrust_","ln thrust", 200, -20, 0);
+	comparestack("ln_broad_","ln broad", 100, -5, 0);
+	comparestack("ln_S3_","ln S3", 120, -5, 5);
+	comparestack("ln_S4_","ln S4", 200, -0.5, 0.5);		
 }
 
 

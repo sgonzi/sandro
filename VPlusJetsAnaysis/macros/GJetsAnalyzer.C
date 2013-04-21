@@ -47,11 +47,11 @@
 
 void GJetsAnalyzer::Loop(){
 
-	bool RedAn = false; // analysis with a reuced entries number
+	bool RedAn = true; // analysis with a reuced entries number
 	string geo = "barrel"; // barrel or endcaps
-	Int_t plothistos = 0; // please select which plots to show
+	Int_t plothistos = 1; // please select which plots to show
 	Int_t textfile = 1; // if you want a text report for each sample
-	Int_t itype = 8; // it identifies histos with different analysis 
+	Int_t itype = 9; // it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -96,6 +96,8 @@ void GJetsAnalyzer::Loop(){
 
 	Float_t weight = 1; 
 	Float_t weight_withPU = 1;
+	Float_t scale_TeP = 1.;
+	Float_t weight_final = 1;
 
 	//since the Z can be also forward if the momenta of the leptons are
 	//added up - choose a very big value
@@ -468,11 +470,11 @@ void GJetsAnalyzer::Loop(){
 	iSelected3 = 0;
 	iSelected4 = 0;
 
-	iSelectedWithWeights0 = 0;
-	iSelectedWithWeights1 = 0;
-	iSelectedWithWeights2 = 0;
-	iSelectedWithWeights3 = 0;
-	iSelectedWithWeights4 = 0;
+//	iSelectedWithWeights0 = 0;
+//	iSelectedWithWeights1 = 0;
+//	iSelectedWithWeights2 = 0;
+//	iSelectedWithWeights3 = 0;
+//	iSelectedWithWeights4 = 0;
  
 	//loop on entries
 	Long64_t nentries;
@@ -596,7 +598,10 @@ void GJetsAnalyzer::Loop(){
 					} // end kin JetsGEN (cleaned vs. photonGEN) selection
 				} // end photonGEN kinematic selection
 			} // end photonGEN selection
-
+			if (isMC){
+				pre_photonIsoPtDR03GEN_->Fill(photonIsoPtDR03GEN, 1);
+			}
+			
 			// clean jets GEN
 			CleanedJetsGEN_N = 0;
 			SelectedJetsGEN_N = 0;
@@ -633,6 +638,70 @@ void GJetsAnalyzer::Loop(){
 			photonIsoFPRNeutral_ov_Pt = photonIsoFPRNeutral->at(iPhoPos)/photonPt->at(iPhoPos);
 			photonIsoFPRPhoton_ov_Pt = photonIsoFPRPhoton->at(iPhoPos)/photonPt->at(iPhoPos);
 
+			// MADGRAPH and PYTHIA separated behaviour (signal/background) to avoid double counting
+			bool isoGEN = false; 
+			if(isMC) {
+				if(mysample == 11 || mysample == 12) { 
+					isoGEN = photonIsoPtDR03GEN > 0 && photonIsoPtDR03GEN < 10; // MADGRAPH
+					}
+				else if ((mysample > 20 && mysample < 27) || (mysample > 30 && mysample < 37)) {
+					isoGEN = (photonIsoPtDR03GEN < 0 || photonIsoPtDR03GEN > 10); // PYTHIA
+				}
+				else isoGEN = true;
+			}	
+
+			// T&P scale factors - definitions
+			float TeP_SF = 1.;
+
+			if (isMC) TeP_SF = 1.;
+			else {
+
+				bool reg_Pt1_Eta1 = false; 
+				bool reg_Pt1_Eta2 = false; 
+				bool reg_Pt1_Eta3 = false; 
+				bool reg_Pt1_Eta4 = false; 
+				bool reg_Pt2_Eta1 = false; 									
+				bool reg_Pt2_Eta2 = false;
+				bool reg_Pt2_Eta3 = false;
+				bool reg_Pt2_Eta4 = false;
+
+				reg_Pt1_Eta1 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+				               (photonEta->at(iPhoPos) > 0.0 && photonEta->at(iPhoPos) < 0.8);
+			               
+				reg_Pt1_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+				               (photonEta->at(iPhoPos) > 0.8 && photonEta->at(iPhoPos) < 1.4442);
+			               
+				reg_Pt1_Eta3 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+				               (photonEta->at(iPhoPos) > 1.566 && photonEta->at(iPhoPos) < 2.0);
+			               
+				reg_Pt1_Eta4 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+				               (photonEta->at(iPhoPos) > 2.0 && photonEta->at(iPhoPos) < 2.5);
+			               
+				reg_Pt2_Eta1 = (photonPt->at(iPhoPos) > 200) && 
+				               (photonEta->at(iPhoPos) > 0.0 && photonEta->at(iPhoPos) < 0.8);
+			               
+				reg_Pt2_Eta2 = (photonPt->at(iPhoPos) > 200) && 
+				               (photonEta->at(iPhoPos) > 0.8 && photonEta->at(iPhoPos) < 1.4442);
+			               	
+				reg_Pt2_Eta3 = (photonPt->at(iPhoPos) > 200) && 
+				               (photonEta->at(iPhoPos) > 1.566 && photonEta->at(iPhoPos) < 2.0);
+			               
+				reg_Pt2_Eta4 = (photonPt->at(iPhoPos) > 200) && 
+				               (photonEta->at(iPhoPos) > 2.0 && photonEta->at(iPhoPos) < 2.5);
+										
+				if (reg_Pt1_Eta1) TeP_SF = 1.;
+				else if (reg_Pt1_Eta2) TeP_SF = 1.;
+				else if (reg_Pt1_Eta3) TeP_SF = 1.;
+				else if (reg_Pt1_Eta4) TeP_SF = 1.;
+				else if (reg_Pt2_Eta1) TeP_SF = 1.;
+				else if (reg_Pt2_Eta2) TeP_SF = 1.;
+				else if (reg_Pt2_Eta3) TeP_SF = 1.;
+				else if (reg_Pt2_Eta4) TeP_SF = 1.;
+				else TeP_SF = 1.;
+
+			}			
+					
+			// photon quality selection - definitions
 			bool geo_quality_sel = false;
 			if (geo == "barrel") {
 				// photon quality selection: Barrel - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
@@ -642,7 +711,14 @@ void GJetsAnalyzer::Loop(){
 							if(photonPfIsoChargedHad->at(iPhoPos) < 1.5){ 
 								if(photonPfIsoNeutralHad->at(iPhoPos) < (1.0 + 0.04*photonPt->at(iPhoPos))){
 									if(photonPfIsoPhoton->at(iPhoPos) < (0.7 + 0.005*photonPt->at(iPhoPos))){
-										geo_quality_sel = true;
+										if (isMC){
+											if (isoGEN){
+												geo_quality_sel = true;
+											}
+										}
+										else {
+											geo_quality_sel = true;
+										}
 									}
 								}
 							}
@@ -658,8 +734,15 @@ void GJetsAnalyzer::Loop(){
 							if(photonPfIsoChargedHad->at(iPhoPos) < 1.2){ 
 								if(photonPfIsoNeutralHad->at(iPhoPos) < (1.5 + 0.04*photonPt->at(iPhoPos))){
 									if(photonPfIsoPhoton->at(iPhoPos) < (1.0 + 0.005*photonPt->at(iPhoPos))){
-										geo_quality_sel = true;
-									}
+										if (isMC){
+											if (isoGEN){
+												geo_quality_sel = true;
+											}
+										}
+										else {
+											geo_quality_sel = true;
+										}
+									}	
 								}
 							}
 						}
@@ -742,6 +825,8 @@ void GJetsAnalyzer::Loop(){
 					SelectedPhotons_IsoFPRPhoton_ov_Pt.push_back(photonIsoFPRPhoton_ov_Pt);
 					SelectedPhotons_Bit.push_back(photonBit->at(iPhoPos));
 
+					SelectedPhotons_TeP_SF.push_back(TeP_SF);
+
 					SelectedPhotons_N+=1;
 
 					} // end photon kinematic selection
@@ -805,177 +890,194 @@ void GJetsAnalyzer::Loop(){
 		SelectedJets_HT = 0;
 		for(unsigned int zJetPos = 0; zJetPos < SelectedJets_Pt.size(); zJetPos++) {
 			SelectedJets_HT += SelectedJets_Pt.at(zJetPos);
-			TLorentzVector PtEtaPhiE_tmp = TLorentzVector(0,0,0,0);
-			PtEtaPhiE_tmp.SetPtEtaPhiE(SelectedJets_Pt.at(zJetPos), SelectedJets_Eta.at(zJetPos), SelectedJets_Phi.at(zJetPos), SelectedJets_E.at(zJetPos));
-			vPtEtaPhiE.push_back(PtEtaPhiE_tmp);
+//			TLorentzVector PtEtaPhiE_tmp = TLorentzVector(0,0,0,0);
+//			PtEtaPhiE_tmp.SetPtEtaPhiE(SelectedJets_Pt.at(zJetPos), SelectedJets_Eta.at(zJetPos), SelectedJets_Phi.at(zJetPos), SelectedJets_E.at(zJetPos));
+//			vPtEtaPhiE.push_back(PtEtaPhiE_tmp);
 		}
-		EventShapeLorentz* myEvshp = new EventShapeLorentz(vPtEtaPhiE, fCut_eta_central ,1);
-		myEvshpV = myEvshp->getEventShapes();
-		TA = myEvshp->getThrustAxis();
-		Grouping = myEvshp->getGrouping();
-		Grouping_test = myEvshp->getGrouping_C();
-		delete myEvshp;
+
+		if (SelectedPhotons_N > 0 && SelectedJets_N > 0){
+			TLorentzVector PtEtaPhiE_tmpPho = TLorentzVector(0,0,0,0);
+			PtEtaPhiE_tmpPho.SetPtEtaPhiE(SelectedPhotons_Pt.at(0), SelectedPhotons_Eta.at(0), SelectedPhotons_Phi.at(0), SelectedPhotons_E.at(0));
+			vPtEtaPhiE.push_back(PtEtaPhiE_tmpPho);
+
+			TLorentzVector PtEtaPhiE_tmpJet = TLorentzVector(0,0,0,0);
+			PtEtaPhiE_tmpJet.SetPtEtaPhiE(SelectedJets_Pt.at(0), SelectedJets_Eta.at(0), SelectedJets_Phi.at(0), SelectedJets_E.at(0));
+			vPtEtaPhiE.push_back(PtEtaPhiE_tmpJet);
+		
+			EventShapeLorentz* myEvshp = new EventShapeLorentz(vPtEtaPhiE, fCut_eta_central ,1);
+			myEvshpV = myEvshp->getEventShapes();
+			TA = myEvshp->getThrustAxis();
+			Grouping = myEvshp->getGrouping();
+			Grouping_test = myEvshp->getGrouping_C();
+			delete myEvshp;
+		}
 		// end collectives jets properties - aggiunta fine
 
 		// =========== Analysis selection
 		// (photonBit |= (it->isEB() << 0) => (*photonBit)[0]&1) con 2^0 = 1
 		iSelected0++;
-		iSelectedWithWeights0 = iSelectedWithWeights0 + weight_withPU;
+		// iSelectedWithWeights0 = iSelectedWithWeights0 + weight_withPU;
 
 		// ID+Iso+kin Photons selection (then, on the LEADING one)
 		if (SelectedPhotons_N > 0){
+
+			scale_TeP = SelectedPhotons_TeP_SF.at(0);
+			weight_final = scale_TeP * weight_withPU;
+			
 			iSelected1++;
-			iSelectedWithWeights1 = iSelectedWithWeights1 + weight_withPU;
+			// iSelectedWithWeights1 = iSelectedWithWeights1 + weight_withPU;
 
 			// trigger Matching selection
 			if (isTriggerMatchedFamily4) {
 				iSelected2++;
-				iSelectedWithWeights2 = iSelectedWithWeights2 + weight_withPU;
+				//iSelectedWithWeights2 = iSelectedWithWeights2 + weight_withPU;
 
 				// kin Jets (cleaned vs. Photons) selection
 				if (SelectedJets_N > 0) {
 					iSelected3++;
-					iSelectedWithWeights3 = iSelectedWithWeights3 + weight_withPU;
+					// iSelectedWithWeights3 = iSelectedWithWeights3 + weight_withPU;
 
-					CleanedJetsLEA_preHT_N_->Fill(CleanedJetsLEA_N, weight_withPU);
-					SelectedJetsLEA_preHT_N_->Fill(SelectedJetsLEA_N, weight_withPU);
+					CleanedJetsLEA_preHT_N_->Fill(CleanedJetsLEA_N, weight_final);
+					SelectedJetsLEA_preHT_N_->Fill(SelectedJetsLEA_N, weight_final);
 
-					CleanedJets_preHT_N_->Fill(CleanedJets_N, weight_withPU);
-					SelectedJets_preHT_N_->Fill(SelectedJets_N, weight_withPU);
+					CleanedJets_preHT_N_->Fill(CleanedJets_N, weight_final);
+					SelectedJets_preHT_N_->Fill(SelectedJets_N, weight_final);
 
-					SelectedJets_preHT_Pt_1_->Fill(SelectedJets_Pt.at(0), weight_withPU);
+					SelectedJets_preHT_Pt_1_->Fill(SelectedJets_Pt.at(0), weight_final);
 					if (SelectedJets_N > 1){
-						SelectedJets_preHT_Pt_2_->Fill(SelectedJets_Pt.at(1), weight_withPU);
+						SelectedJets_preHT_Pt_2_->Fill(SelectedJets_Pt.at(1), weight_final);
 					}
 					if (SelectedJets_N > 2){
-						SelectedJets_preHT_Pt_3_->Fill(SelectedJets_Pt.at(2), weight_withPU);
+						SelectedJets_preHT_Pt_3_->Fill(SelectedJets_Pt.at(2), weight_final);
 					}
 
-					CleanedJets_preHT_HT_->Fill(CleanedJets_HT, weight_withPU);
-					SelectedJets_preHT_HT_->Fill(SelectedJets_HT, weight_withPU);
+					CleanedJets_preHT_HT_->Fill(CleanedJets_HT, weight_final);
+					SelectedJets_preHT_HT_->Fill(SelectedJets_HT, weight_final);
 
 					// HT selection
 					if (SelectedJets_HT > 250){
 						iSelected4++;
-						iSelectedWithWeights4 = iSelectedWithWeights4 + weight_withPU;
+						// iSelectedWithWeights4 = iSelectedWithWeights4 + weight_withPU;
 
-						Nvtx_->Fill(nVtx, weight_withPU);
+						Nvtx_->Fill(nVtx, weight_final);
 
-						IDIsoPhotons_N_->Fill(IDIsoPhotons_N, weight_withPU);
-						SelectedPhotons_N_->Fill(SelectedPhotons_N, weight_withPU);
+						IDIsoPhotons_N_->Fill(IDIsoPhotons_N, weight_final);
+						SelectedPhotons_N_->Fill(SelectedPhotons_N, weight_final);
 
-						SelectedPhotons_Pt_1_->Fill(SelectedPhotons_Pt.at(0), weight_withPU);
-						SelectedPhotons_E_1_->Fill(SelectedPhotons_E.at(0), weight_withPU);
-						SelectedPhotons_Eta_1_->Fill(SelectedPhotons_Eta.at(0), weight_withPU);
-						SelectedPhotons_Phi_1_->Fill(SelectedPhotons_Phi.at(0), weight_withPU);
+						SelectedPhotons_Pt_1_->Fill(SelectedPhotons_Pt.at(0), weight_final);
+						SelectedPhotons_E_1_->Fill(SelectedPhotons_E.at(0), weight_final);
+						SelectedPhotons_Eta_1_->Fill(SelectedPhotons_Eta.at(0), weight_final);
+						SelectedPhotons_Phi_1_->Fill(SelectedPhotons_Phi.at(0), weight_final);
 
-						SelectedPhotons_PassConversionVeto_1_->Fill(SelectedPhotons_PassConversionVeto.at(0), weight_withPU);
-						SelectedPhotons_PfIsoChargedHad_1_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_withPU);
-						SelectedPhotons_PfIsoNeutralHad_1_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_withPU);
-						SelectedPhotons_PfIsoPhoton_1_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_withPU);
+						SelectedPhotons_PassConversionVeto_1_->Fill(SelectedPhotons_PassConversionVeto.at(0), weight_final);
+						SelectedPhotons_PfIsoChargedHad_1_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
+						SelectedPhotons_PfIsoNeutralHad_1_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
+						SelectedPhotons_PfIsoPhoton_1_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
 
-						SelectedPhotons_PfIso_1_->Fill(SelectedPhotons_PfIso.at(0), weight_withPU);
-						SelectedPhotons_PfIso_ov_Pt_1_->Fill(SelectedPhotons_PfIso_ov_Pt.at(0), weight_withPU);
+						SelectedPhotons_PfIso_1_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
+						SelectedPhotons_PfIso_ov_Pt_1_->Fill(SelectedPhotons_PfIso_ov_Pt.at(0), weight_final);
 
-						SelectedPhotons_PfIsoPhotons03ForCic_1_->Fill(SelectedPhotons_PfIsoPhotons03ForCic.at(0), weight_withPU);
-						SelectedPhotons_PfIsoNeutrals03ForCic_1_->Fill(SelectedPhotons_PfIsoNeutrals03ForCic.at(0), weight_withPU);
-						SelectedPhotons_PfIsoCharged03ForCicVtx0_1_->Fill(SelectedPhotons_PfIsoCharged03ForCicVtx0.at(0), weight_withPU);
-						SelectedPhotons_PfIsoCharged03BadForCic_1_->Fill(SelectedPhotons_PfIsoCharged03BadForCic.at(0), weight_withPU);
+						SelectedPhotons_PfIsoPhotons03ForCic_1_->Fill(SelectedPhotons_PfIsoPhotons03ForCic.at(0), weight_final);
+						SelectedPhotons_PfIsoNeutrals03ForCic_1_->Fill(SelectedPhotons_PfIsoNeutrals03ForCic.at(0), weight_final);
+						SelectedPhotons_PfIsoCharged03ForCicVtx0_1_->Fill(SelectedPhotons_PfIsoCharged03ForCicVtx0.at(0), weight_final);
+						SelectedPhotons_PfIsoCharged03BadForCic_1_->Fill(SelectedPhotons_PfIsoCharged03BadForCic.at(0), weight_final);
 
-						SelectedPhotons_PfIsoPhotons04ForCic_1_->Fill(SelectedPhotons_PfIsoPhotons04ForCic.at(0), weight_withPU);
-						SelectedPhotons_PfIsoNeutrals04ForCic_1_->Fill(SelectedPhotons_PfIsoNeutrals04ForCic.at(0), weight_withPU);
-						SelectedPhotons_PfIsoCharged04ForCicVtx0_1_->Fill(SelectedPhotons_PfIsoCharged04ForCicVtx0.at(0), weight_withPU);
-						SelectedPhotons_PfIsoCharged04BadForCic_1_->Fill(SelectedPhotons_PfIsoCharged04BadForCic.at(0), weight_withPU);
+						SelectedPhotons_PfIsoPhotons04ForCic_1_->Fill(SelectedPhotons_PfIsoPhotons04ForCic.at(0), weight_final);
+						SelectedPhotons_PfIsoNeutrals04ForCic_1_->Fill(SelectedPhotons_PfIsoNeutrals04ForCic.at(0), weight_final);
+						SelectedPhotons_PfIsoCharged04ForCicVtx0_1_->Fill(SelectedPhotons_PfIsoCharged04ForCicVtx0.at(0), weight_final);
+						SelectedPhotons_PfIsoCharged04BadForCic_1_->Fill(SelectedPhotons_PfIsoCharged04BadForCic.at(0), weight_final);
 
-						SelectedPhotons_id_sieie_1_->Fill(SelectedPhotons_id_sieie.at(0), weight_withPU);
-						SelectedPhotons_id_sieip_1_->Fill(SelectedPhotons_id_sieip.at(0), weight_withPU);
-						SelectedPhotons_id_etawidth_1_->Fill(SelectedPhotons_id_etawidth.at(0), weight_withPU);
-						SelectedPhotons_id_phiwidth_1_->Fill(SelectedPhotons_id_phiwidth.at(0), weight_withPU);
-						SelectedPhotons_id_r9_1_->Fill(SelectedPhotons_id_r9.at(0), weight_withPU);
+						SelectedPhotons_id_sieie_1_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);
+						SelectedPhotons_id_sieip_1_->Fill(SelectedPhotons_id_sieip.at(0), weight_final);
+						SelectedPhotons_id_etawidth_1_->Fill(SelectedPhotons_id_etawidth.at(0), weight_final);
+						SelectedPhotons_id_phiwidth_1_->Fill(SelectedPhotons_id_phiwidth.at(0), weight_final);
+						SelectedPhotons_id_r9_1_->Fill(SelectedPhotons_id_r9.at(0), weight_final);
 
-						SelectedPhotons_id_lambdaRatio_1_->Fill(SelectedPhotons_id_lambdaRatio.at(0), weight_withPU);
-						SelectedPhotons_id_s4Ratio_1_->Fill(SelectedPhotons_id_s4Ratio.at(0), weight_withPU);
-						SelectedPhotons_id_e25_1_->Fill(SelectedPhotons_id_e25.at(0), weight_withPU);
-						SelectedPhotons_id_sceta_1_->Fill(SelectedPhotons_id_sceta.at(0), weight_withPU);
+						SelectedPhotons_id_lambdaRatio_1_->Fill(SelectedPhotons_id_lambdaRatio.at(0), weight_final);
+						SelectedPhotons_id_s4Ratio_1_->Fill(SelectedPhotons_id_s4Ratio.at(0), weight_final);
+						SelectedPhotons_id_e25_1_->Fill(SelectedPhotons_id_e25.at(0), weight_final);
+						SelectedPhotons_id_sceta_1_->Fill(SelectedPhotons_id_sceta.at(0), weight_final);
 
-						SelectedPhotons_id_ESEffSigmaRR_1_->Fill(SelectedPhotons_id_ESEffSigmaRR.at(0), weight_withPU);
-						SelectedPhotons_id_hadronicOverEm_1_->Fill(SelectedPhotons_id_hadronicOverEm.at(0), weight_withPU);
-						SelectedPhotons_id_hadronicOverEm2012_1_->Fill(SelectedPhotons_id_hadronicOverEm2012.at(0), weight_withPU);
+						SelectedPhotons_id_ESEffSigmaRR_1_->Fill(SelectedPhotons_id_ESEffSigmaRR.at(0), weight_final);
+						SelectedPhotons_id_hadronicOverEm_1_->Fill(SelectedPhotons_id_hadronicOverEm.at(0), weight_final);
+						SelectedPhotons_id_hadronicOverEm2012_1_->Fill(SelectedPhotons_id_hadronicOverEm2012.at(0), weight_final);
 
-						SelectedPhotons_hcalTowerSumEtConeDR04_1_->Fill(SelectedPhotons_hcalTowerSumEtConeDR04.at(0), weight_withPU);
-						SelectedPhotons_ecalRecHitSumEtConeDR04_1_->Fill(SelectedPhotons_ecalRecHitSumEtConeDR04.at(0), weight_withPU);
-						SelectedPhotons_nTrkSolidConeDR04_1_->Fill(SelectedPhotons_nTrkSolidConeDR04.at(0), weight_withPU);
-						SelectedPhotons_trkSumPtSolidConeDR04_1_->Fill(SelectedPhotons_trkSumPtSolidConeDR04.at(0), weight_withPU);
-						SelectedPhotons_nTrkHollowConeDR04_1_->Fill(SelectedPhotons_nTrkHollowConeDR04.at(0), weight_withPU);
-						SelectedPhotons_trkSumPtHollowConeDR04_1_->Fill(SelectedPhotons_trkSumPtHollowConeDR04.at(0), weight_withPU);
+						SelectedPhotons_hcalTowerSumEtConeDR04_1_->Fill(SelectedPhotons_hcalTowerSumEtConeDR04.at(0), weight_final);
+						SelectedPhotons_ecalRecHitSumEtConeDR04_1_->Fill(SelectedPhotons_ecalRecHitSumEtConeDR04.at(0), weight_final);
+						SelectedPhotons_nTrkSolidConeDR04_1_->Fill(SelectedPhotons_nTrkSolidConeDR04.at(0), weight_final);
+						SelectedPhotons_trkSumPtSolidConeDR04_1_->Fill(SelectedPhotons_trkSumPtSolidConeDR04.at(0), weight_final);
+						SelectedPhotons_nTrkHollowConeDR04_1_->Fill(SelectedPhotons_nTrkHollowConeDR04.at(0), weight_final);
+						SelectedPhotons_trkSumPtHollowConeDR04_1_->Fill(SelectedPhotons_trkSumPtHollowConeDR04.at(0), weight_final);
 
-						SelectedPhotons_IsoFPRCharged_1_->Fill(SelectedPhotons_IsoFPRCharged.at(0), weight_withPU);
-						SelectedPhotons_IsoFPRNeutral_1_->Fill(SelectedPhotons_IsoFPRNeutral.at(0), weight_withPU);
-						SelectedPhotons_IsoFPRPhoton_1_->Fill(SelectedPhotons_IsoFPRPhoton.at(0), weight_withPU);
-						SelectedPhotons_IsoFPRCharged_ov_Pt_1_->Fill(SelectedPhotons_IsoFPRCharged_ov_Pt.at(0), weight_withPU);
-						SelectedPhotons_IsoFPRNeutral_ov_Pt_1_->Fill(SelectedPhotons_IsoFPRNeutral_ov_Pt.at(0), weight_withPU);
-						SelectedPhotons_IsoFPRPhoton_ov_Pt_1_->Fill(SelectedPhotons_IsoFPRPhoton_ov_Pt.at(0), weight_withPU);
-						SelectedPhotons_Bit_1_->Fill(SelectedPhotons_Bit.at(0), weight_withPU);
+						SelectedPhotons_IsoFPRCharged_1_->Fill(SelectedPhotons_IsoFPRCharged.at(0), weight_final);
+						SelectedPhotons_IsoFPRNeutral_1_->Fill(SelectedPhotons_IsoFPRNeutral.at(0), weight_final);
+						SelectedPhotons_IsoFPRPhoton_1_->Fill(SelectedPhotons_IsoFPRPhoton.at(0), weight_final);
+						SelectedPhotons_IsoFPRCharged_ov_Pt_1_->Fill(SelectedPhotons_IsoFPRCharged_ov_Pt.at(0), weight_final);
+						SelectedPhotons_IsoFPRNeutral_ov_Pt_1_->Fill(SelectedPhotons_IsoFPRNeutral_ov_Pt.at(0), weight_final);
+						SelectedPhotons_IsoFPRPhoton_ov_Pt_1_->Fill(SelectedPhotons_IsoFPRPhoton_ov_Pt.at(0), weight_final);
+						SelectedPhotons_Bit_1_->Fill(SelectedPhotons_Bit.at(0), weight_final);
 
-						CleanedJetsLEA_N_->Fill(CleanedJetsLEA_N, weight_withPU);
-						SelectedJetsLEA_N_->Fill(SelectedJetsLEA_N, weight_withPU);
+						SelectedPhotons_TeP_SF_1_->Fill(SelectedPhotons_TeP_SF.at(0), weight_final);
 
-						CleanedJets_N_->Fill(CleanedJets_N, weight_withPU);
-						SelectedJets_N_->Fill(SelectedJets_N, weight_withPU);
+						CleanedJetsLEA_N_->Fill(CleanedJetsLEA_N, weight_final);
+						SelectedJetsLEA_N_->Fill(SelectedJetsLEA_N, weight_final);
 
-						SelectedJets_Pt_1_->Fill(SelectedJets_Pt.at(0), weight_withPU);
-						SelectedJets_E_1_->Fill(SelectedJets_E.at(0), weight_withPU);
-						SelectedJets_Eta_1_->Fill(SelectedJets_Eta.at(0), weight_withPU);
-						SelectedJets_Phi_1_->Fill(SelectedJets_Phi.at(0), weight_withPU);
+						CleanedJets_N_->Fill(CleanedJets_N, weight_final);
+						SelectedJets_N_->Fill(SelectedJets_N, weight_final);
+
+						SelectedJets_Pt_1_->Fill(SelectedJets_Pt.at(0), weight_final);
+						SelectedJets_E_1_->Fill(SelectedJets_E.at(0), weight_final);
+						SelectedJets_Eta_1_->Fill(SelectedJets_Eta.at(0), weight_final);
+						SelectedJets_Phi_1_->Fill(SelectedJets_Phi.at(0), weight_final);
 
 						DeltaR_photon1_jet1 = deltaR(SelectedPhotons_Eta.at(0), SelectedPhotons_Phi.at(0), SelectedJets_Eta.at(0), SelectedJets_Phi.at(0));
 						DeltaEta_photon1_jet1 = deltaEta(SelectedPhotons_Eta.at(0), SelectedJets_Eta.at(0));
 						DeltaPhi_photon1_jet1 = deltaPhi(SelectedPhotons_Phi.at(0), SelectedJets_Phi.at(0));
 						
-						DeltaR_photon1_jet1_->Fill(DeltaR_photon1_jet1, weight_withPU);
-						DeltaEta_photon1_jet1_->Fill(DeltaEta_photon1_jet1, weight_withPU);
-						DeltaPhi_photon1_jet1_->Fill(DeltaPhi_photon1_jet1, weight_withPU);
+						DeltaR_photon1_jet1_->Fill(DeltaR_photon1_jet1, weight_final);
+						DeltaEta_photon1_jet1_->Fill(DeltaEta_photon1_jet1, weight_final);
+						DeltaPhi_photon1_jet1_->Fill(DeltaPhi_photon1_jet1, weight_final);
 
 						if (SelectedJets_N > 1){
-							SelectedJets_Pt_2_->Fill(SelectedJets_Pt.at(1), weight_withPU);
-							SelectedJets_E_2_->Fill(SelectedJets_E.at(1), weight_withPU);
-							SelectedJets_Eta_2_->Fill(SelectedJets_Eta.at(1), weight_withPU);
-							SelectedJets_Phi_2_->Fill(SelectedJets_Phi.at(1), weight_withPU);
+							SelectedJets_Pt_2_->Fill(SelectedJets_Pt.at(1), weight_final);
+							SelectedJets_E_2_->Fill(SelectedJets_E.at(1), weight_final);
+							SelectedJets_Eta_2_->Fill(SelectedJets_Eta.at(1), weight_final);
+							SelectedJets_Phi_2_->Fill(SelectedJets_Phi.at(1), weight_final);
 
 							DeltaR_photon1_jet2 = deltaR(SelectedPhotons_Eta.at(0), SelectedPhotons_Phi.at(0), SelectedJets_Eta.at(1), SelectedJets_Phi.at(1));
 							DeltaR_jet1_jet2 = deltaR(SelectedJets_Eta.at(0), SelectedJets_Phi.at(0), SelectedJets_Eta.at(1), SelectedJets_Phi.at(1));
 							DeltaEta_jet1_jet2 = deltaEta(SelectedJets_Eta.at(0), SelectedJets_Eta.at(1));
 							DeltaPhi_jet1_jet2 = deltaPhi(SelectedJets_Phi.at(0), SelectedJets_Phi.at(1));
 
-							DeltaR_photon1_jet2_->Fill(DeltaR_photon1_jet2, weight_withPU);
-							DeltaR_jet1_jet2_->Fill(DeltaR_jet1_jet2, weight_withPU);
-							DeltaEta_jet1_jet2_->Fill(DeltaEta_jet1_jet2, weight_withPU);
-							DeltaPhi_jet1_jet2_->Fill(DeltaPhi_jet1_jet2, weight_withPU);
+							DeltaR_photon1_jet2_->Fill(DeltaR_photon1_jet2, weight_final);
+							DeltaR_jet1_jet2_->Fill(DeltaR_jet1_jet2, weight_final);
+							DeltaEta_jet1_jet2_->Fill(DeltaEta_jet1_jet2, weight_final);
+							DeltaPhi_jet1_jet2_->Fill(DeltaPhi_jet1_jet2, weight_final);
 						}
 
 						if (SelectedJets_N > 2){
-							SelectedJets_Pt_3_->Fill(SelectedJets_Pt.at(2), weight_withPU);
-							SelectedJets_E_3_->Fill(SelectedJets_E.at(2), weight_withPU);
-							SelectedJets_Eta_3_->Fill(SelectedJets_Eta.at(2), weight_withPU);
-							SelectedJets_Phi_3_->Fill(SelectedJets_Phi.at(2), weight_withPU);
+							SelectedJets_Pt_3_->Fill(SelectedJets_Pt.at(2), weight_final);
+							SelectedJets_E_3_->Fill(SelectedJets_E.at(2), weight_final);
+							SelectedJets_Eta_3_->Fill(SelectedJets_Eta.at(2), weight_final);
+							SelectedJets_Phi_3_->Fill(SelectedJets_Phi.at(2), weight_final);
 
 							DeltaR_photon1_jet3 = deltaR(SelectedPhotons_Eta.at(0), SelectedPhotons_Phi.at(0), SelectedJets_Eta.at(2), SelectedJets_Phi.at(2));
 
-							DeltaR_photon1_jet3_->Fill(DeltaR_photon1_jet3, weight_withPU);
+							DeltaR_photon1_jet3_->Fill(DeltaR_photon1_jet3, weight_final);
 						}
 
-						CleanedJets_HT_->Fill(CleanedJets_HT, weight_withPU);
-						SelectedJets_HT_->Fill(SelectedJets_HT, weight_withPU);
+						CleanedJets_HT_->Fill(CleanedJets_HT, weight_final);
+						SelectedJets_HT_->Fill(SelectedJets_HT, weight_final);
 
 						phiTA = atan2(TA[1],TA[0]);
-						dphi_TA_BAxis = deltaPhi(phiTA, SelectedPhotons_Phi.at(0));
-//						if(dphi_TA_BAxis > M_PI/2.0){
-//							dphi_TA_BAxis = M_PI-dphi_TA_BAxis;
-//						}
+						dphi_TA_BAxis = abs(deltaPhi(phiTA, SelectedPhotons_Phi.at(0)));
+						if(dphi_TA_BAxis > M_PI/2.0){
+							dphi_TA_BAxis = M_PI-dphi_TA_BAxis;
+						}
 						dphi_TA_J1Axis = deltaPhi(phiTA, SelectedJets_Phi.at(0));
-//						if(dphi_TA_J1Axis > M_PI/2.0){
-//							dphi_TA_J1Axis=M_PI-dphi_TA_J1Axis;
-//						}
+						if(dphi_TA_J1Axis > M_PI/2.0){
+							dphi_TA_J1Axis=M_PI-dphi_TA_J1Axis;
+						}
 						if(myEvshpV[2] <= 0){
 							myEvshpV[2] = 10e-15;
 						}
@@ -984,10 +1086,25 @@ void GJetsAnalyzer::Loop(){
 						S3 = myEvshpV[8];
 						S4 = myEvshpV[9];
 
-						thrust_->Fill(thrust, weight_withPU);
-						broad_->Fill(broad, weight_withPU);
-						S3_->Fill(S3, weight_withPU);
-						S4_->Fill(S4, weight_withPU);
+						thrust_->Fill(thrust, weight_final);
+						broad_->Fill(broad, weight_final);
+						S3_->Fill(S3, weight_final);
+						S4_->Fill(S4, weight_final);
+
+						ln_thrust = log(thrust);
+						ln_broad = log(broad);
+						ln_S3 = log(S3);
+						ln_S4 = log(S4);
+
+						ln_thrust_->Fill(ln_thrust, weight_final);	
+						ln_broad_->Fill(ln_broad, weight_final);
+						ln_S3_->Fill(ln_S3, weight_final);
+						ln_S4_->Fill(ln_S4, weight_final);
+											
+						if(isMC){
+							photonIsoPtDR03GEN_->Fill(photonIsoPtDR03GEN, 1);					
+						}
+						
 					} // end HT selection
 				} // end trigger Matching selection
 			} // end kin Jets (cleaned vs. Photons) selection 
@@ -1068,6 +1185,8 @@ void GJetsAnalyzer::Loop(){
 
 		SelectedPhotons_Bit.clear();
 
+		SelectedPhotons_TeP_SF.clear();
+		
 		// if (Cut(ientry) < 0) continue;
 	} // end loop on entries
 
@@ -1116,6 +1235,8 @@ void GJetsAnalyzer::Book_Histos(){
 		SelectedJetsGEN_HT_ = new TH1F("SelectedJetsGEN_HT_","Selected Jets H_{T} GEN", 400, 0, 4000);
 
 		HTParSum_ = new TH1F("HTParSum_","H_{T} Partons Sum", 400, 0, 4000);
+		
+		pre_photonIsoPtDR03GEN_ = new TH1F("pre_photonIsoPtDR03GEN_","photonIsoPtDR03GEN", 1300, -1100, 200);
 	}
 
 	IDIsoPhotons_N_ = new TH1F("IDIsoPhotons_N_","ID-Iso Photons N", 10, 0, 10);
@@ -1128,6 +1249,8 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_Eta_1_ = new TH1F("SelectedPhotons_Eta_1_","Photon #eta ", 3000, -3, 3);
 	SelectedPhotons_Phi_1_ = new TH1F("SelectedPhotons_Phi_1_","Photon #varphi ", 1000, -3.1416, 3.1416);
 	SelectedPhotons_Bit_1_ = new TH1F("SelectedPhotons_Bit_1_","Photon bit ", 100, 0., 1000.);
+
+	SelectedPhotons_TeP_SF_1_ = new TH1F("SelectedPhotons_TeP_SF_1_","Photon SF ", 200, 0.5, 1.5);
 
 	SelectedPhotons_PassConversionVeto_1_ = new TH1F("SelectedPhotons_PassConversionVeto_1_","photonPassConversionVeto ", 10, -2, 2);
 	SelectedPhotons_PfIsoChargedHad_1_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_", "photon PfIsoChargedHad", 4000, 0, 100);
@@ -1212,11 +1335,19 @@ void GJetsAnalyzer::Book_Histos(){
 	CleanedJets_preHT_HT_= new TH1F("CleanedJets_preHT_HT_","Cleaned Jets H_{T} pre-H_{T}", 400, 0, 4000);
 	SelectedJets_preHT_HT_= new TH1F("SelectedJets_preHT_HT_","Selected Jets H_{T} pre-H_{T}", 400, 0, 4000);
 
-	thrust_ = new TH1F("thrust_","thrust", 50, -3.1416, 3.1416);
-	broad_ = new TH1F("broad_","broad", 50, -3.1416, 3.1416);
-	S3_ = new TH1F("S3_","S3", 50, -3.1416, 3.1416);
-	S4_ = new TH1F("S4_","S4", 50, -3.1416, 3.1416);
+	thrust_ = new TH1F("thrust_","thrust", 100, 0, 0.5);
+	broad_ = new TH1F("broad_","broad", 100, 0, 1);
+	S3_ = new TH1F("S3_","S3", 70, -2, 5);
+	S4_ = new TH1F("S4_","S4", 140, -1.2, 0.2);
 
+	ln_thrust_ = new TH1F("ln_thrust_","ln thrust", 200, -20, 0);
+	ln_broad_ = new TH1F("ln_broad_","ln broad", 100, -5, 0);
+	ln_S3_ = new TH1F("ln_S3_","ln S3", 120, -5, 5);
+	ln_S4_ = new TH1F("ln_S4_","ln S4", 200, -0.5, 0.5);
+	
+	if(isMC){
+		photonIsoPtDR03GEN_ = new TH1F("photonIsoPtDR03GEN_","photonIsoPtDR03GEN", 1300, -1100, 200);
+	}
 //	ptPhoton_->Sumw2();
 //	etaPhoton_->Sumw2();
 //	phiPhoton_->Sumw2();
@@ -1230,33 +1361,33 @@ void GJetsAnalyzer::Plot_Histos(){
 	// plot few histograms at the end, for check
 	cout << "Plots: quick check... " << endl;
 
-	bool plot_gen_01 = true;
-	bool plot_gen_02 = true;
-	bool plot_gen_03 = true;
+	bool plot_gen_01 = false;
+	bool plot_gen_02 = false;
+	bool plot_gen_03 = false;
 
-	bool plot_01 = true;
-	bool plot_02 = true;
-	bool plot_03 = true;
-	bool plot_04 = true;
-	bool plot_05 = true;
-	bool plot_06 = true;
-	bool plot_07 = true;
-	bool plot_08 = true;
-	bool plot_09 = true;
-	bool plot_10 = true;
-	bool plot_11 = true;
-	bool plot_12 = true;
-	bool plot_13 = true;
-	bool plot_14 = true;
+	bool plot_01 = false;
+	bool plot_02 = false;
+	bool plot_03 = false;
+	bool plot_04 = false;
+	bool plot_05 = false;
+	bool plot_06 = false;
+	bool plot_07 = false;
+	bool plot_08 = false;
+	bool plot_09 = false;
+	bool plot_10 = false;
+	bool plot_11 = false;
+	bool plot_12 = false;
+	bool plot_13 = false;
+	bool plot_14 = false;
 	bool plot_15 = false;
-	bool plot_16 = false;
+	bool plot_16 = true;
 
 	gStyle->SetOptStat(1111111);
 
 	if(plot_gen_01){
 		TCanvas *c_gen01 = new TCanvas("c_gen01", "GEN photon kinematics", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c_gen01->Divide(2,3);
+		c_gen01->Divide(3,2);
 		c_gen01->cd(1);
 		nPhotonsGEN_->Draw();
 		c_gen01->cd(2);
@@ -1273,7 +1404,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_gen_02){
 		TCanvas *c_gen02 = new TCanvas("c_gen02", "GEN jets variables", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c_gen02->Divide(2,3);
+		c_gen02->Divide(3,2);
 		c_gen02->cd(1);
 		CleanedJetsGEN_N_->Draw();
 		c_gen02->cd(2);
@@ -1291,7 +1422,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_gen_03){
 		TCanvas *c_gen03 = new TCanvas("c_gen03", "GEN H_T", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c_gen03->Divide(1,3);
+		c_gen03->Divide(3,1);
 		c_gen03->cd(1);
 		CleanedJetsGEN_HT_->Draw();
 		c_gen03->cd(2);
@@ -1303,7 +1434,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_01){
 		TCanvas *c01 = new TCanvas("c01", "photon kinematics", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c01->Divide(2,4);
+		c01->Divide(4,2);
 		c01->cd(1);
 		IDIsoPhotons_N_->Draw();
 		c01->cd(2);
@@ -1370,7 +1501,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_05){
 		TCanvas *c05 = new TCanvas("c05", "photon ID", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c05->Divide(3,4);
+		c05->Divide(4,3);
 		c05->cd(1);
 		SelectedPhotons_id_sieie_1_->Draw();
 		c05->cd(2);
@@ -1464,7 +1595,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_10){
 		TCanvas *c10 = new TCanvas("c10", "angular variables with 1 jet", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c10->Divide(1,3);
+		c10->Divide(3,1);
 		c10->cd(1);
 		DeltaR_photon1_jet1_->Draw();
 		c10->cd(2);
@@ -1490,7 +1621,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_12){
 		TCanvas *c12 = new TCanvas("c12", "Angular variables with 2-3 jets", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c12->Divide(2,3);
+		c12->Divide(3,2);
 		c12->cd(1);
 		DeltaR_photon1_jet2_->Draw();
 		c12->cd(2);
@@ -1521,7 +1652,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_14){
 		TCanvas *c14 = new TCanvas("c14", "H_T", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c14->Divide(1,2);
+		c14->Divide(2,1);
 		c14->cd(1);
 		CleanedJets_HT_->Draw(); 
 		c14->cd(2);
@@ -1531,7 +1662,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_15){
 		TCanvas *c15 = new TCanvas("c15", "Variables pre-H_T cut", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c15->Divide(2,5);
+		c15->Divide(5,2);
 		c15->cd(1);
 		CleanedJetsLEA_preHT_N_->Draw(); 
 		c15->cd(2);
@@ -1556,7 +1687,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_16){
 		TCanvas *c16 = new TCanvas("c16", "Event shape variables", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c16->Divide(2,2);
+		c16->Divide(4,2);
 		c16->cd(1);
 		thrust_->Draw();
 		c16->cd(2);
@@ -1565,6 +1696,14 @@ void GJetsAnalyzer::Plot_Histos(){
 		S3_->Draw();
 		c16->cd(4);
 		S4_->Draw();
+		c16->cd(5);
+		ln_thrust_->Draw();
+		c16->cd(6);
+		ln_broad_->Draw();
+		c16->cd(7);
+		ln_S3_->Draw();
+		c16->cd(8);
+		ln_S4_->Draw();
 	}
 
 	cout << "...plots: quick check finished. " << endl;
