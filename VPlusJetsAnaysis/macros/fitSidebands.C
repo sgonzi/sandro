@@ -177,8 +177,8 @@ void fitSidebands(const char* titleh, const char* namevariable, const int rebin,
 	ss >> Geo;
 	string geo_s = Geo + "/";
 	string out_files = "output_files/";
-	string png_folder = "fit_png_plots/";
-	string png_string = ".png";
+	string pdf_folder = "fit_pdf_plots/";
+	string pdf_string = ".pdf";
 	string root_folder = "fit_root_plots/";
 	string root_string = ".root";
 
@@ -518,7 +518,7 @@ cout << Nbins << endl;
   text->SetTextAlign(11);
   text->Draw();
 	
-  Canva->SaveAs((geo_s + png_folder + titleh + sample + png_string).c_str());
+  Canva->SaveAs((geo_s + pdf_folder + titleh + sample + pdf_string).c_str());
   Canva->SaveAs((geo_s + root_folder + titleh + sample + root_string).c_str());
 	Canva->Close();
 

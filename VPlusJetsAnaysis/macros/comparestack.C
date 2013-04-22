@@ -131,7 +131,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
   //       ie: comparestack("SelectedPhotons_Pt_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}]", 1);
 
 	char geo[10] = "barrel"; // "barrel", "endcaps" or "total"
-	Int_t itype = 8; // identifica histo con analisi diverse
+	Int_t itype = 9; // identifica histo con analisi diverse
 
 	setMYStyle();
 	
@@ -174,8 +174,8 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	ss >> Geo;
 	string geo_s = Geo + "/";
 	string out_files = "output_files/";
-	string png_folder = "png_plots/";
-	string png_string = ".png";
+	string pdf_folder = "pdf_plots/";
+	string pdf_string = ".pdf";
 	string root_folder = "root_plots/";
 	string root_string = ".root";
 
@@ -538,8 +538,8 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	ratio_histo->Draw("AXIS X+ Y+ SAME");
 	ratio_histo->Draw("AXIS SAME");
   ratio_histo->GetXaxis()->SetTitle("");
-	ratio_histo->GetYaxis()->SetTitle("Ratio (Data/MC RECO)");
-	ratio_histo->GetYaxis()->SetTitleSize(0.08);
+	ratio_histo->GetYaxis()->SetTitle("Data/MC ratio");
+	ratio_histo->GetYaxis()->SetTitleSize(0.10);
 	ratio_histo->GetYaxis()->SetTitleOffset(0.6);
 	ratio_histo->GetYaxis()->SetLabelSize(0.1);
 	ratio_histo->GetXaxis()->SetLabelSize(0.1);
@@ -550,7 +550,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	ratio_histo->SetMarkerSize(0.7);
 	ratio_histo->SetLineColor(kBlue);
 
-  Canva->SaveAs((geo_s + png_folder + titleh + png_string).c_str());
+  Canva->SaveAs((geo_s + pdf_folder + titleh + pdf_string).c_str());
   Canva->SaveAs((geo_s + root_folder + titleh + root_string).c_str());
 	Canva->Close();
 
