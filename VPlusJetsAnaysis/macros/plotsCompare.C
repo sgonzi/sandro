@@ -92,29 +92,46 @@ void plotsCompare3(){
 	comparestack("SelectedJets_Eta_1_", "#eta^{jet1}", 50, -3, 3);
 	comparestack("SelectedJets_Phi_1_", "#varphi^{jet1}", 20, -999, -999);
 
-	comparestack("DeltaR_photon1_jet1_", "#DeltaR #gamma1-jet1", 1, -999, -999);
-	comparestack("DeltaEta_photon1_jet1_","#Delta#eta #gamma1-jet1", 1, -999, -999);
-	comparestack("DeltaPhi_photon1_jet1_","#Delta#varphi #gamma1-jet1", 1, -999, -999);
+//	comparestack("CleanedJets_HT_", "Cleaned Jets H_{T}", 4, 0, 3000);
+	comparestack("SelectedJets_HT_", "Selected Jets H_{T}", 4, 0, 3000);
+
+	comparestack("thrust_N0_","thrust - N^{jets} #geq 1", 2, 0, 0.35);
+	comparestack("broad_N0_","broad - N^{jets} #geq 1", 2, 0, 1);
+	comparestack("S3_N0_","S3 - N^{jets} #geq 1", 1, -1, 5);
+	comparestack("S4_N0_","S4 - N^{jets} #geq 1", 1, -0.2, 0.2);
+
+	comparestack("ln_thrust_N0_","ln thrust - N^{jets} #geq 1", 3, -30, 0);
+	comparestack("ln_broad_N0_","ln broad - N^{jets} #geq 1", 1, -3, 1);
+	comparestack("ln_S3_N0_","ln S3 - N^{jets} #geq 1", 2, -4, 3);
+	comparestack("ln_S4_N0_","ln S4 - N^{jets} #geq 1", 1, -999, 999);		
+
+	comparestack("DeltaR_photon1_jet1_N0_", "#DeltaR #gamma1-jet1 - N^{jets} #geq 1", 1, -999, -999);
+	comparestack("DeltaEta_photon1_jet1_N0_","#Delta#eta #gamma1-jet1 - N^{jets} #geq 1", 1, -999, -999);
+	comparestack("DeltaPhi_photon1_jet1_N0_","#Delta#varphi #gamma1-jet1 - N^{jets} #geq 1", 1, -999, -999);
 
 	comparestack("SelectedJets_Pt_2_", "p_{T}^{jet2} [GeV/#font[12]{c}]", 2, 0, 1500);
 	comparestack("SelectedJets_E_2_", "E^{jet2} [GeV]", 2, 0, 2500);
 	comparestack("SelectedJets_Eta_2_", "#eta^{jet2}", 50, -3, 3);
 	comparestack("SelectedJets_Phi_2_", "#varphi^{jet2}", 20, -999, -999);
 
-	comparestack("DeltaR_photon1_jet2_", "#DeltaR #gamma1-jet2", 1, -999, -999);
-	comparestack("DeltaR_jet1_jet2_","#DeltaR jet1-jet2", 1, -999, -999);
-	comparestack("DeltaEta_jet1_jet2_","#Delta#eta jet1-jet2", 1, -999, -999);
-	comparestack("DeltaPhi_jet1_jet2_","#Delta#varphi jet1-jet2", 1, -999, -999);
+	comparestack("DeltaPhi_photon1_jet1_N1_","#Delta#varphi #gamma1-jet1 - N^{jets} #geq 2", 1, -999, -999);
+	comparestack("DeltaR_photon1_jet2_N1_", "#DeltaR #gamma1-jet2 - N^{jets} #geq 2", 1, -999, -999);
+	comparestack("DeltaR_jet1_jet2_N1_","#DeltaR jet1-jet2 - N^{jets} #geq 2", 1, -999, -999);
+	comparestack("DeltaEta_jet1_jet2_N1_","#Delta#eta jet1-jet2 - N^{jets} #geq 2", 1, -999, -999);
+	comparestack("DeltaPhi_jet1_jet2_N1_","#Delta#varphi jet1-jet2 - N^{jets} #geq 2", 1, -999, -999);
 
 	comparestack("SelectedJets_Pt_3_", "p_{T}^{jet3} [GeV/#font[12]{c}]", 2, 0, 1000);
 	comparestack("SelectedJets_E_3_", "E^{jet3} [GeV]", 2, 0, 2000);
 	comparestack("SelectedJets_Eta_3_", "#eta^{jet3}", 50, -3, 3);
 	comparestack("SelectedJets_Phi_3_", "#varphi^{jet3}", 20, -999, -999);
 
-	comparestack("DeltaR_photon1_jet3_", "#DeltaR #gamma1-jet3", 1, -999, -999);
-
-//	comparestack("CleanedJets_HT_", "Cleaned Jets H_{T}", 4, 0, 3000);
-	comparestack("SelectedJets_HT_", "Selected Jets H_{T}", 4, 0, 3000);
+	comparestack("DeltaPhi_photon1_jet1_N2_","#Delta#varphi #gamma1-jet1 - N^{jets} #geq 3", 1, -999, -999);
+	comparestack("DeltaPhi_photon1_jet2_N2_","#Delta#varphi #gamma1-jet2 - N^{jets} #geq 3", 1, -999, -999);
+	comparestack("DeltaPhi_photon1_jet3_N2_","#Delta#varphi #gamma1-jet3 - N^{jets} #geq 3", 1, -999, -999);
+	comparestack("DeltaR_photon1_jet3_N2_", "#DeltaR #gamma1-jet3 - N^{jets} #geq 3", 1, -999, -999);
+	comparestack("DeltaPhi_jet1_jet2_N2_","#Delta#varphi #jet1-jet2 - N^{jets} #geq 3", 1, -999, -999);
+	comparestack("DeltaPhi_jet1_jet3_N2_","#Delta#varphi #jet1-jet3 - N^{jets} #geq 3", 1, -999, -999);
+	comparestack("DeltaPhi_jet2_jet3_N2_","#Delta#varphi #jet2-jet3 - N^{jets} #geq 3", 1, -999, -999);
 	
 //	comparestack("CleanedJetsLEA_preHT_N_","Cleaned Jets LEA N pre-H_{T}", 1, -999, -999);
 //	comparestack("SelectedJetsLEA_preHT_N_","Selected Jets LEA N pre-H_{T}", 1, -999, -999);
@@ -126,15 +143,6 @@ void plotsCompare3(){
 //	comparestack("CleanedJets_preHT_HT_","Cleaned Jets H_{T} pre-H_{T}", 4, 0, 3000);
 	comparestack("SelectedJets_preHT_HT_","Selected Jets H_{T} pre-H_{T}", 4, 0, 3000);
 
-	comparestack("thrust_","thrust", 2, 0, 0.35);
-	comparestack("broad_","broad", 2, 0, 1);
-	comparestack("S3_","S3", 1, -1, 5);
-	comparestack("S4_","S4", 1, -0.2, 0.2);
-
-	comparestack("ln_thrust_","ln thrust", 3, -30, 0);
-	comparestack("ln_broad_","ln broad", 1, -3, 1);
-	comparestack("ln_S3_","ln S3", 2, -4, 3);
-	comparestack("ln_S4_","ln S4", 1, -999, 999);		
 }
 
 
