@@ -131,7 +131,7 @@ void fitSidebands(const char* titleh, const char* namevariable, const int rebin,
   //       ie: comparestack("SelectedPhotons_Pt_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}]", 1);
 
 	char geo[10] = "barrel"; // "barrel", "endcaps" or "total"
-	Int_t itype = 8; // identifica histo con analisi diverse
+	Int_t itype = 9; // identifica histo con analisi diverse
 	string sample = "MC"; // "DATA" or "MC"
 
 	setMYStyle();
@@ -144,8 +144,6 @@ void fitSidebands(const char* titleh, const char* namevariable, const int rebin,
 	Char_t DATA_Run2012C_EcalRecover_11Dec2012_name[100];
 	Char_t DATA_Run2012C_PromptReco_name[100];
 	Char_t DATA_Run2012D_PromptReco_name[100];
-
-							
 						
 	Char_t GJets_HT_200To400_name[100];
 	Char_t GJets_HT_400ToInf_name[100];

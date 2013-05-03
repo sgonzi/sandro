@@ -50,10 +50,12 @@ void GJetsAnalyzer::Loop(){
 	bool RedAn = false; // analysis with a reduced entries number
 	string geo = "barrel"; // barrel or endcaps
 	bool TeP_corr = false; // T&P correction
-	bool MadPyt = false; // test to avoid double counting for MADGRAPH and PYTHIA
-	Int_t plothistos = 1; // please select which plots to show
+	bool SigBack = true; // test to avoid double counting for SIGNAL and BACKGROUND
+	bool inv = true; // inverted sigmaietaieta cut
+		
+	Int_t plothistos = 0; // please select which plots to show
 	Int_t textfile = 1; // if you want a text report for each sample
-	Int_t itype = 9; // it identifies histos with different analysis 
+	Int_t itype = 1; // it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -87,8 +89,23 @@ void GJetsAnalyzer::Loop(){
 	// mysample == 41  -> QCD 100<HT<250
 	// mysample == 42  -> QCD 250<HT<500
 	// mysample == 43  -> QCD 500<HT<1000
-	// mysample == 44  -> QCD 1000<HT<inf
+	// mysample == 44  -> QCD 1000<HT<Inf
 	// -----------------------------------------------------
+	// mysample == 51  -> G 15<Pt<30
+	// mysample == 52  -> G 30<Pt<50
+	// mysample == 53  -> G 50<Pt<80
+	// mysample == 54  -> G 80<Pt<120
+	// mysample == 55  -> G 120<Pt<170
+	// mysample == 56  -> G 170<Pt<300
+	// mysample == 57  -> G 300<Pt<470
+	// mysample == 58  -> G 470<Pt<800
+	// mysample == 59  -> G 800<Pt<1400
+	// mysample == 60  -> G 1400<Pt<1800
+	// mysample == 61  -> G 1800<Pt<Inf
+	// -----------------------------------------------------
+	// mysample == 71  -> DiPhotonJets
+	// -----------------------------------------------------
+
 
 	double Lumi_t = 19027.853; // /pb
 	double xsec = 1.;
@@ -112,7 +129,13 @@ void GJetsAnalyzer::Loop(){
 	string report = "_report_%d_";
 	string root = ".root";
 	string txt = ".txt";
+	string inverted = "_inverted";
+	if (inv) root = inverted + root;
 
+	cout << "Analysis on " << geo << endl;
+	if (inv) {
+		cout << "with inverted sigmaietaieta cut " << endl;
+	}	
 	cout << "mysample is " << mysample << endl;
 
 // test -----------------------------------------------------------------
@@ -194,7 +217,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_GJets_HT-200To400";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 57311030;
+		nEvents = 58627147;
 //		xsec = 960.5;
 		xsec = 1008.03; //da cambiare
 		FiltEff = 1.;
@@ -209,7 +232,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_GJets_HT-400ToInf";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 41872600;
+		nEvents = 42363228;
 //		xsec = 107.5;
 		xsec = 105.418; //da cambiare
 		FiltEff = 1.;
@@ -330,7 +353,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_30_80_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 1998152 ;
+		nEvents = 2048152;
 		xsec = 7.424E7;
 		FiltEff = 0.00225;
 		kFac = 1.;
@@ -417,7 +440,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_HT-250To500";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 27062078;
+		nEvents = 27006850;
 //		xsec = 276000.0;
 		xsec = 276000.0; //da cambiare
 		FiltEff = 1.;
@@ -447,7 +470,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_HT-1000ToInf";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 13843863;
+		nEvents = 13363579;
 //		xsec = 204.0;
 		xsec = 210.585; //da cambiare
 		FiltEff = 1.;
@@ -457,6 +480,177 @@ void GJetsAnalyzer::Loop(){
 		cout << "Running on " << sample << endl;
 		cout << "Weight is " << weight << endl;
 	}
+	
+// MC signal G_Pt-XtoY --------------------------------------------------
+	else if (mysample == 51){
+		sample = "MC_G_Pt-15to30";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1970745;
+		xsec = 200061.7; //da cambiare
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 52){
+		sample = "MC_G_Pt-30to50";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1993325;
+		xsec = 19931.62; //da cambiare
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 53){
+		sample = "MC_G_Pt-50to80";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1995062;
+		xsec = 3322.309; //da cambiare
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 54){
+		sample = "MC_G_Pt-80to120";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1992627;
+		xsec = 558.2865; //da cambiare
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 55){
+		sample = "MC_G_Pt-120to170";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 2000043;
+		xsec = 108.0068; //da cambiare
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 56){
+		sample = "MC_G_Pt-170to300";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 2000069;
+		xsec = 30.12207; //da cambiare
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 57){
+		sample = "MC_G_Pt-300to470";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 2000130;
+		xsec = 2.138632; //da cambiare
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 58){
+		sample = "MC_G_Pt-470to800";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1975231;
+		xsec = 0.2119244; //da cambiare
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 59){
+		sample = "MC_G_Pt-800to1400";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1973504;
+		xsec = 0.007077847; //da cambiare
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 60){
+		sample = "MC_G_Pt-1400to1800";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1984890;
+		xsec = 0.000045103; //da cambiare
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 61){
+		sample = "MC_G_Pt-1800";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1939122;
+		xsec = 0.000001867; //da cambiare
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+// MC DiPhotonJets ------------------------------------------------------
+	else if (mysample == 71){
+		sample = "MC_DiPhotonJets";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1156284;
+		xsec = 75.39; //da cambiare
+		FiltEff = 1;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
 	weight_r = weight;
 	sample_r = sample;
 
@@ -506,24 +700,25 @@ void GJetsAnalyzer::Loop(){
 		weight_withPU_r = weight_withPU;
 
 
-		// MADGRAPH and PYTHIA separated behaviour (signal/background) to avoid double counting
+		// SIGNAL and BACKGROUND separated behaviour to avoid double counting
+		bool Sig = (mysample == 0) || (mysample > 10 && mysample < 13)  || (mysample > 50 && mysample < 62);
 		bool isoGEN; 
-		if (MadPyt) {
+		if (SigBack) {
 			isoGEN = false; 
 			if(isMC) {
-				if(mysample == 11 || mysample == 12) { 
-					isoGEN = photonIsoPtDR03GEN > 0 && photonIsoPtDR03GEN < 10; // MADGRAPH
+				if(Sig) { 
+					isoGEN = photonIsoPtDR03GEN > 0 && photonIsoPtDR03GEN < 10; // SIGNAL
 				}
-				else if ((mysample > 20 && mysample < 27) || (mysample > 30 && mysample < 37)) {
-					isoGEN = (photonIsoPtDR03GEN < 0 || photonIsoPtDR03GEN > 10); // PYTHIA
+				else {
+					isoGEN = (photonIsoPtDR03GEN < 0 || photonIsoPtDR03GEN > 10); // BACKGROUND
 				}
-				else isoGEN = true;
 			}
 			else isoGEN = true;
 		}
 		else {
 			isoGEN = true; 
 		}
+
 
 		if (isoGEN) {
 
@@ -714,11 +909,24 @@ void GJetsAnalyzer::Loop(){
 						// photon quality selection: Barrel - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
 						if(photonPassConversionVeto->at(iPhoPos) == 1){ 
 							if(photonid_hadronicOverEm2012->at(iPhoPos) < 0.05){
-								if(photonid_sieie->at(iPhoPos) < 0.011){ 
-									if(photonPfIsoChargedHad->at(iPhoPos) < 1.5){ 
-										if(photonPfIsoNeutralHad->at(iPhoPos) < (1.0 + 0.04*photonPt->at(iPhoPos))){
-											if(photonPfIsoPhoton->at(iPhoPos) < (0.7 + 0.005*photonPt->at(iPhoPos))){
-												geo_quality_sel = true;
+								if (!inv) {
+									if(photonid_sieie->at(iPhoPos) < 0.011){ 
+										if(photonPfIsoChargedHad->at(iPhoPos) < 1.5){ 
+											if(photonPfIsoNeutralHad->at(iPhoPos) < (1.0 + 0.04*photonPt->at(iPhoPos))){
+												if(photonPfIsoPhoton->at(iPhoPos) < (0.7 + 0.005*photonPt->at(iPhoPos))){
+													geo_quality_sel = true;
+												}
+											}
+										}
+									}
+								}
+								else {
+									if(photonid_sieie->at(iPhoPos) >= 0.011){ 
+										if(photonPfIsoChargedHad->at(iPhoPos) < 1.5){ 
+											if(photonPfIsoNeutralHad->at(iPhoPos) < (1.0 + 0.04*photonPt->at(iPhoPos))){
+												if(photonPfIsoPhoton->at(iPhoPos) < (0.7 + 0.005*photonPt->at(iPhoPos))){
+													geo_quality_sel = true;
+												}
 											}
 										}
 									}
@@ -730,11 +938,24 @@ void GJetsAnalyzer::Loop(){
 						// photon quality selection: Endcaps - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
 						if(photonPassConversionVeto->at(iPhoPos) == 1){ 
 							if(photonid_hadronicOverEm2012->at(iPhoPos) < 0.05){
-								if(photonid_sieie->at(iPhoPos) < 0.033){ 
-									if(photonPfIsoChargedHad->at(iPhoPos) < 1.2){ 
-										if(photonPfIsoNeutralHad->at(iPhoPos) < (1.5 + 0.04*photonPt->at(iPhoPos))){
-											if(photonPfIsoPhoton->at(iPhoPos) < (1.0 + 0.005*photonPt->at(iPhoPos))){
-												geo_quality_sel = true;
+								if (!inv) {
+									if(photonid_sieie->at(iPhoPos) < 0.033){ 
+										if(photonPfIsoChargedHad->at(iPhoPos) < 1.2){ 
+											if(photonPfIsoNeutralHad->at(iPhoPos) < (1.5 + 0.04*photonPt->at(iPhoPos))){
+												if(photonPfIsoPhoton->at(iPhoPos) < (1.0 + 0.005*photonPt->at(iPhoPos))){
+													geo_quality_sel = true;
+												}
+											}
+										}
+									}
+								}
+								else{
+									if(photonid_sieie->at(iPhoPos) >= 0.033){ 
+										if(photonPfIsoChargedHad->at(iPhoPos) < 1.2){ 
+											if(photonPfIsoNeutralHad->at(iPhoPos) < (1.5 + 0.04*photonPt->at(iPhoPos))){
+												if(photonPfIsoPhoton->at(iPhoPos) < (1.0 + 0.005*photonPt->at(iPhoPos))){
+													geo_quality_sel = true;
+												}
 											}
 										}
 									}
@@ -966,6 +1187,33 @@ void GJetsAnalyzer::Loop(){
 							SelectedPhotons_PfIso_1_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
 							SelectedPhotons_PfIso_ov_Pt_1_->Fill(SelectedPhotons_PfIso_ov_Pt.at(0), weight_final);
 
+							if (SelectedPhotons_Pt.at(0) > 150 && SelectedPhotons_Pt.at(0) < 300){
+								SelectedPhotons_id_sieie_1_bin01_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);
+								SelectedPhotons_PfIsoChargedHad_1_bin01_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_1_bin01_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_1_bin01_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
+								SelectedPhotons_PfIso_1_bin01_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
+								SelectedPhotons_PfIso_ov_Pt_1_bin01_->Fill(SelectedPhotons_PfIso_ov_Pt.at(0), weight_final);
+							}
+
+							if (SelectedPhotons_Pt.at(0) > 300 && SelectedPhotons_Pt.at(0) < 500){
+								SelectedPhotons_id_sieie_1_bin02_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);
+								SelectedPhotons_PfIsoChargedHad_1_bin02_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_1_bin02_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_1_bin02_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
+								SelectedPhotons_PfIso_1_bin02_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
+								SelectedPhotons_PfIso_ov_Pt_1_bin02_->Fill(SelectedPhotons_PfIso_ov_Pt.at(0), weight_final);
+							}
+							
+							if (SelectedPhotons_Pt.at(0) > 500){
+								SelectedPhotons_id_sieie_1_bin03_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
+								SelectedPhotons_PfIsoChargedHad_1_bin03_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_1_bin03_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_1_bin03_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
+								SelectedPhotons_PfIso_1_bin03_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
+								SelectedPhotons_PfIso_ov_Pt_1_bin03_->Fill(SelectedPhotons_PfIso_ov_Pt.at(0), weight_final);
+							}
+
 							SelectedPhotons_PfIsoPhotons03ForCic_1_->Fill(SelectedPhotons_PfIsoPhotons03ForCic.at(0), weight_final);
 							SelectedPhotons_PfIsoNeutrals03ForCic_1_->Fill(SelectedPhotons_PfIsoNeutrals03ForCic.at(0), weight_final);
 							SelectedPhotons_PfIsoCharged03ForCicVtx0_1_->Fill(SelectedPhotons_PfIsoCharged03ForCicVtx0.at(0), weight_final);
@@ -1190,7 +1438,7 @@ void GJetsAnalyzer::Loop(){
 
 			SelectedPhotons_TeP_SF.clear();
 
-		} // end MADGRAPH and PYTHIA separated behaviour (signal/background) to avoid double counting
+		} // end SIGNAL and BACKGROUND separated behaviour to avoid double counting
 
 		// if (Cut(ientry) < 0) continue;
 	} // end loop on entries
@@ -1263,6 +1511,28 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_PfIsoPhoton_1_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_", "photon PfIsoPhoton", 2000, 0, 200);
 	SelectedPhotons_PfIso_1_ = new TH1F("SelectedPhotons_PfIso_1_", "photon PfIso", 2000, 0, 200);
 	SelectedPhotons_PfIso_ov_Pt_1_ = new TH1F("SelectedPhotons_PfIso_ov_Pt_1_", "photon PfIso/p_{T} ", 100, 0, 0.2);
+
+	SelectedPhotons_id_sieie_1_bin01_ = new TH1F("SelectedPhotons_id_sieie_1_bin01_", "photon ID: #sigma_{i#etai#eta}, 150 < p_{T}^{#gamma} < 300", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin01_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin01_", "photon PfIsoChargedHad, 150 < p_{T}^{#gamma} < 300", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin01_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin01_", "photon PfIsoNeutralHad, 150 < p_{T}^{#gamma} < 300", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin01_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin01_", "photon PfIsoPhoton, 150 < p_{T}^{#gamma} < 300", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin01_ = new TH1F("SelectedPhotons_PfIso_1_bin01_", "photon PfIso, 150 < p_{T}^{#gamma} < 300", 2000, 0, 200);
+	SelectedPhotons_PfIso_ov_Pt_1_bin01_ = new TH1F("SelectedPhotons_PfIso_ov_Pt_1_bin01_", "photon PfIso/p_{T}, 150 < p_{T}^{#gamma} < 300 ", 100, 0, 0.2);
+
+	SelectedPhotons_id_sieie_1_bin02_ = new TH1F("SelectedPhotons_id_sieie_1_bin02_", "photon ID: #sigma_{i#etai#eta}, 300 < p_{T}^{#gamma} < 500", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin02_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin02_", "photon PfIsoChargedHad, 300 < p_{T}^{#gamma} < 500", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin02_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin02_", "photon PfIsoNeutralHad, 300 < p_{T}^{#gamma} < 500", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin02_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin02_", "photon PfIsoPhoton, 300 < p_{T}^{#gamma} < 500", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin02_ = new TH1F("SelectedPhotons_PfIso_1_bin02_", "photon PfIso, 300 < p_{T}^{#gamma} < 500", 2000, 0, 200);
+	SelectedPhotons_PfIso_ov_Pt_1_bin02_ = new TH1F("SelectedPhotons_PfIso_ov_Pt_1_bin02_", "photon PfIso/p_{T}, 300 < p_{T}^{#gamma} < 500", 100, 0, 0.2);
+
+	SelectedPhotons_id_sieie_1_bin03_ = new TH1F("SelectedPhotons_id_sieie_1_bin03_", "photon ID: #sigma_{i#etai#eta}, p_{T}^{#gamma} > 500", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin03_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin03_", "photon PfIsoChargedHad, p_{T}^{#gamma} > 500", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin03_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin03_", "photon PfIsoNeutralHad, p_{T}^{#gamma} > 500", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin03_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin03_", "photon PfIsoPhoton, p_{T}^{#gamma} > 500", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin03_ = new TH1F("SelectedPhotons_PfIso_1_bin03_", "photon PfIso, p_{T}^{#gamma} > 500", 2000, 0, 200);
+	SelectedPhotons_PfIso_ov_Pt_1_bin03_ = new TH1F("SelectedPhotons_PfIso_ov_Pt_1_bin03_", "photon PfIso/p_{T}, p_{T}^{#gamma} > 500", 100, 0, 0.2);
+
 	SelectedPhotons_PfIsoPhotons03ForCic_1_ = new TH1F("SelectedPhotons_PfIsoPhotons03ForCic_1_", "photon PfIsoPhotons03ForCic", 2000, 0, 200);
 	SelectedPhotons_PfIsoNeutrals03ForCic_1_ = new TH1F("SelectedPhotons_PfIsoNeutrals03ForCic_1_","photon PfIsoNeutrals03ForCic", 2000, 0, 200);
 	SelectedPhotons_PfIsoCharged03ForCicVtx0_1_ = new TH1F("SelectedPhotons_PfIsoCharged03ForCicVtx0_1_", "photon PfIsoCharged03ForCicVtx0", 2000, 0, 200);
@@ -1379,21 +1649,24 @@ void GJetsAnalyzer::Plot_Histos(){
 
 	bool plot_01 = false; // photon kinematics
 	bool plot_02 = false; // photon Isolation
-	bool plot_03 = false; // photon Isolation cone 03 for Cic
-	bool plot_04 = false; // photon Isolation cone 04 for Cic
-	bool plot_05 = false; // photon ID
-	bool plot_06 = false; // photon E_T-p_T cone 04
-	bool plot_07 = false; // photon Isolation FPR
-	bool plot_08 = false; // jets counting
-	bool plot_09 = false; // Jet 1 kinematics
-	bool plot_10 = false; // H_T
-	bool plot_11 = true; // Event shape variables
-	bool plot_12 = false; // Angular variables (>= 1 jet)
-	bool plot_13 = false; // Jet 2 kinematics
-	bool plot_14 = false; // Angular variables (>=2 jets)
-	bool plot_15 = false; // Jet 3 kinematics
-	bool plot_16 = false; // Angular variables (>=3 jets)
-	bool plot_17 = false; // Variables pre-H_T cut
+	bool plot_03 = true; // photon Isolation, 150 < p_T gamma < 300
+	bool plot_04 = true; // photon Isolation, 300 < p_T gamma < 500
+	bool plot_05 = true; // photon Isolation, p_T gamma > 500
+	bool plot_06 = false; // photon Isolation cone 03 for Cic
+	bool plot_07 = false; // photon Isolation cone 04 for Cic
+	bool plot_08 = false; // photon ID
+	bool plot_09 = false; // photon E_T-p_T cone 04
+	bool plot_10 = false; // photon Isolation FPR
+	bool plot_11 = false; // jets counting
+	bool plot_12 = false; // Jet 1 kinematics
+	bool plot_13 = false; // H_T
+	bool plot_14 = false; // Event shape variables
+	bool plot_15 = false; // Angular variables (>= 1 jet)
+	bool plot_16 = false; // Jet 2 kinematics
+	bool plot_17 = false; // Angular variables (>=2 jets)
+	bool plot_18 = false; // Jet 3 kinematics
+	bool plot_19 = false; // Angular variables (>=3 jets)
+	bool plot_20 = false; // Variables pre-H_T cut
 	
 	gStyle->SetOptStat(1111111);
 
@@ -1435,13 +1708,15 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_gen_03){
 		TCanvas *c_gen03 = new TCanvas("c_gen03", "GEN H_T", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c_gen03->Divide(3,1);
+		c_gen03->Divide(2,2);
 		c_gen03->cd(1);
 		CleanedJetsGEN_HT_->Draw();
 		c_gen03->cd(2);
 		SelectedJetsGEN_HT_->Draw();
 		c_gen03->cd(3);
 		HTParSum_->Draw();
+		c_gen03->cd(4);
+		pre_photonIsoPtDR03GEN_->Draw();
 	}
 
 	if(plot_01){
@@ -1463,6 +1738,7 @@ void GJetsAnalyzer::Plot_Histos(){
 		c01->cd(7);
 		SelectedPhotons_Phi_1_->Draw();
 		c01->cd(8);
+		SelectedPhotons_Bit_1_->Draw();	
 	}
 
 	if(plot_02){ 
@@ -1483,260 +1759,316 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_PfIso_ov_Pt_1_->Draw();
 	}
 
-	if(plot_03){
-		TCanvas *c03 = new TCanvas("c03", "photon Isolation cone 03 for Cic", 10, 10, 700, 700);
+
+	if(plot_03){ 
+		TCanvas *c03 = new TCanvas("c03", "photon Isolation, 150 < pT gamma < 300", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c03->Divide(2,2);
+		c03->Divide(3,2);
 		c03->cd(1);
-		SelectedPhotons_PfIsoPhotons03ForCic_1_->Draw();
+		SelectedPhotons_id_sieie_1_bin01_->Draw();
 		c03->cd(2);
-		SelectedPhotons_PfIsoNeutrals03ForCic_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_1_bin01_->Draw();
 		c03->cd(3);
-		SelectedPhotons_PfIsoCharged03ForCicVtx0_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_1_bin01_->Draw();
 		c03->cd(4);
-		SelectedPhotons_PfIsoCharged03BadForCic_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_1_bin01_->Draw();
+		c03->cd(5);
+		SelectedPhotons_PfIso_1_bin01_->Draw();
+		c03->cd(6);
+		SelectedPhotons_PfIso_ov_Pt_1_bin01_->Draw();
 	}
 
-	if(plot_04){
-		TCanvas *c04 = new TCanvas("c04", "photon Isolation cone 04 for Cic", 10, 10, 700, 700);
+	if(plot_04){ 
+		TCanvas *c04 = new TCanvas("c04", "photon Isolation, 300 < pT gamma < 500", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c04->Divide(2,2);
+		c04->Divide(3,2);
 		c04->cd(1);
-		SelectedPhotons_PfIsoPhotons04ForCic_1_->Draw();
+		SelectedPhotons_id_sieie_1_bin02_->Draw();		
 		c04->cd(2);
-		SelectedPhotons_PfIsoNeutrals04ForCic_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_1_bin02_->Draw();
 		c04->cd(3);
-		SelectedPhotons_PfIsoCharged04ForCicVtx0_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_1_bin02_->Draw();
 		c04->cd(4);
-		SelectedPhotons_PfIsoCharged04BadForCic_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_1_bin02_->Draw();
+		c04->cd(5);
+		SelectedPhotons_PfIso_1_bin02_->Draw();
+		c04->cd(6);
+		SelectedPhotons_PfIso_ov_Pt_1_bin02_->Draw();
 	}
 
-	if(plot_05){
-		TCanvas *c05 = new TCanvas("c05", "photon ID", 10, 10, 700, 700);
+	if(plot_05){ 
+		TCanvas *c05 = new TCanvas("c05", "photon Isolation, pT gamma > 500", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c05->Divide(4,3);
+		c05->Divide(3,2);
 		c05->cd(1);
-		SelectedPhotons_id_sieie_1_->Draw();
+		SelectedPhotons_id_sieie_1_bin03_->Draw();		
 		c05->cd(2);
-		SelectedPhotons_id_sieip_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_1_bin03_->Draw();
 		c05->cd(3);
-		SelectedPhotons_id_etawidth_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_1_bin03_->Draw();
 		c05->cd(4);
-		SelectedPhotons_id_phiwidth_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_1_bin03_->Draw();
 		c05->cd(5);
-		SelectedPhotons_id_r9_1_->Draw();
+		SelectedPhotons_PfIso_1_bin03_->Draw();
 		c05->cd(6);
-		SelectedPhotons_id_lambdaRatio_1_->Draw();
-		c05->cd(7);
-		SelectedPhotons_id_s4Ratio_1_->Draw();
-		c05->cd(8);
-		SelectedPhotons_id_e25_1_->Draw();
-		c05->cd(9);
-		SelectedPhotons_id_sceta_1_->Draw();
-		c05->cd(10);
-		SelectedPhotons_id_ESEffSigmaRR_1_->Draw();
-		c05->cd(11);
-		SelectedPhotons_id_hadronicOverEm_1_->Draw();
-		c05->cd(12);
-		SelectedPhotons_id_hadronicOverEm2012_1_->Draw();
+		SelectedPhotons_PfIso_ov_Pt_1_bin03_->Draw();
 	}
 
 	if(plot_06){
-		TCanvas *c06 = new TCanvas("c06", "photon E_T-p_T cone 04", 10, 10, 700, 700);
+		TCanvas *c06 = new TCanvas("c06", "photon Isolation cone 03 for Cic", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c06->Divide(3,2);
+		c06->Divide(2,2);
 		c06->cd(1);
-		SelectedPhotons_hcalTowerSumEtConeDR04_1_->Draw();
+		SelectedPhotons_PfIsoPhotons03ForCic_1_->Draw();
 		c06->cd(2);
-		SelectedPhotons_ecalRecHitSumEtConeDR04_1_->Draw();
+		SelectedPhotons_PfIsoNeutrals03ForCic_1_->Draw();
 		c06->cd(3);
-		SelectedPhotons_nTrkSolidConeDR04_1_->Draw();
+		SelectedPhotons_PfIsoCharged03ForCicVtx0_1_->Draw();
 		c06->cd(4);
-		SelectedPhotons_trkSumPtSolidConeDR04_1_->Draw();
-		c06->cd(5);
-		SelectedPhotons_nTrkHollowConeDR04_1_->Draw();
-		c06->cd(6);
-		SelectedPhotons_trkSumPtHollowConeDR04_1_->Draw();
+		SelectedPhotons_PfIsoCharged03BadForCic_1_->Draw();
 	}
 
 	if(plot_07){
-		TCanvas *c07 = new TCanvas("c07", "photon Isolation FPR", 10, 10, 700, 700);
+		TCanvas *c07 = new TCanvas("c07", "photon Isolation cone 04 for Cic", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c07->Divide(3,2);
+		c07->Divide(2,2);
 		c07->cd(1);
-		SelectedPhotons_IsoFPRCharged_1_->Draw();
+		SelectedPhotons_PfIsoPhotons04ForCic_1_->Draw();
 		c07->cd(2);
-		SelectedPhotons_IsoFPRNeutral_1_->Draw();
+		SelectedPhotons_PfIsoNeutrals04ForCic_1_->Draw();
 		c07->cd(3);
-		SelectedPhotons_IsoFPRPhoton_1_->Draw();
+		SelectedPhotons_PfIsoCharged04ForCicVtx0_1_->Draw();
 		c07->cd(4);
-		SelectedPhotons_IsoFPRCharged_ov_Pt_1_->Draw();
-		c07->cd(5);
-		SelectedPhotons_IsoFPRNeutral_ov_Pt_1_->Draw();
-		c07->cd(6);
-		SelectedPhotons_IsoFPRPhoton_ov_Pt_1_->Draw();
+		SelectedPhotons_PfIsoCharged04BadForCic_1_->Draw();
 	}
 
 	if(plot_08){
-		TCanvas *c08 = new TCanvas("c08", "jets counting", 10, 10, 700, 700);
+		TCanvas *c08 = new TCanvas("c08", "photon ID", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c08->Divide(2,2);
+		c08->Divide(4,3);
 		c08->cd(1);
-		CleanedJetsLEA_N_->Draw();
+		SelectedPhotons_id_sieie_1_->Draw();
 		c08->cd(2);
-		SelectedJetsLEA_N_->Draw();
+		SelectedPhotons_id_sieip_1_->Draw();
 		c08->cd(3);
-		CleanedJets_N_->Draw();
+		SelectedPhotons_id_etawidth_1_->Draw();
 		c08->cd(4);
-		SelectedJets_N_->Draw();
+		SelectedPhotons_id_phiwidth_1_->Draw();
+		c08->cd(5);
+		SelectedPhotons_id_r9_1_->Draw();
+		c08->cd(6);
+		SelectedPhotons_id_lambdaRatio_1_->Draw();
+		c08->cd(7);
+		SelectedPhotons_id_s4Ratio_1_->Draw();
+		c08->cd(8);
+		SelectedPhotons_id_e25_1_->Draw();
+		c08->cd(9);
+		SelectedPhotons_id_sceta_1_->Draw();
+		c08->cd(10);
+		SelectedPhotons_id_ESEffSigmaRR_1_->Draw();
+		c08->cd(11);
+		SelectedPhotons_id_hadronicOverEm_1_->Draw();
+		c08->cd(12);
+		SelectedPhotons_id_hadronicOverEm2012_1_->Draw();
 	}
 
 	if(plot_09){
-		TCanvas *c09 = new TCanvas("c09", "Jet 1 kinematics", 10, 10, 700, 700);
+		TCanvas *c09 = new TCanvas("c09", "photon E_T-p_T cone 04", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c09->Divide(2,2);
+		c09->Divide(3,2);
 		c09->cd(1);
-		SelectedJets_Pt_1_->Draw();
+		SelectedPhotons_hcalTowerSumEtConeDR04_1_->Draw();
 		c09->cd(2);
-		SelectedJets_E_1_->Draw();
+		SelectedPhotons_ecalRecHitSumEtConeDR04_1_->Draw();
 		c09->cd(3);
-		SelectedJets_Eta_1_->Draw();
+		SelectedPhotons_nTrkSolidConeDR04_1_->Draw();
 		c09->cd(4);
-		SelectedJets_Phi_1_->Draw();
+		SelectedPhotons_trkSumPtSolidConeDR04_1_->Draw();
+		c09->cd(5);
+		SelectedPhotons_nTrkHollowConeDR04_1_->Draw();
+		c09->cd(6);
+		SelectedPhotons_trkSumPtHollowConeDR04_1_->Draw();
 	}
 
 	if(plot_10){
-		TCanvas *c10 = new TCanvas("c10", "H_T", 10, 10, 700, 700);
+		TCanvas *c10 = new TCanvas("c10", "photon Isolation FPR", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c10->Divide(2,1);
+		c10->Divide(3,2);
 		c10->cd(1);
-		CleanedJets_HT_->Draw();
+		SelectedPhotons_IsoFPRCharged_1_->Draw();
 		c10->cd(2);
-		SelectedJets_HT_->Draw();
+		SelectedPhotons_IsoFPRNeutral_1_->Draw();
+		c10->cd(3);
+		SelectedPhotons_IsoFPRPhoton_1_->Draw();
+		c10->cd(4);
+		SelectedPhotons_IsoFPRCharged_ov_Pt_1_->Draw();
+		c10->cd(5);
+		SelectedPhotons_IsoFPRNeutral_ov_Pt_1_->Draw();
+		c10->cd(6);
+		SelectedPhotons_IsoFPRPhoton_ov_Pt_1_->Draw();
 	}
 
 	if(plot_11){
-		TCanvas *c11 = new TCanvas("c11", "Event shape variables", 10, 10, 700, 700);
+		TCanvas *c11 = new TCanvas("c11", "jets counting", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c11->Divide(4,2);
+		c11->Divide(2,2);
 		c11->cd(1);
-		thrust_N0_->Draw();
+		CleanedJetsLEA_N_->Draw();
 		c11->cd(2);
-		broad_N0_->Draw();
+		SelectedJetsLEA_N_->Draw();
 		c11->cd(3);
-		S3_N0_->Draw();
+		CleanedJets_N_->Draw();
 		c11->cd(4);
-		S4_N0_->Draw();
-		c11->cd(5);
-		ln_thrust_N0_->Draw();
-		c11->cd(6);
-		ln_broad_N0_->Draw();
-		c11->cd(7);
-		ln_S3_N0_->Draw();
-		c11->cd(8);
-		ln_S4_N0_->Draw();
+		SelectedJets_N_->Draw();
 	}
 
 	if(plot_12){
-		TCanvas *c12 = new TCanvas("c12", "Angular variables (>= 1 jet)", 10, 10, 700, 700);
+		TCanvas *c12 = new TCanvas("c12", "Jet 1 kinematics", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c12->Divide(3,1);
+		c12->Divide(2,2);
 		c12->cd(1);
-		DeltaR_photon1_jet1_N0_->Draw();
+		SelectedJets_Pt_1_->Draw();
 		c12->cd(2);
-		DeltaEta_photon1_jet1_N0_->Draw();
+		SelectedJets_E_1_->Draw();
 		c12->cd(3);
-		DeltaPhi_photon1_jet1_N0_->Draw();
+		SelectedJets_Eta_1_->Draw();
+		c12->cd(4);
+		SelectedJets_Phi_1_->Draw();
 	}
 
 	if(plot_13){
-		TCanvas *c13 = new TCanvas("c13", "Jet 2 kinematics", 10, 10, 700, 700);
+		TCanvas *c13 = new TCanvas("c13", "H_T", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c13->Divide(2,2);
+		c13->Divide(2,1);
 		c13->cd(1);
-		SelectedJets_Pt_2_->Draw();
+		CleanedJets_HT_->Draw();
 		c13->cd(2);
-		SelectedJets_E_2_->Draw();
-		c13->cd(3);
-		SelectedJets_Eta_2_->Draw();
-		c13->cd(4);
-		SelectedJets_Phi_2_->Draw();
+		SelectedJets_HT_->Draw();
 	}
 
 	if(plot_14){
-		TCanvas *c14 = new TCanvas("c14", "Angular variables (>=2 jets)", 10, 10, 700, 700);
+		TCanvas *c14 = new TCanvas("c14", "Event shape variables", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c14->Divide(3,2);
+		c14->Divide(4,2);
 		c14->cd(1);
-		DeltaPhi_photon1_jet1_N1_->Draw();
+		thrust_N0_->Draw();
 		c14->cd(2);
-		DeltaR_photon1_jet2_N1_->Draw();
+		broad_N0_->Draw();
 		c14->cd(3);
-		DeltaR_jet1_jet2_N1_->Draw();
+		S3_N0_->Draw();
 		c14->cd(4);
-		DeltaEta_jet1_jet2_N1_->Draw();
+		S4_N0_->Draw();
 		c14->cd(5);
-		DeltaPhi_jet1_jet2_N1_->Draw();
+		ln_thrust_N0_->Draw();
+		c14->cd(6);
+		ln_broad_N0_->Draw();
+		c14->cd(7);
+		ln_S3_N0_->Draw();
+		c14->cd(8);
+		ln_S4_N0_->Draw();
 	}
 
 	if(plot_15){
-		TCanvas *c15 = new TCanvas("c15", "Jet 3 kinematics", 10, 10, 700, 700);
+		TCanvas *c15 = new TCanvas("c15", "Angular variables (>= 1 jet)", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c15->Divide(2,2);
+		c15->Divide(3,1);
 		c15->cd(1);
-		SelectedJets_Pt_3_->Draw();
+		DeltaR_photon1_jet1_N0_->Draw();
 		c15->cd(2);
-		SelectedJets_E_3_->Draw();
+		DeltaEta_photon1_jet1_N0_->Draw();
 		c15->cd(3);
-		SelectedJets_Eta_3_->Draw();
-		c15->cd(4);
-		SelectedJets_Phi_3_->Draw();
+		DeltaPhi_photon1_jet1_N0_->Draw();
 	}
 
 	if(plot_16){
-		TCanvas *c16 = new TCanvas("c16", "Angular variables (>=3 jets)", 10, 10, 700, 700);
+		TCanvas *c16 = new TCanvas("c16", "Jet 2 kinematics", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c16->Divide(4,2);
+		c16->Divide(2,2);
 		c16->cd(1);
-		DeltaPhi_photon1_jet1_N2_->Draw();
+		SelectedJets_Pt_2_->Draw();
 		c16->cd(2);
-		DeltaPhi_photon1_jet2_N2_->Draw();
+		SelectedJets_E_2_->Draw();
 		c16->cd(3);
-		DeltaPhi_photon1_jet3_N2_->Draw();
+		SelectedJets_Eta_2_->Draw();
 		c16->cd(4);
-		DeltaR_photon1_jet3_N2_->Draw();
-		c16->cd(5);
-		DeltaPhi_jet1_jet2_N2_->Draw();
-		c16->cd(6);
-		DeltaPhi_jet1_jet3_N2_->Draw();
-		c16->cd(7);
-		DeltaPhi_jet2_jet3_N2_->Draw();
+		SelectedJets_Phi_2_->Draw();
 	}
 
 	if(plot_17){
-		TCanvas *c17 = new TCanvas("c17", "Variables pre-H_T cut", 10, 10, 700, 700);
+		TCanvas *c17 = new TCanvas("c17", "Angular variables (>=2 jets)", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c17->Divide(5,2);
+		c17->Divide(3,2);
 		c17->cd(1);
-		CleanedJetsLEA_preHT_N_->Draw();
+		DeltaPhi_photon1_jet1_N1_->Draw();
 		c17->cd(2);
-		SelectedJetsLEA_preHT_N_->Draw();
+		DeltaR_photon1_jet2_N1_->Draw();
 		c17->cd(3);
-		CleanedJets_preHT_N_->Draw();
+		DeltaR_jet1_jet2_N1_->Draw();
 		c17->cd(4);
-		SelectedJets_preHT_N_->Draw();
+		DeltaEta_jet1_jet2_N1_->Draw();
 		c17->cd(5);
-		SelectedJets_preHT_Pt_1_->Draw();
-		c17->cd(6);
-		SelectedJets_preHT_Pt_2_->Draw();
-		c17->cd(7);
-		SelectedJets_preHT_Pt_3_->Draw();
-		c17->cd(8);
-		CleanedJets_preHT_HT_->Draw();
-		c17->cd(9);
-		SelectedJets_preHT_HT_->Draw();
-		c17->cd(10);
+		DeltaPhi_jet1_jet2_N1_->Draw();
 	}
+
+	if(plot_18){
+		TCanvas *c18 = new TCanvas("c18", "Jet 3 kinematics", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c18->Divide(2,2);
+		c18->cd(1);
+		SelectedJets_Pt_3_->Draw();
+		c18->cd(2);
+		SelectedJets_E_3_->Draw();
+		c18->cd(3);
+		SelectedJets_Eta_3_->Draw();
+		c18->cd(4);
+		SelectedJets_Phi_3_->Draw();
+	}
+
+	if(plot_19){
+		TCanvas *c19 = new TCanvas("c19", "Angular variables (>=3 jets)", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c19->Divide(4,2);
+		c19->cd(1);
+		DeltaPhi_photon1_jet1_N2_->Draw();
+		c19->cd(2);
+		DeltaPhi_photon1_jet2_N2_->Draw();
+		c19->cd(3);
+		DeltaPhi_photon1_jet3_N2_->Draw();
+		c19->cd(4);
+		DeltaR_photon1_jet3_N2_->Draw();
+		c19->cd(5);
+		DeltaPhi_jet1_jet2_N2_->Draw();
+		c19->cd(6);
+		DeltaPhi_jet1_jet3_N2_->Draw();
+		c19->cd(7);
+		DeltaPhi_jet2_jet3_N2_->Draw();
+	}
+
+	if(plot_20){
+		TCanvas *c20 = new TCanvas("c20", "Variables pre-H_T cut", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c20->Divide(5,2);
+		c20->cd(1);
+		CleanedJetsLEA_preHT_N_->Draw();
+		c20->cd(2);
+		SelectedJetsLEA_preHT_N_->Draw();
+		c20->cd(3);
+		CleanedJets_preHT_N_->Draw();
+		c20->cd(4);
+		SelectedJets_preHT_N_->Draw();
+		c20->cd(5);
+		SelectedJets_preHT_Pt_1_->Draw();
+		c20->cd(6);
+		SelectedJets_preHT_Pt_2_->Draw();
+		c20->cd(7);
+		SelectedJets_preHT_Pt_3_->Draw();
+		c20->cd(8);
+		CleanedJets_preHT_HT_->Draw();
+		c20->cd(9);
+		SelectedJets_preHT_HT_->Draw();
+		c20->cd(10);
+	}
+
 
 	cout << "...plots: quick check finished. " << endl;
 
