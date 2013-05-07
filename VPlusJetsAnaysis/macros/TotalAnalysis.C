@@ -165,5 +165,5 @@ void TotalAnalysis(){
 	TotalAnalysis_QCD_Pt_x_y_BCtoE();
 	TotalAnalysis_QCD_HT_xToy();
 	TotalAnalysis_G_Pt_XtoY();
-	TotalAnalysis_G_Pt_XtoY();
+	TotalAnalysis_DiPhotonJets();
 }

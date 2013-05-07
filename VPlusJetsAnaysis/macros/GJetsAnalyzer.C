@@ -50,12 +50,12 @@ void GJetsAnalyzer::Loop(){
 	bool RedAn = false; // analysis with a reduced entries number
 	string geo = "barrel"; // barrel or endcaps
 	bool TeP_corr = false; // T&P correction
-	bool SigBack = true; // test to avoid double counting for SIGNAL and BACKGROUND
-	bool inv = true; // inverted sigmaietaieta cut
+	bool SigBack = false; // test to avoid double counting for SIGNAL and BACKGROUND
+	bool inv = false; // inverted sigmaietaieta cut
 		
 	Int_t plothistos = 0; // please select which plots to show
 	Int_t textfile = 1; // if you want a text report for each sample
-	Int_t itype = 1; // it identifies histos with different analysis 
+	Int_t itype = 3; // it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -395,7 +395,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_250_350_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 2026521 ;
+		nEvents = 2026521;
 		xsec = 4250.0;
 		FiltEff = 0.0243;
 		kFac = 1.;
@@ -613,7 +613,7 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 1984890;
-		xsec = 0.000045103; //da cambiare
+		xsec = 0.000045103; //da cambiare 4.510327E-5
 		FiltEff = 1.;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -627,7 +627,7 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 1939122;
-		xsec = 0.000001867; //da cambiare
+		xsec = 0.000001867; //da cambiare 1.867141E-6
 		FiltEff = 1.;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -1579,12 +1579,12 @@ void GJetsAnalyzer::Book_Histos(){
 	CleanedJets_HT_ = new TH1F("CleanedJets_HT_","Cleaned Jets H_{T}", 400, 0, 4000);
 	SelectedJets_HT_ = new TH1F("SelectedJets_HT_","Selected Jets H_{T}", 400, 0, 4000);
 
-	thrust_N0_ = new TH1F("thrust_N0_","thrust - N^{jets} #geq 1", 100, 0, 0.5);
+	thrust_N0_ = new TH1F("thrust_N0_","#tau_{T} - N^{jets} #geq 1", 100, 0, 0.5);
 	broad_N0_ = new TH1F("broad_N0_","broad - N^{jets} #geq 1", 100, 0, 1);
 	S3_N0_ = new TH1F("S3_N0_","S3 - N^{jets} #geq 1", 300, -2, 4);
 	S4_N0_ = new TH1F("S4_N0_","S4 - N^{jets} #geq 1", 400, -0.2, 0.2);
 
-	ln_thrust_N0_ = new TH1F("ln_thrust_N0_","ln thrust - N^{jets} #geq 1", 300, -30, 0);
+	ln_thrust_N0_ = new TH1F("ln_thrust_N0_","ln #tau_{T} - N^{jets} #geq 1", 300, -30, 0);
 	ln_broad_N0_ = new TH1F("ln_broad_N0_","ln broad - N^{jets} #geq 1", 300, -5, 1);
 	ln_S3_N0_ = new TH1F("ln_S3_N0_","ln S3 - N^{jets} #geq 1", 400, -5, 3);
 	ln_S4_N0_ = new TH1F("ln_S4_N0_","ln S4 - N^{jets} #geq 1", 200, -1000, 1000);
@@ -1613,9 +1613,9 @@ void GJetsAnalyzer::Book_Histos(){
 	DeltaPhi_photon1_jet2_N2_ = new TH1F("DeltaPhi_photon1_jet2_N2_","#Delta#varphi #gamma1-jet2 - N^{jets} #geq 3", 500, 0, 3.1416);
 	DeltaPhi_photon1_jet3_N2_ = new TH1F("DeltaPhi_photon1_jet3_N2_","#Delta#varphi #gamma1-jet3 - N^{jets} #geq 3", 500, 0, 3.1416);
 	DeltaR_photon1_jet3_N2_ = new TH1F("DeltaR_photon1_jet3_N2_","#DeltaR #gamma1-jet3 - N^{jets} #geq 3", 600, 0, 6);
-	DeltaPhi_jet1_jet2_N2_ = new TH1F("DeltaPhi_jet1_jet2_N2_","#Delta#varphi #jet1-jet2 - N^{jets} #geq 3", 500, 0, 3.1416);
-	DeltaPhi_jet1_jet3_N2_ = new TH1F("DeltaPhi_jet1_jet3_N2_","#Delta#varphi #jet1-jet3 - N^{jets} #geq 3", 500, 0, 3.1416);
-	DeltaPhi_jet2_jet3_N2_ = new TH1F("DeltaPhi_jet2_jet3_N2_","#Delta#varphi #jet2-jet3 - N^{jets} #geq 3", 500, 0, 3.1416);
+	DeltaPhi_jet1_jet2_N2_ = new TH1F("DeltaPhi_jet1_jet2_N2_","#Delta#varphi jet1-jet2 - N^{jets} #geq 3", 500, 0, 3.1416);
+	DeltaPhi_jet1_jet3_N2_ = new TH1F("DeltaPhi_jet1_jet3_N2_","#Delta#varphi jet1-jet3 - N^{jets} #geq 3", 500, 0, 3.1416);
+	DeltaPhi_jet2_jet3_N2_ = new TH1F("DeltaPhi_jet2_jet3_N2_","#Delta#varphi jet2-jet3 - N^{jets} #geq 3", 500, 0, 3.1416);
 
 	CleanedJetsLEA_preHT_N_ = new TH1F("CleanedJetsLEA_preHT_N_","Cleaned Jets LEA N pre-H_{T}", 10, 0, 10);
 	SelectedJetsLEA_preHT_N_ = new TH1F("SelectedJetsLEA_preHT_N_","Selected Jets LEA N pre-H_{T}", 10, 0, 10);

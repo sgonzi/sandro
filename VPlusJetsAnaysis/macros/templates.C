@@ -17,6 +17,20 @@
 #include <TBox.h>
 #include <TLine.h>
 #include <sstream>
+#include <TMath.h>
+#include "TF1.h"
+#include <TLatex.h>
+
+/*
+#include "RooGlobalFunc.h"
+#include "RooRealVar.h"
+#include "RooCBShape.h"
+#include "RooDataHist.h"
+#include "RooPlot.h"
+
+#include "RooGaussian.h"
+*/
+
 
 void setMYStyle() {
 
@@ -125,18 +139,20 @@ void setMYStyle() {
 }
 
 
-void comparestack(const char* titleh, const char* namevariable, const int rebin, const double x_min, const double x_max){
+void templates(const char* titleh, const char* namevariable, const int rebin, const double x_min, const double x_max){
 
   // Usage is: .L comparestack.C+
   //       ie: comparestack("SelectedPhotons_Pt_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}]", 1);
 
-	string folder = "1_results_2013_05_02/";
+	string folder = "2_results_2013_05_03/";
 	char geo[10] = "barrel"; // "barrel", "endcaps" or "total"
-	bool inv = false; // inverted sigmaietaieta cut
-	bool signal_MAD = false;
+	bool inv = true; // inverted sigmaietaieta cut
+	bool signal_MAD = true;
 	bool background_QCD = false;
 		
-	Int_t itype = 1; // identifica histo con analisi diverse
+	Int_t itype = 2; // identifica histo con analisi diverse
+
+	string sample = "MC_BACK"; // "MC_SIG", "MC_BACK" or "DATA"
 
 	setMYStyle();
 
@@ -186,28 +202,29 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	Char_t G_Pt_1800_name[100];
 
 	Char_t DiPhotonJets_name[100];
-				
+
 
 	// ==================================== assign files names
-
+	
 	stringstream ss_g;
 	string Geo;
 	ss_g << geo;
 	ss_g >> Geo;
 	string geo_s = Geo + "/";
 	string out_files = "output_files/";
-	string pdf_folder = "pdf_plots/";
+	string pdf_folder = "fit_pdf_plots/";
 	string pdf_string = ".pdf";
-	string root_folder = "root_plots/";
+	string root_folder = "fit_root_plots/";
 	string root_string = ".root";
-	string inverted = "inverted";
+	string inverted = "_inverted";
 	if (inv) root_string = inverted + root_string;		
 	stringstream ss_r;
 	char root_char[10];
 	ss_r << root_string;
 	ss_r >> root_char;
 	string address = folder + geo_s + out_files;
-
+	
+			
 	sprintf(DATA_Run2012A_13Jul2012_name,"DATA_Run2012A-13Jul2012_histos_%d_%s%s",itype, geo, root_char);
 	sprintf(DATA_Run2012A_recover_06Aug2012_name,"DATA_Run2012A-recover-06Aug2012_histos_%d_%s%s",itype, geo, root_char);
 	sprintf(DATA_Run2012B_13Jul2012_name,"DATA_Run2012B-13Jul2012_histos_%d_%s%s",itype, geo, root_char);
@@ -349,7 +366,13 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	TFile *G_Pt_1800_file = new TFile((address+G_Pt_1800_name).c_str());
 
 	TFile *DiPhotonJets_file = new TFile((address+DiPhotonJets_name).c_str());
+	
 
+	// ==================================== open now the output TFile
+	
+	string templates = "_template_";
+	string outfilename = (sample+templates+titleh+root_string).c_str();
+	TFile *outfile = new TFile((address+outfilename).c_str(),"recreate");
 
 	// ==================================== load TH1F
 
@@ -612,132 +635,142 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	else cout << "QCD HT total entries = " << QCD_HT_xToy_total_histo->Integral() << endl;  
 
 	cout << "DiPhotonJets total entries = " << DiPhotonJets_total_histo->Integral() << endl;  
+ 
+
+	// ==================================== preparing MC SIGNAL and MC BACKGROUND added histos
 
 
-	// ==================================== load Canvas
-	
-  TCanvas *Canva = new TCanvas(titlehisto,titlehisto);  
-	TPad* upperPad = new TPad("upperPad", "upperPad",.005, .25, .995, .995);
-  TPad* lowerPad = new TPad("lowerPad", "lowerPad",.005, .005, .995, .2475);
-  upperPad->Draw(); 			       
-  lowerPad->Draw(); 
-  upperPad->cd();   
-
-	THStack *MC_stack= new THStack();
-
-	//backgrounds
-	MC_stack->Add(DiPhotonJets_total_histo);
-	if (!background_QCD){		
-		MC_stack->Add(QCD_Pt_x_y_BCtoE_total_histo);
-		MC_stack->Add(QCD_Pt_x_y_EMEnriched_total_histo);
-	}	
-	else {
-		MC_stack->Add(QCD_HT_xToy_total_histo);
-	}
-	//signal
+	//MC SIGNAL total 
+	TH1F *MC_SIG_total_histo;
 	if(signal_MAD){
-		MC_stack->Add(GJets_HT_xToy_total_histo);
+	MC_SIG_total_histo = (TH1F*) GJets_HT_xToy_total_histo->Clone("MC_SIG_total_histo");
 	}
 	else{
-		MC_stack->Add(G_Pt_XtoY_total_histo);
+	MC_SIG_total_histo = (TH1F*) G_Pt_XtoY_total_histo->Clone("MC_SIG_total_histo");
 	}
-
-	TH1F *ratio_histo_NUM = new TH1F();
-	ratio_histo_NUM = (TH1F*) DATA_total_histo->Clone("ratio_histo_NUM");	
-	ratio_histo_NUM->Sumw2();
-
-
-	TH1F *ratio_histo_DEN = new TH1F;
-	if(signal_MAD){
-		ratio_histo_DEN = (TH1F*) GJets_HT_xToy_total_histo->Clone("ratio_histo_DEN");
-	}
-	else {
-		ratio_histo_DEN = (TH1F*) G_Pt_XtoY_total_histo->Clone("ratio_histo_DEN");	
-	}
-	if (!background_QCD){	
-		ratio_histo_DEN->Add(QCD_Pt_x_y_BCtoE_total_histo);	
-		ratio_histo_DEN->Add(QCD_Pt_x_y_EMEnriched_total_histo);
-	}
-	else {
-		ratio_histo_DEN->Add(QCD_HT_xToy_total_histo);	
-	}
-	ratio_histo_DEN->Add(DiPhotonJets_total_histo);		
-	ratio_histo_DEN->Sumw2();
-
 	
-	TH1F *ratio_histo = (TH1F*) ratio_histo_NUM->Clone("ratio_histo");
-	ratio_histo->Sumw2();
-	ratio_histo->Divide(ratio_histo_DEN);
+	// MC BACKGROUND total
+	TH1F *MC_BACK_total_histo;
+	if (!background_QCD){	
+		MC_BACK_total_histo = (TH1F*) QCD_Pt_x_y_EMEnriched_total_histo->Clone("MC_BACK_total_histo");
+		MC_BACK_total_histo->Add(QCD_Pt_x_y_BCtoE_total_histo);
+	}	
+	else MC_BACK_total_histo = (TH1F*) QCD_HT_xToy_total_histo->Clone("MC_BACK_total_histo");
+		MC_BACK_total_histo->Add(DiPhotonJets_total_histo);
 
+	// ==================================== load Canvas
 
+  TCanvas *Canva = new TCanvas(titlehisto,titlehisto);  
 	int Nbins;
 	double X_min, X_max;
-
-	Nbins = ratio_histo->GetNbinsX();
-
-/*
-	if (x_min != -999 && x_max != -999){
-		DATA_total_histo->GetXaxis()->SetRangeUser(x_min,x_max-x_max/Nbins);
-	}
-*/
-	if (x_min != -999 && x_max != -999){
-		if (x_max == DATA_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
-		else X_max = x_max - (x_max-x_min)/Nbins;
-		if (x_min == DATA_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
-		else X_min = x_min + (x_max-x_min)/Nbins;
-
-		DATA_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
-	}
-
-	DATA_total_histo->SetMarkerStyle(20);
-	DATA_total_histo->SetMinimum(0.1);
-	DATA_total_histo->Draw("E");
-
-//	if (x_min != -999 && x_max != -999){
-	if (x_min != -999 && x_max != -999){
-		if (x_max == MC_stack->GetMaximum()) X_max = x_max;
-		else X_max = x_max - (x_max-x_min)/Nbins;
-		if (x_min == MC_stack->GetMinimum()) X_min = x_min;
-		else X_min = x_min + (x_max-x_min)/Nbins;
-
-		MC_stack->Draw("SAME");
-		MC_stack->SetMinimum(X_min);
-		MC_stack->SetMaximum(X_max);
-	}
 	
-	MC_stack->Draw("SAME");
-	DATA_total_histo->Draw("ESAME");
-	gPad->SetLogy();
-	DATA_total_histo->Draw("AXIS X+ Y+ SAME");
-	DATA_total_histo->Draw("AXIS SAME");
-	DATA_total_histo->GetXaxis()->SetTitle(namevariable);
-	DATA_total_histo->GetXaxis()->SetTitleSize(0.05);
-	DATA_total_histo->GetYaxis()->SetTitle("Events");
-	//DATA_total_histo->GetYaxis()->SetTitleOffset(0.8);
-	//DATA_total_histo->GetYaxis()->SetTitleSize(0.05);
-	//DATA_total_histo->GetYaxis()->SetLabelSize(0.03);
+	if (sample == "MC_SIG") {
+		
+		MC_SIG_total_histo->Sumw2();
+
+		Nbins = MC_SIG_total_histo->GetNbinsX();
+
+		if (x_min != -999 && x_max != -999){
+			if (x_max == MC_SIG_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
+			else X_max = x_max - (x_max-x_min)/Nbins;
+			if (x_min == MC_SIG_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
+			else X_min = x_min + (x_max-x_min)/Nbins;
+
+			MC_SIG_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
+		}
+
+		MC_SIG_total_histo->SetMarkerStyle(20);
+		MC_SIG_total_histo->SetMinimum(0.1);
+
+		MC_SIG_total_histo->Draw("E");
+		gPad->SetLogy();
+		MC_SIG_total_histo->Draw("AXIS X+ Y+ SAME");
+		MC_SIG_total_histo->Draw("AXIS SAME");
+		MC_SIG_total_histo->GetXaxis()->SetTitle(namevariable);
+		MC_SIG_total_histo->GetXaxis()->SetTitleSize(0.05);
+		MC_SIG_total_histo->GetYaxis()->SetTitle("Events");
+
+		MC_SIG_total_histo->Write(titleh) ;
+		outfile-> Write();
+
+	}
+
+	else if (sample == "MC_BACK") {	
+
+		MC_BACK_total_histo->Sumw2();
+
+		Nbins = MC_BACK_total_histo->GetNbinsX();
+
+		if (x_min != -999 && x_max != -999){
+			if (x_max == MC_BACK_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
+			else X_max = x_max - (x_max-x_min)/Nbins;
+			if (x_min == MC_BACK_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
+			else X_min = x_min + (x_max-x_min)/Nbins;
+
+			MC_BACK_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
+		}
+
+		MC_BACK_total_histo->SetMarkerStyle(20);
+		MC_BACK_total_histo->SetMinimum(0.1);
+
+		MC_BACK_total_histo->Draw("E");
+		gPad->SetLogy();
+		MC_BACK_total_histo->Draw("AXIS X+ Y+ SAME");
+		MC_BACK_total_histo->Draw("AXIS SAME");
+		MC_BACK_total_histo->GetXaxis()->SetTitle(namevariable);
+		MC_BACK_total_histo->GetXaxis()->SetTitleSize(0.05);
+		MC_BACK_total_histo->GetYaxis()->SetTitle("Events");
+
+		MC_BACK_total_histo->Write(titleh) ;
+		outfile-> Write();
+	}	
+
+	else {	
+
+		DATA_total_histo->Sumw2();
+
+		Nbins = DATA_total_histo->GetNbinsX();
+
+		if (x_min != -999 && x_max != -999){
+			if (x_max == DATA_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
+			else X_max = x_max - (x_max-x_min)/Nbins;
+			if (x_min == DATA_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
+			else X_min = x_min + (x_max-x_min)/Nbins;
+
+			DATA_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
+		}
+
+		DATA_total_histo->SetMarkerStyle(20);
+		DATA_total_histo->SetMinimum(0.1);
+
+		DATA_total_histo->Draw("E");
+		gPad->SetLogy();
+		DATA_total_histo->Draw("AXIS X+ Y+ SAME");
+		DATA_total_histo->Draw("AXIS SAME");
+		DATA_total_histo->GetXaxis()->SetTitle(namevariable);
+		DATA_total_histo->GetXaxis()->SetTitleSize(0.05);
+		DATA_total_histo->GetYaxis()->SetTitle("Events");
+
+		DATA_total_histo->Write(titleh) ;
+		outfile-> Write();	
+	}	
 
 
-	TLegend *leg =new TLegend(0.6068,0.5478,0.8188,0.7480);
+	TLegend *leg =new TLegend(0.6068,0.6923,0.83,0.7490);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
-	leg->AddEntry(DATA_total_histo,"Data","pL");
-	if(signal_MAD){
-		leg->AddEntry(GJets_HT_xToy_total_histo,"#gamma + jets - MAD","f");
-	}
-	else{
-		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets - PYT","f");
-	}
-	if (!background_QCD){
-		leg->AddEntry(QCD_Pt_x_y_EMEnriched_total_histo,"QCD EMEnriched","f");
-		leg->AddEntry(QCD_Pt_x_y_BCtoE_total_histo,"QCD BCtoE","f");
-	}
+	if (sample == "MC_SIG") {
+		leg->AddEntry(MC_SIG_total_histo,"MC signal","pL");
+	}  
+	else if (sample == "MC_BACK") {
+		leg->AddEntry(MC_BACK_total_histo,"MC background","pL");
+	}  
 	else {
-		leg->AddEntry(QCD_HT_xToy_total_histo,"QCD HT","f");
-	}
-	leg->AddEntry(DiPhotonJets_total_histo,"DiPhotonJets","f");
+		leg->AddEntry(DATA_total_histo,"Data","pL");
+	}  
 	leg->Draw();
+
 
   TPaveText* text = new TPaveText(0.6068,0.7722,0.8188,0.8571,"NDC");
   text->SetFillColor(0);
@@ -747,71 +780,12 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
   text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
   text->SetTextAlign(11);
   text->Draw();
-	
-	lowerPad-> cd();
-
-
-	float xbox_min,xbox_max;
-	if (x_min == -999 && x_max == -999){
-		xbox_min = ratio_histo->GetXaxis()->GetXmin();
-		xbox_max = ratio_histo->GetXaxis()->GetXmax();
-	}
-	else {
-		xbox_min = x_min;
-		xbox_max = x_max;
-	}	
-
-
-	ratio_histo->Draw("");
-	TBox *box_1 = new TBox(xbox_min,0.9,xbox_max,1.1);
-	box_1->SetFillColor(22);
-	box_1->Draw();
-
-	TBox *box_2 = new TBox(xbox_min,0.95,xbox_max,1.05);
-	box_2->SetFillColor(14);
-	box_2->Draw();
-
-  TLine *line = new TLine(xbox_min,1,xbox_max,1);
-  line->SetLineColor(kBlack);
-  line->Draw();
-
-/*
-	if (x_min != -999 && x_max != -999){
-		ratio_histo->GetXaxis()->SetRangeUser(x_min,x_max-x_max/Nbins);
-	}
-*/
-	if (x_min != -999 && x_max != -999){
-		if (x_max == ratio_histo->GetXaxis()->GetXmax()) X_max = x_max;
-		else X_max = x_max - (x_max-x_min)/Nbins;
-		if (x_min == ratio_histo->GetXaxis()->GetXmin()) X_min = x_min;
-		else X_min = x_min + (x_max-x_min)/Nbins;
-
-	ratio_histo->GetXaxis()->SetRangeUser(X_min,X_max);
-
-	}
-	
-	ratio_histo->Draw("P E0 SAME");
-	ratio_histo->Draw("AXIS X+ Y+ SAME");
-	ratio_histo->Draw("AXIS SAME");
-  ratio_histo->GetXaxis()->SetTitle("");
-	ratio_histo->GetYaxis()->SetTitle("Data/MC");
-	ratio_histo->GetYaxis()->SetTitleSize(0.10);
-	ratio_histo->GetYaxis()->SetTitleOffset(0.6);
-	ratio_histo->GetYaxis()->SetLabelSize(0.1);
-	ratio_histo->GetXaxis()->SetLabelSize(0.1);
-	ratio_histo->GetYaxis()->SetRangeUser(0.75,1.25);
-	ratio_histo->GetYaxis()->SetNdivisions(505, "kTRUE");
-	ratio_histo->SetMarkerStyle(20);
-	ratio_histo->SetMarkerColor(kBlue);
-	ratio_histo->SetMarkerSize(0.7);
-	ratio_histo->SetLineColor(kBlue);
 
 	root_string = ".root";
 	pdf_string = ".pdf";
-  Canva->SaveAs((folder + geo_s + pdf_folder + titleh + pdf_string).c_str());
-  Canva->SaveAs((folder + geo_s + root_folder + titleh + root_string).c_str());
+  Canva->SaveAs((folder + geo_s + pdf_folder + sample + "_" + titleh + pdf_string).c_str());
+  Canva->SaveAs((folder + geo_s + root_folder + sample + "_" + titleh + root_string).c_str());
 	Canva->Close();
-
 
 	// ==================================== close files
 
@@ -858,6 +832,13 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	G_Pt_1800_file->Close();
 
 	DiPhotonJets_file->Close();
-	
-	//lowerPad->SetGridy(2);
+
 }
+
+
+void templates_3binPt() {
+	templates("SelectedPhotons_PfIso_1_bin01_", "photon PfIso, 150 < p_{T}^{#gamma} < 300", 8, 0, 30);
+	templates("SelectedPhotons_PfIso_1_bin02_", "photon PfIso, 300 < p_{T}^{#gamma} < 500", 8, 0, 30);
+	templates("SelectedPhotons_PfIso_1_bin03_", "photon PfIso, p_{T}^{#gamma} > 500", 8, 0, 30);
+}
+
