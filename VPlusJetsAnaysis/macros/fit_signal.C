@@ -52,7 +52,7 @@ void fit_signal() {
 	string folder = "1_results_2013_05_02/";
 	char geo[10] = "barrel"; // "barrel", "endcaps" or "total"
 	string pre_histo = "MC_SIG_template_";
-	string histo = "SelectedPhotons_PfIso_1_bin02_";
+	string histo = "SelectedPhotons_PfIso_1_bin01_";
 
 	stringstream ss_g;
 	string Geo;
@@ -60,8 +60,8 @@ void fit_signal() {
 	ss_g >> Geo;
 	string geo_s = Geo + "/";
 	string out_files = "output_files/";
-	string pdf_folder = "fit_pdf_plots/";
-	string pdf_string = ".pdf";
+	string fit_pdf_folder = "fit_pdf_plots/";
+	string fit_pdf_string = ".pdf";
 	string root_folder = "fit_root_plots/";
 	string root_string = ".root";
 	stringstream ss_r;
@@ -69,7 +69,9 @@ void fit_signal() {
 	ss_r << root_string;
 	ss_r >> root_char;
 	string fit = "fit_";
-	string address = folder + geo_s + out_files + pre_histo + histo + root_string;
+
+	string address = folder + geo_s + out_files;
+	string outfilename = pre_histo + histo + root_string;
 
 
   TFile *f = new TFile(address.c_str());
@@ -198,7 +200,7 @@ cout << "h->GetNbinsX() = " << h->GetNbinsX() << endl;
 
 	cpull->Update();
 
-	cpull->SaveAs((folder + geo_s + pdf_folder + fit + histo + pdf_string).c_str());
-	cpull->SaveAs((folder + geo_s + root_folder + fit + histo + root_string).c_str());
+	cpull->SaveAs((folder + geo_s + fit_pdf_folder + fit + histo + pdf_string).c_str());
+	cpull->SaveAs((folder + geo_s + fit_root_folder + fit + histo + root_string).c_str());
  
 }

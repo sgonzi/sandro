@@ -5,9 +5,7 @@
 #include <TLorentzVector.h>
 
 void Zero_Variables();
-//void Book_Histos();
-//void Plot_Histos();
-//void Text_File();
+
 float deltaEta(float, float);
 
 
@@ -269,5 +267,3 @@ TH1F *nPhotonsGEN_,
 		 *photonIsoPtDR03GEN_;
 
 Int_t iSelected0, iSelected1, iSelected2, iSelected3, iSelected4;
-// Int_t iSelectedWithWeights0, iSelectedWithWeights1, iSelectedWithWeights2, iSelectedWithWeights3, iSelectedWithWeights4;
-// #### cleaning new: photon class - finish

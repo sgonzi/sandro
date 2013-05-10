@@ -21,16 +21,6 @@
 #include "TF1.h"
 #include <TLatex.h>
 
-/*
-#include "RooGlobalFunc.h"
-#include "RooRealVar.h"
-#include "RooCBShape.h"
-#include "RooDataHist.h"
-#include "RooPlot.h"
-
-#include "RooGaussian.h"
-*/
-
 
 void setMYStyle() {
 
@@ -144,13 +134,13 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
   // Usage is: .L comparestack.C+
   //       ie: comparestack("SelectedPhotons_Pt_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}]", 1);
 
-	string folder = "2_results_2013_05_03/";
+	string folder = "4_results_2013_05_10/";
 	char geo[10] = "barrel"; // "barrel", "endcaps" or "total"
-	bool inv = true; // inverted sigmaietaieta cut
+	bool inv = false; // inverted sigmaietaieta cut
 	bool signal_MAD = true;
 	bool background_QCD = false;
 		
-	Int_t itype = 2; // identifica histo con analisi diverse
+	Int_t itype = 4; // identifica histo con analisi diverse
 
 	string sample = "MC_BACK"; // "MC_SIG", "MC_BACK" or "DATA"
 
@@ -167,9 +157,25 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	Char_t DATA_Run2012C_PromptReco_name[100];
 	Char_t DATA_Run2012D_PromptReco_name[100];
 							
+	Char_t GJets_HT_40To100_name[100];
+	Char_t GJets_HT_100To200_name[100];	
 	Char_t GJets_HT_200To400_name[100];
 	Char_t GJets_HT_400ToInf_name[100];
-	
+
+	Char_t G_Pt_15to30_name[100];
+	Char_t G_Pt_30to50_name[100];
+	Char_t G_Pt_50to80_name[100];
+	Char_t G_Pt_80to120_name[100];	
+	Char_t G_Pt_120to170_name[100];
+	Char_t G_Pt_170to300_name[100];	
+	Char_t G_Pt_300to470_name[100];
+	Char_t G_Pt_470to800_name[100];
+	Char_t G_Pt_800to1400_name[100];
+	Char_t G_Pt_1400to1800_name[100];
+	Char_t G_Pt_1800_name[100];
+
+	Char_t DiPhotonJets_name[100];
+
 	Char_t QCD_Pt_20_30_EMEnriched_name[100];
 	Char_t QCD_Pt_30_80_EMEnriched_name[100];
 	Char_t QCD_Pt_80_170_EMEnriched_name[100];
@@ -189,20 +195,6 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	Char_t QCD_HT_500To1000_name[100];
 	Char_t QCD_HT_1000ToInf_name[100];
 
-	Char_t G_Pt_15to30_name[100];
-	Char_t G_Pt_30to50_name[100];
-	Char_t G_Pt_50to80_name[100];
-	Char_t G_Pt_80to120_name[100];	
-	Char_t G_Pt_120to170_name[100];
-	Char_t G_Pt_170to300_name[100];	
-	Char_t G_Pt_300to470_name[100];
-	Char_t G_Pt_470to800_name[100];
-	Char_t G_Pt_800to1400_name[100];
-	Char_t G_Pt_1400to1800_name[100];
-	Char_t G_Pt_1800_name[100];
-
-	Char_t DiPhotonJets_name[100];
-
 
 	// ==================================== assign files names
 	
@@ -212,11 +204,11 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	ss_g >> Geo;
 	string geo_s = Geo + "/";
 	string out_files = "output_files/";
-	string pdf_folder = "fit_pdf_plots/";
+	string fit_pdf_folder = "fit_pdf_plots/";
 	string pdf_string = ".pdf";
-	string root_folder = "fit_root_plots/";
+	string fit_root_folder = "fit_root_plots/";
 	string root_string = ".root";
-	string inverted = "_inverted";
+	string inverted = "inverted";
 	if (inv) root_string = inverted + root_string;		
 	stringstream ss_r;
 	char root_char[10];
@@ -241,54 +233,16 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	cout << "data file 6 is " << DATA_Run2012C_PromptReco_name << endl;
 	cout << "data file 7 is " << DATA_Run2012D_PromptReco_name << endl;
 
+	sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(GJets_HT_100To200_name,"MC_GJets_HT-100To200_histos_%d_%s%s",itype, geo, root_char);	
 	sprintf(GJets_HT_200To400_name,"MC_GJets_HT-200To400_histos_%d_%s%s",itype, geo, root_char);
 	sprintf(GJets_HT_400ToInf_name,"MC_GJets_HT-400ToInf_histos_%d_%s%s",itype, geo, root_char);
 
 	if(signal_MAD){
-		cout << "GJets file 11 is: " << GJets_HT_200To400_name << endl;
-		cout << "GJets file 12 is: " << GJets_HT_400ToInf_name << endl;
-	}
-	
-	sprintf(QCD_Pt_20_30_EMEnriched_name,"MC_QCD_Pt_20_30_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_Pt_30_80_EMEnriched_name,"MC_QCD_Pt_30_80_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_Pt_80_170_EMEnriched_name,"MC_QCD_Pt_80_170_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_Pt_170_250_EMEnriched_name,"MC_QCD_Pt_170_250_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_Pt_250_350_EMEnriched_name,"MC_QCD_Pt_250_350_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_Pt_350_EMEnriched_name,"MC_QCD_Pt_350_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
-
-	if (!background_QCD){
-		cout << "QCD EMEnriched file 21 is: " << QCD_Pt_20_30_EMEnriched_name << endl;
-		cout << "QCD EMEnriched file 22 is: " << QCD_Pt_30_80_EMEnriched_name << endl;
-		cout << "QCD EMEnriched file 23 is: " << QCD_Pt_80_170_EMEnriched_name << endl;
-		cout << "QCD EMEnriched file 24 is: " << QCD_Pt_170_250_EMEnriched_name << endl;
-		cout << "QCD EMEnriched file 25 is: " << QCD_Pt_250_350_EMEnriched_name << endl;
-		cout << "QCD EMEnriched file 26 is: " << QCD_Pt_350_EMEnriched_name << endl;
-	}
-	sprintf(QCD_Pt_20_30_BCtoE_name,"MC_QCD_Pt_20_30_BCtoE_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_Pt_30_80_BCtoE_name,"MC_QCD_Pt_30_80_BCtoE_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_Pt_80_170_BCtoE_name,"MC_QCD_Pt_80_170_BCtoE_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_Pt_170_250_BCtoE_name,"MC_QCD_Pt_170_250_BCtoE_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_Pt_250_350_BCtoE_name,"MC_QCD_Pt_250_350_BCtoE_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_Pt_350_BCtoE_name,"MC_QCD_Pt_350_BCtoE_histos_%d_%s%s",itype, geo, root_char);
-	
-	if (!background_QCD){	
-		cout << "QCD BCtoE file 31 is: " << QCD_Pt_20_30_BCtoE_name << endl;
-		cout << "QCD BCtoE file 32 is: " << QCD_Pt_30_80_BCtoE_name << endl;
-		cout << "QCD BCtoE file 33 is: " << QCD_Pt_80_170_BCtoE_name << endl;
-		cout << "QCD BCtoE file 34 is: " << QCD_Pt_170_250_BCtoE_name << endl;
-		cout << "QCD BCtoE file 35 is: " << QCD_Pt_250_350_BCtoE_name << endl;
-		cout << "QCD BCtoE file 36 is: " << QCD_Pt_350_BCtoE_name << endl;	
-	}
-	sprintf(QCD_HT_100To250_name,"MC_QCD_HT-100To250_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_HT_250To500_name,"MC_QCD_HT-250To500_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_HT_500To1000_name,"MC_QCD_HT-500To1000_histos_%d_%s%s",itype, geo, root_char);
-	sprintf(QCD_HT_1000ToInf_name,"MC_QCD_HT-1000ToInf_histos_%d_%s%s",itype, geo, root_char);
-
-	if (background_QCD){
-		cout << "QCD file 41 is: " << QCD_HT_100To250_name << endl;
-		cout << "QCD file 42 is: " << QCD_HT_250To500_name << endl;
-		cout << "QCD file 43 is: " << QCD_HT_500To1000_name << endl;
-		cout << "QCD file 44 is: " << QCD_HT_1000ToInf_name << endl;
+		cout << "GJets file 11 is: " << GJets_HT_40To100_name << endl;
+		cout << "GJets file 12 is: " << GJets_HT_100To200_name << endl;	
+		cout << "GJets file 13 is: " << GJets_HT_200To400_name << endl;
+		cout << "GJets file 14 is: " << GJets_HT_400ToInf_name << endl;
 	}
 	
 	sprintf(G_Pt_15to30_name,"MC_G_Pt-15to30_histos_%d_%s%s",itype, geo, root_char);
@@ -304,21 +258,63 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	sprintf(G_Pt_1800_name,"MC_G_Pt-1800_histos_%d_%s%s",itype, geo, root_char);
 
 	if (!signal_MAD){
-		cout << "G file 51 is: " << G_Pt_15to30_name << endl;
-		cout << "G file 52 is: " << G_Pt_30to50_name << endl;
-		cout << "G file 53 is: " << G_Pt_50to80_name << endl;
-		cout << "G file 54 is: " << G_Pt_80to120_name << endl;
-		cout << "G file 55 is: " << G_Pt_120to170_name << endl;
-		cout << "G file 56 is: " << G_Pt_170to300_name << endl;
-		cout << "G file 57 is: " << G_Pt_300to470_name << endl;
-		cout << "G file 58 is: " << G_Pt_470to800_name << endl;
-		cout << "G file 59 is: " << G_Pt_800to1400_name << endl;
-		cout << "G file 60 is: " << G_Pt_1400to1800_name << endl;
-		cout << "G file 61 is: " << G_Pt_1800_name << endl;
+		cout << "G file 21 is: " << G_Pt_15to30_name << endl;
+		cout << "G file 22 is: " << G_Pt_30to50_name << endl;
+		cout << "G file 23 is: " << G_Pt_50to80_name << endl;
+		cout << "G file 24 is: " << G_Pt_80to120_name << endl;
+		cout << "G file 25 is: " << G_Pt_120to170_name << endl;
+		cout << "G file 26 is: " << G_Pt_170to300_name << endl;
+		cout << "G file 27 is: " << G_Pt_300to470_name << endl;
+		cout << "G file 28 is: " << G_Pt_470to800_name << endl;
+		cout << "G file 29 is: " << G_Pt_800to1400_name << endl;
+		cout << "G file 30 is: " << G_Pt_1400to1800_name << endl;
+		cout << "G file 31 is: " << G_Pt_1800_name << endl;
 	}
 	
 	sprintf(DiPhotonJets_name,"MC_DiPhotonJets_histos_%d_%s%s",itype, geo, root_char);
-	cout << "DiPhotonJets file 71 is: " << DiPhotonJets_name << endl;
+	cout << "DiPhotonJets file 41 is: " << DiPhotonJets_name << endl;
+
+	sprintf(QCD_Pt_20_30_EMEnriched_name,"MC_QCD_Pt_20_30_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_Pt_30_80_EMEnriched_name,"MC_QCD_Pt_30_80_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_Pt_80_170_EMEnriched_name,"MC_QCD_Pt_80_170_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_Pt_170_250_EMEnriched_name,"MC_QCD_Pt_170_250_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_Pt_250_350_EMEnriched_name,"MC_QCD_Pt_250_350_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_Pt_350_EMEnriched_name,"MC_QCD_Pt_350_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+
+	if (!background_QCD){
+		cout << "QCD EMEnriched file 51 is: " << QCD_Pt_20_30_EMEnriched_name << endl;
+		cout << "QCD EMEnriched file 52 is: " << QCD_Pt_30_80_EMEnriched_name << endl;
+		cout << "QCD EMEnriched file 53 is: " << QCD_Pt_80_170_EMEnriched_name << endl;
+		cout << "QCD EMEnriched file 54 is: " << QCD_Pt_170_250_EMEnriched_name << endl;
+		cout << "QCD EMEnriched file 55 is: " << QCD_Pt_250_350_EMEnriched_name << endl;
+		cout << "QCD EMEnriched file 56 is: " << QCD_Pt_350_EMEnriched_name << endl;
+	}
+	sprintf(QCD_Pt_20_30_BCtoE_name,"MC_QCD_Pt_20_30_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_Pt_30_80_BCtoE_name,"MC_QCD_Pt_30_80_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_Pt_80_170_BCtoE_name,"MC_QCD_Pt_80_170_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_Pt_170_250_BCtoE_name,"MC_QCD_Pt_170_250_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_Pt_250_350_BCtoE_name,"MC_QCD_Pt_250_350_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_Pt_350_BCtoE_name,"MC_QCD_Pt_350_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	
+	if (!background_QCD){	
+		cout << "QCD BCtoE file 61 is: " << QCD_Pt_20_30_BCtoE_name << endl;
+		cout << "QCD BCtoE file 62 is: " << QCD_Pt_30_80_BCtoE_name << endl;
+		cout << "QCD BCtoE file 63 is: " << QCD_Pt_80_170_BCtoE_name << endl;
+		cout << "QCD BCtoE file 64 is: " << QCD_Pt_170_250_BCtoE_name << endl;
+		cout << "QCD BCtoE file 65 is: " << QCD_Pt_250_350_BCtoE_name << endl;
+		cout << "QCD BCtoE file 66 is: " << QCD_Pt_350_BCtoE_name << endl;	
+	}
+	sprintf(QCD_HT_100To250_name,"MC_QCD_HT-100To250_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_HT_250To500_name,"MC_QCD_HT-250To500_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_HT_500To1000_name,"MC_QCD_HT-500To1000_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(QCD_HT_1000ToInf_name,"MC_QCD_HT-1000ToInf_histos_%d_%s%s",itype, geo, root_char);
+
+	if (background_QCD){
+		cout << "QCD file 71 is: " << QCD_HT_100To250_name << endl;
+		cout << "QCD file 72 is: " << QCD_HT_250To500_name << endl;
+		cout << "QCD file 73 is: " << QCD_HT_500To1000_name << endl;
+		cout << "QCD file 74 is: " << QCD_HT_1000ToInf_name << endl;
+	}
 
 
 	// ==================================== load TFiles
@@ -331,8 +327,24 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	TFile *DATA_Run2012C_PromptReco_file = new TFile((address+DATA_Run2012C_PromptReco_name).c_str());
 	TFile *DATA_Run2012D_PromptReco_file = new TFile((address+DATA_Run2012D_PromptReco_name).c_str());
 	
+	TFile *GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
+	TFile *GJets_HT_100To200_file = new TFile((address+GJets_HT_100To200_name).c_str());	
 	TFile *GJets_HT_200To400_file = new TFile((address+GJets_HT_200To400_name).c_str());
 	TFile *GJets_HT_400ToInf_file = new TFile((address+GJets_HT_400ToInf_name).c_str()); 
+
+	TFile *G_Pt_15to30_file = new TFile((address+G_Pt_15to30_name).c_str());
+	TFile *G_Pt_30to50_file = new TFile((address+G_Pt_30to50_name).c_str());
+	TFile *G_Pt_50to80_file = new TFile((address+G_Pt_50to80_name).c_str());
+	TFile *G_Pt_80to120_file = new TFile((address+G_Pt_80to120_name).c_str());
+	TFile *G_Pt_120to170_file = new TFile((address+G_Pt_120to170_name).c_str());
+	TFile *G_Pt_170to300_file = new TFile((address+G_Pt_170to300_name).c_str());
+	TFile *G_Pt_300to470_file = new TFile((address+G_Pt_300to470_name).c_str());
+	TFile *G_Pt_470to800_file = new TFile((address+G_Pt_470to800_name).c_str());
+	TFile *G_Pt_800to1400_file = new TFile((address+G_Pt_800to1400_name).c_str());
+	TFile *G_Pt_1400to1800_file = new TFile((address+G_Pt_1400to1800_name).c_str());	
+	TFile *G_Pt_1800_file = new TFile((address+G_Pt_1800_name).c_str());
+
+	TFile *DiPhotonJets_file = new TFile((address+DiPhotonJets_name).c_str());
 	
 	TFile *QCD_Pt_20_30_EMEnriched_file = new TFile((address+QCD_Pt_20_30_EMEnriched_name).c_str()); 
 	TFile *QCD_Pt_30_80_EMEnriched_file = new TFile((address+QCD_Pt_30_80_EMEnriched_name).c_str());
@@ -352,27 +364,19 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	TFile *QCD_HT_250To500_file = new TFile((address+QCD_HT_250To500_name).c_str());   
 	TFile *QCD_HT_500To1000_file = new TFile((address+QCD_HT_500To1000_name).c_str()); 
 	TFile *QCD_HT_1000ToInf_file = new TFile((address+QCD_HT_1000ToInf_name).c_str()); 
-
-	TFile *G_Pt_15to30_file = new TFile((address+G_Pt_15to30_name).c_str());
-	TFile *G_Pt_30to50_file = new TFile((address+G_Pt_30to50_name).c_str());
-	TFile *G_Pt_50to80_file = new TFile((address+G_Pt_50to80_name).c_str());
-	TFile *G_Pt_80to120_file = new TFile((address+G_Pt_80to120_name).c_str());
-	TFile *G_Pt_120to170_file = new TFile((address+G_Pt_120to170_name).c_str());
-	TFile *G_Pt_170to300_file = new TFile((address+G_Pt_170to300_name).c_str());
-	TFile *G_Pt_300to470_file = new TFile((address+G_Pt_300to470_name).c_str());
-	TFile *G_Pt_470to800_file = new TFile((address+G_Pt_470to800_name).c_str());
-	TFile *G_Pt_800to1400_file = new TFile((address+G_Pt_800to1400_name).c_str());
-	TFile *G_Pt_1400to1800_file = new TFile((address+G_Pt_1400to1800_name).c_str());	
-	TFile *G_Pt_1800_file = new TFile((address+G_Pt_1800_name).c_str());
-
-	TFile *DiPhotonJets_file = new TFile((address+DiPhotonJets_name).c_str());
 	
 
 	// ==================================== open now the output TFile
-	
-	string templates = "_template_";
-	string outfilename = (sample+templates+titleh+root_string).c_str();
-	TFile *outfile = new TFile((address+outfilename).c_str(),"recreate");
+
+	root_string = ".root";
+	pdf_string = ".pdf";
+	string sample_mod = "";
+	if (inv) sample_mod = sample + "_" + inverted + "_";
+	else sample_mod = sample + "_";
+	string templates = "template_";
+	string outfilename = (sample_mod + templates + titleh + root_string).c_str();
+
+	TFile *outfile = new TFile((address + outfilename).c_str(),"recreate");
 
 	// ==================================== load TH1F
 
@@ -381,7 +385,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	strcpy(titlehisto,titleh);
 	cout << "Analyzing Histogram " << titlehisto << endl;
 
-//--- data -----------------------------------------------------------------
+	//--- data -----------------------------------------------------------------
 	TH1F *DATA_Run2012A_13Jul2012_histo=(TH1F*)DATA_Run2012A_13Jul2012_file->Get(titlehisto);
 	DATA_Run2012A_13Jul2012_histo->Rebin(rebin);
 
@@ -418,8 +422,15 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	DATA_total_histo->Add(DATA_Run2012C_EcalRecover_11Dec2012_histo);
 	DATA_total_histo->Add(DATA_Run2012C_PromptReco_histo);
 	DATA_total_histo->Add(DATA_Run2012D_PromptReco_histo);
+
 				
-//--- MC signal GJets_HT-xToy ----------------------------------------------
+	//--- MC signal GJets_HT-xToy ----------------------------------------------
+	TH1F *GJets_HT_40To100_histo=(TH1F*)GJets_HT_40To100_file->Get(titlehisto);
+	GJets_HT_40To100_histo->Rebin(rebin);
+
+	TH1F *GJets_HT_100To200_histo=(TH1F*)GJets_HT_100To200_file->Get(titlehisto);
+	GJets_HT_100To200_histo->Rebin(rebin);
+
 	TH1F *GJets_HT_200To400_histo=(TH1F*)GJets_HT_200To400_file->Get(titlehisto);
 	GJets_HT_200To400_histo->Rebin(rebin);
 
@@ -427,124 +438,22 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	GJets_HT_400ToInf_histo->Rebin(rebin);
 
 	if(signal_MAD){
+		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
+		cout << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
 		cout << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
 		cout << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
 	}
 	
-	TH1F *GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_200To400_histo->Clone("GJets_HT_xToy_total_histo");
-//--- GJets_HT_xToy_total_histo->Sumw2();
+	TH1F *GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_40To100_histo->Clone("GJets_HT_xToy_total_histo");
+	//--- GJets_HT_xToy_total_histo->Sumw2();
+	GJets_HT_xToy_total_histo->Add(GJets_HT_100To200_histo);
+	GJets_HT_xToy_total_histo->Add(GJets_HT_200To400_histo);	
 	GJets_HT_xToy_total_histo->Add(GJets_HT_400ToInf_histo);  
 	GJets_HT_xToy_total_histo->SetLineColor(1);
 	GJets_HT_xToy_total_histo->SetFillColor(5);  //for colors comment out Sumw2 in code
 
-//--- MC background QCD_Pt_x_y EMEnriched ----------------------------------
-	TH1F *QCD_Pt_20_30_EMEnriched_histo=(TH1F*)QCD_Pt_20_30_EMEnriched_file->Get(titlehisto);
-	QCD_Pt_20_30_EMEnriched_histo->Rebin(rebin);
 
-	TH1F *QCD_Pt_30_80_EMEnriched_histo=(TH1F*)QCD_Pt_30_80_EMEnriched_file->Get(titlehisto);
-	QCD_Pt_30_80_EMEnriched_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_80_170_EMEnriched_histo=(TH1F*)QCD_Pt_80_170_EMEnriched_file->Get(titlehisto);
-	QCD_Pt_80_170_EMEnriched_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_170_250_EMEnriched_histo=(TH1F*)QCD_Pt_170_250_EMEnriched_file->Get(titlehisto);
-	QCD_Pt_170_250_EMEnriched_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_250_350_EMEnriched_histo=(TH1F*)QCD_Pt_250_350_EMEnriched_file->Get(titlehisto);
-	QCD_Pt_250_350_EMEnriched_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_350_EMEnriched_histo=(TH1F*)QCD_Pt_350_EMEnriched_file->Get(titlehisto);
-	QCD_Pt_350_EMEnriched_histo->Rebin(rebin);
-
-	if (!background_QCD){
-		cout << "QCD_Pt_20_30_EMEnriched entries = " << QCD_Pt_20_30_EMEnriched_histo->Integral() << endl;
-		cout << "QCD_Pt_30_80_EMEnriched entries = " << QCD_Pt_30_80_EMEnriched_histo->Integral() << endl;
-		cout << "QCD_Pt_80_170_EMEnriched entries = " << QCD_Pt_80_170_EMEnriched_histo->Integral() << endl;
-		cout << "QCD_Pt_170_250_EMEnriched entries = " << QCD_Pt_170_250_EMEnriched_histo->Integral() << endl;
-		cout << "QCD_Pt_250_350_EMEnriched entries = " << QCD_Pt_250_350_EMEnriched_histo->Integral() << endl;
-		cout << "QCD_Pt_350_EMEnriched entries = " << QCD_Pt_350_EMEnriched_histo->Integral() << endl;
-	}
-
-	TH1F *QCD_Pt_x_y_EMEnriched_total_histo = (TH1F*) QCD_Pt_20_30_EMEnriched_histo->Clone("QCD_Pt_x_y_EMEnriched_total_histo");
-//	QCD_Pt_x_y_EMEnriched_total_histo->Sumw2();
-	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_30_80_EMEnriched_histo);
-	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_80_170_EMEnriched_histo);  
-	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_170_250_EMEnriched_histo);  
-	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_250_350_EMEnriched_histo);  
-	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_350_EMEnriched_histo);  
-	QCD_Pt_x_y_EMEnriched_total_histo->SetLineColor(1);
-	QCD_Pt_x_y_EMEnriched_total_histo->SetFillColor(kMagenta+2);
-
-
-//--- MC background QCD_Pt_x_y BCtoE ----------------------------------
-	TH1F *QCD_Pt_20_30_BCtoE_histo=(TH1F*)QCD_Pt_20_30_BCtoE_file->Get(titlehisto);
-	QCD_Pt_20_30_BCtoE_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_30_80_BCtoE_histo=(TH1F*)QCD_Pt_30_80_BCtoE_file->Get(titlehisto);
-	QCD_Pt_30_80_BCtoE_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_80_170_BCtoE_histo=(TH1F*)QCD_Pt_80_170_BCtoE_file->Get(titlehisto);
-	QCD_Pt_80_170_BCtoE_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_170_250_BCtoE_histo=(TH1F*)QCD_Pt_170_250_BCtoE_file->Get(titlehisto);
-	QCD_Pt_170_250_BCtoE_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_250_350_BCtoE_histo=(TH1F*)QCD_Pt_250_350_BCtoE_file->Get(titlehisto);
-	QCD_Pt_250_350_BCtoE_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_350_BCtoE_histo=(TH1F*)QCD_Pt_350_BCtoE_file->Get(titlehisto);
-	QCD_Pt_350_BCtoE_histo->Rebin(rebin);
-
-	if (!background_QCD){
-		cout << "QCD_Pt_20_30_BCtoE entries = " << QCD_Pt_20_30_BCtoE_histo->Integral() << endl;
-		cout << "QCD_Pt_30_80_BCtoE entries = " << QCD_Pt_30_80_BCtoE_histo->Integral() << endl;
-		cout << "QCD_Pt_80_170_BCtoE entries = " << QCD_Pt_80_170_BCtoE_histo->Integral() << endl;
-		cout << "QCD_Pt_170_250_BCtoE entries = " << QCD_Pt_170_250_BCtoE_histo->Integral() << endl;
-		cout << "QCD_Pt_250_350_BCtoE entries = " << QCD_Pt_250_350_BCtoE_histo->Integral() << endl;
-		cout << "QCD_Pt_350_BCtoE entries = " << QCD_Pt_350_BCtoE_histo->Integral() << endl;
-	}
-	
-	TH1F *QCD_Pt_x_y_BCtoE_total_histo = (TH1F*) QCD_Pt_20_30_BCtoE_histo->Clone("QCD_Pt_x_y_BCtoE_total_histo");
-//	QCD_Pt_x_y_BCtoE_total_histo->Sumw2();
-	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_30_80_BCtoE_histo);
-	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_80_170_BCtoE_histo);  
-	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_170_250_BCtoE_histo);  
-	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_250_350_BCtoE_histo);  
-	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_350_BCtoE_histo);  
-	QCD_Pt_x_y_BCtoE_total_histo->SetLineColor(1);
-	QCD_Pt_x_y_BCtoE_total_histo->SetFillColor(kBlue-7);
-
-
-// MC background QCD HT-xToy --------------------------------------------
-	TH1F *QCD_HT_100To250_histo=(TH1F*)QCD_HT_100To250_file->Get(titlehisto);
-	QCD_HT_100To250_histo->Rebin(rebin);
-
-	TH1F *QCD_HT_250To500_histo=(TH1F*)QCD_HT_250To500_file->Get(titlehisto);
-	QCD_HT_250To500_histo->Rebin(rebin);
-
-	TH1F *QCD_HT_500To1000_histo=(TH1F*)QCD_HT_500To1000_file->Get(titlehisto);
-	QCD_HT_500To1000_histo->Rebin(rebin);
-
-	TH1F *QCD_HT_1000ToInf_histo=(TH1F*)QCD_HT_1000ToInf_file->Get(titlehisto);
-	QCD_HT_1000ToInf_histo->Rebin(rebin);
-
-	if (background_QCD){
-		cout << "QCD_HT_100To250 entries " << QCD_HT_100To250_histo->Integral() << endl;  
-		cout << "QCD_HT_250To500 entries " << QCD_HT_250To500_histo->Integral() << endl;  
-		cout << "QCD_HT_500To1000 entries " << QCD_HT_500To1000_histo->Integral() << endl;
-		cout << "QCD_HT_1000ToInf entries " << QCD_HT_1000ToInf_histo->Integral() << endl;
-	}
-	
-	TH1F *QCD_HT_xToy_total_histo = (TH1F*) QCD_HT_100To250_histo->Clone("QCD_HT_xToy_total_histo");
-//	QCD_HT_xToy_total_histo->Sumw2();
-	QCD_HT_xToy_total_histo->Add(QCD_HT_250To500_histo);
-	QCD_HT_xToy_total_histo->Add(QCD_HT_500To1000_histo);  
-	QCD_HT_xToy_total_histo->Add(QCD_HT_1000ToInf_histo);  
-	QCD_HT_xToy_total_histo->SetLineColor(1);
-	QCD_HT_xToy_total_histo->SetFillColor(kRed+2);
-
-
-// MC signal G_Pt-XtoY --------------------------------------------------
+	// MC signal G_Pt-XtoY --------------------------------------------------
 	TH1F *G_Pt_15to30_histo=(TH1F*)G_Pt_15to30_file->Get(titlehisto);
 	G_Pt_15to30_histo->Rebin(rebin);
 
@@ -593,7 +502,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	}
 	
 	TH1F *G_Pt_XtoY_total_histo = (TH1F*) G_Pt_15to30_histo->Clone("G_Pt_XtoY_total_histo");
-//--- G_Pt_XtoY_total_histo->Sumw2();
+	//--- G_Pt_XtoY_total_histo->Sumw2();
 	G_Pt_XtoY_total_histo->Add(G_Pt_30to50_histo);
 	G_Pt_XtoY_total_histo->Add(G_Pt_50to80_histo);  
 	G_Pt_XtoY_total_histo->Add(G_Pt_80to120_histo);  
@@ -608,39 +517,151 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	G_Pt_XtoY_total_histo->SetFillColor(kGreen+2);  //for colors comment out Sumw2 in code
 
 
-// MC DiPhotonJets ------------------------------------------------------
+	// MC signal DiPhotonJets --------------------------------------------------
 	TH1F *DiPhotonJets_histo=(TH1F*)DiPhotonJets_file->Get(titlehisto);
 	DiPhotonJets_histo->Rebin(rebin);
 	
 	cout << "DiPhotonJets entries = " << DiPhotonJets_histo->Integral() << endl;
 
 	TH1F *DiPhotonJets_total_histo = (TH1F*) DiPhotonJets_histo->Clone("DiPhotonJets_total_histo");
-//--- DiPhotonJets_total_histo->Sumw2();
+	//--- DiPhotonJets_total_histo->Sumw2();
 	DiPhotonJets_total_histo->SetLineColor(1);
 	DiPhotonJets_total_histo->SetFillColor(kGray+2);  //for colors comment out Sumw2 in code
 
 
-// ----------------------------------------------------------------------
+	//--- MC background QCD_Pt_x_y EMEnriched ----------------------------------
+	TH1F *QCD_Pt_20_30_EMEnriched_histo=(TH1F*)QCD_Pt_20_30_EMEnriched_file->Get(titlehisto);
+	QCD_Pt_20_30_EMEnriched_histo->Rebin(rebin);
 
+	TH1F *QCD_Pt_30_80_EMEnriched_histo=(TH1F*)QCD_Pt_30_80_EMEnriched_file->Get(titlehisto);
+	QCD_Pt_30_80_EMEnriched_histo->Rebin(rebin);
+
+	TH1F *QCD_Pt_80_170_EMEnriched_histo=(TH1F*)QCD_Pt_80_170_EMEnriched_file->Get(titlehisto);
+	QCD_Pt_80_170_EMEnriched_histo->Rebin(rebin);
+
+	TH1F *QCD_Pt_170_250_EMEnriched_histo=(TH1F*)QCD_Pt_170_250_EMEnriched_file->Get(titlehisto);
+	QCD_Pt_170_250_EMEnriched_histo->Rebin(rebin);
+
+	TH1F *QCD_Pt_250_350_EMEnriched_histo=(TH1F*)QCD_Pt_250_350_EMEnriched_file->Get(titlehisto);
+	QCD_Pt_250_350_EMEnriched_histo->Rebin(rebin);
+
+	TH1F *QCD_Pt_350_EMEnriched_histo=(TH1F*)QCD_Pt_350_EMEnriched_file->Get(titlehisto);
+	QCD_Pt_350_EMEnriched_histo->Rebin(rebin);
+
+	if (!background_QCD){
+		cout << "QCD_Pt_20_30_EMEnriched entries = " << QCD_Pt_20_30_EMEnriched_histo->Integral() << endl;
+		cout << "QCD_Pt_30_80_EMEnriched entries = " << QCD_Pt_30_80_EMEnriched_histo->Integral() << endl;
+		cout << "QCD_Pt_80_170_EMEnriched entries = " << QCD_Pt_80_170_EMEnriched_histo->Integral() << endl;
+		cout << "QCD_Pt_170_250_EMEnriched entries = " << QCD_Pt_170_250_EMEnriched_histo->Integral() << endl;
+		cout << "QCD_Pt_250_350_EMEnriched entries = " << QCD_Pt_250_350_EMEnriched_histo->Integral() << endl;
+		cout << "QCD_Pt_350_EMEnriched entries = " << QCD_Pt_350_EMEnriched_histo->Integral() << endl;
+	}
+
+	TH1F *QCD_Pt_x_y_EMEnriched_total_histo = (TH1F*) QCD_Pt_20_30_EMEnriched_histo->Clone("QCD_Pt_x_y_EMEnriched_total_histo");
+	//	QCD_Pt_x_y_EMEnriched_total_histo->Sumw2();
+	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_30_80_EMEnriched_histo);
+	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_80_170_EMEnriched_histo);  
+	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_170_250_EMEnriched_histo);  
+	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_250_350_EMEnriched_histo);  
+	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_350_EMEnriched_histo);  
+	QCD_Pt_x_y_EMEnriched_total_histo->SetLineColor(1);
+	QCD_Pt_x_y_EMEnriched_total_histo->SetFillColor(kMagenta+2);
+
+
+	//--- MC background QCD_Pt_x_y BCtoE ----------------------------------
+	TH1F *QCD_Pt_20_30_BCtoE_histo=(TH1F*)QCD_Pt_20_30_BCtoE_file->Get(titlehisto);
+	QCD_Pt_20_30_BCtoE_histo->Rebin(rebin);
+
+	TH1F *QCD_Pt_30_80_BCtoE_histo=(TH1F*)QCD_Pt_30_80_BCtoE_file->Get(titlehisto);
+	QCD_Pt_30_80_BCtoE_histo->Rebin(rebin);
+
+	TH1F *QCD_Pt_80_170_BCtoE_histo=(TH1F*)QCD_Pt_80_170_BCtoE_file->Get(titlehisto);
+	QCD_Pt_80_170_BCtoE_histo->Rebin(rebin);
+
+	TH1F *QCD_Pt_170_250_BCtoE_histo=(TH1F*)QCD_Pt_170_250_BCtoE_file->Get(titlehisto);
+	QCD_Pt_170_250_BCtoE_histo->Rebin(rebin);
+
+	TH1F *QCD_Pt_250_350_BCtoE_histo=(TH1F*)QCD_Pt_250_350_BCtoE_file->Get(titlehisto);
+	QCD_Pt_250_350_BCtoE_histo->Rebin(rebin);
+
+	TH1F *QCD_Pt_350_BCtoE_histo=(TH1F*)QCD_Pt_350_BCtoE_file->Get(titlehisto);
+	QCD_Pt_350_BCtoE_histo->Rebin(rebin);
+
+	if (!background_QCD){
+		cout << "QCD_Pt_20_30_BCtoE entries = " << QCD_Pt_20_30_BCtoE_histo->Integral() << endl;
+		cout << "QCD_Pt_30_80_BCtoE entries = " << QCD_Pt_30_80_BCtoE_histo->Integral() << endl;
+		cout << "QCD_Pt_80_170_BCtoE entries = " << QCD_Pt_80_170_BCtoE_histo->Integral() << endl;
+		cout << "QCD_Pt_170_250_BCtoE entries = " << QCD_Pt_170_250_BCtoE_histo->Integral() << endl;
+		cout << "QCD_Pt_250_350_BCtoE entries = " << QCD_Pt_250_350_BCtoE_histo->Integral() << endl;
+		cout << "QCD_Pt_350_BCtoE entries = " << QCD_Pt_350_BCtoE_histo->Integral() << endl;
+	}
+	
+	TH1F *QCD_Pt_x_y_BCtoE_total_histo = (TH1F*) QCD_Pt_20_30_BCtoE_histo->Clone("QCD_Pt_x_y_BCtoE_total_histo");
+	//	QCD_Pt_x_y_BCtoE_total_histo->Sumw2();
+	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_30_80_BCtoE_histo);
+	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_80_170_BCtoE_histo);  
+	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_170_250_BCtoE_histo);  
+	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_250_350_BCtoE_histo);  
+	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_350_BCtoE_histo);  
+	QCD_Pt_x_y_BCtoE_total_histo->SetLineColor(1);
+	QCD_Pt_x_y_BCtoE_total_histo->SetFillColor(kBlue-7);
+
+
+	// MC background QCD HT-xToy --------------------------------------------
+	TH1F *QCD_HT_100To250_histo=(TH1F*)QCD_HT_100To250_file->Get(titlehisto);
+	QCD_HT_100To250_histo->Rebin(rebin);
+
+	TH1F *QCD_HT_250To500_histo=(TH1F*)QCD_HT_250To500_file->Get(titlehisto);
+	QCD_HT_250To500_histo->Rebin(rebin);
+
+	TH1F *QCD_HT_500To1000_histo=(TH1F*)QCD_HT_500To1000_file->Get(titlehisto);
+	QCD_HT_500To1000_histo->Rebin(rebin);
+
+	TH1F *QCD_HT_1000ToInf_histo=(TH1F*)QCD_HT_1000ToInf_file->Get(titlehisto);
+	QCD_HT_1000ToInf_histo->Rebin(rebin);
+
+	if (background_QCD){
+		cout << "QCD_HT_100To250 entries " << QCD_HT_100To250_histo->Integral() << endl;  
+		cout << "QCD_HT_250To500 entries " << QCD_HT_250To500_histo->Integral() << endl;  
+		cout << "QCD_HT_500To1000 entries " << QCD_HT_500To1000_histo->Integral() << endl;
+		cout << "QCD_HT_1000ToInf entries " << QCD_HT_1000ToInf_histo->Integral() << endl;
+	}
+	
+	TH1F *QCD_HT_xToy_total_histo = (TH1F*) QCD_HT_100To250_histo->Clone("QCD_HT_xToy_total_histo");
+	//	QCD_HT_xToy_total_histo->Sumw2();
+	QCD_HT_xToy_total_histo->Add(QCD_HT_250To500_histo);
+	QCD_HT_xToy_total_histo->Add(QCD_HT_500To1000_histo);  
+	QCD_HT_xToy_total_histo->Add(QCD_HT_1000ToInf_histo);  
+	QCD_HT_xToy_total_histo->SetLineColor(1);
+	QCD_HT_xToy_total_histo->SetFillColor(kRed+2);
+
+
+	// ==================================== print Entries number
+
+	cout << endl;
 	cout << "DATA total entries = " << DATA_total_histo->Integral() << endl;
 
+	cout << endl;
 	if(signal_MAD) cout << "GJets total entries = " << GJets_HT_xToy_total_histo->Integral() << endl;  
 	else cout << "G total entries = " << G_Pt_XtoY_total_histo->Integral() << endl;
 
+	cout << endl;
+	cout << "DiPhotonJets total entries = " << DiPhotonJets_total_histo->Integral() << endl;
+
+	cout << endl;
 	if (!background_QCD){	  
 	cout << "QCD EMEnriched total entries = " << QCD_Pt_x_y_EMEnriched_total_histo->Integral() << endl;  
 	cout << "QCD BCtoE total entries = " << QCD_Pt_x_y_BCtoE_total_histo->Integral() << endl;
-	cout << "QCD total entries = " << QCD_Pt_x_y_EMEnriched_total_histo->Integral() + QCD_Pt_x_y_BCtoE_total_histo->Integral() << endl;
+	cout << "QCD (EMEnriched + BCtoE) total entries = " << QCD_Pt_x_y_EMEnriched_total_histo->Integral() +
+	                                                       QCD_Pt_x_y_BCtoE_total_histo->Integral() << endl;
 	}	 
 	else cout << "QCD HT total entries = " << QCD_HT_xToy_total_histo->Integral() << endl;  
-
-	cout << "DiPhotonJets total entries = " << DiPhotonJets_total_histo->Integral() << endl;  
- 
+	cout << endl;
+	
 
 	// ==================================== preparing MC SIGNAL and MC BACKGROUND added histos
 
-
-	//MC SIGNAL total 
+	// MC SIGNAL total 
 	TH1F *MC_SIG_total_histo;
 	if(signal_MAD){
 	MC_SIG_total_histo = (TH1F*) GJets_HT_xToy_total_histo->Clone("MC_SIG_total_histo");
@@ -648,7 +669,8 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	else{
 	MC_SIG_total_histo = (TH1F*) G_Pt_XtoY_total_histo->Clone("MC_SIG_total_histo");
 	}
-	
+	MC_SIG_total_histo->Add(DiPhotonJets_total_histo);
+				
 	// MC BACKGROUND total
 	TH1F *MC_BACK_total_histo;
 	if (!background_QCD){	
@@ -656,7 +678,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 		MC_BACK_total_histo->Add(QCD_Pt_x_y_BCtoE_total_histo);
 	}	
 	else MC_BACK_total_histo = (TH1F*) QCD_HT_xToy_total_histo->Clone("MC_BACK_total_histo");
-		MC_BACK_total_histo->Add(DiPhotonJets_total_histo);
+
 
 	// ==================================== load Canvas
 
@@ -781,11 +803,10 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
   text->SetTextAlign(11);
   text->Draw();
 
-	root_string = ".root";
-	pdf_string = ".pdf";
-  Canva->SaveAs((folder + geo_s + pdf_folder + sample + "_" + titleh + pdf_string).c_str());
-  Canva->SaveAs((folder + geo_s + root_folder + sample + "_" + titleh + root_string).c_str());
+  Canva->SaveAs((folder + geo_s + fit_pdf_folder + sample_mod + titleh + pdf_string).c_str());
+  Canva->SaveAs((folder + geo_s + fit_root_folder + sample_mod + titleh + root_string).c_str());
 	Canva->Close();
+
 
 	// ==================================== close files
 
@@ -796,9 +817,25 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	DATA_Run2012C_EcalRecover_11Dec2012_file->Close();
 	DATA_Run2012C_PromptReco_file->Close();
 	DATA_Run2012D_PromptReco_file->Close();
-	
+
+	GJets_HT_40To100_file->Close();
+	GJets_HT_100To200_file->Close();	
 	GJets_HT_200To400_file->Close();
 	GJets_HT_400ToInf_file->Close(); 
+
+	G_Pt_15to30_file->Close();
+	G_Pt_30to50_file->Close();
+	G_Pt_50to80_file->Close();
+	G_Pt_80to120_file->Close();
+	G_Pt_120to170_file->Close();			
+	G_Pt_170to300_file->Close();	
+	G_Pt_300to470_file->Close();	
+	G_Pt_470to800_file->Close();	
+	G_Pt_800to1400_file->Close();
+	G_Pt_1400to1800_file->Close();		
+	G_Pt_1800_file->Close();
+
+	DiPhotonJets_file->Close();
 
 	QCD_Pt_20_30_EMEnriched_file->Close();
 	QCD_Pt_30_80_EMEnriched_file->Close();
@@ -818,20 +855,6 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	QCD_HT_250To500_file->Close();
 	QCD_HT_500To1000_file->Close();
 	QCD_HT_1000ToInf_file->Close(); 
-
-	G_Pt_15to30_file->Close();
-	G_Pt_30to50_file->Close();
-	G_Pt_50to80_file->Close();
-	G_Pt_80to120_file->Close();
-	G_Pt_120to170_file->Close();			
-	G_Pt_170to300_file->Close();	
-	G_Pt_300to470_file->Close();	
-	G_Pt_470to800_file->Close();	
-	G_Pt_800to1400_file->Close();
-	G_Pt_1400to1800_file->Close();		
-	G_Pt_1800_file->Close();
-
-	DiPhotonJets_file->Close();
 
 }
 
