@@ -46,13 +46,13 @@ TString floatToString(float number){
 }
 
 
-void fit_background() {
+void fit_dataInvertedForBackground() {
 
-	string folder = "4_results_2013_05_10/";
+	string folder = "5_results_2013_05_10/";
 	char geo[10] = "barrel"; // "barrel", "endcaps" or "total"
-	bool inv = false; // inverted sigmaietaieta cut
+	bool inv = true; // inverted sigmaietaieta cut
 		
-	string sample = "MC_BACK"; // "MC_SIG", "MC_BACK" "DATA_INV" or "DATA"
+	string sample = "DATA_INV"; // "MC_SIG", "MC_BACK" "DATA_INV" or "DATA"
 
 	string histo = "SelectedPhotons_PfIso_1_bin01_";
 
@@ -92,8 +92,8 @@ void fit_background() {
   TH1F* h = (TH1F*)f->Get(histo.c_str());
 //	h->Rebin(2);
 
-
-	// ==================================== fit signal
+cout << address+infilename << endl;
+	// ==================================== fit data inverted sigmaietaieta for background
 
   RooRealVar x("x","photon PFIso", 0, 30);
 
@@ -141,7 +141,7 @@ void fit_background() {
 	double chi2;
 	chi2  = xframe->chiSquare(3); // dof = 3 = number fof floating parametes
 	cout << "chi2 = " << chi2 << endl;
-
+	
 	string s_cpull = "cpull";
 	TCanvas *cpull = new TCanvas(s_cpull.c_str(),s_cpull.c_str(),600,600);
 	cpull->SetFillColor(0);

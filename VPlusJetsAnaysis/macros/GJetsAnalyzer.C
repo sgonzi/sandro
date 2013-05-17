@@ -50,12 +50,12 @@ void GJetsAnalyzer::Loop(){
 	bool RedAn = false; // analysis with a reduced entries number
 	string geo = "barrel"; // barrel or endcaps
 	bool TeP_corr = false; // T&P correction
-	bool SigBack = true; // test to avoid double counting for SIGNAL and BACKGROUND
+	bool SigBack = false; // test to avoid double counting for SIGNAL and BACKGROUND
 	bool inv = false; // inverted sigmaietaieta cut
 		
 	Int_t plothistos = 0; // please select which plots to show
 	Int_t textfile = 1; // if you want a text report for each sample
-	Int_t itype = 4; // it identifies histos with different analysis 
+	Int_t itype = 6; // it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -133,8 +133,11 @@ void GJetsAnalyzer::Loop(){
 	string root = ".root";
 	string txt = ".txt";
 	string inverted = "_inverted";
-	if (inv) root = inverted + root;
-
+	if (inv){
+		root = inverted + root;
+		txt = inverted + txt;
+	}	
+				
 	cout << "Analysis on " << geo << endl;
 	if (inv) {
 		cout << "with inverted sigmaietaieta cut " << endl;

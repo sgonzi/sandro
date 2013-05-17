@@ -33,11 +33,13 @@ void TotalAnalysis_GJets_HT_xToy(){
 
 	// MC signal GJets_HT-xToy ----------------------------------------------
 
+/*
 	GJetsAnalyzer MC_GJets_HT_40To100(0,11);
 	MC_GJets_HT_40To100.Loop();
 
 	GJetsAnalyzer MC_GJets_HT_100To200(0,12);
 	MC_GJets_HT_100To200.Loop();
+*/
 
 	GJetsAnalyzer MC_GJets_HT_200To400(0,13);
 	MC_GJets_HT_200To400.Loop();

@@ -44,7 +44,8 @@ ClassImp(RooMyPdf_signal_1)
  Double_t RooMyPdf_signal_1::evaluate() const 
  { 
    // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE 
-   return (1/alpha * exp(pow(gamma,2)/(2*pow(alpha,2))-((y-beta)/alpha)));
+//   return (1/alpha * exp(pow(gamma,2)/(2*pow(alpha,2))-((y-beta)/alpha)));
+	   return (alpha * exp(-0.5 * pow(((y-beta)/gamma),2)));
  } 
 
 

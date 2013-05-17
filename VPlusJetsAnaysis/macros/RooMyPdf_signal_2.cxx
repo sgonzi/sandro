@@ -44,7 +44,9 @@ ClassImp(RooMyPdf_signal_2)
  Double_t RooMyPdf_signal_2::evaluate() const 
  { 
    // ENTER EXPRESSION IN TERMS OF VARIABLE ARGUMENTS HERE 
-   return (1 - TMath::Freq(gamma/alpha - (y-beta)/gamma)) ; 
+//	return (1 - TMath::Freq(gamma/alpha - (y-beta)/gamma)) ; 
+//	return (alpha * exp(-0.5 * pow(((y-beta)/gamma),2)));
+		return (alpha* exp((y-beta)/gamma));
  } 
 
 

@@ -130,13 +130,13 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
   // Usage is: .L comparestack.C+
   //       ie: comparestack("SelectedPhotons_Pt_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}]", 1);
 
-	string folder = "4_results_2013_05_10/";
+	string folder = "6_results_2013_05_11/";
 	char geo[10] = "barrel"; // "barrel", "endcaps" or "total"
 	bool inv = false; // inverted sigmaietaieta cut
-	bool signal_MAD = true;
+	bool signal_MAD = false;
 	bool background_QCD = false;
 		
-	Int_t itype = 4; // identifica histo con analisi diverse
+	Int_t itype = 6; // identifica histo con analisi diverse
 
 	setMYStyle();
 
@@ -150,9 +150,11 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	Char_t DATA_Run2012C_EcalRecover_11Dec2012_name[100];
 	Char_t DATA_Run2012C_PromptReco_name[100];
 	Char_t DATA_Run2012D_PromptReco_name[100];
-							
+
+/*					
 	Char_t GJets_HT_40To100_name[100];
 	Char_t GJets_HT_100To200_name[100];	
+*/
 	Char_t GJets_HT_200To400_name[100];
 	Char_t GJets_HT_400ToInf_name[100];
 
@@ -202,7 +204,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	string pdf_string = ".pdf";
 	string root_folder = "root_plots/";
 	string root_string = ".root";
-	string inverted = "inverted";
+	string inverted = "_inverted";
 	if (inv) root_string = inverted + root_string;		
 	stringstream ss_r;
 	char root_char[10];
@@ -226,14 +228,18 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	cout << "data file 6 is " << DATA_Run2012C_PromptReco_name << endl;
 	cout << "data file 7 is " << DATA_Run2012D_PromptReco_name << endl;
 
+/*
 	sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
 	sprintf(GJets_HT_100To200_name,"MC_GJets_HT-100To200_histos_%d_%s%s",itype, geo, root_char);	
+*/
 	sprintf(GJets_HT_200To400_name,"MC_GJets_HT-200To400_histos_%d_%s%s",itype, geo, root_char);
 	sprintf(GJets_HT_400ToInf_name,"MC_GJets_HT-400ToInf_histos_%d_%s%s",itype, geo, root_char);
 
 	if(signal_MAD){
+/*
 		cout << "GJets file 11 is: " << GJets_HT_40To100_name << endl;
 		cout << "GJets file 12 is: " << GJets_HT_100To200_name << endl;	
+*/
 		cout << "GJets file 13 is: " << GJets_HT_200To400_name << endl;
 		cout << "GJets file 14 is: " << GJets_HT_400ToInf_name << endl;
 	}
@@ -319,9 +325,11 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	TFile *DATA_Run2012C_EcalRecover_11Dec2012_file = new TFile((address+DATA_Run2012C_EcalRecover_11Dec2012_name).c_str());
 	TFile *DATA_Run2012C_PromptReco_file = new TFile((address+DATA_Run2012C_PromptReco_name).c_str());
 	TFile *DATA_Run2012D_PromptReco_file = new TFile((address+DATA_Run2012D_PromptReco_name).c_str());
-	
+
+/*
 	TFile *GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
 	TFile *GJets_HT_100To200_file = new TFile((address+GJets_HT_100To200_name).c_str());	
+*/
 	TFile *GJets_HT_200To400_file = new TFile((address+GJets_HT_200To400_name).c_str());
 	TFile *GJets_HT_400ToInf_file = new TFile((address+GJets_HT_400ToInf_name).c_str()); 
 
@@ -406,11 +414,13 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 
 				
 	//--- MC signal GJets_HT-xToy ----------------------------------------------
+/*
 	TH1F *GJets_HT_40To100_histo=(TH1F*)GJets_HT_40To100_file->Get(titlehisto);
 	GJets_HT_40To100_histo->Rebin(rebin);
 
 	TH1F *GJets_HT_100To200_histo=(TH1F*)GJets_HT_100To200_file->Get(titlehisto);
 	GJets_HT_100To200_histo->Rebin(rebin);
+*/
 
 	TH1F *GJets_HT_200To400_histo=(TH1F*)GJets_HT_200To400_file->Get(titlehisto);
 	GJets_HT_200To400_histo->Rebin(rebin);
@@ -419,16 +429,20 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	GJets_HT_400ToInf_histo->Rebin(rebin);
 
 	if(signal_MAD){
+/*
 		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
 		cout << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
+*/
 		cout << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
 		cout << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
 	}
 	
-	TH1F *GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_40To100_histo->Clone("GJets_HT_xToy_total_histo");
+	TH1F *GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_200To400_histo->Clone("GJets_HT_xToy_total_histo");
 	//--- GJets_HT_xToy_total_histo->Sumw2();
+/*
+	GJets_HT_xToy_total_histo->Add(GJets_HT_40To100_histo);	
 	GJets_HT_xToy_total_histo->Add(GJets_HT_100To200_histo);
-	GJets_HT_xToy_total_histo->Add(GJets_HT_200To400_histo);	
+*/
 	GJets_HT_xToy_total_histo->Add(GJets_HT_400ToInf_histo);  
 	GJets_HT_xToy_total_histo->SetLineColor(1);
 	GJets_HT_xToy_total_histo->SetFillColor(5);  //for colors comment out Sumw2 in code
@@ -834,8 +848,10 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	DATA_Run2012C_PromptReco_file->Close();
 	DATA_Run2012D_PromptReco_file->Close();
 
+/*
 	GJets_HT_40To100_file->Close();	
 	GJets_HT_100To200_file->Close();	
+*/
 	GJets_HT_200To400_file->Close();
 	GJets_HT_400ToInf_file->Close(); 
 

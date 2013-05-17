@@ -142,7 +142,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 		
 	Int_t itype = 4; // identifica histo con analisi diverse
 
-	string sample = "MC_BACK"; // "MC_SIG", "MC_BACK" or "DATA"
+	string sample = "MC_SIG"; // "MC_SIG", "MC_BACK", "DATA_INV" or "DATA"
 
 	setMYStyle();
 
@@ -156,9 +156,11 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	Char_t DATA_Run2012C_EcalRecover_11Dec2012_name[100];
 	Char_t DATA_Run2012C_PromptReco_name[100];
 	Char_t DATA_Run2012D_PromptReco_name[100];
-							
+
+/*							
 	Char_t GJets_HT_40To100_name[100];
 	Char_t GJets_HT_100To200_name[100];	
+*/
 	Char_t GJets_HT_200To400_name[100];
 	Char_t GJets_HT_400ToInf_name[100];
 
@@ -208,7 +210,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	string pdf_string = ".pdf";
 	string fit_root_folder = "fit_root_plots/";
 	string root_string = ".root";
-	string inverted = "inverted";
+	string inverted = "_inverted";
 	if (inv) root_string = inverted + root_string;		
 	stringstream ss_r;
 	char root_char[10];
@@ -233,14 +235,18 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	cout << "data file 6 is " << DATA_Run2012C_PromptReco_name << endl;
 	cout << "data file 7 is " << DATA_Run2012D_PromptReco_name << endl;
 
+/*
 	sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
 	sprintf(GJets_HT_100To200_name,"MC_GJets_HT-100To200_histos_%d_%s%s",itype, geo, root_char);	
+*/
 	sprintf(GJets_HT_200To400_name,"MC_GJets_HT-200To400_histos_%d_%s%s",itype, geo, root_char);
 	sprintf(GJets_HT_400ToInf_name,"MC_GJets_HT-400ToInf_histos_%d_%s%s",itype, geo, root_char);
 
 	if(signal_MAD){
+/*	
 		cout << "GJets file 11 is: " << GJets_HT_40To100_name << endl;
 		cout << "GJets file 12 is: " << GJets_HT_100To200_name << endl;	
+*/
 		cout << "GJets file 13 is: " << GJets_HT_200To400_name << endl;
 		cout << "GJets file 14 is: " << GJets_HT_400ToInf_name << endl;
 	}
@@ -326,9 +332,11 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	TFile *DATA_Run2012C_EcalRecover_11Dec2012_file = new TFile((address+DATA_Run2012C_EcalRecover_11Dec2012_name).c_str());
 	TFile *DATA_Run2012C_PromptReco_file = new TFile((address+DATA_Run2012C_PromptReco_name).c_str());
 	TFile *DATA_Run2012D_PromptReco_file = new TFile((address+DATA_Run2012D_PromptReco_name).c_str());
-	
+
+/*	
 	TFile *GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
 	TFile *GJets_HT_100To200_file = new TFile((address+GJets_HT_100To200_name).c_str());	
+*/
 	TFile *GJets_HT_200To400_file = new TFile((address+GJets_HT_200To400_name).c_str());
 	TFile *GJets_HT_400ToInf_file = new TFile((address+GJets_HT_400ToInf_name).c_str()); 
 
@@ -371,7 +379,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	root_string = ".root";
 	pdf_string = ".pdf";
 	string sample_mod = "";
-	if (inv) sample_mod = sample + "_" + inverted + "_";
+	if (inv) sample_mod = sample + inverted + "_";
 	else sample_mod = sample + "_";
 	string templates = "template_";
 	string outfilename = (sample_mod + templates + titleh + root_string).c_str();
@@ -425,12 +433,13 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 
 				
 	//--- MC signal GJets_HT-xToy ----------------------------------------------
+/*
 	TH1F *GJets_HT_40To100_histo=(TH1F*)GJets_HT_40To100_file->Get(titlehisto);
 	GJets_HT_40To100_histo->Rebin(rebin);
 
 	TH1F *GJets_HT_100To200_histo=(TH1F*)GJets_HT_100To200_file->Get(titlehisto);
 	GJets_HT_100To200_histo->Rebin(rebin);
-
+*/
 	TH1F *GJets_HT_200To400_histo=(TH1F*)GJets_HT_200To400_file->Get(titlehisto);
 	GJets_HT_200To400_histo->Rebin(rebin);
 
@@ -438,16 +447,20 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	GJets_HT_400ToInf_histo->Rebin(rebin);
 
 	if(signal_MAD){
+/*	
 		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
 		cout << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
+*/
 		cout << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
 		cout << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
 	}
 	
-	TH1F *GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_40To100_histo->Clone("GJets_HT_xToy_total_histo");
+	TH1F *GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_200To400_histo->Clone("GJets_HT_xToy_total_histo");
 	//--- GJets_HT_xToy_total_histo->Sumw2();
+/*	
+	GJets_HT_xToy_total_histo->Add(GJets_HT_40To100_histo);	
 	GJets_HT_xToy_total_histo->Add(GJets_HT_100To200_histo);
-	GJets_HT_xToy_total_histo->Add(GJets_HT_200To400_histo);	
+*/
 	GJets_HT_xToy_total_histo->Add(GJets_HT_400ToInf_histo);  
 	GJets_HT_xToy_total_histo->SetLineColor(1);
 	GJets_HT_xToy_total_histo->SetFillColor(5);  //for colors comment out Sumw2 in code
@@ -679,7 +692,10 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	}	
 	else MC_BACK_total_histo = (TH1F*) QCD_HT_xToy_total_histo->Clone("MC_BACK_total_histo");
 
-
+	// DATA INVERTED total
+	TH1F *DATA_INV_total_histo = (TH1F*) DATA_total_histo->Clone("DATA_INV_total_histo");
+	
+	
 	// ==================================== load Canvas
 
   TCanvas *Canva = new TCanvas(titlehisto,titlehisto);  
@@ -747,6 +763,36 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 		outfile-> Write();
 	}	
 
+	else if (sample == "DATA_INV") {	
+
+		DATA_INV_total_histo->Sumw2();
+
+		Nbins = DATA_INV_total_histo->GetNbinsX();
+
+		if (x_min != -999 && x_max != -999){
+			if (x_max == DATA_INV_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
+			else X_max = x_max - (x_max-x_min)/Nbins;
+			if (x_min == DATA_INV_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
+			else X_min = x_min + (x_max-x_min)/Nbins;
+
+			DATA_INV_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
+		}
+
+		DATA_INV_total_histo->SetMarkerStyle(20);
+		DATA_INV_total_histo->SetMinimum(0.1);
+
+		DATA_INV_total_histo->Draw("E");
+		gPad->SetLogy();
+		DATA_INV_total_histo->Draw("AXIS X+ Y+ SAME");
+		DATA_INV_total_histo->Draw("AXIS SAME");
+		DATA_INV_total_histo->GetXaxis()->SetTitle(namevariable);
+		DATA_INV_total_histo->GetXaxis()->SetTitleSize(0.05);
+		DATA_INV_total_histo->GetYaxis()->SetTitle("Events");
+
+		DATA_INV_total_histo->Write(titleh) ;
+		outfile-> Write();
+	}	
+
 	else {	
 
 		DATA_total_histo->Sumw2();
@@ -788,6 +834,9 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	else if (sample == "MC_BACK") {
 		leg->AddEntry(MC_BACK_total_histo,"MC background","pL");
 	}  
+	else if (sample == "DATA_INV") {
+		leg->AddEntry(DATA_INV_total_histo,"DATA inverted #sigma_{i #eta i #eta}","pL");
+	}  
 	else {
 		leg->AddEntry(DATA_total_histo,"Data","pL");
 	}  
@@ -818,8 +867,10 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	DATA_Run2012C_PromptReco_file->Close();
 	DATA_Run2012D_PromptReco_file->Close();
 
+/*
 	GJets_HT_40To100_file->Close();
 	GJets_HT_100To200_file->Close();	
+*/
 	GJets_HT_200To400_file->Close();
 	GJets_HT_400ToInf_file->Close(); 
 
@@ -860,8 +911,8 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 
 
 void templates_3binPt() {
-	templates("SelectedPhotons_PfIso_1_bin01_", "photon PfIso, 150 < p_{T}^{#gamma} < 300", 8, 0, 30);
-	templates("SelectedPhotons_PfIso_1_bin02_", "photon PfIso, 300 < p_{T}^{#gamma} < 500", 8, 0, 30);
-	templates("SelectedPhotons_PfIso_1_bin03_", "photon PfIso, p_{T}^{#gamma} > 500", 8, 0, 30);
+	templates("SelectedPhotons_PfIso_1_bin01_", "photon PfIso, 150 < p_{T}^{#gamma} < 300", 2, 0, 30);
+	templates("SelectedPhotons_PfIso_1_bin02_", "photon PfIso, 300 < p_{T}^{#gamma} < 500", 2, 0, 30);
+	templates("SelectedPhotons_PfIso_1_bin03_", "photon PfIso, p_{T}^{#gamma} > 500", 2, 0, 30);
 }
 
