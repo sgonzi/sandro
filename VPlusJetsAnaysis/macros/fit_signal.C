@@ -41,6 +41,10 @@
 #include "RooMyPdf_signal_2.h"
 #endif
 
+#if !defined(__CINT__) && !defined(__MAKECINT__)
+#include "FWCore/Utilities/interface/Exception.h"
+#endif
+
 using namespace RooFit;
 
 void setMYStyle() {
@@ -161,13 +165,17 @@ void fit_signal() {
 
 	setMYStyle();
 
-	string folder = "4_results_2013_05_10/";
-	char geo[10] = "barrel"; // "barrel", "endcaps" or "total"
-	bool inv = false; // inverted sigmaietaieta cut
-		
-	string sample = "MC_SIG"; // "MC_SIG", "MC_BACK" "DATA_INV" or "DATA"
+	// ==================================== choose the tools
 
-	string histo = "SelectedPhotons_PfIso_1_bin01_";
+	string folder = "10_results_2013_05_26/"; // analysis folder
+	char geo[10] = "barrel";                 // "barrel", "endcaps" or "total"
+
+	bool inv_sigmaietaieta = false;          // inverted sigmaietaieta cut
+	bool inv_isolation = false;              // inverted isolation set cut
+		
+	string sample = "MC_SIG"; // "MC_SIG", "MC_BACK", "DATA" or "DATA_INV"
+
+	string histo = "SelectedPhotons_PfIso_RhoCorr_1_bin01_"; 
 
 
 	// ==================================== assign files names
@@ -182,7 +190,7 @@ void fit_signal() {
 	string pdf_string = ".pdf";
 	string fit_root_folder = "fit_root_plots/";
 	string root_string = ".root";
-	string inverted = "_inverted";
+	string inverted = "_inv";
 	string fit = "fit_";
 	stringstream ss_r;
 	char root_char[10];
@@ -192,10 +200,33 @@ void fit_signal() {
 	string address = folder + geo_s + out_files;
 
 
+	// ==================================== exception controls
+	
+	if (inv_sigmaietaieta && inv_isolation){
+		cout << "ERROR: you are trying to invert both SIGMAIETAIETA and ISOLATION cuts" << endl << endl;
+		throw cms::Exception("WrongBool");
+	}
+	if (!(Geo == "barrel" || Geo == "endcaps" || Geo == "total")) {
+		cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps)\" or \"total\". You writed: \"" << geo << "\"" << endl << endl;
+		throw cms::Exception("WrongString");
+	}	
+	if (!(sample == "MC_SIG" || sample == "MC_BACK" || sample == "DATA" || sample == "DATA_INV")) {
+		cout << "ERROR: Wrong geometry string (only \"MC_SIG\" or \"MC_BACK\" or \"DATA\" or \"DATA_INV\"). You writed: \"" << geo << "\"" << endl << endl;
+		throw cms::Exception("WrongString");
+	}	
+
+
 	// ==================================== open now the input TFile
 
 	string sample_mod = "";
-	if (inv) sample_mod = sample + "_" + inverted + "_";
+	if (inv_sigmaietaieta && !inv_isolation){
+		string sigmaietaieta_s = "_sigmaietaieta";
+		sample_mod = sample + "_" + inverted + sigmaietaieta_s + "_";
+	}
+	else if (inv_isolation && !inv_sigmaietaieta){
+		string isolation_s = "_isolation";
+		sample_mod = sample + "_" + inverted + isolation_s + "_";
+	}
 	else sample_mod = sample + "_";
 	string templates = "template_";
 

@@ -21,6 +21,9 @@
 #include "TF1.h"
 #include <TLatex.h>
 
+#if !defined(__CINT__) && !defined(__MAKECINT__)
+#include "FWCore/Utilities/interface/Exception.h"
+#endif
 
 void setMYStyle() {
 
@@ -134,17 +137,22 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
   // Usage is: .L comparestack.C+
   //       ie: comparestack("SelectedPhotons_Pt_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}]", 1);
 
-	string folder = "4_results_2013_05_10/";
-	char geo[10] = "barrel"; // "barrel", "endcaps" or "total"
-	bool inv = false; // inverted sigmaietaieta cut
-	bool signal_MAD = true;
-	bool background_QCD = false;
-		
-	Int_t itype = 4; // identifica histo con analisi diverse
-
-	string sample = "MC_SIG"; // "MC_SIG", "MC_BACK", "DATA_INV" or "DATA"
-
 	setMYStyle();
+	
+	// ==================================== choose the tools
+	
+	string folder = "13_results_2013_05_26"; // analysis folder
+	char geo[10] = "barrel";                 // "barrel", "endcaps" or "total"
+
+	bool inv_sigmaietaieta = false;          // inverted sigmaietaieta cut
+	bool inv_isolation = true;              // inverted isolation set cut
+
+	bool signal_MAD = true;                  // true: signal = MADGRAPH; false: signal = PYTHIA
+	bool background_QCD = false;             // true: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
+	                                         // false: background = MADGRAPH not filtered (QCD HT)
+	Int_t itype = 13;                         // it identifies histos with different analysis 
+	
+	string sample = "DATA_INV"; // "MC_SIG", "MC_BACK", "DATA_INV" or "DATA"
 
 
 	// ==================================== definitions
@@ -156,11 +164,10 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	Char_t DATA_Run2012C_EcalRecover_11Dec2012_name[100];
 	Char_t DATA_Run2012C_PromptReco_name[100];
 	Char_t DATA_Run2012D_PromptReco_name[100];
-
-/*							
-	Char_t GJets_HT_40To100_name[100];
+							
+//	Char_t GJets_HT_40To100_name[100];
 	Char_t GJets_HT_100To200_name[100];	
-*/
+
 	Char_t GJets_HT_200To400_name[100];
 	Char_t GJets_HT_400ToInf_name[100];
 
@@ -198,26 +205,45 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	Char_t QCD_HT_1000ToInf_name[100];
 
 
-	// ==================================== assign files names
+	// ==================================== definition side of the code
 	
 	stringstream ss_g;
 	string Geo;
 	ss_g << geo;
 	ss_g >> Geo;
 	string geo_s = Geo + "/";
+	string folder_s = folder + "/";
 	string out_files = "output_files/";
 	string fit_pdf_folder = "fit_pdf_plots/";
 	string pdf_string = ".pdf";
 	string fit_root_folder = "fit_root_plots/";
 	string root_string = ".root";
-	string inverted = "_inverted";
-	if (inv) root_string = inverted + root_string;		
+	string inverted = "_inv";
+	string sigmaietaieta_s = "_sigmaietaieta";
+	string isolation_s = "_isolation";
+	if (inv_sigmaietaieta) root_string = inverted + sigmaietaieta_s + root_string;	
+	if (inv_isolation) root_string = inverted + isolation_s + root_string;
+			
 	stringstream ss_r;
 	char root_char[10];
 	ss_r << root_string;
 	ss_r >> root_char;
-	string address = folder + geo_s + out_files;
+	string address = folder_s + geo_s + out_files;
+
+
+	// ==================================== exception controls
 	
+	if (inv_sigmaietaieta && inv_isolation){
+		cout << "ERROR: you are trying to invert both SIGMAIETAIETA and ISOLATION cuts" << endl << endl;
+		throw cms::Exception("WrongBool");
+	}
+	if (!(Geo == "barrel" || Geo == "endcaps" || Geo == "total")) {
+		cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps\" or \"total\"). You writed: \"" << geo << "\"" << endl << endl;
+		throw cms::Exception("WrongString");
+	}	
+
+
+	// ==================================== assign files names
 			
 	sprintf(DATA_Run2012A_13Jul2012_name,"DATA_Run2012A-13Jul2012_histos_%d_%s%s",itype, geo, root_char);
 	sprintf(DATA_Run2012A_recover_06Aug2012_name,"DATA_Run2012A-recover-06Aug2012_histos_%d_%s%s",itype, geo, root_char);
@@ -235,18 +261,16 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	cout << "data file 6 is " << DATA_Run2012C_PromptReco_name << endl;
 	cout << "data file 7 is " << DATA_Run2012D_PromptReco_name << endl;
 
-/*
-	sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
+//	sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
 	sprintf(GJets_HT_100To200_name,"MC_GJets_HT-100To200_histos_%d_%s%s",itype, geo, root_char);	
-*/
 	sprintf(GJets_HT_200To400_name,"MC_GJets_HT-200To400_histos_%d_%s%s",itype, geo, root_char);
 	sprintf(GJets_HT_400ToInf_name,"MC_GJets_HT-400ToInf_histos_%d_%s%s",itype, geo, root_char);
 
 	if(signal_MAD){
-/*	
-		cout << "GJets file 11 is: " << GJets_HT_40To100_name << endl;
+	
+//		cout << "GJets file 11 is: " << GJets_HT_40To100_name << endl;
 		cout << "GJets file 12 is: " << GJets_HT_100To200_name << endl;	
-*/
+
 		cout << "GJets file 13 is: " << GJets_HT_200To400_name << endl;
 		cout << "GJets file 14 is: " << GJets_HT_400ToInf_name << endl;
 	}
@@ -333,10 +357,9 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	TFile *DATA_Run2012C_PromptReco_file = new TFile((address+DATA_Run2012C_PromptReco_name).c_str());
 	TFile *DATA_Run2012D_PromptReco_file = new TFile((address+DATA_Run2012D_PromptReco_name).c_str());
 
-/*	
-	TFile *GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
+
+//	TFile *GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
 	TFile *GJets_HT_100To200_file = new TFile((address+GJets_HT_100To200_name).c_str());	
-*/
 	TFile *GJets_HT_200To400_file = new TFile((address+GJets_HT_200To400_name).c_str());
 	TFile *GJets_HT_400ToInf_file = new TFile((address+GJets_HT_400ToInf_name).c_str()); 
 
@@ -379,12 +402,20 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	root_string = ".root";
 	pdf_string = ".pdf";
 	string sample_mod = "";
-	if (inv) sample_mod = sample + inverted + "_";
+	if (inv_sigmaietaieta && !inv_isolation){
+		string sigmaietaieta_s = "_sigmaietaieta";
+		sample_mod = sample + "_" + inverted + sigmaietaieta_s + "_";
+	}
+	else if (inv_isolation && !inv_sigmaietaieta){
+		string isolation_s = "_isolation";
+		sample_mod = sample + "_" + inverted + isolation_s + "_";
+	}
 	else sample_mod = sample + "_";
 	string templates = "template_";
 	string outfilename = (sample_mod + templates + titleh + root_string).c_str();
 
 	TFile *outfile = new TFile((address + outfilename).c_str(),"recreate");
+
 
 	// ==================================== load TH1F
 
@@ -436,10 +467,11 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 /*
 	TH1F *GJets_HT_40To100_histo=(TH1F*)GJets_HT_40To100_file->Get(titlehisto);
 	GJets_HT_40To100_histo->Rebin(rebin);
+*/
 
 	TH1F *GJets_HT_100To200_histo=(TH1F*)GJets_HT_100To200_file->Get(titlehisto);
 	GJets_HT_100To200_histo->Rebin(rebin);
-*/
+
 	TH1F *GJets_HT_200To400_histo=(TH1F*)GJets_HT_200To400_file->Get(titlehisto);
 	GJets_HT_200To400_histo->Rebin(rebin);
 
@@ -447,20 +479,19 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	GJets_HT_400ToInf_histo->Rebin(rebin);
 
 	if(signal_MAD){
-/*	
-		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
+
+//		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
 		cout << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
-*/
+
 		cout << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
 		cout << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
 	}
 	
-	TH1F *GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_200To400_histo->Clone("GJets_HT_xToy_total_histo");
+	TH1F *GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_100To200_histo->Clone("GJets_HT_xToy_total_histo");
 	//--- GJets_HT_xToy_total_histo->Sumw2();
-/*	
-	GJets_HT_xToy_total_histo->Add(GJets_HT_40To100_histo);	
-	GJets_HT_xToy_total_histo->Add(GJets_HT_100To200_histo);
-*/
+	
+//	GJets_HT_xToy_total_histo->Add(GJets_HT_40To100_histo);	
+	GJets_HT_xToy_total_histo->Add(GJets_HT_200To400_histo);
 	GJets_HT_xToy_total_histo->Add(GJets_HT_400ToInf_histo);  
 	GJets_HT_xToy_total_histo->SetLineColor(1);
 	GJets_HT_xToy_total_histo->SetFillColor(5);  //for colors comment out Sumw2 in code
@@ -725,7 +756,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 		MC_SIG_total_histo->Draw("AXIS X+ Y+ SAME");
 		MC_SIG_total_histo->Draw("AXIS SAME");
 		MC_SIG_total_histo->GetXaxis()->SetTitle(namevariable);
-		MC_SIG_total_histo->GetXaxis()->SetTitleSize(0.05);
+		MC_SIG_total_histo->GetXaxis()->SetTitleSize(0.045);
 		MC_SIG_total_histo->GetYaxis()->SetTitle("Events");
 
 		MC_SIG_total_histo->Write(titleh) ;
@@ -756,7 +787,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 		MC_BACK_total_histo->Draw("AXIS X+ Y+ SAME");
 		MC_BACK_total_histo->Draw("AXIS SAME");
 		MC_BACK_total_histo->GetXaxis()->SetTitle(namevariable);
-		MC_BACK_total_histo->GetXaxis()->SetTitleSize(0.05);
+		MC_BACK_total_histo->GetXaxis()->SetTitleSize(0.045);
 		MC_BACK_total_histo->GetYaxis()->SetTitle("Events");
 
 		MC_BACK_total_histo->Write(titleh) ;
@@ -786,7 +817,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 		DATA_INV_total_histo->Draw("AXIS X+ Y+ SAME");
 		DATA_INV_total_histo->Draw("AXIS SAME");
 		DATA_INV_total_histo->GetXaxis()->SetTitle(namevariable);
-		DATA_INV_total_histo->GetXaxis()->SetTitleSize(0.05);
+		DATA_INV_total_histo->GetXaxis()->SetTitleSize(0.045);
 		DATA_INV_total_histo->GetYaxis()->SetTitle("Events");
 
 		DATA_INV_total_histo->Write(titleh) ;
@@ -816,7 +847,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 		DATA_total_histo->Draw("AXIS X+ Y+ SAME");
 		DATA_total_histo->Draw("AXIS SAME");
 		DATA_total_histo->GetXaxis()->SetTitle(namevariable);
-		DATA_total_histo->GetXaxis()->SetTitleSize(0.05);
+		DATA_total_histo->GetXaxis()->SetTitleSize(0.045);
 		DATA_total_histo->GetYaxis()->SetTitle("Events");
 
 		DATA_total_histo->Write(titleh) ;
@@ -835,7 +866,15 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 		leg->AddEntry(MC_BACK_total_histo,"MC background","pL");
 	}  
 	else if (sample == "DATA_INV") {
-		leg->AddEntry(DATA_INV_total_histo,"DATA inverted #sigma_{i #eta i #eta}","pL");
+		if (inv_sigmaietaieta && !inv_isolation){
+			leg->AddEntry(DATA_INV_total_histo,"DATA inverted #sigma_{i #eta i #eta}","pL");
+		}
+		else if (!inv_sigmaietaieta && inv_isolation){
+			leg->AddEntry(DATA_INV_total_histo,"DATA inverted isolation","pL");
+		}
+		else {
+			cout << "ERROR: Wrong geometry string (only \"MC_SIG\" or \"MC_BACK\" or \"DATA\" or \"DATA_INV\"). You writed: \"" << geo << "\"" << endl << endl;
+		}
 	}  
 	else {
 		leg->AddEntry(DATA_total_histo,"Data","pL");
@@ -852,8 +891,8 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
   text->SetTextAlign(11);
   text->Draw();
 
-  Canva->SaveAs((folder + geo_s + fit_pdf_folder + sample_mod + titleh + pdf_string).c_str());
-  Canva->SaveAs((folder + geo_s + fit_root_folder + sample_mod + titleh + root_string).c_str());
+  Canva->SaveAs((folder_s + geo_s + fit_pdf_folder + sample_mod + titleh + pdf_string).c_str());
+  Canva->SaveAs((folder_s + geo_s + fit_root_folder + sample_mod + titleh + root_string).c_str());
 	Canva->Close();
 
 
@@ -867,10 +906,9 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	DATA_Run2012C_PromptReco_file->Close();
 	DATA_Run2012D_PromptReco_file->Close();
 
-/*
-	GJets_HT_40To100_file->Close();
+//	GJets_HT_40To100_file->Close();
 	GJets_HT_100To200_file->Close();	
-*/
+
 	GJets_HT_200To400_file->Close();
 	GJets_HT_400ToInf_file->Close(); 
 
@@ -910,9 +948,48 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 }
 
 
-void templates_3binPt() {
-	templates("SelectedPhotons_PfIso_1_bin01_", "photon PfIso, 150 < p_{T}^{#gamma} < 300", 2, 0, 30);
-	templates("SelectedPhotons_PfIso_1_bin02_", "photon PfIso, 300 < p_{T}^{#gamma} < 500", 2, 0, 30);
-	templates("SelectedPhotons_PfIso_1_bin03_", "photon PfIso, p_{T}^{#gamma} > 500", 2, 0, 30);
+void templates_PfIsoChargedHad_RhoCorrected_4binPt() {
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin01_", "PfIsoChargedHad #rho corrected, 150 < p_{T}^{#gamma1} < 300", 1, 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin02_", "PfIsoChargedHad #rho corrected, 300 < p_{T}^{#gamma1} < 500", 1, 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin03_", "PfIsoChargedHad #rho corrected, p_{T}^{#gamma1} > 500", 1, 0, 1.6);
+	//templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_", "PfIsoChargedHad #rho corrected", 1, 0, 1.6);
 }
 
+
+void templates_PfIsoNeutralHad_RhoCorrected_4binPt() {
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin01_", "PfIsoNeutralHad #rho corrected, 150 < p_{T}^{#gamma1} < 300", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin02_", "PfIsoNeutralHad #rho corrected, 300 < p_{T}^{#gamma1} < 500", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin03_", "PfIsoNeutralHad #rho corrected, p_{T}^{#gamma1} > 500", 4, 0, 20);
+	//templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_", "PfIsoNeutralHad #rho corrected", 4, 0, 20);
+}
+
+
+void templates_PfIsoPhoton_RhoCorrected_4binPt() {
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_", "PfIsoPhoton #rho corrected, 150 < p_{T}^{#gamma1} < 300", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_", "PfIsoPhoton #rho corrected, 300 < p_{T}^{#gamma1} < 500", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_", "PfIsoPhoton #rho corrected, p_{T}^{#gamma1} > 500", 1, 0, 6);
+	//templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_", "PfIsoPhoton #rho corrected", 1, 0, 6);
+}
+
+
+void templates_PfIso_RhoCorrected_4binPt() {
+	templates("SelectedPhotons_PfIso_RhoCorr_1_bin01_", "PfIso #rho corrected, 150 < p_{T}^{#gamma} < 300", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_1_bin02_", "PfIso #rho corrected, 300 < p_{T}^{#gamma} < 500", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_1_bin03_", "PfIso #rho corrected, p_{T}^{#gamma} > 500", 4, 0, 20);
+	//templates("SelectedPhotons_PfIso_RhoCorr_1_bin04_", "PfIso #rho corrected", 2, 0, 30);
+}
+
+void templates_id_sieie_4binPt() {
+//	templates("SelectedPhotons_id_sieie_1_bin01_", "#gamma1 #sigma_{i#etai#eta}, 150 < p_{T}^{#gamma} < 300", 2, 0., 0.012);
+	templates("SelectedPhotons_id_sieie_1_bin02_", "#gamma1 #sigma_{i#etai#eta}, 150 < p_{T}^{#gamma} < 300", 2, 0., 0.012);
+	templates("SelectedPhotons_id_sieie_1_bin03_", "#gamma1 #sigma_{i#etai#eta}, 300 < p_{T}^{#gamma} < 500", 2, 0., 0.012);
+	templates("SelectedPhotons_id_sieie_1_bin04_", "#gamma1 #sigma_{i#etai#eta}, p_{T}^{#gamma} > 500", 2, 0., 0.012);
+}
+
+
+void templates_Total() {
+	templates_PfIsoChargedHad_RhoCorrected_4binPt();
+	templates_PfIsoNeutralHad_RhoCorrected_4binPt();
+	templates_PfIsoPhoton_RhoCorrected_4binPt();
+	templates_PfIso_RhoCorrected_4binPt();
+}	

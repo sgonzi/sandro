@@ -28,15 +28,21 @@ Float_t photonPfIso,
 				photonPfIso_RhoCorr_ov_Pt;
 
 
-Float_t	CleanedJetsGEN_N,
+Float_t	/*
+				CleanedJetsGEN_N,
 				CleanedJetsGEN_HT,
+				*/
 				SelectedJetsGEN_N,
 				SelectedJetsGEN_HT,
 				IDIsoPhotons_N,
 				SelectedPhotons_N,
+				/*
 				CleanedJetsLEA_N,
+				*/
 				SelectedJetsLEA_N,
+				/*
 				CleanedJets_N,
+				*/
 				SelectedJets_N,
 				nPhotonsGEN,
 				jetPtGEN_1,
@@ -61,10 +67,14 @@ Float_t	CleanedJetsGEN_N,
 				DeltaPhi_jet1_jet2_N2,
 				DeltaPhi_jet1_jet3_N2,
 				DeltaPhi_jet2_jet3_N2,
+				/*
 				CleanedJets_HT,
+				*/
 				SelectedJets_HT;
 
-vector<float> CleanedJetsGEN_Pt,
+vector<float> /*
+							CleanedJetsGEN_Pt,
+							*/
 							SelectedJetsGEN_Pt,
 							SelectedJetsGEN_Eta,
 							SelectedJetsGEN_Phi,
@@ -118,7 +128,9 @@ vector<float> CleanedJetsGEN_Pt,
 							SelectedPhotons_IsoFPRPhoton_ov_Pt,
 							SelectedPhotons_Bit,
 							SelectedPhotons_TeP_SF,
+							/*
 							CleanedJets_Pt,
+							*/
 							SelectedJets_Pt,
 							SelectedJets_Eta,
 							SelectedJets_Phi,
@@ -150,13 +162,17 @@ TH1F *nPhotonsGEN_,
 		 *photonEtaGEN_,
 		 *photonPhiGEN_,
 		 *photonEGEN_,
+		 /*
 		 *CleanedJetsGEN_N_,
+		 */
 		 *SelectedJetsGEN_N_,
 		 *SelectedJets_PtGEN_1_,
 		 *SelectedJets_EtaGEN_1_,
 		 *SelectedJets_PhiGEN_1_,
 		 *SelectedJets_EGEN_1_,
+		 /*
 		 *CleanedJetsGEN_HT_,
+		 */
 		 *SelectedJetsGEN_HT_,
 		 *HTParSum_,
 		 *pre_photonIsoSumPtDR03GEN_,
@@ -168,7 +184,9 @@ TH1F *nPhotonsGEN_,
 		 *SelectedPhotons_Eta_1_,
 		 *SelectedPhotons_Phi_1_,
 		 *SelectedPhotons_Bit_1_,
+		 /*
 		 *SelectedPhotons_TeP_SF_1_,
+		 */	
 		 *SelectedPhotons_PassConversionVeto_1_,
 		 *SelectedPhotons_PfIsoChargedHad_1_,
 		 *SelectedPhotons_PfIsoNeutralHad_1_,
@@ -213,6 +231,17 @@ TH1F *nPhotonsGEN_,
 		 *SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_,
 		 *SelectedPhotons_PfIso_RhoCorr_1_bin03_,
 		 *SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin03_,
+		 *SelectedPhotons_id_sieie_1_bin04_,		 
+		 *SelectedPhotons_PfIsoChargedHad_1_bin04_,
+		 *SelectedPhotons_PfIsoNeutralHad_1_bin04_,
+		 *SelectedPhotons_PfIsoPhoton_1_bin04_,
+		 *SelectedPhotons_PfIso_1_bin04_,
+		 *SelectedPhotons_PfIso_ov_Pt_1_bin04_,
+		 *SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_,
+		 *SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin04_,
+		 *SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_,
+		 *SelectedPhotons_PfIso_RhoCorr_1_bin04_,
+		 *SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin04_,
 		 *SelectedPhotons_PfIsoPhotons03ForCic_1_,
 		 *SelectedPhotons_PfIsoNeutrals03ForCic_1_,
 		 *SelectedPhotons_PfIsoCharged03ForCicVtx0_1_,
@@ -245,15 +274,21 @@ TH1F *nPhotonsGEN_,
 		 *SelectedPhotons_IsoFPRCharged_ov_Pt_1_,
 		 *SelectedPhotons_IsoFPRNeutral_ov_Pt_1_,
 		 *SelectedPhotons_IsoFPRPhoton_ov_Pt_1_,
+		 /*
 		 *CleanedJetsLEA_N_,
+		 */
 		 *SelectedJetsLEA_N_,
+		 /*
 		 *CleanedJets_N_,
+		 */
 		 *SelectedJets_N_,
 		 *SelectedJets_Pt_1_,
 		 *SelectedJets_Eta_1_,
 		 *SelectedJets_Phi_1_,
 		 *SelectedJets_E_1_,
+		 /*
 		 *CleanedJets_HT_,
+		 */
 		 *SelectedJets_HT_,
 		 *DeltaR_photon1_jet1_N0_,
 		 *DeltaEta_photon1_jet1_N0_,
@@ -307,6 +342,7 @@ TH1F *nPhotonsGEN_,
 		 *DeltaPhi_jet1_jet2_N2_,
 		 *DeltaPhi_jet1_jet3_N2_,
 		 *DeltaPhi_jet2_jet3_N2_,
+		 /*
 		 *CleanedJetsLEA_preHT_N_,
 		 *SelectedJetsLEA_preHT_N_,
 		 *CleanedJets_preHT_N_,
@@ -316,6 +352,7 @@ TH1F *nPhotonsGEN_,
 		 *SelectedJets_preHT_Pt_3_,
 		 *CleanedJets_preHT_HT_,
 		 *SelectedJets_preHT_HT_,
+		 */
 		 *photonIsoSumPtDR03GEN_;
 
 Int_t iSelected0, iSelected1, iSelected2, iSelected3, iSelected4;

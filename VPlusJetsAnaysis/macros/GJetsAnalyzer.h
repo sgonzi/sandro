@@ -6,6 +6,9 @@
 #include <TChain.h>
 #include <TFile.h>
 #include <sstream>
+#if !defined(__CINT__) && !defined(__MAKECINT__)
+#include "FWCore/Utilities/interface/Exception.h"
+#endif
 
 class GJetsAnalyzer {
   public :
@@ -500,6 +503,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		cout << "mysample == 73  -> QCD 500<HT<1000" << endl;
 		cout << "mysample == 74  -> QCD 1000<HT<inf" << endl;
 		cout << "-----------------------------------------------------" << endl;
+		throw cms::Exception("OutRange");
 		}
 		
 // test -----------------------------------------------------------------   
@@ -605,7 +609,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		}
 
 		else if (mysample == 12){
-			file_sample = "GJets_HT-100To200_8TeV-madgraph_v3_Summer12_DR53X-PU_S10_START53_V19-v1.root";
+			file_sample = "GJets_HT-100To200_8TeV-madgraph_Summer12_DR53X-PU_S10_START53_V19-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
