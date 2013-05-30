@@ -17,6 +17,7 @@
 #include <TBox.h>
 #include <TLine.h>
 #include <sstream>
+#include <fstream>
 
 #if !defined(__CINT__) && !defined(__MAKECINT__)
 #include "FWCore/Utilities/interface/Exception.h"
@@ -145,10 +146,11 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	bool inv_sigmaietaieta = false;          // inverted sigmaietaieta cut
 	bool inv_isolation = true;              // inverted isolation set cut
 
-	bool signal_MAD = true;                  // true: signal = MADGRAPH; false: signal = PYTHIA
+	bool signal_MAD = true;                 // true: signal = MADGRAPH; false: signal = PYTHIA
 	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
-	Int_t itype = 13;                         // it identifies histos with different analysis 
+
+	Int_t itype = 13;                        // it identifies histos with different analysis 
 
 
 	// ==================================== definitions
@@ -213,11 +215,23 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	string pdf_string = ".pdf";
 	string root_folder = "root_plots/";
 	string root_string = ".root";
+	string txt_folder = "txt_plots/";
+	string txt_string = ".txt";
 	string inverted = "_inv";
 	string sigmaietaieta_s = "_sigmaietaieta";
 	string isolation_s = "_isolation";
-	if (inv_sigmaietaieta)	root_string = inverted + sigmaietaieta_s + root_string;	
-	if (inv_isolation) root_string = inverted + isolation_s + root_string;
+	if (inv_sigmaietaieta && !inv_isolation) {
+		root_string = inverted + sigmaietaieta_s + root_string;	
+		txt_string = inverted + sigmaietaieta_s + txt_string;
+	}	
+	else if (!inv_sigmaietaieta && inv_isolation) {
+		root_string = inverted + isolation_s + root_string;
+		txt_string = inverted + isolation_s + txt_string;
+		}		
+	else {
+		root_string = root_string;
+		txt_string = txt_string;
+	}	
 	
 	stringstream ss_r;
 	char root_char[10];
@@ -344,51 +358,90 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 
 	// ==================================== load TFiles
 
-	TFile *DATA_Run2012A_13Jul2012_file = new TFile((address+DATA_Run2012A_13Jul2012_name).c_str());
-	TFile *DATA_Run2012A_recover_06Aug2012_file = new TFile((address+DATA_Run2012A_recover_06Aug2012_name).c_str());
-	TFile *DATA_Run2012B_13Jul2012_file = new TFile((address+DATA_Run2012B_13Jul2012_name).c_str());
-	TFile *DATA_Run2012C_24Aug2012_file = new TFile((address+DATA_Run2012C_24Aug2012_name).c_str());
-	TFile *DATA_Run2012C_EcalRecover_11Dec2012_file = new TFile((address+DATA_Run2012C_EcalRecover_11Dec2012_name).c_str());
-	TFile *DATA_Run2012C_PromptReco_file = new TFile((address+DATA_Run2012C_PromptReco_name).c_str());
-	TFile *DATA_Run2012D_PromptReco_file = new TFile((address+DATA_Run2012D_PromptReco_name).c_str());
+	TFile *DATA_Run2012A_13Jul2012_file;
+	TFile *DATA_Run2012A_recover_06Aug2012_file;
+	TFile *DATA_Run2012B_13Jul2012_file;
+	TFile *DATA_Run2012C_24Aug2012_file;
+	TFile *DATA_Run2012C_EcalRecover_11Dec2012_file;
+	TFile *DATA_Run2012C_PromptReco_file;
+	TFile *DATA_Run2012D_PromptReco_file;
+	DATA_Run2012A_13Jul2012_file = new TFile((address+DATA_Run2012A_13Jul2012_name).c_str());
+  DATA_Run2012A_recover_06Aug2012_file = new TFile((address+DATA_Run2012A_recover_06Aug2012_name).c_str());
+	DATA_Run2012B_13Jul2012_file = new TFile((address+DATA_Run2012B_13Jul2012_name).c_str());
+	DATA_Run2012C_24Aug2012_file = new TFile((address+DATA_Run2012C_24Aug2012_name).c_str());
+	DATA_Run2012C_EcalRecover_11Dec2012_file = new TFile((address+DATA_Run2012C_EcalRecover_11Dec2012_name).c_str());
+	DATA_Run2012C_PromptReco_file = new TFile((address+DATA_Run2012C_PromptReco_name).c_str());
+	DATA_Run2012D_PromptReco_file = new TFile((address+DATA_Run2012D_PromptReco_name).c_str());
 
-//	TFile *GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
-	TFile *GJets_HT_100To200_file = new TFile((address+GJets_HT_100To200_name).c_str());	
-	TFile *GJets_HT_200To400_file = new TFile((address+GJets_HT_200To400_name).c_str());
-	TFile *GJets_HT_400ToInf_file = new TFile((address+GJets_HT_400ToInf_name).c_str()); 
+//	TFile *GJets_HT_40To100_file;
+	TFile *GJets_HT_100To200_file;	
+	TFile *GJets_HT_200To400_file;
+	TFile *GJets_HT_400ToInf_file;
+//GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
+	GJets_HT_100To200_file = new TFile((address+GJets_HT_100To200_name).c_str());	
+	GJets_HT_200To400_file = new TFile((address+GJets_HT_200To400_name).c_str());
+	GJets_HT_400ToInf_file = new TFile((address+GJets_HT_400ToInf_name).c_str()); 
 
-	TFile *G_Pt_15to30_file = new TFile((address+G_Pt_15to30_name).c_str());
-	TFile *G_Pt_30to50_file = new TFile((address+G_Pt_30to50_name).c_str());
-	TFile *G_Pt_50to80_file = new TFile((address+G_Pt_50to80_name).c_str());
-	TFile *G_Pt_80to120_file = new TFile((address+G_Pt_80to120_name).c_str());
-	TFile *G_Pt_120to170_file = new TFile((address+G_Pt_120to170_name).c_str());
-	TFile *G_Pt_170to300_file = new TFile((address+G_Pt_170to300_name).c_str());
-	TFile *G_Pt_300to470_file = new TFile((address+G_Pt_300to470_name).c_str());
-	TFile *G_Pt_470to800_file = new TFile((address+G_Pt_470to800_name).c_str());
-	TFile *G_Pt_800to1400_file = new TFile((address+G_Pt_800to1400_name).c_str());
-	TFile *G_Pt_1400to1800_file = new TFile((address+G_Pt_1400to1800_name).c_str());	
-	TFile *G_Pt_1800_file = new TFile((address+G_Pt_1800_name).c_str());
+	TFile *G_Pt_15to30_file;
+	TFile *G_Pt_30to50_file;
+	TFile *G_Pt_50to80_file;
+	TFile *G_Pt_80to120_file;
+	TFile *G_Pt_120to170_file;
+	TFile *G_Pt_170to300_file;
+	TFile *G_Pt_300to470_file;
+	TFile *G_Pt_470to800_file;
+	TFile *G_Pt_800to1400_file;
+	TFile *G_Pt_1400to1800_file;
+	TFile *G_Pt_1800_file;
+	G_Pt_15to30_file = new TFile((address+G_Pt_15to30_name).c_str());
+	G_Pt_30to50_file = new TFile((address+G_Pt_30to50_name).c_str());
+	G_Pt_50to80_file = new TFile((address+G_Pt_50to80_name).c_str());
+	G_Pt_80to120_file = new TFile((address+G_Pt_80to120_name).c_str());
+	G_Pt_120to170_file = new TFile((address+G_Pt_120to170_name).c_str());
+	G_Pt_170to300_file = new TFile((address+G_Pt_170to300_name).c_str());
+	G_Pt_300to470_file = new TFile((address+G_Pt_300to470_name).c_str());
+	G_Pt_470to800_file = new TFile((address+G_Pt_470to800_name).c_str());
+	G_Pt_800to1400_file = new TFile((address+G_Pt_800to1400_name).c_str());
+	G_Pt_1400to1800_file = new TFile((address+G_Pt_1400to1800_name).c_str());	
+	G_Pt_1800_file = new TFile((address+G_Pt_1800_name).c_str());
 
-	TFile *DiPhotonJets_file = new TFile((address+DiPhotonJets_name).c_str());
+	TFile *DiPhotonJets_file;
+	DiPhotonJets_file = new TFile((address+DiPhotonJets_name).c_str());
 	
-	TFile *QCD_Pt_20_30_EMEnriched_file = new TFile((address+QCD_Pt_20_30_EMEnriched_name).c_str()); 
-	TFile *QCD_Pt_30_80_EMEnriched_file = new TFile((address+QCD_Pt_30_80_EMEnriched_name).c_str());
-	TFile *QCD_Pt_80_170_EMEnriched_file = new TFile((address+QCD_Pt_80_170_EMEnriched_name).c_str());
-	TFile *QCD_Pt_170_250_EMEnriched_file = new TFile((address+QCD_Pt_170_250_EMEnriched_name).c_str());
-	TFile *QCD_Pt_250_350_EMEnriched_file = new TFile((address+QCD_Pt_250_350_EMEnriched_name).c_str());
-	TFile *QCD_Pt_350_EMEnriched_file = new TFile((address+QCD_Pt_350_EMEnriched_name).c_str());
+	TFile *QCD_Pt_20_30_EMEnriched_file; 
+	TFile *QCD_Pt_30_80_EMEnriched_file;
+	TFile *QCD_Pt_80_170_EMEnriched_file;
+	TFile *QCD_Pt_170_250_EMEnriched_file;
+	TFile *QCD_Pt_250_350_EMEnriched_file;
+	TFile *QCD_Pt_350_EMEnriched_file;
+	QCD_Pt_20_30_EMEnriched_file = new TFile((address+QCD_Pt_20_30_EMEnriched_name).c_str()); 
+	QCD_Pt_30_80_EMEnriched_file = new TFile((address+QCD_Pt_30_80_EMEnriched_name).c_str());
+	QCD_Pt_80_170_EMEnriched_file = new TFile((address+QCD_Pt_80_170_EMEnriched_name).c_str());
+	QCD_Pt_170_250_EMEnriched_file = new TFile((address+QCD_Pt_170_250_EMEnriched_name).c_str());
+	QCD_Pt_250_350_EMEnriched_file = new TFile((address+QCD_Pt_250_350_EMEnriched_name).c_str());
+	QCD_Pt_350_EMEnriched_file = new TFile((address+QCD_Pt_350_EMEnriched_name).c_str());
 
-	TFile *QCD_Pt_20_30_BCtoE_file = new TFile((address+QCD_Pt_20_30_BCtoE_name).c_str()); 
-	TFile *QCD_Pt_30_80_BCtoE_file = new TFile((address+QCD_Pt_30_80_BCtoE_name).c_str());
-	TFile *QCD_Pt_80_170_BCtoE_file = new TFile((address+QCD_Pt_80_170_BCtoE_name).c_str());
-	TFile *QCD_Pt_170_250_BCtoE_file = new TFile((address+QCD_Pt_170_250_BCtoE_name).c_str());
-	TFile *QCD_Pt_250_350_BCtoE_file = new TFile((address+QCD_Pt_250_350_BCtoE_name).c_str());
-	TFile *QCD_Pt_350_BCtoE_file = new TFile((address+QCD_Pt_350_BCtoE_name).c_str());
+	TFile *QCD_Pt_20_30_BCtoE_file; 
+	TFile *QCD_Pt_30_80_BCtoE_file;
+	TFile *QCD_Pt_80_170_BCtoE_file;
+	TFile *QCD_Pt_170_250_BCtoE_file;
+	TFile *QCD_Pt_250_350_BCtoE_file;
+	TFile *QCD_Pt_350_BCtoE_file;
+	QCD_Pt_20_30_BCtoE_file = new TFile((address+QCD_Pt_20_30_BCtoE_name).c_str()); 
+	QCD_Pt_30_80_BCtoE_file = new TFile((address+QCD_Pt_30_80_BCtoE_name).c_str());
+	QCD_Pt_80_170_BCtoE_file = new TFile((address+QCD_Pt_80_170_BCtoE_name).c_str());
+	QCD_Pt_170_250_BCtoE_file = new TFile((address+QCD_Pt_170_250_BCtoE_name).c_str());
+	QCD_Pt_250_350_BCtoE_file = new TFile((address+QCD_Pt_250_350_BCtoE_name).c_str());
+	QCD_Pt_350_BCtoE_file = new TFile((address+QCD_Pt_350_BCtoE_name).c_str());
 
-	TFile *QCD_HT_100To250_file = new TFile((address+QCD_HT_100To250_name).c_str());  
-	TFile *QCD_HT_250To500_file = new TFile((address+QCD_HT_250To500_name).c_str());   
-	TFile *QCD_HT_500To1000_file = new TFile((address+QCD_HT_500To1000_name).c_str()); 
-	TFile *QCD_HT_1000ToInf_file = new TFile((address+QCD_HT_1000ToInf_name).c_str()); 
+	TFile *QCD_HT_100To250_file;  
+	TFile *QCD_HT_250To500_file;   
+	TFile *QCD_HT_500To1000_file; 
+	TFile *QCD_HT_1000ToInf_file;
+	QCD_HT_100To250_file = new TFile((address+QCD_HT_100To250_name).c_str());  
+	QCD_HT_250To500_file = new TFile((address+QCD_HT_250To500_name).c_str());   
+	QCD_HT_500To1000_file = new TFile((address+QCD_HT_500To1000_name).c_str()); 
+	QCD_HT_1000ToInf_file = new TFile((address+QCD_HT_1000ToInf_name).c_str()); 
 
 
 	// ==================================== load TH1F
@@ -398,26 +451,78 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	strcpy(titlehisto,titleh);
 	cout << "Analyzing Histogram " << titlehisto << endl;
 
+	TH1F *DATA_Run2012A_13Jul2012_histo;
+	TH1F *DATA_Run2012A_recover_06Aug2012_histo;
+	TH1F *DATA_Run2012B_13Jul2012_histo;
+	TH1F *DATA_Run2012C_24Aug2012_histo;
+	TH1F *DATA_Run2012C_EcalRecover_11Dec2012_histo;
+	TH1F *DATA_Run2012C_PromptReco_histo;
+	TH1F *DATA_Run2012D_PromptReco_histo;
+
+//	TH1F *GJets_HT_40To100_histo;
+	TH1F *GJets_HT_100To200_histo;
+	TH1F *GJets_HT_200To400_histo;
+	TH1F *GJets_HT_400ToInf_histo;
+	TH1F *GJets_HT_xToy_total_histo;
+
+	TH1F *G_Pt_15to30_histo;
+	TH1F *G_Pt_30to50_histo;
+	TH1F *G_Pt_50to80_histo;
+	TH1F *G_Pt_80to120_histo;
+	TH1F *G_Pt_120to170_histo;
+	TH1F *G_Pt_170to300_histo;
+	TH1F *G_Pt_300to470_histo;
+	TH1F *G_Pt_470to800_histo;
+	TH1F *G_Pt_800to1400_histo;
+	TH1F *G_Pt_1400to1800_histo;
+	TH1F *G_Pt_1800_histo;
+	TH1F *G_Pt_XtoY_total_histo;
+
+	TH1F *DiPhotonJets_histo;
+	TH1F *DiPhotonJets_total_histo;
+
+	TH1F *QCD_Pt_20_30_EMEnriched_histo;
+	TH1F *QCD_Pt_30_80_EMEnriched_histo;
+	TH1F *QCD_Pt_80_170_EMEnriched_histo;
+	TH1F *QCD_Pt_170_250_EMEnriched_histo;
+	TH1F *QCD_Pt_250_350_EMEnriched_histo;
+	TH1F *QCD_Pt_350_EMEnriched_histo;
+	TH1F *QCD_Pt_x_y_EMEnriched_total_histo;
+
+	TH1F *QCD_Pt_20_30_BCtoE_histo;
+	TH1F *QCD_Pt_30_80_BCtoE_histo;
+	TH1F *QCD_Pt_80_170_BCtoE_histo;
+	TH1F *QCD_Pt_170_250_BCtoE_histo;
+	TH1F *QCD_Pt_250_350_BCtoE_histo;
+	TH1F *QCD_Pt_350_BCtoE_histo;;
+	TH1F *QCD_Pt_x_y_BCtoE_total_histo;
+
+	TH1F *QCD_HT_100To250_histo;
+	TH1F *QCD_HT_250To500_histo;
+	TH1F *QCD_HT_500To1000_histo;
+	TH1F *QCD_HT_1000ToInf_histo;
+	TH1F *QCD_HT_xToy_total_histo;	
+	
 	//--- data -----------------------------------------------------------------
-	TH1F *DATA_Run2012A_13Jul2012_histo=(TH1F*)DATA_Run2012A_13Jul2012_file->Get(titlehisto);
+	DATA_Run2012A_13Jul2012_histo=(TH1F*)DATA_Run2012A_13Jul2012_file->Get(titlehisto);
 	DATA_Run2012A_13Jul2012_histo->Rebin(rebin);
 
-	TH1F *DATA_Run2012A_recover_06Aug2012_histo=(TH1F*)DATA_Run2012A_recover_06Aug2012_file->Get(titlehisto);
+	DATA_Run2012A_recover_06Aug2012_histo=(TH1F*)DATA_Run2012A_recover_06Aug2012_file->Get(titlehisto);
 	DATA_Run2012A_recover_06Aug2012_histo->Rebin(rebin);
 
-	TH1F *DATA_Run2012B_13Jul2012_histo=(TH1F*)DATA_Run2012B_13Jul2012_file->Get(titlehisto);
+	DATA_Run2012B_13Jul2012_histo=(TH1F*)DATA_Run2012B_13Jul2012_file->Get(titlehisto);
 	DATA_Run2012B_13Jul2012_histo->Rebin(rebin);
 
-	TH1F *DATA_Run2012C_24Aug2012_histo=(TH1F*)DATA_Run2012C_24Aug2012_file->Get(titlehisto);
+	DATA_Run2012C_24Aug2012_histo=(TH1F*)DATA_Run2012C_24Aug2012_file->Get(titlehisto);
 	DATA_Run2012C_24Aug2012_histo->Rebin(rebin);
 
-	TH1F *DATA_Run2012C_EcalRecover_11Dec2012_histo=(TH1F*)DATA_Run2012C_EcalRecover_11Dec2012_file->Get(titlehisto);
+	DATA_Run2012C_EcalRecover_11Dec2012_histo=(TH1F*)DATA_Run2012C_EcalRecover_11Dec2012_file->Get(titlehisto);
 	DATA_Run2012C_EcalRecover_11Dec2012_histo->Rebin(rebin);
 
-	TH1F *DATA_Run2012C_PromptReco_histo=(TH1F*)DATA_Run2012C_PromptReco_file->Get(titlehisto);
+	DATA_Run2012C_PromptReco_histo=(TH1F*)DATA_Run2012C_PromptReco_file->Get(titlehisto);
 	DATA_Run2012C_PromptReco_histo->Rebin(rebin);
 
-	TH1F *DATA_Run2012D_PromptReco_histo=(TH1F*)DATA_Run2012D_PromptReco_file->Get(titlehisto);
+	DATA_Run2012D_PromptReco_histo=(TH1F*)DATA_Run2012D_PromptReco_file->Get(titlehisto);
 	DATA_Run2012D_PromptReco_histo->Rebin(rebin);
 
 	cout << "DATA_Run2012A_13Jul2012 entries = " << DATA_Run2012A_13Jul2012_histo->Integral() << endl;  
@@ -436,75 +541,74 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	DATA_total_histo->Add(DATA_Run2012C_PromptReco_histo);
 	DATA_total_histo->Add(DATA_Run2012D_PromptReco_histo);
 
+
+	if(signal_MAD){	
 				
-	//--- MC signal GJets_HT-xToy ----------------------------------------------
+		//--- MC signal GJets_HT-xToy ----------------------------------------------
 /*
-	TH1F *GJets_HT_40To100_histo=(TH1F*)GJets_HT_40To100_file->Get(titlehisto);
-	GJets_HT_40To100_histo->Rebin(rebin);
+		GJets_HT_40To100_histo=(TH1F*)GJets_HT_40To100_file->Get(titlehisto);
+		GJets_HT_40To100_histo->Rebin(rebin);
 */
+		
+		GJets_HT_100To200_histo=(TH1F*)GJets_HT_100To200_file->Get(titlehisto);
+		GJets_HT_100To200_histo->Rebin(rebin);
 
-	TH1F *GJets_HT_100To200_histo=(TH1F*)GJets_HT_100To200_file->Get(titlehisto);
-	GJets_HT_100To200_histo->Rebin(rebin);
+		GJets_HT_200To400_histo=(TH1F*)GJets_HT_200To400_file->Get(titlehisto);
+		GJets_HT_200To400_histo->Rebin(rebin);
 
-	TH1F *GJets_HT_200To400_histo=(TH1F*)GJets_HT_200To400_file->Get(titlehisto);
-	GJets_HT_200To400_histo->Rebin(rebin);
-
-	TH1F *GJets_HT_400ToInf_histo=(TH1F*)GJets_HT_400ToInf_file->Get(titlehisto);
-	GJets_HT_400ToInf_histo->Rebin(rebin);
-
-	if(signal_MAD){
+		GJets_HT_400ToInf_histo=(TH1F*)GJets_HT_400ToInf_file->Get(titlehisto);
+		GJets_HT_400ToInf_histo->Rebin(rebin);
 
 //		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
 		cout << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
 		cout << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
 		cout << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
+
+		GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_100To200_histo->Clone("GJets_HT_xToy_total_histo");
+		//--- GJets_HT_xToy_total_histo->Sumw2();
+//		GJets_HT_xToy_total_histo->Add(GJets_HT_40To100_histo);	
+		GJets_HT_xToy_total_histo->Add(GJets_HT_200To400_histo);
+		GJets_HT_xToy_total_histo->Add(GJets_HT_400ToInf_histo);  
+		GJets_HT_xToy_total_histo->SetLineColor(1);
+		GJets_HT_xToy_total_histo->SetFillColor(5);  //for colors comment out Sumw2 in code
 	}
+
+	else {
 	
-	TH1F *GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_100To200_histo->Clone("GJets_HT_xToy_total_histo");
-	//--- GJets_HT_xToy_total_histo->Sumw2();
+		// MC signal G_Pt-XtoY --------------------------------------------------	
+		G_Pt_15to30_histo=(TH1F*)G_Pt_15to30_file->Get(titlehisto);
+		G_Pt_15to30_histo->Rebin(rebin);
 
-//	GJets_HT_xToy_total_histo->Add(GJets_HT_40To100_histo);	
-	GJets_HT_xToy_total_histo->Add(GJets_HT_200To400_histo);
-	GJets_HT_xToy_total_histo->Add(GJets_HT_400ToInf_histo);  
-	GJets_HT_xToy_total_histo->SetLineColor(1);
-	GJets_HT_xToy_total_histo->SetFillColor(5);  //for colors comment out Sumw2 in code
+		G_Pt_30to50_histo=(TH1F*)G_Pt_30to50_file->Get(titlehisto);
+		G_Pt_30to50_histo->Rebin(rebin);
 
+		G_Pt_50to80_histo=(TH1F*)G_Pt_50to80_file->Get(titlehisto);
+		G_Pt_50to80_histo->Rebin(rebin);
 
-	// MC signal G_Pt-XtoY --------------------------------------------------
-	TH1F *G_Pt_15to30_histo=(TH1F*)G_Pt_15to30_file->Get(titlehisto);
-	G_Pt_15to30_histo->Rebin(rebin);
+		G_Pt_80to120_histo=(TH1F*)G_Pt_80to120_file->Get(titlehisto);
+		G_Pt_80to120_histo->Rebin(rebin);
 
-	TH1F *G_Pt_30to50_histo=(TH1F*)G_Pt_30to50_file->Get(titlehisto);
-	G_Pt_30to50_histo->Rebin(rebin);
-
-	TH1F *G_Pt_50to80_histo=(TH1F*)G_Pt_50to80_file->Get(titlehisto);
-	G_Pt_50to80_histo->Rebin(rebin);
-
-	TH1F *G_Pt_80to120_histo=(TH1F*)G_Pt_80to120_file->Get(titlehisto);
-	G_Pt_80to120_histo->Rebin(rebin);
-
-	TH1F *G_Pt_120to170_histo=(TH1F*)G_Pt_120to170_file->Get(titlehisto);
-	G_Pt_120to170_histo->Rebin(rebin);
+		G_Pt_120to170_histo=(TH1F*)G_Pt_120to170_file->Get(titlehisto);
+		G_Pt_120to170_histo->Rebin(rebin);
 	
-	TH1F *G_Pt_170to300_histo=(TH1F*)G_Pt_170to300_file->Get(titlehisto);
-	G_Pt_170to300_histo->Rebin(rebin);
+		G_Pt_170to300_histo=(TH1F*)G_Pt_170to300_file->Get(titlehisto);
+		G_Pt_170to300_histo->Rebin(rebin);
 
-	TH1F *G_Pt_300to470_histo=(TH1F*)G_Pt_300to470_file->Get(titlehisto);
-	G_Pt_300to470_histo->Rebin(rebin);
+		G_Pt_300to470_histo=(TH1F*)G_Pt_300to470_file->Get(titlehisto);
+		G_Pt_300to470_histo->Rebin(rebin);
 
-	TH1F *G_Pt_470to800_histo=(TH1F*)G_Pt_470to800_file->Get(titlehisto);
-	G_Pt_470to800_histo->Rebin(rebin);
+		G_Pt_470to800_histo=(TH1F*)G_Pt_470to800_file->Get(titlehisto);
+		G_Pt_470to800_histo->Rebin(rebin);
 
-	TH1F *G_Pt_800to1400_histo=(TH1F*)G_Pt_800to1400_file->Get(titlehisto);
-	G_Pt_800to1400_histo->Rebin(rebin);
+		G_Pt_800to1400_histo=(TH1F*)G_Pt_800to1400_file->Get(titlehisto);
+		G_Pt_800to1400_histo->Rebin(rebin);
 
-	TH1F *G_Pt_1400to1800_histo=(TH1F*)G_Pt_1400to1800_file->Get(titlehisto);
-	G_Pt_1400to1800_histo->Rebin(rebin);
+		G_Pt_1400to1800_histo=(TH1F*)G_Pt_1400to1800_file->Get(titlehisto);
+		G_Pt_1400to1800_histo->Rebin(rebin);
 
-	TH1F *G_Pt_1800_histo=(TH1F*)G_Pt_1800_file->Get(titlehisto);
-	G_Pt_1800_histo->Rebin(rebin);
+		G_Pt_1800_histo=(TH1F*)G_Pt_1800_file->Get(titlehisto);
+		G_Pt_1800_histo->Rebin(rebin);
 
-	if(!signal_MAD){
 		cout << "G_Pt_15to30 entries = " << G_Pt_15to30_histo->Integral() << endl;
 		cout << "G_Pt_30to50 entries = " << G_Pt_30to50_histo->Integral() << endl;
 		cout << "G_Pt_50to80 entries = " << G_Pt_50to80_histo->Integral() << endl;
@@ -516,141 +620,138 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 		cout << "G_Pt_800to1400 entries = " << G_Pt_800to1400_histo->Integral() << endl;
 		cout << "G_Pt_1400to1800 entries = " << G_Pt_1400to1800_histo->Integral() << endl;
 		cout << "G_Pt_1800 entries = " << G_Pt_1800_histo->Integral() << endl;
+	
+		G_Pt_XtoY_total_histo = (TH1F*) G_Pt_15to30_histo->Clone("G_Pt_XtoY_total_histo");
+		//--- G_Pt_XtoY_total_histo->Sumw2();
+		G_Pt_XtoY_total_histo->Add(G_Pt_30to50_histo);
+		G_Pt_XtoY_total_histo->Add(G_Pt_50to80_histo);  
+		G_Pt_XtoY_total_histo->Add(G_Pt_80to120_histo);  
+		G_Pt_XtoY_total_histo->Add(G_Pt_120to170_histo);  
+		G_Pt_XtoY_total_histo->Add(G_Pt_170to300_histo);  
+		G_Pt_XtoY_total_histo->Add(G_Pt_300to470_histo);  
+		G_Pt_XtoY_total_histo->Add(G_Pt_470to800_histo);  		
+		G_Pt_XtoY_total_histo->Add(G_Pt_800to1400_histo);
+		G_Pt_XtoY_total_histo->Add(G_Pt_1400to1800_histo);	  	
+		G_Pt_XtoY_total_histo->Add(G_Pt_1800_histo);	  	
+		G_Pt_XtoY_total_histo->SetLineColor(1);
+		G_Pt_XtoY_total_histo->SetFillColor(kGreen+2);  //for colors comment out Sumw2 in code
 	}
 	
-	TH1F *G_Pt_XtoY_total_histo = (TH1F*) G_Pt_15to30_histo->Clone("G_Pt_XtoY_total_histo");
-	//--- G_Pt_XtoY_total_histo->Sumw2();
-	G_Pt_XtoY_total_histo->Add(G_Pt_30to50_histo);
-	G_Pt_XtoY_total_histo->Add(G_Pt_50to80_histo);  
-	G_Pt_XtoY_total_histo->Add(G_Pt_80to120_histo);  
-	G_Pt_XtoY_total_histo->Add(G_Pt_120to170_histo);  
-	G_Pt_XtoY_total_histo->Add(G_Pt_170to300_histo);  
-	G_Pt_XtoY_total_histo->Add(G_Pt_300to470_histo);  
-	G_Pt_XtoY_total_histo->Add(G_Pt_470to800_histo);  		
-	G_Pt_XtoY_total_histo->Add(G_Pt_800to1400_histo);
-	G_Pt_XtoY_total_histo->Add(G_Pt_1400to1800_histo);	  	
-	G_Pt_XtoY_total_histo->Add(G_Pt_1800_histo);	  	
-	G_Pt_XtoY_total_histo->SetLineColor(1);
-	G_Pt_XtoY_total_histo->SetFillColor(kGreen+2);  //for colors comment out Sumw2 in code
-
-
 	// MC signal DiPhotonJets --------------------------------------------------
-	TH1F *DiPhotonJets_histo=(TH1F*)DiPhotonJets_file->Get(titlehisto);
+	DiPhotonJets_histo=(TH1F*)DiPhotonJets_file->Get(titlehisto);
 	DiPhotonJets_histo->Rebin(rebin);
 	
 	cout << "DiPhotonJets entries = " << DiPhotonJets_histo->Integral() << endl;
 
-	TH1F *DiPhotonJets_total_histo = (TH1F*) DiPhotonJets_histo->Clone("DiPhotonJets_total_histo");
+	DiPhotonJets_total_histo = (TH1F*) DiPhotonJets_histo->Clone("DiPhotonJets_total_histo");
 	//--- DiPhotonJets_total_histo->Sumw2();
 	DiPhotonJets_total_histo->SetLineColor(1);
 	DiPhotonJets_total_histo->SetFillColor(kGray+2);  //for colors comment out Sumw2 in code
 
-
-	//--- MC background QCD_Pt_x_y EMEnriched ----------------------------------
-	TH1F *QCD_Pt_20_30_EMEnriched_histo=(TH1F*)QCD_Pt_20_30_EMEnriched_file->Get(titlehisto);
-	QCD_Pt_20_30_EMEnriched_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_30_80_EMEnriched_histo=(TH1F*)QCD_Pt_30_80_EMEnriched_file->Get(titlehisto);
-	QCD_Pt_30_80_EMEnriched_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_80_170_EMEnriched_histo=(TH1F*)QCD_Pt_80_170_EMEnriched_file->Get(titlehisto);
-	QCD_Pt_80_170_EMEnriched_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_170_250_EMEnriched_histo=(TH1F*)QCD_Pt_170_250_EMEnriched_file->Get(titlehisto);
-	QCD_Pt_170_250_EMEnriched_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_250_350_EMEnriched_histo=(TH1F*)QCD_Pt_250_350_EMEnriched_file->Get(titlehisto);
-	QCD_Pt_250_350_EMEnriched_histo->Rebin(rebin);
-
-	TH1F *QCD_Pt_350_EMEnriched_histo=(TH1F*)QCD_Pt_350_EMEnriched_file->Get(titlehisto);
-	QCD_Pt_350_EMEnriched_histo->Rebin(rebin);
-
 	if (!background_QCD){
+	
+		//--- MC background QCD_Pt_x_y EMEnriched ----------------------------------	
+		QCD_Pt_20_30_EMEnriched_histo=(TH1F*)QCD_Pt_20_30_EMEnriched_file->Get(titlehisto);
+		QCD_Pt_20_30_EMEnriched_histo->Rebin(rebin);
+
+		QCD_Pt_30_80_EMEnriched_histo=(TH1F*)QCD_Pt_30_80_EMEnriched_file->Get(titlehisto);
+		QCD_Pt_30_80_EMEnriched_histo->Rebin(rebin);
+
+		QCD_Pt_80_170_EMEnriched_histo=(TH1F*)QCD_Pt_80_170_EMEnriched_file->Get(titlehisto);
+		QCD_Pt_80_170_EMEnriched_histo->Rebin(rebin);
+
+		QCD_Pt_170_250_EMEnriched_histo=(TH1F*)QCD_Pt_170_250_EMEnriched_file->Get(titlehisto);
+		QCD_Pt_170_250_EMEnriched_histo->Rebin(rebin);
+
+		QCD_Pt_250_350_EMEnriched_histo=(TH1F*)QCD_Pt_250_350_EMEnriched_file->Get(titlehisto);
+		QCD_Pt_250_350_EMEnriched_histo->Rebin(rebin);
+
+		QCD_Pt_350_EMEnriched_histo=(TH1F*)QCD_Pt_350_EMEnriched_file->Get(titlehisto);
+		QCD_Pt_350_EMEnriched_histo->Rebin(rebin);
+
 		cout << "QCD_Pt_20_30_EMEnriched entries = " << QCD_Pt_20_30_EMEnriched_histo->Integral() << endl;
 		cout << "QCD_Pt_30_80_EMEnriched entries = " << QCD_Pt_30_80_EMEnriched_histo->Integral() << endl;
 		cout << "QCD_Pt_80_170_EMEnriched entries = " << QCD_Pt_80_170_EMEnriched_histo->Integral() << endl;
 		cout << "QCD_Pt_170_250_EMEnriched entries = " << QCD_Pt_170_250_EMEnriched_histo->Integral() << endl;
 		cout << "QCD_Pt_250_350_EMEnriched entries = " << QCD_Pt_250_350_EMEnriched_histo->Integral() << endl;
 		cout << "QCD_Pt_350_EMEnriched entries = " << QCD_Pt_350_EMEnriched_histo->Integral() << endl;
-	}
 
-	TH1F *QCD_Pt_x_y_EMEnriched_total_histo = (TH1F*) QCD_Pt_20_30_EMEnriched_histo->Clone("QCD_Pt_x_y_EMEnriched_total_histo");
-	//	QCD_Pt_x_y_EMEnriched_total_histo->Sumw2();
-	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_30_80_EMEnriched_histo);
-	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_80_170_EMEnriched_histo);  
-	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_170_250_EMEnriched_histo);  
-	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_250_350_EMEnriched_histo);  
-	QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_350_EMEnriched_histo);  
-	QCD_Pt_x_y_EMEnriched_total_histo->SetLineColor(1);
-	QCD_Pt_x_y_EMEnriched_total_histo->SetFillColor(kMagenta+2);
+		QCD_Pt_x_y_EMEnriched_total_histo = (TH1F*) QCD_Pt_20_30_EMEnriched_histo->Clone("QCD_Pt_x_y_EMEnriched_total_histo");
+		//	QCD_Pt_x_y_EMEnriched_total_histo->Sumw2();
+		QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_30_80_EMEnriched_histo);
+		QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_80_170_EMEnriched_histo);  
+		QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_170_250_EMEnriched_histo);  
+		QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_250_350_EMEnriched_histo);  
+		QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_350_EMEnriched_histo);  
+		QCD_Pt_x_y_EMEnriched_total_histo->SetLineColor(1);
+		QCD_Pt_x_y_EMEnriched_total_histo->SetFillColor(kMagenta+2);
 
 
-	//--- MC background QCD_Pt_x_y BCtoE ----------------------------------
-	TH1F *QCD_Pt_20_30_BCtoE_histo=(TH1F*)QCD_Pt_20_30_BCtoE_file->Get(titlehisto);
-	QCD_Pt_20_30_BCtoE_histo->Rebin(rebin);
+		//--- MC background QCD_Pt_x_y BCtoE ----------------------------------
+		QCD_Pt_20_30_BCtoE_histo=(TH1F*)QCD_Pt_20_30_BCtoE_file->Get(titlehisto);
+		QCD_Pt_20_30_BCtoE_histo->Rebin(rebin);
 
-	TH1F *QCD_Pt_30_80_BCtoE_histo=(TH1F*)QCD_Pt_30_80_BCtoE_file->Get(titlehisto);
-	QCD_Pt_30_80_BCtoE_histo->Rebin(rebin);
+		QCD_Pt_30_80_BCtoE_histo=(TH1F*)QCD_Pt_30_80_BCtoE_file->Get(titlehisto);
+		QCD_Pt_30_80_BCtoE_histo->Rebin(rebin);
 
-	TH1F *QCD_Pt_80_170_BCtoE_histo=(TH1F*)QCD_Pt_80_170_BCtoE_file->Get(titlehisto);
-	QCD_Pt_80_170_BCtoE_histo->Rebin(rebin);
+		QCD_Pt_80_170_BCtoE_histo=(TH1F*)QCD_Pt_80_170_BCtoE_file->Get(titlehisto);
+		QCD_Pt_80_170_BCtoE_histo->Rebin(rebin);
 
-	TH1F *QCD_Pt_170_250_BCtoE_histo=(TH1F*)QCD_Pt_170_250_BCtoE_file->Get(titlehisto);
-	QCD_Pt_170_250_BCtoE_histo->Rebin(rebin);
+		QCD_Pt_170_250_BCtoE_histo=(TH1F*)QCD_Pt_170_250_BCtoE_file->Get(titlehisto);
+		QCD_Pt_170_250_BCtoE_histo->Rebin(rebin);
 
-	TH1F *QCD_Pt_250_350_BCtoE_histo=(TH1F*)QCD_Pt_250_350_BCtoE_file->Get(titlehisto);
-	QCD_Pt_250_350_BCtoE_histo->Rebin(rebin);
+		QCD_Pt_250_350_BCtoE_histo=(TH1F*)QCD_Pt_250_350_BCtoE_file->Get(titlehisto);
+		QCD_Pt_250_350_BCtoE_histo->Rebin(rebin);
 
-	TH1F *QCD_Pt_350_BCtoE_histo=(TH1F*)QCD_Pt_350_BCtoE_file->Get(titlehisto);
-	QCD_Pt_350_BCtoE_histo->Rebin(rebin);
+		QCD_Pt_350_BCtoE_histo=(TH1F*)QCD_Pt_350_BCtoE_file->Get(titlehisto);
+		QCD_Pt_350_BCtoE_histo->Rebin(rebin);
 
-	if (!background_QCD){
 		cout << "QCD_Pt_20_30_BCtoE entries = " << QCD_Pt_20_30_BCtoE_histo->Integral() << endl;
 		cout << "QCD_Pt_30_80_BCtoE entries = " << QCD_Pt_30_80_BCtoE_histo->Integral() << endl;
 		cout << "QCD_Pt_80_170_BCtoE entries = " << QCD_Pt_80_170_BCtoE_histo->Integral() << endl;
 		cout << "QCD_Pt_170_250_BCtoE entries = " << QCD_Pt_170_250_BCtoE_histo->Integral() << endl;
 		cout << "QCD_Pt_250_350_BCtoE entries = " << QCD_Pt_250_350_BCtoE_histo->Integral() << endl;
 		cout << "QCD_Pt_350_BCtoE entries = " << QCD_Pt_350_BCtoE_histo->Integral() << endl;
+
+		QCD_Pt_x_y_BCtoE_total_histo = (TH1F*) QCD_Pt_20_30_BCtoE_histo->Clone("QCD_Pt_x_y_BCtoE_total_histo");
+		//	QCD_Pt_x_y_BCtoE_total_histo->Sumw2();
+		QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_30_80_BCtoE_histo);
+		QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_80_170_BCtoE_histo);  
+		QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_170_250_BCtoE_histo);  
+		QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_250_350_BCtoE_histo);  
+		QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_350_BCtoE_histo);  
+		QCD_Pt_x_y_BCtoE_total_histo->SetLineColor(1);
+		QCD_Pt_x_y_BCtoE_total_histo->SetFillColor(kBlue-7);
 	}
+
+	else {
 	
-	TH1F *QCD_Pt_x_y_BCtoE_total_histo = (TH1F*) QCD_Pt_20_30_BCtoE_histo->Clone("QCD_Pt_x_y_BCtoE_total_histo");
-	//	QCD_Pt_x_y_BCtoE_total_histo->Sumw2();
-	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_30_80_BCtoE_histo);
-	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_80_170_BCtoE_histo);  
-	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_170_250_BCtoE_histo);  
-	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_250_350_BCtoE_histo);  
-	QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_350_BCtoE_histo);  
-	QCD_Pt_x_y_BCtoE_total_histo->SetLineColor(1);
-	QCD_Pt_x_y_BCtoE_total_histo->SetFillColor(kBlue-7);
+		// MC background QCD HT-xToy --------------------------------------------
+		QCD_HT_100To250_histo=(TH1F*)QCD_HT_100To250_file->Get(titlehisto);
+		QCD_HT_100To250_histo->Rebin(rebin);
 
+		QCD_HT_250To500_histo=(TH1F*)QCD_HT_250To500_file->Get(titlehisto);
+		QCD_HT_250To500_histo->Rebin(rebin);
 
-	// MC background QCD HT-xToy --------------------------------------------
-	TH1F *QCD_HT_100To250_histo=(TH1F*)QCD_HT_100To250_file->Get(titlehisto);
-	QCD_HT_100To250_histo->Rebin(rebin);
+		QCD_HT_500To1000_histo=(TH1F*)QCD_HT_500To1000_file->Get(titlehisto);
+		QCD_HT_500To1000_histo->Rebin(rebin);
 
-	TH1F *QCD_HT_250To500_histo=(TH1F*)QCD_HT_250To500_file->Get(titlehisto);
-	QCD_HT_250To500_histo->Rebin(rebin);
+		QCD_HT_1000ToInf_histo=(TH1F*)QCD_HT_1000ToInf_file->Get(titlehisto);
+		QCD_HT_1000ToInf_histo->Rebin(rebin);
 
-	TH1F *QCD_HT_500To1000_histo=(TH1F*)QCD_HT_500To1000_file->Get(titlehisto);
-	QCD_HT_500To1000_histo->Rebin(rebin);
-
-	TH1F *QCD_HT_1000ToInf_histo=(TH1F*)QCD_HT_1000ToInf_file->Get(titlehisto);
-	QCD_HT_1000ToInf_histo->Rebin(rebin);
-
-	if (background_QCD){
 		cout << "QCD_HT_100To250 entries " << QCD_HT_100To250_histo->Integral() << endl;  
 		cout << "QCD_HT_250To500 entries " << QCD_HT_250To500_histo->Integral() << endl;  
 		cout << "QCD_HT_500To1000 entries " << QCD_HT_500To1000_histo->Integral() << endl;
 		cout << "QCD_HT_1000ToInf entries " << QCD_HT_1000ToInf_histo->Integral() << endl;
-	}
 	
-	TH1F *QCD_HT_xToy_total_histo = (TH1F*) QCD_HT_100To250_histo->Clone("QCD_HT_xToy_total_histo");
-	//	QCD_HT_xToy_total_histo->Sumw2();
-	QCD_HT_xToy_total_histo->Add(QCD_HT_250To500_histo);
-	QCD_HT_xToy_total_histo->Add(QCD_HT_500To1000_histo);  
-	QCD_HT_xToy_total_histo->Add(QCD_HT_1000ToInf_histo);  
-	QCD_HT_xToy_total_histo->SetLineColor(1);
-	QCD_HT_xToy_total_histo->SetFillColor(kRed+2);
+		QCD_HT_xToy_total_histo = (TH1F*) QCD_HT_100To250_histo->Clone("QCD_HT_xToy_total_histo");
+		//	QCD_HT_xToy_total_histo->Sumw2();
+		QCD_HT_xToy_total_histo->Add(QCD_HT_250To500_histo);
+		QCD_HT_xToy_total_histo->Add(QCD_HT_500To1000_histo);  
+		QCD_HT_xToy_total_histo->Add(QCD_HT_1000ToInf_histo);  
+		QCD_HT_xToy_total_histo->SetLineColor(1);
+		QCD_HT_xToy_total_histo->SetFillColor(kRed+2);
+	}
 
 
 	// ==================================== print Entries number
@@ -857,6 +958,159 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
   Canva->SaveAs((folder_s + geo_s + pdf_folder + titleh + pdf_string).c_str());
   Canva->SaveAs((folder_s + geo_s + root_folder + titleh + root_string).c_str());
 	Canva->Close();
+
+	// ==================================== report
+
+	cout << "Writing report file... " << endl;
+	ofstream report;
+	
+	stringstream ss_t;
+	char txt_char[100];
+	ss_t << folder_s + geo_s + txt_folder + titleh + txt_string;
+	ss_t >> txt_char;
+	
+	report.open(txt_char);
+	
+	report << endl;
+	report << "data file 1 is " << DATA_Run2012A_13Jul2012_name << endl;
+	report << "data file 2 is " << DATA_Run2012A_recover_06Aug2012_name << endl;
+	report << "data file 3 is " << DATA_Run2012B_13Jul2012_name << endl;
+	report << "data file 4 is " << DATA_Run2012C_24Aug2012_name << endl;
+	report << "data file 5 is " << DATA_Run2012C_EcalRecover_11Dec2012_name << endl;
+	report << "data file 6 is " << DATA_Run2012C_PromptReco_name << endl;
+	report << "data file 7 is " << DATA_Run2012D_PromptReco_name << endl;
+
+	if(signal_MAD){
+		report << endl;
+//		report << "GJets file 11 is: " << GJets_HT_40To100_name << endl;
+		report << "GJets file 12 is: " << GJets_HT_100To200_name << endl;	
+		report << "GJets file 13 is: " << GJets_HT_200To400_name << endl;
+		report << "GJets file 14 is: " << GJets_HT_400ToInf_name << endl;
+	}
+	
+	else {
+		report << endl;
+		report << "G file 21 is: " << G_Pt_15to30_name << endl;
+		report << "G file 22 is: " << G_Pt_30to50_name << endl;
+		report << "G file 23 is: " << G_Pt_50to80_name << endl;
+		report << "G file 24 is: " << G_Pt_80to120_name << endl;
+		report << "G file 25 is: " << G_Pt_120to170_name << endl;
+		report << "G file 26 is: " << G_Pt_170to300_name << endl;
+		report << "G file 27 is: " << G_Pt_300to470_name << endl;
+		report << "G file 28 is: " << G_Pt_470to800_name << endl;
+		report << "G file 29 is: " << G_Pt_800to1400_name << endl;
+		report << "G file 30 is: " << G_Pt_1400to1800_name << endl;
+		report << "G file 31 is: " << G_Pt_1800_name << endl;
+	}
+
+	report << endl;
+	report << "DiPhotonJets file 41 is: " << DiPhotonJets_name << endl;
+
+	if (!background_QCD){
+		report << endl;	
+		report << "QCD EMEnriched file 51 is: " << QCD_Pt_20_30_EMEnriched_name << endl;
+		report << "QCD EMEnriched file 52 is: " << QCD_Pt_30_80_EMEnriched_name << endl;
+		report << "QCD EMEnriched file 53 is: " << QCD_Pt_80_170_EMEnriched_name << endl;
+		report << "QCD EMEnriched file 54 is: " << QCD_Pt_170_250_EMEnriched_name << endl;
+		report << "QCD EMEnriched file 55 is: " << QCD_Pt_250_350_EMEnriched_name << endl;
+		report << "QCD EMEnriched file 56 is: " << QCD_Pt_350_EMEnriched_name << endl;
+		report << endl;
+		report << "QCD BCtoE file 61 is: " << QCD_Pt_20_30_BCtoE_name << endl;
+		report << "QCD BCtoE file 62 is: " << QCD_Pt_30_80_BCtoE_name << endl;
+		report << "QCD BCtoE file 63 is: " << QCD_Pt_80_170_BCtoE_name << endl;
+		report << "QCD BCtoE file 64 is: " << QCD_Pt_170_250_BCtoE_name << endl;
+		report << "QCD BCtoE file 65 is: " << QCD_Pt_250_350_BCtoE_name << endl;
+		report << "QCD BCtoE file 66 is: " << QCD_Pt_350_BCtoE_name << endl;	
+	}
+
+	else {
+		report << endl;	
+		report << "QCD file 71 is: " << QCD_HT_100To250_name << endl;
+		report << "QCD file 72 is: " << QCD_HT_250To500_name << endl;
+		report << "QCD file 73 is: " << QCD_HT_500To1000_name << endl;
+		report << "QCD file 74 is: " << QCD_HT_1000ToInf_name << endl;
+	}
+	report << endl;
+	report << "========================" <<endl;	
+	report << endl;	
+		
+	report << "DATA_Run2012A_13Jul2012 entries = " << DATA_Run2012A_13Jul2012_histo->Integral() << endl;  
+	report << "DATA_Run2012A_recover_06Aug2012 entries = " << DATA_Run2012A_recover_06Aug2012_histo->Integral() << endl;  
+	report << "DATA_Run2012B_13Jul2012 entries = " << DATA_Run2012B_13Jul2012_histo->Integral() << endl;  
+	report << "DATA_Run2012C_24Aug2012 entries = " << DATA_Run2012C_24Aug2012_histo->Integral() << endl;  
+	report << "DATA_Run2012C_EcalRecover_11Dec2012 entries = " << DATA_Run2012C_EcalRecover_11Dec2012_histo->Integral() << endl;  
+	report << "DATA_Run2012C_PromptReco entries = " << DATA_Run2012C_PromptReco_histo->Integral() << endl;  
+	report << "DATA_Run2012D_PromptReco entries = " << DATA_Run2012D_PromptReco_histo->Integral() << endl;  
+
+	if(signal_MAD) {
+//		report << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
+		report << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
+		report << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
+		report << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
+	}
+	else {
+		report << "G_Pt_15to30 entries = " << G_Pt_15to30_histo->Integral() << endl;
+		report << "G_Pt_30to50 entries = " << G_Pt_30to50_histo->Integral() << endl;
+		report << "G_Pt_50to80 entries = " << G_Pt_50to80_histo->Integral() << endl;
+		report << "G_Pt_80to120 entries = " << G_Pt_80to120_histo->Integral() << endl;
+		report << "G_Pt_120to170 entries = " << G_Pt_120to170_histo->Integral() << endl;
+		report << "G_Pt_170to300 entries = " << G_Pt_170to300_histo->Integral() << endl;
+		report << "G_Pt_300to470 entries = " << G_Pt_300to470_histo->Integral() << endl;
+		report << "G_Pt_470to800 entries = " << G_Pt_470to800_histo->Integral() << endl;
+		report << "G_Pt_800to1400 entries = " << G_Pt_800to1400_histo->Integral() << endl;
+		report << "G_Pt_1400to1800 entries = " << G_Pt_1400to1800_histo->Integral() << endl;
+		report << "G_Pt_1800 entries = " << G_Pt_1800_histo->Integral() << endl;
+	}
+	
+	report << "DiPhotonJets entries = " << DiPhotonJets_histo->Integral() << endl;
+
+	if (!background_QCD){
+		report << "QCD_Pt_20_30_EMEnriched entries = " << QCD_Pt_20_30_EMEnriched_histo->Integral() << endl;
+		report << "QCD_Pt_30_80_EMEnriched entries = " << QCD_Pt_30_80_EMEnriched_histo->Integral() << endl;
+		report << "QCD_Pt_80_170_EMEnriched entries = " << QCD_Pt_80_170_EMEnriched_histo->Integral() << endl;
+		report << "QCD_Pt_170_250_EMEnriched entries = " << QCD_Pt_170_250_EMEnriched_histo->Integral() << endl;
+		report << "QCD_Pt_250_350_EMEnriched entries = " << QCD_Pt_250_350_EMEnriched_histo->Integral() << endl;
+		report << "QCD_Pt_350_EMEnriched entries = " << QCD_Pt_350_EMEnriched_histo->Integral() << endl;
+		report << endl;
+		report << "QCD_Pt_20_30_BCtoE entries = " << QCD_Pt_20_30_BCtoE_histo->Integral() << endl;
+		report << "QCD_Pt_30_80_BCtoE entries = " << QCD_Pt_30_80_BCtoE_histo->Integral() << endl;
+		report << "QCD_Pt_80_170_BCtoE entries = " << QCD_Pt_80_170_BCtoE_histo->Integral() << endl;
+		report << "QCD_Pt_170_250_BCtoE entries = " << QCD_Pt_170_250_BCtoE_histo->Integral() << endl;
+		report << "QCD_Pt_250_350_BCtoE entries = " << QCD_Pt_250_350_BCtoE_histo->Integral() << endl;
+		report << "QCD_Pt_350_BCtoE entries = " << QCD_Pt_350_BCtoE_histo->Integral() << endl;
+	}
+	else {	
+		report << "QCD_HT_100To250 entries " << QCD_HT_100To250_histo->Integral() << endl;  
+		report << "QCD_HT_250To500 entries " << QCD_HT_250To500_histo->Integral() << endl;  
+		report << "QCD_HT_500To1000 entries " << QCD_HT_500To1000_histo->Integral() << endl;
+		report << "QCD_HT_1000ToInf entries " << QCD_HT_1000ToInf_histo->Integral() << endl;
+	}
+
+	report << endl;
+	report << "========================" <<endl;	
+	report << endl;	
+
+	report << "DATA total entries = " << DATA_total_histo->Integral() << endl;
+
+	report << endl;
+	if(signal_MAD) report << "GJets total entries = " << GJets_HT_xToy_total_histo->Integral() << endl;  
+	else report << "G total entries = " << G_Pt_XtoY_total_histo->Integral() << endl;
+
+	report << endl;
+	report << "DiPhotonJets total entries = " << DiPhotonJets_total_histo->Integral() << endl;
+
+	report << endl;
+	if (!background_QCD){	  
+	report << "QCD EMEnriched total entries = " << QCD_Pt_x_y_EMEnriched_total_histo->Integral() << endl;  
+	report << "QCD BCtoE total entries = " << QCD_Pt_x_y_BCtoE_total_histo->Integral() << endl;
+	report << "QCD (EMEnriched + BCtoE) total entries = " << QCD_Pt_x_y_EMEnriched_total_histo->Integral() +
+	                                                       QCD_Pt_x_y_BCtoE_total_histo->Integral() << endl;
+	}	 
+	else report << "QCD HT total entries = " << QCD_HT_xToy_total_histo->Integral() << endl;  
+	report << endl;
+	
+	report.close();
+	cout << "...writing report file finished. " << endl;
 
 	// ==================================== close files
 

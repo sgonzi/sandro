@@ -151,17 +151,20 @@ void GJetsAnalyzer::Loop(){
 	string root = ".root";
 	string txt = ".txt";
 	string inverted = "_inv";
-	if (inv_sigmaietaieta){
+	if (inv_sigmaietaieta && !inv_isolation){
 		string sigmaietaieta_s = "_sigmaietaieta";
 		root = inverted + sigmaietaieta_s + root;
 		txt = inverted + sigmaietaieta_s + txt;
 	}	
-	if (inv_isolation){
+	else if (!inv_sigmaietaieta && inv_isolation){
 		string isolation_s = "_isolation";
 		root = inverted + isolation_s + root;
 		txt = inverted + isolation_s + txt;
 	}	
-
+	else {
+		root = root;
+		txt = txt;
+	}
 				
 	cout << "Analysis on " << geo << endl;
 	if (inv_sigmaietaieta) {
@@ -771,7 +774,7 @@ void GJetsAnalyzer::Loop(){
 					isoGEN = (photonIsoSumPtDR03GEN >= 0 && photonIsoSumPtDR03GEN < 10); // SIGNAL
 				}
 				else {
-					isoGEN = (photonIsoSumPtDR03GEN < 0); // BACKGROUND before: (photonIsoSumPtDR03GEN < 0 || photonIsoSumPtDR03GEN > 10)
+					isoGEN = (photonIsoSumPtDR03GEN < 0 || photonIsoSumPtDR03GEN > 10); // BACKGROUND to change in: (photonIsoSumPtDR03GEN < 0) in the next N-tuple production step
 				}
 			}
 			else isoGEN = true;
