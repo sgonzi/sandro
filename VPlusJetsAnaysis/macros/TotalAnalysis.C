@@ -158,6 +158,22 @@ void TotalAnalysis_QCD_HT_xToy(){
 }
 
 
+void FastAnalysis(){
+
+	TotalAnalysis_data();
+	TotalAnalysis_GJets_HT_xToy();
+	TotalAnalysis_DiPhotonJets();
+	TotalAnalysis_QCD_Pt_x_y_EMEnriched();
+	TotalAnalysis_QCD_Pt_x_y_BCtoE();
+}
+
+
+void FastAnalysis_rest(){
+
+	TotalAnalysis_G_Pt_XtoY();
+	TotalAnalysis_QCD_HT_xToy();
+}
+
 
 void TotalAnalysis(){
 

@@ -142,7 +142,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	// ==================================== choose the tools
 	
 	string folder = "13_results_2013_05_26"; // analysis folder
-	char geo[10] = "barrel";                 // "barrel", "endcaps" or "total"
+	char geo[100] = "barrel";                 // "barrel", "endcaps" or "total"
 
 	bool inv_sigmaietaieta = false;          // inverted sigmaietaieta cut
 	bool inv_isolation = true;              // inverted isolation set cut
@@ -225,7 +225,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	if (inv_isolation) root_string = inverted + isolation_s + root_string;
 			
 	stringstream ss_r;
-	char root_char[10];
+	char root_char[100];
 	ss_r << root_string;
 	ss_r >> root_char;
 	string address = folder_s + geo_s + out_files;

@@ -16,9 +16,11 @@
 #include <DataFormats/Math/interface/deltaR.h>
 #include <TLorentzVector.h>
 #include <../../../QCDAnalysis/Tools/interface/EventShapeLorentz.h>
+
 #if !defined(__CINT__) && !defined(__MAKECINT__)
 #include "FWCore/Utilities/interface/Exception.h"
 #endif
+
 
 //#ifdef __MAKECINT__
 //#pragma link C++ class vector<float>+;
@@ -54,16 +56,16 @@ void GJetsAnalyzer::Loop(){
 
 	// ==================================== choose the tools
 	
-	bool RedAn = false;             // analysis with a reduced entries number for tests
+	bool RedAn = true;             // analysis with a reduced entries number for tests
 	string geo = "barrel";          // barrel or endcaps
 	bool TeP_corr = false;          // T&P correction
 	bool SigBack = true;            // to avoid double counting for SIGNAL and BACKGROUND
-	bool inv_sigmaietaieta = false; // inverted sigmaietaieta cut
-	bool inv_isolation = true;     // inverted isolation set cut
+	bool inv_sigmaietaieta = true; // inverted sigmaietaieta cut
+	bool inv_isolation = false;     // inverted isolation set cut
 		
 	bool plothistos = false;        // please select which plots to show
 	bool textfile = true;           // if you want a text report for each sample
-	Int_t itype = 13;                // it identifies histos with different analysis 
+	Int_t itype = 16;                // it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -118,6 +120,7 @@ void GJetsAnalyzer::Loop(){
 
 
 	// ==================================== exception controls
+
 	if (inv_sigmaietaieta && inv_isolation){
 		cout << "ERROR: you are trying to invert both SIGMAIETAIETA and ISOLATION cuts" << endl << endl;
 		throw cms::Exception("WrongBool");
@@ -151,13 +154,13 @@ void GJetsAnalyzer::Loop(){
 	string root = ".root";
 	string txt = ".txt";
 	string inverted = "_inv";
+	string sigmaietaieta_s = "_sigmaietaieta";
+	string isolation_s = "_isolation";
 	if (inv_sigmaietaieta && !inv_isolation){
-		string sigmaietaieta_s = "_sigmaietaieta";
 		root = inverted + sigmaietaieta_s + root;
 		txt = inverted + sigmaietaieta_s + txt;
 	}	
 	else if (!inv_sigmaietaieta && inv_isolation){
-		string isolation_s = "_isolation";
 		root = inverted + isolation_s + root;
 		txt = inverted + isolation_s + txt;
 	}	
@@ -167,11 +170,11 @@ void GJetsAnalyzer::Loop(){
 	}
 				
 	cout << "Analysis on " << geo << endl;
-	if (inv_sigmaietaieta) {
+	if (inv_sigmaietaieta && !inv_isolation) {
 		cout << "with inverted sigmaietaieta cut" << endl;
 		cout << endl;
 	}	
-	else if (inv_isolation) {
+	else if (!inv_sigmaietaieta && inv_isolation) {
 		cout << "with inverted isolation cuts" << endl;
 		cout << endl;
 	}	
@@ -731,7 +734,7 @@ void GJetsAnalyzer::Loop(){
 	
 	Long64_t nentries;
 	if(RedAn){
-		nentries = 2000000; // analysis with a reuced entries number
+		nentries = 10000; // analysis with a reuced entries number
 	}
 	else{
 		nentries = fChain->GetEntriesFast();
@@ -771,7 +774,7 @@ void GJetsAnalyzer::Loop(){
 			isoGEN = false; 
 			if(isMC) {
 				if(Sig) { 
-					isoGEN = (photonIsoSumPtDR03GEN >= 0 && photonIsoSumPtDR03GEN < 10); // SIGNAL
+					isoGEN = (photonIsoSumPtDR03GEN >= 0. && photonIsoSumPtDR03GEN <= 10.); // SIGNAL
 				}
 				else {
 					isoGEN = (photonIsoSumPtDR03GEN < 0 || photonIsoSumPtDR03GEN > 10); // BACKGROUND to change in: (photonIsoSumPtDR03GEN < 0) in the next N-tuple production step
@@ -1108,7 +1111,6 @@ void GJetsAnalyzer::Loop(){
 						cout << "ERROR: Wrong geometry string writed (only barrel or endcaps)" << endl;
 					} 
 					// end photon quality selection - definitions
-
 
 					// Cut Based Photon 2012 - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
 					bool geo_quality_sel = false;
