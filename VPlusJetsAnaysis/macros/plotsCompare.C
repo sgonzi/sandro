@@ -49,7 +49,6 @@ void plotsCompare_02(){
 	comparestack("SelectedPhotons_PfIsoNeutralHad_1_", "#gamma1 PfIsoNeutralHad", 4, 0, 20);
 	comparestack("SelectedPhotons_PfIsoPhoton_1_", "#gamma1 PfIsoPhoton", 1, 0, 6);
 	comparestack("SelectedPhotons_PfIso_1_", "photon PfIso", 4, 0, 20);
-	comparestack("SelectedPhotons_PfIso_ov_Pt_1_", "photon PfIso/p_{T}", 1, 0, 0.07);
 }
 
 
@@ -58,7 +57,6 @@ void plotsCompare_03(){
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_", "#gamma1 PfIsoNeutralHad #rho corrected", 4, 0, 20);
 	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_1_", "#gamma1 PfIsoPhoton #rho corrected", 1, 0, 6);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_1_", "photon PfIso #rho corrected", 4, 0, 20);
-	comparestack("SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_", "photon PfIso/p_{T} #rho corrected", 1, 0, 0.07);
 }
 
 
@@ -77,7 +75,6 @@ void plotsCompare_04(){
 	comparestack("SelectedPhotons_PfIsoNeutralHad_1_bin01_", "#gamma1 PfIsoNeutralHad, 100 < p_{T}^{#gamma} < 150", 4, 0, 20);
 	comparestack("SelectedPhotons_PfIsoPhoton_1_bin01_", "#gamma1 PfIsoPhoton, 100 < p_{T}^{#gamma} < 150", 1, 0, 6);
 	comparestack("SelectedPhotons_PfIso_1_bin01_", "photon PfIso, 100 < p_{T}^{#gamma} < 150", 4, 0, 20);
-	comparestack("SelectedPhotons_PfIso_ov_Pt_1_bin01_", "photon PfIso/p_{T}, 150 < p_{T}^{#gamma} < 150", 1, 0, 0.07);
 }
 
 
@@ -86,7 +83,6 @@ void plotsCompare_05(){
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin01_", "#gamma1 PfIsoNeutralHad #rho corrected, 100 < p_{T}^{#gamma} < 150", 4, 0, 20);
 	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_", "#gamma1 PfIsoPhoton #rho corrected, 100 < p_{T}^{#gamma} < 150", 1, 0, 6);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_1_bin01_", "photon PfIso #rho corrected, 100 < p_{T}^{#gamma} < 150", 4, 0, 20);
-	comparestack("SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin01_", "photon PfIso/p_{T} #rho corrected, 100 < p_{T}^{#gamma} < 150", 1, 0, 0.07);
 }
 
 
@@ -105,7 +101,6 @@ void plotsCompare_06(){
 	comparestack("SelectedPhotons_PfIsoNeutralHad_1_bin02_", "#gamma1 PfIsoNeutralHad, 150 < p_{T}^{#gamma} < 300", 4, 0, 20);
 	comparestack("SelectedPhotons_PfIsoPhoton_1_bin02_", "#gamma1 PfIsoPhoton, 150 < p_{T}^{#gamma} < 300", 1, 0, 6);
 	comparestack("SelectedPhotons_PfIso_1_bin02_", "photon PfIso, 150 < p_{T}^{#gamma} < 300", 4, 0, 20);
-	comparestack("SelectedPhotons_PfIso_ov_Pt_1_bin02_", "photon PfIso/p_{T}, 150 < p_{T}^{#gamma} < 300", 1, 0, 0.07);
 }
 
 
@@ -114,7 +109,6 @@ void plotsCompare_07(){
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin02_", "#gamma1 PfIsoNeutralHad #rho corrected, 150 < p_{T}^{#gamma} < 300", 4, 0, 20);
 	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_", "#gamma1 PfIsoPhoton #rho corrected, 150 < p_{T}^{#gamma} < 300", 1, 0, 6);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_1_bin02_", "photon PfIso #rho corrected, 150 < p_{T}^{#gamma} < 300", 4, 0, 20);
-	comparestack("SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin02_", "photon PfIso/p_{T} #rho corrected, 150 < p_{T}^{#gamma} < 300", 1, 0, 0.07);
 }
 
 
@@ -133,7 +127,6 @@ void plotsCompare_08(){
 	comparestack("SelectedPhotons_PfIsoNeutralHad_1_bin03_", "#gamma1 PfIsoNeutralHad, 300 < p_{T}^{#gamma} < 500", 4, 0, 20);
 	comparestack("SelectedPhotons_PfIsoPhoton_1_bin03_", "#gamma1 PfIsoPhoton, 300 < p_{T}^{#gamma} < 500", 1, 0, 6);
 	comparestack("SelectedPhotons_PfIso_1_bin03_", "photon PfIso, 300 < p_{T}^{#gamma} < 500", 4, 0, 20);
-	comparestack("SelectedPhotons_PfIso_ov_Pt_1_bin03_", "photon PfIso/p_{T}, 300 < p_{T}^{#gamma} < 500", 1, 0, 0.07);
 }
 
 
@@ -142,7 +135,6 @@ void plotsCompare_09(){
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin03_", "#gamma1 PfIsoNeutralHad #rho corrected, 300 < p_{T}^{#gamma} < 500", 4, 0, 20);
 	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_", "#gamma1 PfIsoPhoton #rho corrected, 300 < p_{T}^{#gamma} < 500", 1, 0, 6);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_1_bin03_", "photon PfIso #rho corrected, 300 < p_{T}^{#gamma} < 500", 4, 0, 20);
-	comparestack("SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin03_", "photon PfIso/p_{T} #rho corrected, 300 < p_{T}^{#gamma} < 500", 1, 0, 0.07);
 }
 
 
@@ -161,7 +153,6 @@ void plotsCompare_10(){
 	comparestack("SelectedPhotons_PfIsoNeutralHad_1_bin04_", "#gamma1 PfIsoNeutralHad, p_{T}^{#gamma} > 500", 4, 0, 20);
 	comparestack("SelectedPhotons_PfIsoPhoton_1_bin04_", "#gamma1 PfIsoPhoton, p_{T}^{#gamma} > 500", 1, 0, 6);
 	comparestack("SelectedPhotons_PfIso_1_bin04_", "photon PfIso, p_{T}^{#gamma} > 500", 4, 0, 20);
-	comparestack("SelectedPhotons_PfIso_ov_Pt_1_bin04_", "photon PfIso/p_{T}, p_{T}^{#gamma} > 500", 1, 0, 0.07);
 }
 
 
@@ -170,7 +161,6 @@ void plotsCompare_11(){
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin04_", "#gamma1 PfIsoNeutralHad #rho corrected, p_{T}^{#gamma} > 500", 4, 0, 20);
 	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_", "#gamma1 PfIsoPhoton #rho corrected, p_{T}^{#gamma} > 500", 1, 0, 6);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_1_bin04_", "photon PfIso #rho corrected, p_{T}^{#gamma} > 500", 4, 0, 20);
-	comparestack("SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin04_", "photon PfIso/p_{T} #rho corrected, p_{T}^{#gamma} > 500", 1, 0, 0.07);
 }
 
 
@@ -238,18 +228,11 @@ void plotsCompare_16(){
 	comparestack("SelectedPhotons_IsoFPRCharged_1_", "#gamma1 IsoFPRCharged", 20, 0, 200);
 	comparestack("SelectedPhotons_IsoFPRNeutral_1_", "#gamma1 IsoFPRNeutral", 20, 0, 200);
 	comparestack("SelectedPhotons_IsoFPRPhoton_1_", "#gamma1 IsoFPRPhoton", 20, 0, 200);
-	comparestack("SelectedPhotons_IsoFPRCharged_ov_Pt_1_", "#gamma1 IsoFPRCharged/p_{T}", 1, -999, -999);
-	comparestack("SelectedPhotons_IsoFPRNeutral_ov_Pt_1_", "photon IsoFPRNeutral/p_{T}", 1, -999, -999);
-	comparestack("SelectedPhotons_IsoFPRPhoton_ov_Pt_1_", "photon IsoFPRPhoton/p_{T}", 1, -999, -999);
+	comparestack("SelectedPhotons_IsoFPR_1_", "#gamma1 photon IsoFPR", 4, 0, 20);
 }
 
 
 void plotsCompare_17(){
-	/*
-	comparestack("CleanedJetsLEA_N_", "Cleaned Jets LEA N ", 1, -999, -999);
-	comparestack("SelectedJetsLEA_N_", "Selected Jets LEA N", 1, -999, -999);
-	comparestack("CleanedJets_N_", "Cleaned Jets N ", 1, -999, -999);
-	*/
 	comparestack("SelectedJets_N_", "Selected Jets N", 1, -999, -999);
 }
 
@@ -263,9 +246,6 @@ void plotsCompare_18(){
 
 
 void plotsCompare_19(){
-	/*
-	comparestack("CleanedJets_HT_", "Cleaned Jets H_{T}", 4, 0, 3000);
-	*/
 	comparestack("SelectedJets_HT_", "Selected Jets H_{T}", 4, 0, 3000);
 }
 
@@ -384,21 +364,6 @@ void plotsCompare_30(){
 }
 
 
-void plotsCompare_31(){	
-/*
-	comparestack("CleanedJetsLEA_preHT_N_","Cleaned Jets LEA N pre-H_{T}", 1, -999, -999);
-	comparestack("SelectedJetsLEA_preHT_N_","Selected Jets LEA N pre-H_{T}", 1, -999, -999);
-	comparestack("CleanedJets_preHT_N_","Cleaned Jets N pre-H_{T}", 1, -999, -999);
-	comparestack("SelectedJets_preHT_N_","Selected Jets N pre-H_{T}", 1, -999, -999);
-	comparestack("SelectedJets_preHT_Pt_1_","Jet 1 p_{T} pre-H_{T}", 2, 0, 2000);
-	comparestack("SelectedJets_preHT_Pt_2_","Jet 2 p_{T} pre-H_{T}", 2, 0, 1500);
-	comparestack("SelectedJets_preHT_Pt_3_","Jet 3 p_{T} pre-H_{T}", 2, 0, 1000);
-	comparestack("CleanedJets_preHT_HT_","Cleaned Jets H_{T} pre-H_{T}", 4, 0, 3000);
-	comparestack("SelectedJets_preHT_HT_","Selected Jets H_{T} pre-H_{T}", 4, 0, 3000);
-*/
-}
-
-
 // ------------------------------------------------------
 
 void plotsCompare_TOT(){
@@ -432,5 +397,5 @@ void plotsCompare_TOT(){
 	plotsCompare_28();
 	plotsCompare_29();				
 	plotsCompare_30();				
-	plotsCompare_31();				
+
 }

@@ -446,12 +446,12 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 	if (mysample == 0) isTEST = true;
 
 	isMC = false;
-	if (mysample == 0 || mysample > 7) isMC = true;
+	if (mysample == 0 || mysample > 17) isMC = true;
 	
   if (tree == 0) {
 
 		bool outrange;
-		outrange = mysample < 0 || (mysample > 7 && mysample < 11) || (mysample > 14 && mysample < 21) || (mysample > 31 && mysample < 41) || (mysample > 41 && mysample < 51) || (mysample > 56 && mysample < 61) || (mysample > 66 && mysample < 71) || mysample > 74;
+		outrange = mysample < 0 || (mysample > 4 && mysample < 11) || (mysample > 17 && mysample < 21) || (mysample > 24 && mysample < 31) || (mysample > 41 && mysample < 51) || (mysample > 51 && mysample < 61) || (mysample > 66 && mysample < 71) || (mysample > 76 && mysample < 81) || mysample > 84;
 		
 		if (outrange){
 		cout << "Error: mysample is out of range. " << endl;
@@ -459,51 +459,56 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		cout << "----------------------------------------------------- " << endl;
 		cout << "mysample == 0   -> Test" << endl;
 		cout << "-----------------------------------------------------" << endl;
-		cout << "mysample == 1   -> DATA Run2012A-13Jul2012" << endl;
-		cout << "mysample == 2   -> DATA Run2012A-recover-06Aug2012" << endl;
-		cout << "mysample == 3   -> DATA Run2012B-13Jul2012" << endl;
-		cout << "mysample == 4   -> DATA Run2012C-24Aug2012" << endl;
-		cout << "mysample == 5   -> DATA Run2012C-EcalRecover_11Dec2012" << endl;
-		cout << "mysample == 6   -> DATA Run2012C-PromptReco" << endl;
-		cout << "mysample == 7   -> DATA Run2012D-PromptReco" << endl;
-		cout << "-----------------------------------------------------  " << endl;
-		cout << "mysample == 11  -> GJets 40<HT<100" << endl;
-		cout << "mysample == 12  -> Gjets 100<HT<200" << endl;
-		cout << "mysample == 13  -> GJets 200<HT<400" << endl;
-		cout << "mysample == 14  -> Gjets 400<HT<Inf" << endl;
-		cout << "-----------------------------------------------------  " << endl;
-		cout << "mysample == 21  -> G 15<Pt<30" << endl;
-		cout << "mysample == 22  -> G 30<Pt<50" << endl;
-		cout << "mysample == 23  -> G 50<Pt<80" << endl;
-		cout << "mysample == 24  -> G 80<Pt<120" << endl;
-		cout << "mysample == 25  -> G 120<Pt<170" << endl;
-		cout << "mysample == 26  -> G 170<Pt<300" << endl;
-		cout << "mysample == 27  -> G 300<Pt<470" << endl;
-		cout << "mysample == 28  -> G 470<Pt<800" << endl;
-		cout << "mysample == 29  -> G 800<Pt<1400" << endl;
-		cout << "mysample == 30  -> G 1400<Pt<1800" << endl;
-		cout << "mysample == 31  -> G 1800<Pt<Inf" << endl;
+		cout << "mysample == 1   -> DATA RR Run2012A-22Jan2013" << endl;
+		cout << "mysample == 2   -> DATA RR Run2012B-22Jan2013" << endl;
+		cout << "mysample == 3   -> DATA RR Run2012C-22Jan2013" << endl;
+		cout << "mysample == 4   -> DATA RR Run2012D-22Jan2013" << endl;
 		cout << "-----------------------------------------------------" << endl;
-		cout << "mysample == 41  -> DiPhotonJets" << endl;
+		cout << "mysample == 11  -> DATA PR Run2012A-13Jul2012" << endl;
+		cout << "mysample == 12  -> DATA PR Run2012A-recover-06Aug2012" << endl;
+		cout << "mysample == 13  -> DATA PR Run2012B-13Jul2012" << endl;
+		cout << "mysample == 14  -> DATA PR Run2012C-24Aug2012" << endl;
+		cout << "mysample == 15  -> DATA PR Run2012C-EcalRecover_11Dec2012" << endl;
+		cout << "mysample == 16  -> DATA PR Run2012C-PromptReco" << endl;
+		cout << "mysample == 17  -> DATA PR Run2012D-PromptReco" << endl;
+		cout << "-----------------------------------------------------  " << endl;
+		cout << "mysample == 21  -> GJets 40<HT<100" << endl;
+		cout << "mysample == 22  -> Gjets 100<HT<200" << endl;
+		cout << "mysample == 23  -> GJets 200<HT<400" << endl;
+		cout << "mysample == 24  -> Gjets 400<HT<Inf" << endl;
+		cout << "-----------------------------------------------------  " << endl;
+		cout << "mysample == 31  -> G 15<Pt<30" << endl;
+		cout << "mysample == 32  -> G 30<Pt<50" << endl;
+		cout << "mysample == 33  -> G 50<Pt<80" << endl;
+		cout << "mysample == 34  -> G 80<Pt<120" << endl;
+		cout << "mysample == 35  -> G 120<Pt<170" << endl;
+		cout << "mysample == 36  -> G 170<Pt<300" << endl;
+		cout << "mysample == 37  -> G 300<Pt<470" << endl;
+		cout << "mysample == 38  -> G 470<Pt<800" << endl;
+		cout << "mysample == 39  -> G 800<Pt<1400" << endl;
+		cout << "mysample == 40  -> G 1400<Pt<1800" << endl;
+		cout << "mysample == 41  -> G 1800<Pt<Inf" << endl;
 		cout << "-----------------------------------------------------" << endl;
-		cout << "mysample == 51  -> QCD EMEnriched 20<Pt<30" << endl;
-		cout << "mysample == 52  -> QCD EMEnriched 30<Pt<80" << endl;
-		cout << "mysample == 53  -> QCD EMEnriched 80<Pt<170" << endl;
-		cout << "mysample == 54  -> QCD EMEnriched 170<Pt<250" << endl;
-		cout << "mysample == 55  -> QCD EMEnriched 250<Pt<350" << endl;
-		cout << "mysample == 56  -> QCD EMEnriched 350<Pt<Inf" << endl;
+		cout << "mysample == 51  -> DiPhotonJets" << endl;
+		cout << "-----------------------------------------------------" << endl;
+		cout << "mysample == 61  -> QCD EMEnriched 20<Pt<30" << endl;
+		cout << "mysample == 62  -> QCD EMEnriched 30<Pt<80" << endl;
+		cout << "mysample == 63  -> QCD EMEnriched 80<Pt<170" << endl;
+		cout << "mysample == 64  -> QCD EMEnriched 170<Pt<250" << endl;
+		cout << "mysample == 65  -> QCD EMEnriched 250<Pt<350" << endl;
+		cout << "mysample == 66  -> QCD EMEnriched 350<Pt<Inf" << endl;
 		cout << "-----------------------------------------------------  " << endl;
-		cout << "mysample == 61  -> QCD BCtoE 20<Pt<30" << endl;
-		cout << "mysample == 62  -> QCD BCtoE 30<Pt<80" << endl;
-		cout << "mysample == 63  -> QCD BCtoE 80<Pt<170" << endl;
-		cout << "mysample == 64  -> QCD BCtoE 170<Pt<250" << endl;
-		cout << "mysample == 65  -> QCD BCtoE 250<Pt<350" << endl;
-		cout << "mysample == 66  -> QCD BCtoE 350<Pt<Inf" << endl;
+		cout << "mysample == 71  -> QCD BCtoE 20<Pt<30" << endl;
+		cout << "mysample == 72  -> QCD BCtoE 30<Pt<80" << endl;
+		cout << "mysample == 73  -> QCD BCtoE 80<Pt<170" << endl;
+		cout << "mysample == 74  -> QCD BCtoE 170<Pt<250" << endl;
+		cout << "mysample == 75  -> QCD BCtoE 250<Pt<350" << endl;
+		cout << "mysample == 76  -> QCD BCtoE 350<Pt<Inf" << endl;
 		cout << "-----------------------------------------------------  " << endl;
-		cout << "mysample == 71  -> QCD 100<HT<250" << endl;
-		cout << "mysample == 72  -> QCD 250<HT<500" << endl;
-		cout << "mysample == 73  -> QCD 500<HT<1000" << endl;
-		cout << "mysample == 74  -> QCD 1000<HT<inf" << endl;
+		cout << "mysample == 81  -> QCD 100<HT<250" << endl;
+		cout << "mysample == 82  -> QCD 250<HT<500" << endl;
+		cout << "mysample == 83  -> QCD 500<HT<1000" << endl;
+		cout << "mysample == 84  -> QCD 1000<HT<inf" << endl;
 		cout << "-----------------------------------------------------" << endl;
 		throw cms::Exception("OutRange");
 		}
@@ -520,9 +525,9 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-// data -----------------------------------------------------------------
+// data ReReco ----------------------------------------------------------
 		else if (mysample == 1){
-			file_sample = "Photon_Run2012A-13Jul2012-v1.root";
+			file_sample = "Photon_Run2012A-22Jan2013-v1_AOD.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
@@ -533,7 +538,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		}
 
 		else if (mysample == 2){
-			file_sample = "Photon_Run2012A-recover-06Aug2012-v1.root";
+			file_sample = "SinglePhoton_Run2012B-22Jan2013-v1_AOD.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
@@ -544,7 +549,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		}
 
 		else if (mysample == 3){
-			file_sample = "SinglePhoton_Run2012B-13Jul2012-v1.root";
+			file_sample = "SinglePhoton_Run2012C-22Jan2013-v1_AOD.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
@@ -555,6 +560,51 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		}
 
 		else if (mysample == 4){
+			file_sample = "SinglePhotonParked_Run2012D-22Jan2013-v1_AOD.root";
+			file_address_s = (folder_samples + file_sample).c_str();
+			const char * file_address = file_address_s.c_str();
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+// data PromptReco ------------------------------------------------------
+		else if (mysample == 11){
+			file_sample = "Photon_Run2012A-13Jul2012-v1.root";
+			file_address_s = (folder_samples + file_sample).c_str();
+			const char * file_address = file_address_s.c_str();
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 12){
+			file_sample = "Photon_Run2012A-recover-06Aug2012-v1.root";
+			file_address_s = (folder_samples + file_sample).c_str();
+			const char * file_address = file_address_s.c_str();
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 13){
+			file_sample = "SinglePhoton_Run2012B-13Jul2012-v1.root";
+			file_address_s = (folder_samples + file_sample).c_str();
+			const char * file_address = file_address_s.c_str();
+			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
+			if (!f) {
+		  	f = new TFile(file_address);
+		  	f->cd("accepted");
+			}
+		}
+
+		else if (mysample == 14){
 			file_sample = "SinglePhoton_Run2012C-24Aug2012-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -565,7 +615,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 5){
+		else if (mysample == 15){
 			file_sample = "SinglePhoton_Run2012C-EcalRecover_11Dec2012-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -576,7 +626,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 6){
+		else if (mysample == 16){
 			file_sample = "SinglePhoton_Run2012C-PromptReco-v2.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -587,7 +637,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 7){
+		else if (mysample == 17){
 			file_sample = "SinglePhoton_Run2012D-PromptReco-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -599,7 +649,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		}
 
 // MC signal GJets_HT-xToy ----------------------------------------------  
-		else if (mysample == 11){
+		else if (mysample == 21){
 			file_sample = "GJets_HT-40To100_8TeV-madgraph_v2_Summer12_DR53X-PU_S10_START53_V19-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -610,7 +660,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 12){
+		else if (mysample == 22){
 			file_sample = "GJets_HT-100To200_8TeV-madgraph_Summer12_DR53X-PU_S10_START53_V19-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -621,7 +671,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 13){
+		else if (mysample == 23){
 			file_sample = "GJets_HT-200To400_8TeV-madgraph_v2_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -632,7 +682,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 14){
+		else if (mysample == 24){
 			file_sample = "GJets_HT-400ToInf_8TeV-madgraph_v3_Summer12_DR53X-PU_S10_START53_V7C-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -644,7 +694,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		}
 
 // MC signal G_Pt-XtoY --------------------------------------------------
-		else if (mysample == 21){
+		else if (mysample == 31){
 			file_sample = "G_Pt-15to30_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -655,7 +705,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 22){
+		else if (mysample == 32){
 			file_sample = "G_Pt-30to50_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -666,7 +716,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 23){
+		else if (mysample == 33){
 			file_sample = "G_Pt-50to80_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -677,7 +727,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 24){
+		else if (mysample == 34){
 			file_sample = "G_Pt-80to120_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -688,7 +738,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 25){
+		else if (mysample == 35){
 			file_sample = "G_Pt-120to170_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -699,7 +749,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 26){
+		else if (mysample == 36){
 			file_sample = "G_Pt-170to300_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -710,7 +760,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 27){
+		else if (mysample == 37){
 			file_sample = "G_Pt-300to470_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -721,7 +771,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 28){
+		else if (mysample == 38){
 			file_sample = "G_Pt-470to800_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -732,7 +782,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 29){
+		else if (mysample == 39){
 			file_sample = "G_Pt-800to1400_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -743,7 +793,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 30){
+		else if (mysample == 40){
 			file_sample = "G_Pt-1400to1800_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -754,7 +804,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 31){
+		else if (mysample == 41){
 			file_sample = "G_Pt-1800_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -766,7 +816,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		}
 
 // MC signal DiPhotonJets ------------------------------------------------------
-		else if (mysample == 41){
+		else if (mysample == 51){
 			file_sample = "DiPhotonJets_8TeV-madgraph-tarball-v2_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -778,7 +828,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		}
 
 // MC background QCD_Pt_x_y EMEnriched ----------------------------------
-		else if (mysample == 51){
+		else if (mysample == 61){
 			file_sample = "QCD_Pt_20_30_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -789,7 +839,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 52){
+		else if (mysample == 62){
 			file_sample = "QCD_Pt_30_80_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -800,7 +850,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 53){
+		else if (mysample == 63){
 			file_sample = "QCD_Pt_80_170_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -811,7 +861,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 54){
+		else if (mysample == 64){
 			file_sample = "QCD_Pt_170_250_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -822,7 +872,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 55){
+		else if (mysample == 65){
 			file_sample = "QCD_Pt_250_350_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -833,7 +883,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 56){
+		else if (mysample == 66){
 			file_sample = "QCD_Pt_350_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -845,7 +895,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		}
 
 // MC background QCD_Pt_x_y BCtoE ----------------------------------
-		else if (mysample == 61){
+		else if (mysample == 71){
 			file_sample = "QCD_Pt_20_30_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -856,7 +906,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 62){
+		else if (mysample == 72){
 			file_sample = "QCD_Pt_30_80_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -867,7 +917,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 63){
+		else if (mysample == 73){
 			file_sample = "QCD_Pt_80_170_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -878,7 +928,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 64){
+		else if (mysample == 74){
 			file_sample = "QCD_Pt_170_250_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -889,7 +939,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 65){
+		else if (mysample == 75){
 			file_sample = "QCD_Pt_250_350_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -900,7 +950,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 66){
+		else if (mysample == 76){
 			file_sample = "QCD_Pt_350_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v2.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -912,7 +962,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		}
 
 // MC background QCD HT-xToy --------------------------------------------
-		else if (mysample == 71){
+		else if (mysample == 81){
 			file_sample = "QCD_HT-100To250_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -923,7 +973,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 72){
+		else if (mysample == 82){
 			file_sample = "QCD_HT-250To500_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -934,7 +984,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 73){
+		else if (mysample == 83){
 			file_sample = "QCD_HT-500To1000_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
@@ -945,7 +995,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 			}
 		}
 
-		else if (mysample == 74){
+		else if (mysample == 84){
 			file_sample = "QCD_HT-1000ToInf_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();

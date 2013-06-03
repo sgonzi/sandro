@@ -57,65 +57,71 @@ void GJetsAnalyzer::Loop(){
 	// ==================================== choose the tools
 	
 	bool RedAn = true;             // analysis with a reduced entries number for tests
-	string geo = "barrel";          // barrel or endcaps
-	bool TeP_corr = false;          // T&P correction
-	bool SigBack = true;            // to avoid double counting for SIGNAL and BACKGROUND
+	bool data_ReReco = false;      // analysis with data ReReco or data PromptReco
+	string geo = "barrel";         // barrel or endcaps
+	bool TeP_corr = false;         // T&P correction
+	bool SigBack = true;           // to avoid double counting for SIGNAL and BACKGROUND
 	bool inv_sigmaietaieta = true; // inverted sigmaietaieta cut
-	bool inv_isolation = false;     // inverted isolation set cut
+	bool inv_isolation = false;    // inverted isolation set cut
 		
-	bool plothistos = false;        // please select which plots to show
-	bool textfile = true;           // if you want a text report for each sample
-	Int_t itype = 16;                // it identifies histos with different analysis 
+	bool plothistos = false;       // please select which plots to show
+	bool textfile = true;          // if you want a text report for each sample
+	Int_t itype = 16;              // it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
 	// mysample == 0   -> Test
 	// -----------------------------------------------------
-	// mysample == 1   -> DATA Run2012A-13Jul2012
-	// mysample == 2   -> DATA Run2012A-recover-06Aug2012
-	// mysample == 3   -> DATA Run2012B-13Jul2012
-	// mysample == 4   -> DATA Run2012C-24Aug2012
-	// mysample == 5   -> DATA Run2012C-EcalRecover_11Dec2012
-	// mysample == 6   -> DATA Run2012C-PromptReco
-	// mysample == 7   -> DATA Run2012D-PromptReco
+	// mysample == 1   -> DATA RR Run2012A-22Jan2013
+	// mysample == 2   -> DATA RR Run2012B-22Jan2013
+	// mysample == 3   -> DATA RR Run2012C-22Jan2013
+	// mysample == 4   -> DATA RR Run2012D-22Jan2013
 	// -----------------------------------------------------
-	// mysample == 11  -> GJets 40<HT<100
-	// mysample == 12  -> GJets 100<HT<200
-	// mysample == 13  -> GJets 200<HT<400		
-	// mysample == 14  -> Gjets 400<HT<Inf
+	// mysample == 11  -> DATA PR Run2012A-13Jul2012
+	// mysample == 12  -> DATA PR Run2012A-recover-06Aug2012
+	// mysample == 13  -> DATA PR Run2012B-13Jul2012
+	// mysample == 14  -> DATA PR Run2012C-24Aug2012
+	// mysample == 15  -> DATA PR Run2012C-EcalRecover_11Dec2012
+	// mysample == 16  -> DATA PR Run2012C-PromptReco
+	// mysample == 17  -> DATA PR Run2012D-PromptReco
 	// -----------------------------------------------------
-	// mysample == 21  -> G 15<Pt<30
-	// mysample == 22  -> G 30<Pt<50
-	// mysample == 23  -> G 50<Pt<80
-	// mysample == 24  -> G 80<Pt<120
-	// mysample == 25  -> G 120<Pt<170
-	// mysample == 26  -> G 170<Pt<300
-	// mysample == 27  -> G 300<Pt<470
-	// mysample == 28  -> G 470<Pt<800
-	// mysample == 29  -> G 800<Pt<1400
-	// mysample == 30  -> G 1400<Pt<1800
-	// mysample == 31  -> G 1800<Pt<Inf
+	// mysample == 21  -> GJets 40<HT<100
+	// mysample == 22  -> GJets 100<HT<200
+	// mysample == 23  -> GJets 200<HT<400		
+	// mysample == 24  -> Gjets 400<HT<Inf
 	// -----------------------------------------------------
-	// mysample == 41  -> DiPhotonJets
+	// mysample == 31  -> G 15<Pt<30
+	// mysample == 32  -> G 30<Pt<50
+	// mysample == 33  -> G 50<Pt<80
+	// mysample == 34  -> G 80<Pt<120
+	// mysample == 35  -> G 120<Pt<170
+	// mysample == 36  -> G 170<Pt<300
+	// mysample == 37  -> G 300<Pt<470
+	// mysample == 38  -> G 470<Pt<800
+	// mysample == 39  -> G 800<Pt<1400
+	// mysample == 40  -> G 1400<Pt<1800
+	// mysample == 41  -> G 1800<Pt<Inf
 	// -----------------------------------------------------
-	// mysample == 51  -> QCD EMEnriched 20<Pt<30
-	// mysample == 52  -> QCD EMEnriched 30<Pt<80
-	// mysample == 53  -> QCD EMEnriched 80<Pt<170
-	// mysample == 54  -> QCD EMEnriched 170<Pt<250
-	// mysample == 55  -> QCD EMEnriched 250<Pt<350
-	// mysample == 56  -> QCD EMEnriched 350<Pt<Inf
+	// mysample == 51  -> DiPhotonJets
 	// -----------------------------------------------------
-	// mysample == 61  -> QCD BCtoE 20<Pt<30
-	// mysample == 62  -> QCD BCtoE 30<Pt<80
-	// mysample == 63  -> QCD BCtoE 80<Pt<170
-	// mysample == 64  -> QCD BCtoE 170<Pt<250
-	// mysample == 65  -> QCD BCtoE 250<Pt<350
-	// mysample == 66  -> QCD BCtoE 350<Pt<Inf
+	// mysample == 61  -> QCD EMEnriched 20<Pt<30
+	// mysample == 62  -> QCD EMEnriched 30<Pt<80
+	// mysample == 63  -> QCD EMEnriched 80<Pt<170
+	// mysample == 64  -> QCD EMEnriched 170<Pt<250
+	// mysample == 65  -> QCD EMEnriched 250<Pt<350
+	// mysample == 66  -> QCD EMEnriched 350<Pt<Inf
 	// -----------------------------------------------------
-	// mysample == 71  -> QCD 100<HT<250
-	// mysample == 72  -> QCD 250<HT<500
-	// mysample == 73  -> QCD 500<HT<1000
-	// mysample == 74  -> QCD 1000<HT<Inf
+	// mysample == 71  -> QCD BCtoE 20<Pt<30
+	// mysample == 72  -> QCD BCtoE 30<Pt<80
+	// mysample == 73  -> QCD BCtoE 80<Pt<170
+	// mysample == 74  -> QCD BCtoE 170<Pt<250
+	// mysample == 75  -> QCD BCtoE 250<Pt<350
+	// mysample == 76  -> QCD BCtoE 350<Pt<Inf
+	// -----------------------------------------------------
+	// mysample == 81  -> QCD 100<HT<250
+	// mysample == 82  -> QCD 250<HT<500
+	// mysample == 83  -> QCD 500<HT<1000
+	// mysample == 84  -> QCD 1000<HT<Inf
 	// -----------------------------------------------------
 
 
@@ -133,7 +139,9 @@ void GJetsAnalyzer::Loop(){
 
 	// ==================================== numeric and definition side of the code
 	
-	double Lumi_t = 19027.853; // /pb
+	double Lumi_t;
+	if (data_ReReco) Lumi_t = 19789.; // /pb
+	else Lumi_t = 19027.853; // /pb
 	double xsec = 1.;
 	double FiltEff = 1.;
 	double kFac = 1.;
@@ -193,9 +201,9 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	// data -----------------------------------------------------------------
+	// data ReReco ----------------------------------------------------------
 	else if (mysample == 1) {
-		sample = "DATA_Run2012A-13Jul2012";
+		sample = "DATA_RR_Run2012A-22Jan2013";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		weight = 1.;
@@ -204,7 +212,7 @@ void GJetsAnalyzer::Loop(){
 	}
 
 	else if (mysample == 2) {
-		sample = "DATA_Run2012A-recover-06Aug2012";
+		sample = "DATA_RR_Run2012B-22Jan2013";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		weight = 1.;
@@ -213,7 +221,7 @@ void GJetsAnalyzer::Loop(){
 	}
 
 	else if (mysample == 3) {
-		sample = "DATA_Run2012B-13Jul2012";
+		sample = "DATA_RR_Run2012C-22Jan2013";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		weight = 1.;
@@ -222,7 +230,7 @@ void GJetsAnalyzer::Loop(){
 	}
 
 	else if (mysample == 4) {
-		sample = "DATA_Run2012C-24Aug2012";
+		sample = "DATA_RR_Run2012D-22Jan2013";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		weight = 1.;
@@ -230,8 +238,9 @@ void GJetsAnalyzer::Loop(){
 		cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
 	}
 
-	else if (mysample == 5) {
-		sample = "DATA_Run2012C-EcalRecover_11Dec2012";
+	// data PromptReco ------------------------------------------------------
+	else if (mysample == 11) {
+		sample = "DATA_PR_Run2012A-13Jul2012";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		weight = 1.;
@@ -239,8 +248,8 @@ void GJetsAnalyzer::Loop(){
 		cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
 	}
 
-	else if (mysample == 6) {
-		sample = "DATA_Run2012C-PromptReco";
+	else if (mysample == 12) {
+		sample = "DATA_PR_Run2012A-recover-06Aug2012";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		weight = 1.;
@@ -248,8 +257,44 @@ void GJetsAnalyzer::Loop(){
 		cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
 	}
 
-	else if (mysample == 7) {
-		sample = "DATA_Run2012D-PromptReco";
+	else if (mysample == 13) {
+		sample = "DATA_PR_Run2012B-13Jul2012";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		weight = 1.;
+		cout << "Running on " << sample << endl;
+		cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
+	}
+
+	else if (mysample == 14) {
+		sample = "DATA_PR_Run2012C-24Aug2012";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		weight = 1.;
+		cout << "Running on " << sample << endl;
+		cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
+	}
+
+	else if (mysample == 15) {
+		sample = "DATA_PR_Run2012C-EcalRecover_11Dec2012";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		weight = 1.;
+		cout << "Running on " << sample << endl;
+		cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
+	}
+
+	else if (mysample == 16) {
+		sample = "DATA_PR_Run2012C-PromptReco";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		weight = 1.;
+		cout << "Running on " << sample << endl;
+		cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
+	}
+
+	else if (mysample == 17) {
+		sample = "DATA_PR_Run2012D-PromptReco";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		weight = 1.;
@@ -258,7 +303,7 @@ void GJetsAnalyzer::Loop(){
 	}
 
 	// MC signal GJets_HT-xToy ----------------------------------------------
-	else if (mysample == 11){ 
+	else if (mysample == 21){ 
 		sample = "MC_GJets_HT-40To100";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -272,7 +317,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 12){ 
+	else if (mysample == 22){ 
 		sample = "MC_GJets_HT-100To200";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -286,7 +331,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 13){ 
+	else if (mysample == 23){ 
 		sample = "MC_GJets_HT-200To400";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -300,7 +345,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 14){
+	else if (mysample == 24){
 		sample = "MC_GJets_HT-400ToInf";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -315,7 +360,7 @@ void GJetsAnalyzer::Loop(){
 	}
 
 	// MC signal G_Pt-XtoY --------------------------------------------------
-	else if (mysample == 21){
+	else if (mysample == 31){
 		sample = "MC_G_Pt-15to30";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -329,7 +374,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 22){
+	else if (mysample == 32){
 		sample = "MC_G_Pt-30to50";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -343,7 +388,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 23){
+	else if (mysample == 33){
 		sample = "MC_G_Pt-50to80";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -357,7 +402,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 24){
+	else if (mysample == 34){
 		sample = "MC_G_Pt-80to120";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -371,7 +416,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 25){
+	else if (mysample == 35){
 		sample = "MC_G_Pt-120to170";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -385,7 +430,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 26){
+	else if (mysample == 36){
 		sample = "MC_G_Pt-170to300";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -399,7 +444,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 27){
+	else if (mysample == 37){
 		sample = "MC_G_Pt-300to470";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -413,7 +458,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 28){
+	else if (mysample == 38){
 		sample = "MC_G_Pt-470to800";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -427,7 +472,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 29){
+	else if (mysample == 39){
 		sample = "MC_G_Pt-800to1400";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -441,7 +486,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 30){
+	else if (mysample == 40){
 		sample = "MC_G_Pt-1400to1800";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -455,7 +500,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 31){
+	else if (mysample == 41){
 		sample = "MC_G_Pt-1800";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -470,7 +515,7 @@ void GJetsAnalyzer::Loop(){
 	}
 
 	// MC signal DiPhotonJets -----------------------------------------------
-	else if (mysample == 41){
+	else if (mysample == 51){
 		sample = "MC_DiPhotonJets";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -485,7 +530,7 @@ void GJetsAnalyzer::Loop(){
 	}
 
 	// MC background QCD_Pt_x_y EMEnriched ----------------------------------
-	else if (mysample == 51){
+	else if (mysample == 61){
 		sample = "MC_QCD_Pt_20_30_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -499,7 +544,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 52){
+	else if (mysample == 62){
 		sample = "MC_QCD_Pt_30_80_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -513,7 +558,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 53){
+	else if (mysample == 63){
 		sample = "MC_QCD_Pt_80_170_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -527,7 +572,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 54){
+	else if (mysample == 64){
 		sample = "MC_QCD_Pt_170_250_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -541,7 +586,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 55){
+	else if (mysample == 65){
 		sample = "MC_QCD_Pt_250_350_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -555,7 +600,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 56){
+	else if (mysample == 66){
 		sample = "MC_QCD_Pt_350_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -570,7 +615,7 @@ void GJetsAnalyzer::Loop(){
 	}
 
 	// MC background QCD_Pt_x_y BCtoE ---------------------------------------
-	else if (mysample == 61){
+	else if (mysample == 71){
 		sample = "MC_QCD_Pt_20_30_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -584,7 +629,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 62){
+	else if (mysample == 72){
 		sample = "MC_QCD_Pt_30_80_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -598,7 +643,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 63){
+	else if (mysample == 73){
 		sample = "MC_QCD_Pt_80_170_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -612,7 +657,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 64){
+	else if (mysample == 74){
 		sample = "MC_QCD_Pt_170_250_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -626,7 +671,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 65){
+	else if (mysample == 75){
 		sample = "MC_QCD_Pt_250_350_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -640,7 +685,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 66){
+	else if (mysample == 76){
 		sample = "MC_QCD_Pt_350_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -656,7 +701,7 @@ void GJetsAnalyzer::Loop(){
 
 
 	// MC background QCD HT-xToy --------------------------------------------
-	else if (mysample == 71){
+	else if (mysample == 81){
 		sample = "MC_QCD_HT-100To250";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -670,7 +715,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 72){
+	else if (mysample == 82){
 		sample = "MC_QCD_HT-250To500";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -684,7 +729,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 73){
+	else if (mysample == 83){
 		sample = "MC_QCD_HT-500To1000";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -698,7 +743,7 @@ void GJetsAnalyzer::Loop(){
 		cout << "Weight is " << weight << endl;
 	}
 
-	else if (mysample == 74){
+	else if (mysample == 84){
 		sample = "MC_QCD_HT-1000ToInf";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
@@ -734,7 +779,7 @@ void GJetsAnalyzer::Loop(){
 	
 	Long64_t nentries;
 	if(RedAn){
-		nentries = 10000; // analysis with a reuced entries number
+		nentries = 10000; // analysis with a reduced entries number
 	}
 	else{
 		nentries = fChain->GetEntriesFast();
@@ -768,7 +813,7 @@ void GJetsAnalyzer::Loop(){
 
 		// ==================================== SIGNAL and BACKGROUND separated behaviour to avoid double counting
 		
-		bool Sig = (mysample == 0) || (mysample > 10 && mysample < 15)  || (mysample > 20 && mysample < 32) || (mysample == 41);
+		bool Sig = (mysample == 0) || (mysample > 20 && mysample < 25)  || (mysample > 30 && mysample < 42) || (mysample == 51);
 		bool isoGEN; 
 		if (SigBack) {
 			isoGEN = false; 
@@ -793,23 +838,16 @@ void GJetsAnalyzer::Loop(){
 				// jetVeto: jetsGEN vs. PhotonGEN 
 				if(nPhotonsGEN > 0 && (nJetsGEN > 0 && (nJetsGEN == (int)jetPtGEN->size())) ){
 
-					/*
-					CleanedJetsGEN_N = 0;
-					*/
 					SelectedJetsGEN_N = 0;
 
 					for (unsigned int iJetGENPos = 0; iJetGENPos < jetPtGEN->size(); iJetGENPos++) {
 
 						// selection of cleaned jets vs. PhotonGEN
 						bool closeGEN = false;
-						if ( deltaR(photonEtaGEN, photonPhiGEN, jetEtaGEN->at(iJetGENPos), jetPhiGEN->at(iJetGENPos)) < 0.4 ) {
+						if ( deltaR(photonEtaGEN, photonPhiGEN, jetEtaGEN->at(iJetGENPos), jetPhiGEN->at(iJetGENPos)) < 0.5 ) {
 							closeGEN = true;
 						}
 						if (!closeGEN){
-							/*
-							CleanedJetsGEN_Pt.push_back(jetPtGEN->at(iJetGENPos));
-							CleanedJetsGEN_N += 1;
-							*/
 
 							// jets kinematic selection
 							if(jetPtGEN->at(iJetGENPos) > 30. && TMath::Abs(jetEtaGEN->at(iJetGENPos)) < 2.5 ){
@@ -824,13 +862,6 @@ void GJetsAnalyzer::Loop(){
 				} // end jetVeto: jetsGEN vs. PhotonGEN
 
 				// collectives jetsGEN properties
-				/*
-				CleanedJetsGEN_HT = 0;
-				for(unsigned int jJetGENPos = 0; jJetGENPos < CleanedJetsGEN_Pt.size(); jJetGENPos++) {
-					CleanedJetsGEN_HT += CleanedJetsGEN_Pt.at(jJetGENPos);
-				}
-				*/
-				
 				SelectedJetsGEN_HT = 0;
 				for(unsigned int zJetGENPos = 0; zJetGENPos < SelectedJetsGEN_Pt.size(); zJetGENPos++) {
 					SelectedJetsGEN_HT += SelectedJetsGEN_Pt.at(zJetGENPos);
@@ -866,9 +897,6 @@ void GJetsAnalyzer::Loop(){
 								photonPhiGEN_->Fill(photonPhiGEN, 1);
 								photonEGEN_->Fill(photonEGEN, 1);
 
-								/*
-								CleanedJetsGEN_N_->Fill(CleanedJetsGEN_N, 1);
-								*/
 								SelectedJetsGEN_N_->Fill(SelectedJetsGEN_N, 1);
 
 								SelectedJets_PtGEN_1_->Fill(SelectedJetsGEN_Pt.at(0), 1);
@@ -876,9 +904,6 @@ void GJetsAnalyzer::Loop(){
 								SelectedJets_EtaGEN_1_->Fill(SelectedJetsGEN_Eta.at(0), 1);
 								SelectedJets_PhiGEN_1_->Fill(SelectedJetsGEN_Phi.at(0), 1);
 								
-								/*
-								CleanedJetsGEN_HT_->Fill(CleanedJetsGEN_HT, 1);
-								*/
 								SelectedJetsGEN_HT_->Fill(SelectedJetsGEN_HT, 1);
 
 								HTParSum_->Fill(HTParSum, 1);
@@ -891,18 +916,9 @@ void GJetsAnalyzer::Loop(){
 				pre_photonIsoSumPtDR03GEN_->Fill(photonIsoSumPtDR03GEN, 1);
 
 				// clean jets GEN
-				/*
-				CleanedJetsGEN_N = 0;
-				*/
 				SelectedJetsGEN_N = 0;
-				/*
-				CleanedJetsGEN_HT = 0;
-				*/
 				SelectedJetsGEN_HT = 0;
 				
-				/*
-				CleanedJetsGEN_Pt.clear();
-				*/
 				SelectedJetsGEN_Pt.clear();
 				SelectedJetsGEN_E.clear();
 				SelectedJetsGEN_Eta.clear();
@@ -913,6 +929,7 @@ void GJetsAnalyzer::Loop(){
 
 
 			// ==================================== REC selection
+
 			
 			// photon selection
 			if(nPhotons > 0 && (nPhotons == (int)photonPt->size()) ) {
@@ -922,7 +939,7 @@ void GJetsAnalyzer::Loop(){
 
 				// SelectedPhotons collection selection 
 				for(unsigned int iPhoPos = 0; iPhoPos < photonPt->size(); iPhoPos++) {
-
+					
 					// T&P scale factors - definitions
 					float TeP_SF;
 					if (TeP_corr) {
@@ -977,16 +994,10 @@ void GJetsAnalyzer::Loop(){
 
 					// PF isolation variables - definitions
 					photonPfIso = 0;
-					photonPfIso_ov_Pt = 0;
+					photonIsoFPR = 0;
+	
 					photonPfIso = photonPfIsoChargedHad->at(iPhoPos) + photonPfIsoNeutralHad->at(iPhoPos) + photonPfIsoPhoton->at(iPhoPos);
-					photonPfIso_ov_Pt = photonPfIso/photonPt->at(iPhoPos);
-
-					photonIsoFPRCharged_ov_Pt = 0;
-					photonIsoFPRNeutral_ov_Pt = 0;
-					photonIsoFPRPhoton_ov_Pt = 0;
-					photonIsoFPRCharged_ov_Pt = photonIsoFPRCharged->at(iPhoPos)/photonPt->at(iPhoPos);
-					photonIsoFPRNeutral_ov_Pt = photonIsoFPRNeutral->at(iPhoPos)/photonPt->at(iPhoPos);
-					photonIsoFPRPhoton_ov_Pt = photonIsoFPRPhoton->at(iPhoPos)/photonPt->at(iPhoPos);
+					photonIsoFPR = photonIsoFPRCharged->at(iPhoPos) + photonIsoFPRNeutral->at(iPhoPos) + photonIsoFPRPhoton->at(iPhoPos);
 					// end PF isolation variables - definitions
 
 					// Rho corrected PF isolation variables - definitions
@@ -1035,9 +1046,7 @@ void GJetsAnalyzer::Loop(){
 					photonPfIsoPhoton_RhoCorr = max(photonPfIsoPhoton->at(iPhoPos) - rho*EA_Ph, 0.);
 
 					photonPfIso_RhoCorr = 0;
-					photonPfIso_RhoCorr_ov_Pt = 0;
 					photonPfIso_RhoCorr = photonPfIsoChargedHad_RhoCorr + photonPfIsoNeutralHad_RhoCorr + photonPfIsoPhoton_RhoCorr;
-					photonPfIso_RhoCorr_ov_Pt = photonPfIso_RhoCorr/photonPt->at(iPhoPos);
 					// end Rho corrected PF isolation variables - definitions
 
 					// photon quality selection - definitions
@@ -1160,13 +1169,11 @@ void GJetsAnalyzer::Loop(){
 							SelectedPhotons_PfIsoNeutralHad.push_back(photonPfIsoNeutralHad->at(iPhoPos));
 							SelectedPhotons_PfIsoPhoton.push_back(photonPfIsoPhoton->at(iPhoPos));
 							SelectedPhotons_PfIso.push_back(photonPfIso);
-							SelectedPhotons_PfIso_ov_Pt.push_back(photonPfIso_ov_Pt);
 
 							SelectedPhotons_PfIsoChargedHad_RhoCorr.push_back(photonPfIsoChargedHad_RhoCorr);
 							SelectedPhotons_PfIsoNeutralHad_RhoCorr.push_back(photonPfIsoNeutralHad_RhoCorr);
 							SelectedPhotons_PfIsoPhoton_RhoCorr.push_back(photonPfIsoPhoton_RhoCorr);
 							SelectedPhotons_PfIso_RhoCorr.push_back(photonPfIso_RhoCorr);
-							SelectedPhotons_PfIso_RhoCorr_ov_Pt.push_back(photonPfIso_RhoCorr_ov_Pt);
 
 							SelectedPhotons_PfIsoPhotons03ForCic.push_back(photonPfIsoPhotons03ForCic->at(iPhoPos));
 							SelectedPhotons_PfIsoNeutrals03ForCic.push_back(photonPfIsoNeutrals03ForCic->at(iPhoPos));
@@ -1203,11 +1210,9 @@ void GJetsAnalyzer::Loop(){
 							SelectedPhotons_IsoFPRCharged.push_back(photonIsoFPRCharged->at(iPhoPos));
 							SelectedPhotons_IsoFPRNeutral.push_back(photonIsoFPRNeutral->at(iPhoPos));
 							SelectedPhotons_IsoFPRPhoton.push_back(photonIsoFPRPhoton->at(iPhoPos));
-							SelectedPhotons_IsoFPRCharged_ov_Pt.push_back(photonIsoFPRCharged_ov_Pt);
-							SelectedPhotons_IsoFPRNeutral_ov_Pt.push_back(photonIsoFPRNeutral_ov_Pt);
-							SelectedPhotons_IsoFPRPhoton_ov_Pt.push_back(photonIsoFPRPhoton_ov_Pt);
+							SelectedPhotons_IsoFPR.push_back(photonIsoFPR);							
+							
 							SelectedPhotons_Bit.push_back(photonBit->at(iPhoPos));
-
 							SelectedPhotons_TeP_SF.push_back(TeP_SF);
 							
 							SelectedPhotons_N+=1;
@@ -1217,78 +1222,56 @@ void GJetsAnalyzer::Loop(){
 				} // end SelectedPhotons collection selection
 			} // end photon selection
 
+			
 			// jetVeto: jets vs. SelectedPhotons 
 			if(SelectedPhotons_N > 0 && (nJets > 0 && (nJets == (int)jetPt->size())) ){
 
-				/*
-				CleanedJetsLEA_N = 0;
-				*/
-				SelectedJetsLEA_N = 0;
-				/*
-				CleanedJets_N = 0;
-				*/
+				SelectedJetsALL_N = 0;
 				SelectedJets_N = 0;
 
 				for (unsigned int iJetPos = 0; (int)iJetPos < nJets; iJetPos++) {
 
-					// only counting of cleaned jets vs. LEADING SelectedPhotons
+					// only counting of cleaned jets vs. ALL SelectedPhotons
+					bool closeALL = false;
+					for (unsigned int jPhoPos = 0; jPhoPos < SelectedPhotons_N; ++jPhoPos){
+						if ( deltaR(SelectedPhotons_Eta.at(jPhoPos), SelectedPhotons_Phi.at(jPhoPos), jetEta->at(iJetPos), jetPhi->at(iJetPos)) < 0.5) {
+							closeALL = true;
+							break;
+						}
+					}
+					if (!closeALL){
+						if(jetPt->at(iJetPos) > 30. && TMath::Abs(jetEta->at(iJetPos)) < 2.5 ){
+							SelectedJetsALL_N += 1;
+						}
+					} // end only counting of cleaned jets vs. ALL SelectedPhotons
+
+					// selection of cleaned jets vs. LEADING SelectedPhotons
 					bool closeLEA = false;
 
-					if ( deltaR(SelectedPhotons_Eta.at(0), SelectedPhotons_Phi.at(0), jetEta->at(iJetPos), jetPhi->at(iJetPos)) < 0.4 ) {
+					if ( deltaR(SelectedPhotons_Eta.at(0), SelectedPhotons_Phi.at(0), jetEta->at(iJetPos), jetPhi->at(iJetPos)) < 0.5) {
 						closeLEA = true;
 					}
 				
 					if (!closeLEA){
-						/*
-						CleanedJetsLEA_N += 1;
-						*/
 						
-						// only counting of selected jets vs. LEADING SelectedPhotons
-						if(jetPt->at(iJetPos) > 30. && TMath::Abs(jetEta->at(iJetPos)) < 2.5 ){
-							SelectedJetsLEA_N += 1;
-						}
-					} // end only counting of cleaned jets vs. LEADING SelectedPhotons
-
-
-					// selection of cleaned jets vs. ALL SelectedPhotons
-					bool close = false;
-					for (unsigned int jPhoPos = 0; jPhoPos < SelectedPhotons_N; ++jPhoPos){
-						if ( deltaR(SelectedPhotons_Eta.at(jPhoPos), SelectedPhotons_Phi.at(jPhoPos), jetEta->at(iJetPos), jetPhi->at(iJetPos)) < 0.4) {
-							close = true;
-							break;
-						}
-					}
-					if (!close){
-						/*
-						CleanedJets_Pt.push_back(jetPt->at(iJetPos));
-						CleanedJets_N += 1;
-						*/
-
 						// jets kinematic selection
 						if(jetPt->at(iJetPos) > 30. && TMath::Abs(jetEta->at(iJetPos)) < 2.5 ){
+							
 							SelectedJets_Pt.push_back(jetPt->at(iJetPos));
 							SelectedJets_E.push_back(jetE->at(iJetPos));
 							SelectedJets_Eta.push_back(jetEta->at(iJetPos));
 							SelectedJets_Phi.push_back(jetPhi->at(iJetPos));
 							SelectedJets_N += 1;
 						} // end jets kinematic selection
-					} // end selection of cleaned jets vs. ALL SelectedPhotons
+					} // end selection of cleaned jets vs. LEADING SelectedPhotons
 				}
 			} // jetVeto: jets vs. SelectedPhotons
 
 			// collectives jets properties
-			/*
-			CleanedJets_HT = 0;
-			for(unsigned int jJetPos = 0; jJetPos < CleanedJets_Pt.size(); jJetPos++) {
-				CleanedJets_HT += CleanedJets_Pt.at(jJetPos);
-			}
-			*/
-
 			SelectedJets_HT = 0;
 			for(unsigned int zJetPos = 0; zJetPos < SelectedJets_Pt.size(); zJetPos++) {
 				SelectedJets_HT += SelectedJets_Pt.at(zJetPos);
 			}
-
 
 			if (SelectedPhotons_N > 0 && SelectedJets_N > 0){
 				TLorentzVector PtEtaPhiE_tmpPho = TLorentzVector(0,0,0,0);
@@ -1331,26 +1314,6 @@ void GJetsAnalyzer::Loop(){
 					if (SelectedJets_N > 0) {
 						iSelected3++;
 
-						/*
-						CleanedJetsLEA_preHT_N_->Fill(CleanedJetsLEA_N, weight_final);
-						SelectedJetsLEA_preHT_N_->Fill(SelectedJetsLEA_N, weight_final);
-
-						CleanedJets_preHT_N_->Fill(CleanedJets_N, weight_final);
-						
-						SelectedJets_preHT_N_->Fill(SelectedJets_N, weight_final);
-
-						SelectedJets_preHT_Pt_1_->Fill(SelectedJets_Pt.at(0), weight_final);
-						if (SelectedJets_N > 1){
-							SelectedJets_preHT_Pt_2_->Fill(SelectedJets_Pt.at(1), weight_final);
-						}
-						if (SelectedJets_N > 2){
-							SelectedJets_preHT_Pt_3_->Fill(SelectedJets_Pt.at(2), weight_final);
-						}
-
-						CleanedJets_preHT_HT_->Fill(CleanedJets_HT, weight_final);
-						SelectedJets_preHT_HT_->Fill(SelectedJets_HT, weight_final);
-						*/
-
 						// HT selection
 						if (SelectedJets_HT > 0){
 							iSelected4++;
@@ -1371,13 +1334,11 @@ void GJetsAnalyzer::Loop(){
 							SelectedPhotons_PfIsoNeutralHad_1_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
 							SelectedPhotons_PfIsoPhoton_1_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
 							SelectedPhotons_PfIso_1_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
-							SelectedPhotons_PfIso_ov_Pt_1_->Fill(SelectedPhotons_PfIso_ov_Pt.at(0), weight_final);
 
 							SelectedPhotons_PfIsoChargedHad_RhoCorr_1_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr.at(0), weight_final);
 							SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr.at(0), weight_final);
 							SelectedPhotons_PfIsoPhoton_RhoCorr_1_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr.at(0), weight_final);
 							SelectedPhotons_PfIso_RhoCorr_1_->Fill(SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
-							SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_->Fill(SelectedPhotons_PfIso_RhoCorr_ov_Pt.at(0), weight_final);
 
 							if (SelectedPhotons_Pt.at(0) > 100 && SelectedPhotons_Pt.at(0) < 150){
 								SelectedPhotons_id_sieie_1_bin01_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);
@@ -1386,13 +1347,11 @@ void GJetsAnalyzer::Loop(){
 								SelectedPhotons_PfIsoNeutralHad_1_bin01_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
 								SelectedPhotons_PfIsoPhoton_1_bin01_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
 								SelectedPhotons_PfIso_1_bin01_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
-								SelectedPhotons_PfIso_ov_Pt_1_bin01_->Fill(SelectedPhotons_PfIso_ov_Pt.at(0), weight_final);
 
 								SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin01_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr.at(0), weight_final);
 								SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin01_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr.at(0), weight_final);
 								SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr.at(0), weight_final);
 								SelectedPhotons_PfIso_RhoCorr_1_bin01_->Fill(SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
-								SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin01_->Fill(SelectedPhotons_PfIso_RhoCorr_ov_Pt.at(0), weight_final);
 							}
 
 							if (SelectedPhotons_Pt.at(0) > 150 && SelectedPhotons_Pt.at(0) < 300){
@@ -1402,13 +1361,11 @@ void GJetsAnalyzer::Loop(){
 								SelectedPhotons_PfIsoNeutralHad_1_bin02_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
 								SelectedPhotons_PfIsoPhoton_1_bin02_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
 								SelectedPhotons_PfIso_1_bin02_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
-								SelectedPhotons_PfIso_ov_Pt_1_bin02_->Fill(SelectedPhotons_PfIso_ov_Pt.at(0), weight_final);
 
 								SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin02_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr.at(0), weight_final);
 								SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin02_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr.at(0), weight_final);
 								SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr.at(0), weight_final);
 								SelectedPhotons_PfIso_RhoCorr_1_bin02_->Fill(SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
-								SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin02_->Fill(SelectedPhotons_PfIso_RhoCorr_ov_Pt.at(0), weight_final);
 							}
 							
 							if (SelectedPhotons_Pt.at(0) > 300 && SelectedPhotons_Pt.at(0) < 500){
@@ -1418,13 +1375,11 @@ void GJetsAnalyzer::Loop(){
 								SelectedPhotons_PfIsoNeutralHad_1_bin03_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
 								SelectedPhotons_PfIsoPhoton_1_bin03_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
 								SelectedPhotons_PfIso_1_bin03_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
-								SelectedPhotons_PfIso_ov_Pt_1_bin03_->Fill(SelectedPhotons_PfIso_ov_Pt.at(0), weight_final);
 
 								SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin03_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr.at(0), weight_final);
 								SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin03_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr.at(0), weight_final);
 								SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr.at(0), weight_final);
 								SelectedPhotons_PfIso_RhoCorr_1_bin03_->Fill(SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
-								SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin03_->Fill(SelectedPhotons_PfIso_RhoCorr_ov_Pt.at(0), weight_final);
 							}
 
 							if (SelectedPhotons_Pt.at(0) > 500){
@@ -1434,13 +1389,11 @@ void GJetsAnalyzer::Loop(){
 								SelectedPhotons_PfIsoNeutralHad_1_bin04_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
 								SelectedPhotons_PfIsoPhoton_1_bin04_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
 								SelectedPhotons_PfIso_1_bin04_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
-								SelectedPhotons_PfIso_ov_Pt_1_bin04_->Fill(SelectedPhotons_PfIso_ov_Pt.at(0), weight_final);
 
 								SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr.at(0), weight_final);
 								SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin04_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr.at(0), weight_final);
 								SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr.at(0), weight_final);
 								SelectedPhotons_PfIso_RhoCorr_1_bin04_->Fill(SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
-								SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin04_->Fill(SelectedPhotons_PfIso_RhoCorr_ov_Pt.at(0), weight_final);
 							}
 
 							SelectedPhotons_PfIsoPhotons03ForCic_1_->Fill(SelectedPhotons_PfIsoPhotons03ForCic.at(0), weight_final);
@@ -1478,24 +1431,15 @@ void GJetsAnalyzer::Loop(){
 							SelectedPhotons_IsoFPRCharged_1_->Fill(SelectedPhotons_IsoFPRCharged.at(0), weight_final);
 							SelectedPhotons_IsoFPRNeutral_1_->Fill(SelectedPhotons_IsoFPRNeutral.at(0), weight_final);
 							SelectedPhotons_IsoFPRPhoton_1_->Fill(SelectedPhotons_IsoFPRPhoton.at(0), weight_final);
-							SelectedPhotons_IsoFPRCharged_ov_Pt_1_->Fill(SelectedPhotons_IsoFPRCharged_ov_Pt.at(0), weight_final);
-							SelectedPhotons_IsoFPRNeutral_ov_Pt_1_->Fill(SelectedPhotons_IsoFPRNeutral_ov_Pt.at(0), weight_final);
-							SelectedPhotons_IsoFPRPhoton_ov_Pt_1_->Fill(SelectedPhotons_IsoFPRPhoton_ov_Pt.at(0), weight_final);
+							SelectedPhotons_IsoFPR_1_->Fill(SelectedPhotons_IsoFPR.at(0), weight_final);
+							
 							SelectedPhotons_Bit_1_->Fill(SelectedPhotons_Bit.at(0), weight_final);
-
 							/*
 							SelectedPhotons_TeP_SF_1_->Fill(SelectedPhotons_TeP_SF.at(0), weight_final);
 							*/
-
-							/*
-							CleanedJetsLEA_N_->Fill(CleanedJetsLEA_N, weight_final);
-							*/
 							
-							SelectedJetsLEA_N_->Fill(SelectedJetsLEA_N, weight_final);
+							SelectedJetsALL_N_->Fill(SelectedJetsALL_N, weight_final);
 
-							/*
-							CleanedJets_N_->Fill(CleanedJets_N, weight_final);
-							*/
 							SelectedJets_N_->Fill(SelectedJets_N, weight_final);
 
 							SelectedJets_Pt_1_->Fill(SelectedJets_Pt.at(0), weight_final);
@@ -1503,9 +1447,6 @@ void GJetsAnalyzer::Loop(){
 							SelectedJets_Eta_1_->Fill(SelectedJets_Eta.at(0), weight_final);
 							SelectedJets_Phi_1_->Fill(SelectedJets_Phi.at(0), weight_final);
 
-							/*
-							CleanedJets_HT_->Fill(CleanedJets_HT, weight_final);
-							*/
 							SelectedJets_HT_->Fill(SelectedJets_HT, weight_final);
 
 							DeltaR_photon1_jet1_N0 = deltaR(SelectedPhotons_Eta.at(0), SelectedPhotons_Phi.at(0), SelectedJets_Eta.at(0), SelectedJets_Phi.at(0));
@@ -1631,23 +1572,10 @@ void GJetsAnalyzer::Loop(){
 			} // end ID+Iso+kin Photons selection (then, on the LEADING one)
 
 			// clean jets
-			/*
-			CleanedJetsLEA_N = 0;
-			*/
-			SelectedJetsLEA_N = 0;
-			/*
-			CleanedJets_N = 0;
-			*/
+			SelectedJetsALL_N = 0;
 			SelectedJets_N = 0;
-			/*
-			CleanedJets_HT = 0;
-			*/
 			SelectedJets_HT = 0;
-			
-			/*
-			CleanedJets_Pt.clear();
-			*/
-			
+				
 			SelectedJets_Pt.clear();
 			SelectedJets_E.clear();
 			SelectedJets_Eta.clear();
@@ -1671,13 +1599,11 @@ void GJetsAnalyzer::Loop(){
 			SelectedPhotons_PfIsoNeutralHad.clear();
 			SelectedPhotons_PfIsoPhoton.clear();
 			SelectedPhotons_PfIso.clear();
-			SelectedPhotons_PfIso_ov_Pt.clear();
 
 			SelectedPhotons_PfIsoChargedHad_RhoCorr.clear();
 			SelectedPhotons_PfIsoNeutralHad_RhoCorr.clear();
 			SelectedPhotons_PfIsoPhoton_RhoCorr.clear();
 			SelectedPhotons_PfIso_RhoCorr.clear();
-			SelectedPhotons_PfIso_RhoCorr_ov_Pt.clear();
 
 			SelectedPhotons_PfIsoPhotons03ForCic.clear();
 			SelectedPhotons_PfIsoNeutrals03ForCic.clear();
@@ -1714,10 +1640,8 @@ void GJetsAnalyzer::Loop(){
 			SelectedPhotons_IsoFPRCharged.clear();
 			SelectedPhotons_IsoFPRNeutral.clear();
 			SelectedPhotons_IsoFPRPhoton.clear();
-			SelectedPhotons_IsoFPRCharged_ov_Pt.clear();
-			SelectedPhotons_IsoFPRNeutral_ov_Pt.clear();
-			SelectedPhotons_IsoFPRPhoton_ov_Pt.clear();
-
+			SelectedPhotons_IsoFPR.clear();
+			
 			SelectedPhotons_Bit.clear();
 
 			SelectedPhotons_TeP_SF.clear();
@@ -1730,14 +1654,15 @@ void GJetsAnalyzer::Loop(){
 
 	// ====================================terminate and plot
 
+	cout << "Analysis selection:" << endl;
 	cout << "nentries (with preselection in the PATZJetsExpress analyzer) = " << nentries_r << endl;
-	cout << "Number of selected events 0, unweighted = " << iSelected0 << endl;
-	cout << "Number of selected events 1, unweighted = " << iSelected1 << endl;
-	cout << "Number of selected events 2, unweighted = " << iSelected2 << endl;
-	cout << "Number of selected events 3, unweighted = " << iSelected3 << endl;
-	cout << "Number of selected events 4, unweighted = " << iSelected4 << endl;
-	cout << "Number of selected events, unweighted = " << iSelected4 << endl;
-	cout << "Number of selected events, weighted = " << iSelected4*weight_r << endl;
+	cout << "Number of selected events 0 (Iso at GEN level), unweighted = " << iSelected0 << endl;
+	cout << "Number of selected events 1 (ID+Iso+kin Photons: then, on the LEADING one), unweighted = " << iSelected1 << endl;
+	cout << "Number of selected events 2 (trigger Matching), unweighted = " << iSelected2 << endl;
+	cout << "Number of selected events 3 (kin Jets: cleaned vs. LEADING Photons), unweighted = " << iSelected3 << endl;
+	cout << "Number of selected events 4 (HT), unweighted = " << iSelected4 << endl;
+	cout << "Number of selected events (all selections), unweighted = " << iSelected4 << endl;
+	cout << "Number of selected events (all selections), weighted = " << iSelected4*weight_r << endl;
 
 	fhistos->Write();
 
@@ -1766,10 +1691,6 @@ void GJetsAnalyzer::Book_Histos(){
 		photonPhiGEN_ = new TH1F("photonPhiGEN_","Photon GEN #varphi", 1000, -3.1416, 3.1416);
 
 		//plotsCompare_gen_02
-		/*
-		CleanedJetsGEN_N_ = new TH1F("CleanedJetsGEN_N_","Cleaned Jets GEN N", 10, 0, 10);
-		*/
-		
 		SelectedJetsGEN_N_ = new TH1F("SelectedJetsGEN_N_","Selected Jets GEN N", 10, 0, 10);
 		SelectedJets_PtGEN_1_ = new TH1F("SelectedJets_PtGEN_1_","Jet 1 GEN p_{T} ", 400, 0., 4000.);
 		SelectedJets_EGEN_1_ = new TH1F("SelectedJets_EGEN_1_", "Jet 1 GEN E", 400, 0., 4000.);
@@ -1777,9 +1698,6 @@ void GJetsAnalyzer::Book_Histos(){
 		SelectedJets_PhiGEN_1_ = new TH1F("SelectedJets_PhiGEN_1_","Jet 1 GEN #varphi ", 1000, -3.1416, 3.1416);
 
 		//plotsCompare_gen_03
-		/*
-		CleanedJetsGEN_HT_ = new TH1F("CleanedJetsGEN_HT_","Cleaned Jets H_{T} GEN", 400, 0, 4000);
-		*/
 		SelectedJetsGEN_HT_ = new TH1F("SelectedJetsGEN_HT_","Selected Jets H_{T} GEN", 400, 0, 4000);
 
 		HTParSum_ = new TH1F("HTParSum_","H_{T} Partons Sum", 400, 0, 4000);
@@ -1811,14 +1729,12 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_PfIsoNeutralHad_1_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_", "photon PfIsoNeutralHad", 2000, 0, 200);
 	SelectedPhotons_PfIsoPhoton_1_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_", "photon PfIsoPhoton", 2000, 0, 200);
 	SelectedPhotons_PfIso_1_ = new TH1F("SelectedPhotons_PfIso_1_", "photon PfIso", 2000, 0, 200);
-	SelectedPhotons_PfIso_ov_Pt_1_ = new TH1F("SelectedPhotons_PfIso_ov_Pt_1_", "photon PfIso/p_{T} ", 100, 0, 0.2);
 
 	//plotsCompare_03
 	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_", "photon PfIsoChargedHad #rho corrected", 4000, 0, 100);
 	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_", "photon PfIsoNeutralHad #rho corrected", 2000, 0, 200);
 	SelectedPhotons_PfIsoPhoton_RhoCorr_1_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_", "photon PfIsoPhoton #rho corrected", 2000, 0, 200);
 	SelectedPhotons_PfIso_RhoCorr_1_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_", "photon PfIso #rho corrected", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_", "photon PfIso/p_{T} #rho corrected", 100, 0, 0.2);
 
 	//plotsCompare_04
 	SelectedPhotons_id_sieie_1_bin01_ = new TH1F("SelectedPhotons_id_sieie_1_bin01_", "photon ID: #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 150", 500, 0., 0.050);
@@ -1826,14 +1742,12 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_PfIsoNeutralHad_1_bin01_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin01_", "photon PfIsoNeutralHad, 100 < p_{T}^{#gamma} < 150", 2000, 0, 200);
 	SelectedPhotons_PfIsoPhoton_1_bin01_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin01_", "photon PfIsoPhoton, 100 < p_{T}^{#gamma} < 150", 2000, 0, 200);
 	SelectedPhotons_PfIso_1_bin01_ = new TH1F("SelectedPhotons_PfIso_1_bin01_", "photon PfIso, 100 < p_{T}^{#gamma} < 150", 2000, 0, 200);
-	SelectedPhotons_PfIso_ov_Pt_1_bin01_ = new TH1F("SelectedPhotons_PfIso_ov_Pt_1_bin01_", "photon PfIso/p_{T}, 100 < p_{T}^{#gamma} < 150 ", 100, 0, 0.2);
 
 	//plotsCompare_05
 	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin01_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin01_", "photon PfIsoChargedHad #rho corrected, 100 < p_{T}^{#gamma} < 150", 4000, 0, 100);
 	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin01_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin01_", "photon PfIsoNeutralHad #rho corrected, 100 < p_{T}^{#gamma} < 150", 2000, 0, 200);
 	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_", "photon PfIsoPhoton #rho corrected, 100 < p_{T}^{#gamma} < 150", 2000, 0, 200);
 	SelectedPhotons_PfIso_RhoCorr_1_bin01_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin01_", "photon PfIso #rho corrected, 100 < p_{T}^{#gamma} < 150", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin01_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin01_", "photon PfIso/p_{T} #rho corrected, 100 < p_{T}^{#gamma} < 150 ", 100, 0, 0.2);
 
 	//plotsCompare_06
 	SelectedPhotons_id_sieie_1_bin02_ = new TH1F("SelectedPhotons_id_sieie_1_bin02_", "photon ID: #sigma_{i#etai#eta}, 150 < p_{T}^{#gamma} < 300", 500, 0., 0.050);
@@ -1841,14 +1755,12 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_PfIsoNeutralHad_1_bin02_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin02_", "photon PfIsoNeutralHad, 150 < p_{T}^{#gamma} < 300", 2000, 0, 200);
 	SelectedPhotons_PfIsoPhoton_1_bin02_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin02_", "photon PfIsoPhoton, 150 < p_{T}^{#gamma} < 300", 2000, 0, 200);
 	SelectedPhotons_PfIso_1_bin02_ = new TH1F("SelectedPhotons_PfIso_1_bin02_", "photon PfIso, 150 < p_{T}^{#gamma} < 300", 2000, 0, 200);
-	SelectedPhotons_PfIso_ov_Pt_1_bin02_ = new TH1F("SelectedPhotons_PfIso_ov_Pt_1_bin02_", "photon PfIso/p_{T}, 150 < p_{T}^{#gamma} < 300", 100, 0, 0.2);
 
 	//plotsCompare_07
 	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin02_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin02_", "photon PfIsoChargedHad #rho corrected, 150 < p_{T}^{#gamma} < 300", 4000, 0, 100);
 	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin02_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin02_", "photon PfIsoNeutralHad #rho corrected, 150 < p_{T}^{#gamma} < 300", 2000, 0, 200);
 	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_", "photon PfIsoPhoton #rho corrected, 150 < p_{T}^{#gamma} < 300", 2000, 0, 200);
 	SelectedPhotons_PfIso_RhoCorr_1_bin02_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin02_", "photon PfIso #rho corrected, 150 < p_{T}^{#gamma} < 300", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin02_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin02_", "photon PfIso/p_{T} #rho corrected, 150 < p_{T}^{#gamma} < 300", 100, 0, 0.2);
 
 	//plotsCompare_08
 	SelectedPhotons_id_sieie_1_bin03_ = new TH1F("SelectedPhotons_id_sieie_1_bin03_", "photon ID: #sigma_{i#etai#eta}, 300 < p_{T}^{#gamma} < 500", 500, 0., 0.050);
@@ -1856,14 +1768,12 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_PfIsoNeutralHad_1_bin03_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin03_", "photon PfIsoNeutralHad, 300 < p_{T}^{#gamma} < 500", 2000, 0, 200);
 	SelectedPhotons_PfIsoPhoton_1_bin03_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin03_", "photon PfIsoPhoton, 300 < p_{T}^{#gamma} < 500", 2000, 0, 200);
 	SelectedPhotons_PfIso_1_bin03_ = new TH1F("SelectedPhotons_PfIso_1_bin03_", "photon PfIso, 300 < p_{T}^{#gamma} < 500", 2000, 0, 200);
-	SelectedPhotons_PfIso_ov_Pt_1_bin03_ = new TH1F("SelectedPhotons_PfIso_ov_Pt_1_bin03_", "photon PfIso/p_{T}, 300 < p_{T}^{#gamma} < 500", 100, 0, 0.2);
 
 	//plotsCompare_09
 	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin03_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin03_", "photon PfIsoChargedHad #rho corrected, 300 < p_{T}^{#gamma} < 500", 4000, 0, 100);
 	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin03_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin03_", "photon PfIsoNeutralHad #rho corrected, 300 < p_{T}^{#gamma} < 500", 2000, 0, 200);
 	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_", "photon PfIsoPhoton #rho corrected, 300 < p_{T}^{#gamma} < 500", 2000, 0, 200);
 	SelectedPhotons_PfIso_RhoCorr_1_bin03_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin03_", "photon PfIso #rho corrected, 300 < p_{T}^{#gamma} < 500", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin03_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin03_", "photon PfIso/p_{T} #rho corrected, 300 < p_{T}^{#gamma} < 500", 100, 0, 0.2);
 
 	//plotsCompare_10
 	SelectedPhotons_id_sieie_1_bin04_ = new TH1F("SelectedPhotons_id_sieie_1_bin04_", "photon ID: #sigma_{i#etai#eta}, p_{T}^{#gamma} > 500", 500, 0., 0.050);
@@ -1871,14 +1781,12 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_PfIsoNeutralHad_1_bin04_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin04_", "photon PfIsoNeutralHad, p_{T}^{#gamma} > 500", 2000, 0, 200);
 	SelectedPhotons_PfIsoPhoton_1_bin04_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin04_", "photon PfIsoPhoton, p_{T}^{#gamma} > 500", 2000, 0, 200);
 	SelectedPhotons_PfIso_1_bin04_ = new TH1F("SelectedPhotons_PfIso_1_bin04_", "photon PfIso, p_{T}^{#gamma} > 500", 2000, 0, 200);
-	SelectedPhotons_PfIso_ov_Pt_1_bin04_ = new TH1F("SelectedPhotons_PfIso_ov_Pt_1_bin04_", "photon PfIso/p_{T}, p_{T}^{#gamma} > 500", 100, 0, 0.2);
 
 	//plotsCompare_11
 	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_", "photon PfIsoChargedHad #rho corrected, p_{T}^{#gamma} > 500", 4000, 0, 100);
 	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin04_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin04_", "photon PfIsoNeutralHad #rho corrected, p_{T}^{#gamma} > 500", 2000, 0, 200);
 	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_", "photon PfIsoPhoton #rho corrected, p_{T}^{#gamma} > 500", 2000, 0, 200);
 	SelectedPhotons_PfIso_RhoCorr_1_bin04_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin04_", "photon PfIso #rho corrected, p_{T}^{#gamma} > 500", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin04_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin04_", "photon PfIso/p_{T} #rho corrected, p_{T}^{#gamma} > 500", 100, 0, 0.2);
 
 	//plotsCompare_12
 	SelectedPhotons_PfIsoPhotons03ForCic_1_ = new TH1F("SelectedPhotons_PfIsoPhotons03ForCic_1_", "photon PfIsoPhotons03ForCic", 2000, 0, 200);
@@ -1918,18 +1826,10 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_IsoFPRCharged_1_ = new TH1F("SelectedPhotons_IsoFPRCharged_1_", "photon IsoFPRCharged", 2000, 0, 200); 
 	SelectedPhotons_IsoFPRNeutral_1_ = new TH1F("SelectedPhotons_IsoFPRNeutral_1_", "photon IsoFPRNeutral", 2000, 0, 200);
 	SelectedPhotons_IsoFPRPhoton_1_ = new TH1F("SelectedPhotons_IsoFPRPhoton_1_", "photon IsoFPRPhoton", 2000, 0, 200);
-	SelectedPhotons_IsoFPRCharged_ov_Pt_1_ = new TH1F("SelectedPhotons_IsoFPRCharged_ov_Pt_1_", "photon IsoFPRCharged/p_{T}", 100, 0, 0.2); 
-	SelectedPhotons_IsoFPRNeutral_ov_Pt_1_ = new TH1F("SelectedPhotons_IsoFPRNeutral_ov_Pt_1_", "photon IsoFPRNeutral/p_{T}", 100, 0, 0.2);
-	SelectedPhotons_IsoFPRPhoton_ov_Pt_1_ = new TH1F("SelectedPhotons_IsoFPRPhoton_ov_Pt_1_", "photon IsoFPRPhoton/p_{T}", 100, 0, 0.2);
+	SelectedPhotons_IsoFPR_1_ = new TH1F("SelectedPhotons_IsoFPR_1_", "photon IsoFPR", 2000, 0, 200);
 
 	//plotsCompare_17
-	/*
-	CleanedJetsLEA_N_ = new TH1F("CleanedJetsLEA_N_","Cleaned Jets LEA N ", 10, 0, 10);
-	*/
-	SelectedJetsLEA_N_ = new TH1F("SelectedJetsLEA_N_","Selected Jets LEA N", 10, 0, 10);
-	/*
-	CleanedJets_N_ = new TH1F("CleanedJets_N_","Cleaned Jets N ", 10, 0, 10);
-	*/
+	SelectedJetsALL_N_ = new TH1F("SelectedJetsALL_N_","Selected Jets vs. ALL Photons N", 10, 0, 10);
 	SelectedJets_N_ = new TH1F("SelectedJets_N_","Selected Jets N", 10, 0, 10);
 
 	//plotsCompare_18
@@ -1939,9 +1839,6 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedJets_Phi_1_ = new TH1F("SelectedJets_Phi_1_","Jet 1 #varphi ", 1000, -3.1416, 3.1416);
 
 	//plotsCompare_19
-	/*
-	CleanedJets_HT_ = new TH1F("CleanedJets_HT_","Cleaned Jets H_{T}", 400, 0, 4000);
-	*/
 	SelectedJets_HT_ = new TH1F("SelectedJets_HT_","Selected Jets H_{T}", 400, 0, 4000);
 
 	//plotsCompare_20
@@ -2019,19 +1916,6 @@ void GJetsAnalyzer::Book_Histos(){
 	DeltaPhi_jet1_jet2_N2_ = new TH1F("DeltaPhi_jet1_jet2_N2_","#Delta#varphi jet1-jet2 - N^{jets} #geq 3", 500, 0, 3.1416);
 	DeltaPhi_jet1_jet3_N2_ = new TH1F("DeltaPhi_jet1_jet3_N2_","#Delta#varphi jet1-jet3 - N^{jets} #geq 3", 500, 0, 3.1416);
 	DeltaPhi_jet2_jet3_N2_ = new TH1F("DeltaPhi_jet2_jet3_N2_","#Delta#varphi jet2-jet3 - N^{jets} #geq 3", 500, 0, 3.1416);
-
-	//plotsCompare_31
-	/*
-	CleanedJetsLEA_preHT_N_ = new TH1F("CleanedJetsLEA_preHT_N_","Cleaned Jets LEA N pre-H_{T}", 10, 0, 10);
-	SelectedJetsLEA_preHT_N_ = new TH1F("SelectedJetsLEA_preHT_N_","Selected Jets LEA N pre-H_{T}", 10, 0, 10);
-	CleanedJets_preHT_N_= new TH1F("CleanedJets_preHT_N_","Cleaned Jets N pre-H_{T}", 10, 0, 10);
-	SelectedJets_preHT_N_= new TH1F("SelectedJets_preHT_N_","Selected Jets N pre-H_{T}", 10, 0, 10);
-	SelectedJets_preHT_Pt_1_= new TH1F("SelectedJets_preHT_Pt_1_","Jet 1 p_{T} pre-H_{T}", 400, 0., 4000.);
-	SelectedJets_preHT_Pt_2_ = new TH1F("SelectedJets_preHT_Pt_2_","Jet 2 p_{T} pre-H_{T}", 400, 0., 4000.);
-	SelectedJets_preHT_Pt_3_ = new TH1F("SelectedJets_preHT_Pt_3_","Jet 3 p_{T} pre-H_{T}", 400, 0., 4000.);
-	CleanedJets_preHT_HT_= new TH1F("CleanedJets_preHT_HT_","Cleaned Jets H_{T} pre-H_{T}", 400, 0, 4000);
-	SelectedJets_preHT_HT_= new TH1F("SelectedJets_preHT_HT_","Selected Jets H_{T} pre-H_{T}", 400, 0, 4000);
-	*/
 	
 //	ptPhoton_->Sumw2();
 //	etaPhoton_->Sumw2();
@@ -2080,7 +1964,6 @@ void GJetsAnalyzer::Plot_Histos(){
 	bool plot_28 = false; // Angular variables (>=2 jets)
 	bool plot_29 = false; // Jet 3 kinematics
 	bool plot_30 = false; // Angular variables (>=3 jets)
-	bool plot_31 = false; // Variables pre-H_T cut
 	
 	gStyle->SetOptStat(1111111);
 
@@ -2105,37 +1988,29 @@ void GJetsAnalyzer::Plot_Histos(){
 		TCanvas *c_gen02 = new TCanvas("c_gen02", "GEN jets variables", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c_gen02->Divide(3,2);
-		/*
 		c_gen02->cd(1);
-		CleanedJetsGEN_N_->Draw();
-		*/
-		c_gen02->cd(2);
 		SelectedJetsGEN_N_->Draw();
-		c_gen02->cd(3);
+		c_gen02->cd(2);
 		SelectedJets_PtGEN_1_->Draw();
-		c_gen02->cd(4);
+		c_gen02->cd(3);
 		SelectedJets_EGEN_1_->Draw();
-		c_gen02->cd(5);
+		c_gen02->cd(4);
 		SelectedJets_EtaGEN_1_->Draw();
-		c_gen02->cd(6);
+		c_gen02->cd(5);
 		SelectedJets_PhiGEN_1_->Draw();
 	}
 
 	if(plot_gen_03){
 		TCanvas *c_gen03 = new TCanvas("c_gen03", "GEN H_T", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c_gen03->Divide(32);
-		/*
+		c_gen03->Divide(2,2);
 		c_gen03->cd(1);
-		CleanedJetsGEN_HT_->Draw();
-		*/
-		c_gen03->cd(2);
 		SelectedJetsGEN_HT_->Draw();
-		c_gen03->cd(3);
+		c_gen03->cd(2);
 		HTParSum_->Draw();
-		c_gen03->cd(4);
+		c_gen03->cd(3);
 		pre_photonIsoSumPtDR03GEN_->Draw();
-		c_gen03->cd(5);
+		c_gen03->cd(4);
 		photonIsoSumPtDR03GEN_->Draw();
 	}
 
@@ -2179,14 +2054,12 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_PfIsoPhoton_1_->Draw();
 		c02->cd(5);
 		SelectedPhotons_PfIso_1_->Draw();
-		c02->cd(6);
-		SelectedPhotons_PfIso_ov_Pt_1_->Draw();
 	}
 
 	if(plot_03){ 
 		TCanvas *c03 = new TCanvas("c03", "photon Isolation, rho corrected", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c03->Divide(3,2);
+		c03->Divide(2,2);
 		c03->cd(1);
 		SelectedPhotons_PfIsoChargedHad_RhoCorr_1_->Draw();
 		c03->cd(2);
@@ -2195,8 +2068,6 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_PfIsoPhoton_RhoCorr_1_->Draw();
 		c03->cd(4);
 		SelectedPhotons_PfIso_RhoCorr_1_->Draw();
-		c03->cd(5);
-		SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_->Draw();
 	}
 
 	if(plot_04){ 
@@ -2213,14 +2084,12 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_PfIsoPhoton_1_bin01_->Draw();
 		c04->cd(5);
 		SelectedPhotons_PfIso_1_bin01_->Draw();
-		c04->cd(6);
-		SelectedPhotons_PfIso_ov_Pt_1_bin01_->Draw();
 	}
 
 	if(plot_05){ 
 		TCanvas *c05 = new TCanvas("c05", "photon Isolation rho corrected, 100 < pT gamma < 150", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c05->Divide(3,2);
+		c05->Divide(2,2);
 		c05->cd(1);
 		SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin01_->Draw();
 		c05->cd(2);
@@ -2229,8 +2098,6 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_->Draw();
 		c05->cd(4);
 		SelectedPhotons_PfIso_RhoCorr_1_bin01_->Draw();
-		c05->cd(5);
-		SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin01_->Draw();
 	}
 
 	if(plot_06){ 
@@ -2247,14 +2114,12 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_PfIsoPhoton_1_bin02_->Draw();
 		c06->cd(5);
 		SelectedPhotons_PfIso_1_bin02_->Draw();
-		c06->cd(6);
-		SelectedPhotons_PfIso_ov_Pt_1_bin02_->Draw();
 	}
 
 	if(plot_07){ 
 		TCanvas *c07 = new TCanvas("c07", "photon Isolation rho corrected, 150 < pT gamma < 300", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c07->Divide(3,2);
+		c07->Divide(2,2);
 		c07->cd(1);
 		SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin02_->Draw();
 		c07->cd(2);
@@ -2263,8 +2128,6 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_->Draw();
 		c07->cd(4);
 		SelectedPhotons_PfIso_RhoCorr_1_bin02_->Draw();
-		c07->cd(5);
-		SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin02_->Draw();
 	}
 
 	if(plot_08){ 
@@ -2281,14 +2144,12 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_PfIsoPhoton_1_bin03_->Draw();
 		c08->cd(5);
 		SelectedPhotons_PfIso_1_bin03_->Draw();
-		c08->cd(6);
-		SelectedPhotons_PfIso_ov_Pt_1_bin03_->Draw();
 	}
 
 	if(plot_09){ 
 		TCanvas *c09 = new TCanvas("c09", "photon Isolation rho corrected, 300 < pT gamma < 500", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c09->Divide(3,2);
+		c09->Divide(2,2);
 		c09->cd(1);
 		SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin03_->Draw();
 		c09->cd(2);
@@ -2297,8 +2158,6 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_->Draw();
 		c09->cd(4);
 		SelectedPhotons_PfIso_RhoCorr_1_bin03_->Draw();
-		c09->cd(5);
-		SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin03_->Draw();
 	}
 
 	if(plot_10){ 
@@ -2315,14 +2174,12 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_PfIsoPhoton_1_bin04_->Draw();
 		c10->cd(5);
 		SelectedPhotons_PfIso_1_bin04_->Draw();
-		c10->cd(6);
-		SelectedPhotons_PfIso_ov_Pt_1_bin04_->Draw();
 	}
 
 	if(plot_11){ 
 		TCanvas *c11 = new TCanvas("c11", "photon Isolation rho corrected, pT gamma > 500", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c11->Divide(3,2);
+		c11->Divide(2,2);
 		c11->cd(1);
 		SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_->Draw();
 		c11->cd(2);
@@ -2331,8 +2188,6 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_->Draw();
 		c11->cd(4);
 		SelectedPhotons_PfIso_RhoCorr_1_bin04_->Draw();
-		c11->cd(5);
-		SelectedPhotons_PfIso_RhoCorr_ov_Pt_1_bin04_->Draw();
 	}
 
 	if(plot_12){
@@ -2414,7 +2269,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_16){
 		TCanvas *c16 = new TCanvas("c16", "photon Isolation FPR", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c16->Divide(3,2);
+		c16->Divide(2,2);
 		c16->cd(1);
 		SelectedPhotons_IsoFPRCharged_1_->Draw();
 		c16->cd(2);
@@ -2422,28 +2277,16 @@ void GJetsAnalyzer::Plot_Histos(){
 		c16->cd(3);
 		SelectedPhotons_IsoFPRPhoton_1_->Draw();
 		c16->cd(4);
-		SelectedPhotons_IsoFPRCharged_ov_Pt_1_->Draw();
-		c16->cd(5);
-		SelectedPhotons_IsoFPRNeutral_ov_Pt_1_->Draw();
-		c16->cd(6);
-		SelectedPhotons_IsoFPRPhoton_ov_Pt_1_->Draw();
+		SelectedPhotons_IsoFPR_1_->Draw();
 	}
 
 	if(plot_17){
 		TCanvas *c17 = new TCanvas("c17", "jets counting", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c17->Divide(2,2);
-		/*
+		c17->Divide(2,1);
 		c17->cd(1);
-		CleanedJetsLEA_N_->Draw();
-		*/
+		SelectedJetsALL_N_->Draw();
 		c17->cd(2);
-		SelectedJetsLEA_N_->Draw();
-		/*
-		c17->cd(3);
-		CleanedJets_N_->Draw();
-		*/
-		c17->cd(4);
 		SelectedJets_N_->Draw();
 	}
 
@@ -2464,12 +2307,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	if(plot_19){
 		TCanvas *c19 = new TCanvas("c19", "H_T", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c19->Divide(2,1);
-		/*
-		c19->cd(1);
-		CleanedJets_HT_->Draw();
-		*/
-		c19->cd(2);
+		c19->cd();
 		SelectedJets_HT_->Draw();
 	}
 
@@ -2643,33 +2481,6 @@ void GJetsAnalyzer::Plot_Histos(){
 		DeltaPhi_jet2_jet3_N2_->Draw();
 	}
 
-	if(plot_31){
-		TCanvas *c31 = new TCanvas("c31", "Variables pre-H_T cut", 10, 10, 700, 700);
-		gPad->SetLogy();
-		c31->Divide(5,2);
-		/*
-		c31->cd(1);
-		CleanedJetsLEA_preHT_N_->Draw();
-		c31->cd(2);
-		SelectedJetsLEA_preHT_N_->Draw();
-		c31->cd(3);
-		CleanedJets_preHT_N_->Draw();
-		c31->cd(4);
-		SelectedJets_preHT_N_->Draw();
-		c31->cd(5);
-		SelectedJets_preHT_Pt_1_->Draw();
-		c31->cd(6);
-		SelectedJets_preHT_Pt_2_->Draw();
-		c31->cd(7);
-		SelectedJets_preHT_Pt_3_->Draw();
-		c31->cd(8);
-		CleanedJets_preHT_HT_->Draw();
-		c31->cd(9);
-		SelectedJets_preHT_HT_->Draw();
-		*/
-		c31->cd(10);
-	}
-
 
 	cout << "...plots: quick check finished. " << endl;
 
@@ -2694,14 +2505,15 @@ void GJetsAnalyzer::Text_File(){
 	text.open(textname);
 	text << "Running on " << sample_r << endl;
 	text << "Weight is " << weight_r << endl;
+	text << "Analysis selection:" << endl;
 	text << "nentries (with preselection in the PATZJetsExpress analyzer) = " << nentries_r << endl;
-	text << "Number of selected events 0, unweighted = " << iSelected0 << endl;
-	text << "Number of selected events 1, unweighted = " << iSelected1 << endl;
-	text << "Number of selected events 2, unweighted = " << iSelected2 << endl;
-	text << "Number of selected events 3, unweighted = " << iSelected3 << endl;
-	text << "Number of selected events 4, unweighted = " << iSelected4 << endl;
-	text << "Number of selected events, unweighted = " << iSelected4 << endl;
-	text << "Number of selected events, weighted = " << iSelected4*weight_r << endl;
+	text << "Number of selected events 0 (Iso at GEN level), unweighted = " << iSelected0 << endl;
+	text << "Number of selected events 1 (ID+Iso+kin Photons: then, on the LEADING one)), unweighted = " << iSelected1 << endl;
+	text << "Number of selected events 2 (trigger Matching), unweighted = " << iSelected2 << endl;
+	text << "Number of selected events 3 (kin Jets: cleaned vs. LEADING Photon), unweighted = " << iSelected3 << endl;
+	text << "Number of selected events 4 (HT), unweighted = " << iSelected4 << endl;
+	text << "Number of selected events (all selections), unweighted = " << iSelected4 << endl;
+	text << "Number of selected events (all selections), weighted = " << iSelected4*weight_r << endl;
 	text.close();
 	cout << "...writing text file finished. " << endl;
 	}
