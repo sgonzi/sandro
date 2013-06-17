@@ -2,7 +2,19 @@
 #include "GJetsAnalyzer.C"
 
 bool ReReco_data(bool out) {
-	bool in = false;
+	bool in = true;
+	out = in;
+	return out;
+}
+
+bool signal_MAD(bool out) {
+	bool in = true;
+	out = in;
+	return out;
+}
+
+bool background_QCD(bool out) {
+	bool in = true;
 	out = in;
 	return out;
 }
@@ -186,10 +198,20 @@ void FastAnalysis(){
 	if (RR_d) TotalAnalysis_dataReReco();
 	else TotalAnalysis_dataPromptReco();
 
-	TotalAnalysis_GJets_HT_xToy();
+	bool s_MAD = false;
+	s_MAD = signal_MAD(s_MAD);
+	if (s_MAD) TotalAnalysis_GJets_HT_xToy();
+	else TotalAnalysis_G_Pt_XtoY();
+
 	TotalAnalysis_DiPhotonJets();
-	TotalAnalysis_QCD_Pt_x_y_EMEnriched();
-	TotalAnalysis_QCD_Pt_x_y_BCtoE();
+
+	bool b_QCD = false;
+	b_QCD = background_QCD(b_QCD);
+	if (b_QCD) TotalAnalysis_QCD_HT_xToy();
+	else {
+		TotalAnalysis_QCD_Pt_x_y_EMEnriched();
+		TotalAnalysis_QCD_Pt_x_y_BCtoE();
+	}
 }
 
 
@@ -200,8 +222,18 @@ void FastAnalysis_rest(){
 	if (RR_d) TotalAnalysis_dataPromptReco(); 
 	else TotalAnalysis_dataReReco();
 
-	TotalAnalysis_G_Pt_XtoY();
-	TotalAnalysis_QCD_HT_xToy();
+	bool s_MAD = false;
+	s_MAD = signal_MAD(s_MAD);
+	if (s_MAD) TotalAnalysis_G_Pt_XtoY();
+	else TotalAnalysis_GJets_HT_xToy();
+
+	bool b_QCD = false;
+	b_QCD = background_QCD(b_QCD);
+	if (b_QCD) {
+		TotalAnalysis_QCD_Pt_x_y_EMEnriched();
+		TotalAnalysis_QCD_Pt_x_y_BCtoE();
+	}
+	else TotalAnalysis_QCD_HT_xToy();
 }
 
 

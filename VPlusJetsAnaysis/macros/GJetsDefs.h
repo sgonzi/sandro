@@ -1,6 +1,7 @@
 // put definitions here
 
 #include <TH1F.h>
+#include <TH2F.h>
 #include <vector>
 #include <TLorentzVector.h>
 
@@ -289,5 +290,11 @@ TH1F *nPhotonsGEN_,
 		 *DeltaPhi_jet1_jet3_N2_,
 		 *DeltaPhi_jet2_jet3_N2_,
 		 *photonIsoSumPtDR03GEN_;
+
+TH2F *TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_, 
+	   *TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin01_,
+	   *TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin02_,
+	   *TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin03_,
+	   *TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin04_;
 
 Int_t iSelected0, iSelected1, iSelected2, iSelected3, iSelected4;

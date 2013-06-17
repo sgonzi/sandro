@@ -115,6 +115,9 @@ class GJetsAnalyzer {
 		// ---- jet variables -------------------------------------------------
 		vector<int>    *jetVeto;
 		vector<float>  *jetPt;
+		vector<float>  *jetPtRES;
+		vector<float>  *jetPtRESup;
+		vector<float>  *jetPtRESdown;						
 		vector<float>  *jetEta;
 		vector<float>  *jetPhi;
 		vector<float>  *jetE;
@@ -146,6 +149,9 @@ class GJetsAnalyzer {
 		vector<float>  *jetllDPhi;
 	  // ---- forward jets - two leading forward jets -----------------------
 		vector<float>  *fwjetPt;
+		vector<float>  *fwjetPtRES;
+		vector<float>  *fwjetPtRESup;
+		vector<float>  *fwjetPtRESdown;		
 		vector<float>  *fwjetEta;
 		vector<float>  *fwjetPhi;
 		vector<float>  *fwjetE;
@@ -173,6 +179,9 @@ class GJetsAnalyzer {
 		vector<float>  *lepMatchedDRGEN;
 		vector<int>    *lepMatchedGEN;
 		vector<float>  *jetPtGEN;
+		vector<float>  *jetPtRESGEN;
+		vector<float>  *jetPtRESupGEN;
+		vector<float>  *jetPtRESdownGEN;						
 		vector<float>  *jetEtaGEN;
 		vector<float>  *jetPhiGEN;
 		vector<float>  *jetEGEN;
@@ -310,6 +319,9 @@ class GJetsAnalyzer {
 	  // ---- jet variables -------------------------------------------------  
   	TBranch      *b_jetVeto;
   	TBranch      *b_jetPt;
+  	TBranch      *b_jetPtRES;
+  	TBranch      *b_jetPtRESup;
+  	TBranch      *b_jetPtRESdown;  	  	  	
   	TBranch      *b_jetEta;
   	TBranch      *b_jetPhi;
   	TBranch      *b_jetE;
@@ -341,6 +353,9 @@ class GJetsAnalyzer {
   	TBranch      *b_jetllDPhi;
 	  // ---- forward jets - two leading forward jets -----------------------
 	  TBranch      *b_fwjetPt;
+  	TBranch      *b_fwjetPtRES;
+  	TBranch      *b_fwjetPtRESup;
+  	TBranch      *b_fwjetPtRESdown;	  
 	  TBranch      *b_fwjetEta;
 	  TBranch      *b_fwjetPhi;
 	  TBranch      *b_fwjetE;
@@ -376,6 +391,9 @@ class GJetsAnalyzer {
   	TBranch      *b_lepMatchedDRGEN;
   	TBranch      *b_lepMatchedGEN;
   	TBranch      *b_jetPtGEN;
+  	TBranch      *b_jetPtRESGEN;
+  	TBranch      *b_jetPtRESupGEN;
+  	TBranch      *b_jetPtRESdownGEN;	  	
   	TBranch      *b_jetEtaGEN;
   	TBranch      *b_jetPhiGEN;
   	TBranch      *b_jetEGEN;
@@ -1141,6 +1159,9 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	// ---- jet variables -------------------------------------------------
 	jetVeto = 0;
 	jetPt = 0;
+	jetPtRES = 0;	
+	jetPtRESup = 0;	
+	jetPtRESdown = 0;		
 	jetEta = 0;
 	jetPhi = 0;
 	jetE = 0;
@@ -1172,6 +1193,9 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	jetllDPhi = 0;
   // ---- forward jets - two leading forward jets------------------------
   fwjetPt = 0;
+	fwjetPtRES = 0;	
+	fwjetPtRESup = 0;	
+	fwjetPtRESdown = 0;		
 	fwjetEta = 0;
 	fwjetPhi = 0;
 	fwjetE = 0;
@@ -1199,6 +1223,9 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	lepMatchedDRGEN = 0;
 	lepMatchedGEN = 0;
 	jetPtGEN = 0;
+	jetPtRESGEN = 0;	
+	jetPtRESupGEN = 0;	
+	jetPtRESdownGEN = 0;		
 	jetEtaGEN = 0;
 	jetPhiGEN = 0;
 	jetEGEN = 0;
@@ -1343,6 +1370,9 @@ void GJetsAnalyzer::Init(TTree *tree) {
   // ---- jet variables -------------------------------------------------
   fChain->SetBranchAddress("jetVeto", &jetVeto, &b_jetVeto);
   fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);
+  fChain->SetBranchAddress("jetPtRES", &jetPtRES, &b_jetPtRES);
+  fChain->SetBranchAddress("jetPtRESup", &jetPtRESup, &b_jetPtRESup);
+  fChain->SetBranchAddress("jetPtRESdown", &jetPtRESdown, &b_jetPtRESdown);      
   fChain->SetBranchAddress("jetEta", &jetEta, &b_jetEta);
   fChain->SetBranchAddress("jetPhi", &jetPhi, &b_jetPhi);
   fChain->SetBranchAddress("jetE", &jetE, &b_jetE);
@@ -1374,6 +1404,9 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("jetllDPhi", &jetllDPhi, &b_jetllDPhi);
  //-----forward jets - two leading forward jets
   fChain->SetBranchAddress("fwjetPt", &fwjetPt, &b_fwjetPt);
+  fChain->SetBranchAddress("fwjetPtRES", &fwjetPtRES, &b_fwjetPtRES);
+  fChain->SetBranchAddress("fwjetPtRESup", &fwjetPtRESup, &b_fwjetPtRESup);
+  fChain->SetBranchAddress("fwjetPtRESdown", &fwjetPtRESdown, &b_fwjetPtRESdown);      
   fChain->SetBranchAddress("fwjetEta", &fwjetEta, &b_fwjetEta);
   fChain->SetBranchAddress("fwjetPhi", &fwjetPhi, &b_fwjetPhi);
   fChain->SetBranchAddress("fwjetE", &fwjetE, &b_fwjetE);
@@ -1401,6 +1434,9 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("lepMatchedDRGEN", &lepMatchedDRGEN, &b_lepMatchedDRGEN);
   fChain->SetBranchAddress("lepMatchedGEN", &lepMatchedGEN, &b_lepMatchedGEN);
   fChain->SetBranchAddress("jetPtGEN", &jetPtGEN, &b_jetPtGEN);
+  fChain->SetBranchAddress("jetPtRESGEN", &jetPtRESGEN, &b_jetPtRESGEN);
+  fChain->SetBranchAddress("jetPtRESupGEN", &jetPtRESupGEN, &b_jetPtRESupGEN);
+  fChain->SetBranchAddress("jetPtRESdownGEN", &jetPtRESdownGEN, &b_jetPtRESdownGEN);    
   fChain->SetBranchAddress("jetEtaGEN", &jetEtaGEN, &b_jetEtaGEN);
   fChain->SetBranchAddress("jetPhiGEN", &jetPhiGEN, &b_jetPhiGEN);
   fChain->SetBranchAddress("jetEGEN", &jetEGEN, &b_jetEGEN);
