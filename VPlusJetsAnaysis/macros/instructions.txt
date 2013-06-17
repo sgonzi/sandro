@@ -1,0 +1,35 @@
+############################ N-tuplizer #######################
+
+# CVS
+export "SCRAM_ARCH=slc5_amd64_gcc462"
+cmsrel CMSSW_5_3_6
+cd CMSSW_5_3_6/src
+cmsenv
+
+cvs co -r V00-02d -d PFIsolation/SuperClusterFootprintRemoval UserCode/peruzzi/PFIsolation/SuperClusterFootprintRemoval
+cvs co -r V00-00-21 -d EGamma/EGammaAnalysisTools UserCode/EGamma/EGammaAnalysisTools
+
+addpkg CommonTools/ParticleFlow V00-03-13
+addpkg RecoParticleFlow/PFProducer V15-01-11
+
+# GIT 
+mkdir amarini; 
+cd amarini; 
+git clone git@github.com:amarini/VPlusJets.git; 
+cd VPlusJets; 
+git checkout V00-10; 
+cd ../..;
+git clone git@github.com:amarini/QuarkGluonTagger.git; 
+cd QuarkGluonTagger; 
+git checkout v1-2-5 ; 
+cd ../ ;
+
+############################ Angular variables #######################
+
+cvs co -r V01-01-01 QCDAnalysis/Tools
+
+############################ Analyzer #######################
+
+git clone git@github.com:sgonzi/sandro.git;
+
+scram b -j 8
