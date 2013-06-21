@@ -139,21 +139,21 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 
 	// ==================================== choose the tools
 
-	string folder = "16_results_2013_05_31"; // analysis folder
+	string folder = "2_results_2013_06_18"; // analysis folder
 
 	char geo[100] = "barrel";                // "barrel", "endcaps" or "total"
 
-	bool data_ReReco = false;                // true: data = ReReco
+	bool data_ReReco = true;                // true: data = ReReco
 	                                         // false: data = PromptReco
 
 	bool inv_sigmaietaieta = true;          // inverted sigmaietaieta cut
 	bool inv_isolation = false;              // inverted isolation set cut
 
 	bool signal_MAD = true;                  // true: signal = MADGRAPH; false: signal = PYTHIA
-	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
+	bool background_QCD = true;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 
-	Int_t itype = 16;                        // it identifies histos with different analysis 
+	Int_t itype = 2;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names
