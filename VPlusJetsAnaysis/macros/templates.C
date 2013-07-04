@@ -141,7 +141,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	
 	// ==================================== choose the tools
 	
-	string folder = "2_results_2013_06_18"; // analysis folder
+	string folder = "7_results_2013_06_25"; // analysis folder
 	
 	char geo[100] = "barrel";               // "barrel", "endcaps" or "total"
 
@@ -154,7 +154,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	bool signal_MAD = true;                 // true: signal = MADGRAPH; false: signal = PYTHIA
 	bool background_QCD = true;             // true: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 	                                        // false: background = MADGRAPH not filtered (QCD HT)
-	Int_t itype = 2;                        // it identifies histos with different analysis 
+	Int_t itype = 7;                        // it identifies histos with different analysis 
 	
 	string sample = "DATA_INV"; // "MC_SIG", "MC_BACK", "DATA" or "DATA_INV"
 
@@ -167,6 +167,19 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	ss_g >> Geo;
 	string geo_s = Geo + "/";
 	string folder_s = folder + "/";
+	string SB_folder;
+	if (signal_MAD && background_QCD) {
+		SB_folder = "sM1_bQ1/";
+	}
+	else if (signal_MAD && !background_QCD) {
+		SB_folder = "sM1_bQ0/";
+	}
+	else if (!signal_MAD && background_QCD) {
+		SB_folder = "sM0_bQ1/";
+	}
+	else {
+		SB_folder = "sM0_bQ0/";
+	}	
 	string out_files = "output_files/";
 	string fit_pdf_folder = "fit_pdf_plots/";
 	string pdf_string = ".pdf";
@@ -1119,8 +1132,8 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
   text->SetTextAlign(11);
   text->Draw();
 
-  Canva->SaveAs((folder_s + geo_s + fit_pdf_folder + sample_mod + titleh + pdf_string).c_str());
-  Canva->SaveAs((folder_s + geo_s + fit_root_folder + sample_mod + titleh + root_string).c_str());
+  Canva->SaveAs((folder_s + geo_s + SB_folder + fit_pdf_folder + sample_mod + titleh + pdf_string).c_str());
+  Canva->SaveAs((folder_s + geo_s + SB_folder + fit_root_folder + sample_mod + titleh + root_string).c_str());
 	Canva->Close();
 
 
@@ -1189,49 +1202,103 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 }
 
 
-void templates_PfIsoChargedHad_RhoCorrected_4binPt() {
-	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin01_", "PfIsoChargedHad #rho corrected, 180 < p_{T}^{#gamma1} < 300", 1, 0, 1.6);
-	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin02_", "PfIsoChargedHad #rho corrected, 300 < p_{T}^{#gamma1} < 400", 1, 0, 1.6);
-	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin03_", "PfIsoChargedHad #rho corrected, 400 < p_{T}^{#gamma1} < 500", 1, 0, 1.6);
-	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_", "PfIsoChargedHad #rho corrected, p_{T}^{#gamma1} > 500" ,1 , 0, 1.6);
+void templates_PfIsoChargedHad_RhoCorrected_6binPt() {
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin01_", "PfIsoChargedHad #rho corrected, 180 < p_{T}^{#gamma1} < 200", 1, 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin02_", "PfIsoChargedHad #rho corrected, 200 < p_{T}^{#gamma1} < 250", 1, 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin03_", "PfIsoChargedHad #rho corrected, 250 < p_{T}^{#gamma1} < 300", 1, 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_", "PfIsoChargedHad #rho corrected, 300 < p_{T}^{#gamma1} < 350",1 , 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin05_", "PfIsoChargedHad #rho corrected, 350 < p_{T}^{#gamma1} < 400",1 , 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin06_", "PfIsoChargedHad #rho corrected, p_{T}^{#gamma1} > 400",1 , 0, 1.6);
 }
 
 
-void templates_PfIsoNeutralHad_RhoCorrected_4binPt() {
-	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin01_", "PfIsoNeutralHad #rho corrected, 180 < p_{T}^{#gamma1} < 300", 4, 0, 20);
-	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin02_", "PfIsoNeutralHad #rho corrected, 300 < p_{T}^{#gamma1} < 400", 4, 0, 20);
-	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin03_", "PfIsoNeutralHad #rho corrected, 400 < p_{T}^{#gamma1} < 500", 4, 0, 20);
-	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin04_", "PfIsoNeutralHad #rho corrected, p_{T}^{#gamma1} > 500", 4, 0, 20);
+void templates_PfIsoNeutralHad_RhoCorrected_6binPt() {
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin01_", "PfIsoNeutralHad #rho corrected, 180 < p_{T}^{#gamma1} < 200", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin02_", "PfIsoNeutralHad #rho corrected, 200 < p_{T}^{#gamma1} < 250", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin03_", "PfIsoNeutralHad #rho corrected, 250 < p_{T}^{#gamma1} < 300", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin04_", "PfIsoNeutralHad #rho corrected, 300 < p_{T}^{#gamma1} < 350", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin05_", "PfIsoNeutralHad #rho corrected, 350 < p_{T}^{#gamma1} < 400", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin06_", "PfIsoNeutralHad #rho corrected, p_{T}^{#gamma1} > 400", 4, 0, 20);
 }
 
 
-void templates_PfIsoPhoton_RhoCorrected_4binPt() {
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_", "PfIsoPhoton #rho corrected, 180 < p_{T}^{#gamma1} < 300", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_", "PfIsoPhoton #rho corrected, 300 < p_{T}^{#gamma1} < 400", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_", "PfIsoPhoton #rho corrected, 400 < p_{T}^{#gamma1} < 500", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_", "PfIsoPhoton #rho corrected, p_{T}^{#gamma1} > 500", 1, 0, 6);
+void templates_PfIsoPhoton_RhoCorrected_6binPt() {
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_", "PfIsoPhoton #rho corrected, 180 < p_{T}^{#gamma1} < 200", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_", "PfIsoPhoton #rho corrected, 200 < p_{T}^{#gamma1} < 250", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_", "PfIsoPhoton #rho corrected, 250 < p_{T}^{#gamma1} < 300", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_", "PfIsoPhoton #rho corrected, 300 < p_{T}^{#gamma1} < 350", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin05_", "PfIsoPhoton #rho corrected, 350 < p_{T}^{#gamma1} < 400", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin06_", "PfIsoPhoton #rho corrected, p_{T}^{#gamma1} > 400", 1, 0, 6);	
 }
 
 
-void templates_PfIso_RhoCorrected_4binPt() {
-	templates("SelectedPhotons_PfIso_RhoCorr_1_bin01_", "PfIso #rho corrected, 180 < p_{T}^{#gamma1} < 300", 4, 0, 20);
-	templates("SelectedPhotons_PfIso_RhoCorr_1_bin02_", "PfIso #rho corrected, 300 < p_{T}^{#gamma1} < 400", 4, 0, 20);
-	templates("SelectedPhotons_PfIso_RhoCorr_1_bin03_", "PfIso #rho corrected, 400 < p_{T}^{#gamma1} < 500", 4, 0, 20);
-	templates("SelectedPhotons_PfIso_RhoCorr_1_bin04_", "PfIso #rho corrected, p_{T}^{#gamma1} > 500", 4, 0, 20);
+void templates_PfIso_RhoCorrected_6binPt() {
+	templates("SelectedPhotons_PfIso_RhoCorr_1_bin01_", "PfIso #rho corrected, 180 < p_{T}^{#gamma1} < 200", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_1_bin02_", "PfIso #rho corrected, 200 < p_{T}^{#gamma1} < 250", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_1_bin03_", "PfIso #rho corrected, 250 < p_{T}^{#gamma1} < 300", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_1_bin04_", "PfIso #rho corrected, 300 < p_{T}^{#gamma1} < 350", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_1_bin05_", "PfIso #rho corrected, 350 < p_{T}^{#gamma1} < 400", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_1_bin06_", "PfIso #rho corrected, p_{T}^{#gamma1} > 400", 4, 0, 20);
 }
 
-void templates_id_sieie_4binPt() {
-	templates("SelectedPhotons_id_sieie_1_bin01_", "#gamma1 #sigma_{i#etai#eta}, 180 < p_{T}^{#gamma1} < 300", 2, 0., 0.012);
-	templates("SelectedPhotons_id_sieie_1_bin02_", "#gamma1 #sigma_{i#etai#eta}, 300 < p_{T}^{#gamma1} < 400", 2, 0., 0.012);
-	templates("SelectedPhotons_id_sieie_1_bin03_", "#gamma1 #sigma_{i#etai#eta}, 400 < p_{T}^{#gamma1} < 500", 2, 0., 0.012);
-	templates("SelectedPhotons_id_sieie_1_bin04_", "#gamma1 #sigma_{i#etai#eta}, p_{T}^{#gamma1} > 500", 2, 0., 0.012);
+void templates_id_sieie_6binPt() {
+	templates("SelectedPhotons_id_sieie_1_bin01_", "#gamma1 #sigma_{i#etai#eta}, 180 < p_{T}^{#gamma1} < 200", 2, 0., 0.012);
+	templates("SelectedPhotons_id_sieie_1_bin02_", "#gamma1 #sigma_{i#etai#eta}, 200 < p_{T}^{#gamma1} < 250", 2, 0., 0.012);
+	templates("SelectedPhotons_id_sieie_1_bin03_", "#gamma1 #sigma_{i#etai#eta}, 250 < p_{T}^{#gamma1} < 300", 2, 0., 0.012);
+	templates("SelectedPhotons_id_sieie_1_bin04_", "#gamma1 #sigma_{i#etai#eta}, 300 < p_{T}^{#gamma1} < 350", 2, 0., 0.012);
+	templates("SelectedPhotons_id_sieie_1_bin05_", "#gamma1 #sigma_{i#etai#eta}, 350 < p_{T}^{#gamma1} < 400", 2, 0., 0.012);
+	templates("SelectedPhotons_id_sieie_1_bin06_", "#gamma1 #sigma_{i#etai#eta}, p_{T}^{#gamma1} > 400", 2, 0., 0.012);
+}
+
+
+void templates_PfIsoChargedHad_RhoCorrected_forFit_6binPt() {
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin01_", "PfIsoChargedHad #rho corrected for Fit, 180 < p_{T}^{#gamma1} < 200", 1, 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin02_", "PfIsoChargedHad #rho corrected for Fit, 200 < p_{T}^{#gamma1} < 250", 1, 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin03_", "PfIsoChargedHad #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 1, 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin04_", "PfIsoChargedHad #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350",1 , 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin05_", "PfIsoChargedHad #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400",1 , 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin06_", "PfIsoChargedHad #rho corrected for Fit, p_{T}^{#gamma1} > 400",1 , 0, 1.6);
+}
+
+
+void templates_PfIsoNeutralHad_RhoCorrected_forFit_6binPt() {
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin01_", "PfIsoNeutralHad #rho corrected for Fit, 180 < p_{T}^{#gamma1} < 200", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin02_", "PfIsoNeutralHad #rho corrected for Fit, 200 < p_{T}^{#gamma1} < 250", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin03_", "PfIsoNeutralHad #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin04_", "PfIsoNeutralHad #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin05_", "PfIsoNeutralHad #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin06_", "PfIsoNeutralHad #rho corrected for Fit, p_{T}^{#gamma1} > 400", 4, 0, 20);
+}
+
+
+void templates_PfIsoPhoton_RhoCorrected_forFit_6binPt() {
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_", "PfIsoPhoton #rho corrected for Fit, 180 < p_{T}^{#gamma1} < 200", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_", "PfIsoPhoton #rho corrected for Fit, 200 < p_{T}^{#gamma1} < 250", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_", "PfIsoPhoton #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_", "PfIsoPhoton #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_", "PfIsoPhoton #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_", "PfIsoPhoton #rho corrected for Fit, p_{T}^{#gamma1} > 400", 1, 0, 6);	
+}
+
+
+void templates_PfIso_RhoCorrected_forFit_6binPt() {
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", "PfIso #rho corrected for Fit, 180 < p_{T}^{#gamma1} < 200", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", "PfIso #rho corrected for Fit, 200 < p_{T}^{#gamma1} < 250", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", "PfIso #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", "PfIso #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", "PfIso #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", "PfIso #rho corrected for Fit, p_{T}^{#gamma1} > 400", 4, 0, 20);
 }
 
 
 void templates_Total() {
-	templates_PfIsoChargedHad_RhoCorrected_4binPt();
-	templates_PfIsoNeutralHad_RhoCorrected_4binPt();
-	templates_PfIsoPhoton_RhoCorrected_4binPt();
-	templates_PfIso_RhoCorrected_4binPt();
-	templates_id_sieie_4binPt();
+	templates_PfIsoChargedHad_RhoCorrected_6binPt();
+	templates_PfIsoNeutralHad_RhoCorrected_6binPt();
+	templates_PfIsoPhoton_RhoCorrected_6binPt();
+	templates_PfIso_RhoCorrected_6binPt();
+	templates_PfIsoChargedHad_RhoCorrected_forFit_6binPt();
+	templates_PfIsoNeutralHad_RhoCorrected_forFit_6binPt();
+	templates_PfIsoPhoton_RhoCorrected_forFit_6binPt();
+	templates_PfIso_RhoCorrected_forFit_6binPt();
+	templates_id_sieie_6binPt();
 }	
