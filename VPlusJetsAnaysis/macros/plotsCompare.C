@@ -2,6 +2,8 @@
 #include "comparestack.C"
 #include <string>
 
+// ==================================== definitions
+
 string geo_string(string out) {
 	string in = "barrel";
 	out = in;
@@ -9,11 +11,12 @@ string geo_string(string out) {
 }
 
 bool inv_sigmaietaieta(bool out) {
-	bool in = false;
+	bool in = true;
 	out = in;
 	return out;
 }
 
+// ==================================== functions
 
 void plotsCompare_01(){
 
@@ -59,9 +62,9 @@ void plotsCompare_03(){
 	comparestack("SelectedPhotons_PfIso_RhoCorr_1_", "photon PfIso #rho corrected", 4, 0, 20);
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_", "#gamma1 PfIsoChargedHad #rho corrected for Fit", 1, -2, 2);
-	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit", 4, -2, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_", "#gamma1 PfIsoPhoton #rho corrected for Fit", 1, -2, 6);
-	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_", "photon PfIso #rho corrected for Fit", 4, -2, 20);
+	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit", 4, -10, 20);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_", "#gamma1 PfIsoPhoton #rho corrected for Fit", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_", "photon PfIso #rho corrected for Fit", 4, -10, 20);
 }
 
 
@@ -90,9 +93,9 @@ void plotsCompare_05(){
 	comparestack("SelectedPhotons_PfIso_RhoCorr_1_bin01_", "photon PfIso #rho corrected, 180 < p_{T}^{#gamma} < 200", 4, 0, 20);
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin01_", "#gamma1 PfIsoChargedHad #rho corrected for Fit, 180 < p_{T}^{#gamma} < 200", 1, -2, 2);
-	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin01_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit, 180 < p_{T}^{#gamma} < 200", 4, -2, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_", "#gamma1 PfIsoPhoton #rho corrected for Fit, 180 < p_{T}^{#gamma} < 200", 1, -2, 6);
-	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", "photon PfIso #rho corrected for Fit, 180 < p_{T}^{#gamma} < 200", 4, -2, 20);
+	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin01_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit, 180 < p_{T}^{#gamma} < 200", 4, -10, 20);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_", "#gamma1 PfIsoPhoton #rho corrected for Fit, 180 < p_{T}^{#gamma} < 200", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", "photon PfIso #rho corrected for Fit, 180 < p_{T}^{#gamma} < 200", 4, -10, 20);
 }
 
 
@@ -121,9 +124,9 @@ void plotsCompare_07(){
 	comparestack("SelectedPhotons_PfIso_RhoCorr_1_bin02_", "photon PfIso #rho corrected, 200 < p_{T}^{#gamma} < 250", 4, 0, 20);
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin02_", "#gamma1 PfIsoChargedHad #rho corrected for Fit, 200 < p_{T}^{#gamma} < 250", 1, -2, 2);
-	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin02_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit, 200 < p_{T}^{#gamma} < 250", 4, -2, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_", "#gamma1 PfIsoPhoton #rho corrected for Fit, 200 < p_{T}^{#gamma} < 250", 1, -2, 6);
-	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", "photon PfIso #rho corrected for Fit, 200 < p_{T}^{#gamma} < 250", 4, -2, 20);
+	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin02_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit, 200 < p_{T}^{#gamma} < 250", 4, -10, 20);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_", "#gamma1 PfIsoPhoton #rho corrected for Fit, 200 < p_{T}^{#gamma} < 250", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", "photon PfIso #rho corrected for Fit, 200 < p_{T}^{#gamma} < 250", 4, -10, 20);
 }
 
 
@@ -152,9 +155,9 @@ void plotsCompare_09(){
 	comparestack("SelectedPhotons_PfIso_RhoCorr_1_bin03_", "photon PfIso #rho corrected, 250 < p_{T}^{#gamma} < 300", 4, 0, 20);
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin03_", "#gamma1 PfIsoChargedHad #rho corrected for Fit, 250 < p_{T}^{#gamma} < 300", 1, -2, 2); 
-	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin03_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit, 250 < p_{T}^{#gamma} < 300", 4, -2, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_", "#gamma1 PfIsoPhoton #rho corrected for Fit, 250 < p_{T}^{#gamma} < 300", 1, -2, 6);
-	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", "photon PfIso #rho corrected for Fit, 250 < p_{T}^{#gamma} < 300", 4, -2, 20);
+	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin03_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit, 250 < p_{T}^{#gamma} < 300", 4, -10, 20);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_", "#gamma1 PfIsoPhoton #rho corrected for Fit, 250 < p_{T}^{#gamma} < 300", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", "photon PfIso #rho corrected for Fit, 250 < p_{T}^{#gamma} < 300", 4, -10, 20);
 }
 
 
@@ -183,9 +186,9 @@ void plotsCompare_11(){
 	comparestack("SelectedPhotons_PfIso_RhoCorr_1_bin04_", "photon PfIso #rho corrected, 300 < p_{T}^{#gamma} < 350", 4, 0, 20);
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin04_", "#gamma1 PfIsoChargedHad #rho corrected for Fit, 300 < p_{T}^{#gamma} < 350", 1, -2, 2); 
-	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin04_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit, 300 < p_{T}^{#gamma} < 350", 4, -2, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_", "#gamma1 PfIsoPhoton #rho corrected for Fit, 300 < p_{T}^{#gamma} < 350", 1, -2, 6);
-	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", "photon PfIso #rho corrected for Fit, 300 < p_{T}^{#gamma} < 350", 4, -2, 20);
+	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin04_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit, 300 < p_{T}^{#gamma} < 350", 4, -10, 20);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_", "#gamma1 PfIsoPhoton #rho corrected for Fit, 300 < p_{T}^{#gamma} < 350", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", "photon PfIso #rho corrected for Fit, 300 < p_{T}^{#gamma} < 350", 4, -10, 20);
 }
 
 
@@ -214,9 +217,9 @@ void plotsCompare_13(){
 	comparestack("SelectedPhotons_PfIso_RhoCorr_1_bin05_", "photon PfIso #rho corrected, 350 < p_{T}^{#gamma} < 400", 4, 0, 20);
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin05_", "#gamma1 PfIsoChargedHad #rho corrected for Fit, 350 < p_{T}^{#gamma} < 400", 1, -2, 2); 
-	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin05_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit, 350 < p_{T}^{#gamma} < 400", 4, -2, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_", "#gamma1 PfIsoPhoton #rho corrected for Fit, 350 < p_{T}^{#gamma} < 400", 1, -2, 6);
-	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", "photon PfIso #rho corrected for Fit, 350 < p_{T}^{#gamma} < 400", 4, -2, 20);
+	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin05_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit, 350 < p_{T}^{#gamma} < 400", 4, -10, 20);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_", "#gamma1 PfIsoPhoton #rho corrected for Fit, 350 < p_{T}^{#gamma} < 400", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", "photon PfIso #rho corrected for Fit, 350 < p_{T}^{#gamma} < 400", 4, -10, 20);
 }
 
 
@@ -245,9 +248,9 @@ void plotsCompare_15(){
 	comparestack("SelectedPhotons_PfIso_RhoCorr_1_bin06_", "photon PfIso #rho corrected, p_{T}^{#gamma} > 400", 4, 0, 20);
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin06_", "#gamma1 PfIsoChargedHad #rho corrected for Fit, p_{T}^{#gamma} > 400", 1, -2, 2); 
-	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin06_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit, p_{T}^{#gamma} > 400", 4, -2, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_", "#gamma1 PfIsoPhoton #rho corrected for Fit, p_{T}^{#gamma} > 400", 1, -2, 6);
-	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", "photon PfIso #rho corrected for Fit, p_{T}^{#gamma} > 400", 4, -2, 20);
+	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin06_", "#gamma1 PfIsoNeutralHad #rho corrected for Fit, p_{T}^{#gamma} > 400", 4, -10, 20);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_", "#gamma1 PfIsoPhoton #rho corrected for Fit, p_{T}^{#gamma} > 400", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", "photon PfIso #rho corrected for Fit, p_{T}^{#gamma} > 400", 4, -10, 20);
 }
 
 
@@ -451,7 +454,7 @@ void plotsCompare_34(){
 }
 
 
-// ------------------------------------------------------
+// ==================================== collectives functions
 
 void plotsCompare_TOT(){
 	plotsCompare_01();

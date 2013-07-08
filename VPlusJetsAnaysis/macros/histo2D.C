@@ -155,7 +155,7 @@ void histo2D(const char* titleh, string string_pT, const int rebinX, const int r
 
 	// ==================================== choose the tools
 
-	string folder = "7_results_2013_06_25"; // analysis folder
+	string folder = "10_results_2013_07_04"; // analysis folder
 
 	char geo[100] = "barrel";                // "barrel", "endcaps" or "total"
 
@@ -163,10 +163,10 @@ void histo2D(const char* titleh, string string_pT, const int rebinX, const int r
 	bool inv_isolation = false;              // inverted isolation set cut
 
 	bool signal_MAD = true;                  // true: signal = MADGRAPH; false: signal = PYTHIA
-	bool background_QCD = true;             // true: background = MADGRAPH not filtered (QCD HT)
+	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 
-	Int_t itype = 7;                        // it identifies histos with different analysis 
+	Int_t itype = 10;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names
@@ -1049,13 +1049,13 @@ void histo2D_normal() {
 	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin05_", "350 < p_{T}^{#gamma} < 400 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
 	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin06_", "p_{T}^{#gamma} > 400 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
 
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_", "p_{T}^{#gamma} > 180 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -2., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin01_", "180 < p_{T}^{#gamma} < 200 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -2., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin02_", "200 < p_{T}^{#gamma} < 250 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -2., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin03_", "250 < p_{T}^{#gamma} < 300 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -2., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin04_", "300 < p_{T}^{#gamma} < 350 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -2., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin05_", "350 < p_{T}^{#gamma} < 400 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -2., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin06_", "p_{T}^{#gamma} > 400 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -2., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_", "p_{T}^{#gamma} > 180 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin01_", "180 < p_{T}^{#gamma} < 200 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin02_", "200 < p_{T}^{#gamma} < 250 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin03_", "250 < p_{T}^{#gamma} < 300 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin04_", "300 < p_{T}^{#gamma} < 350 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin05_", "350 < p_{T}^{#gamma} < 400 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin06_", "p_{T}^{#gamma} > 400 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
 }
 
 void histo2D_inverted_sieie() {
@@ -1067,11 +1067,11 @@ void histo2D_inverted_sieie() {
 	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin05_", "350 < p_{T}^{#gamma} < 400 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, 0., 20.);
 	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin06_", "p_{T}^{#gamma} > 400 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, 0., 20.);
 
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_", "p_{T}^{#gamma} > 180 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -2., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin01_", "180 < p_{T}^{#gamma} < 200 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -2., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin02_", "200 < p_{T}^{#gamma} < 250 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -2., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin03_", "250 < p_{T}^{#gamma} < 300 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -2., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin04_", "300 < p_{T}^{#gamma} < 350 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -2., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin05_", "350 < p_{T}^{#gamma} < 400 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -2., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin06_", "p_{T}^{#gamma} > 400 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -2., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_", "p_{T}^{#gamma} > 180 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin01_", "180 < p_{T}^{#gamma} < 200 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin02_", "200 < p_{T}^{#gamma} < 250 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin03_", "250 < p_{T}^{#gamma} < 300 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin04_", "300 < p_{T}^{#gamma} < 350 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin05_", "350 < p_{T}^{#gamma} < 400 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin06_", "p_{T}^{#gamma} > 400 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
 }

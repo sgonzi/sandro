@@ -141,7 +141,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	
 	// ==================================== choose the tools
 	
-	string folder = "7_results_2013_06_25"; // analysis folder
+	string folder = "10_results_2013_07_04"; // analysis folder
 	
 	char geo[100] = "barrel";               // "barrel", "endcaps" or "total"
 
@@ -152,11 +152,11 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	bool inv_isolation = false;             // inverted isolation set cut
 
 	bool signal_MAD = true;                 // true: signal = MADGRAPH; false: signal = PYTHIA
-	bool background_QCD = true;             // true: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
+	bool background_QCD = false;            // true: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 	                                        // false: background = MADGRAPH not filtered (QCD HT)
-	Int_t itype = 7;                        // it identifies histos with different analysis 
+	Int_t itype = 10;                        // it identifies histos with different analysis 
 	
-	string sample = "DATA_INV"; // "MC_SIG", "MC_BACK", "DATA" or "DATA_INV"
+	string sample = "DATA_INV"; // "MC_SIG", "MC_BACK", "DATA" or "MC_BACK_INV", "DATA_INV"
 
 
 	// ==================================== string names
@@ -213,7 +213,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 		throw cms::Exception("WrongBool");
 	}
 	if (!(Geo == "barrel" || Geo == "endcaps" || Geo == "total")) {
-		cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps\" or \"total\"). You writed: \"" << geo << "\"" << endl << endl;
+		cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps\" or \"total\"). You wrote: \"" << geo << "\"" << endl << endl;
 		throw cms::Exception("WrongString");
 	}	
 
@@ -523,9 +523,10 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	}
 	else sample_mod = sample + "_";
 	string templates = "template_";
+	string templates_folder = "templates/";	
 	string outfilename = (sample_mod + templates + titleh + root_string).c_str();
 
-	TFile *outfile = new TFile((address + outfilename).c_str(),"recreate");
+	TFile *outfile = new TFile((folder_s + geo_s + SB_folder + templates_folder + outfilename).c_str(),"recreate");
 
 
 	// ==================================== load TH1F
@@ -908,6 +909,9 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	}	
 	else MC_BACK_total_histo = (TH1F*) QCD_HT_xToy_total_histo->Clone("MC_BACK_total_histo");
 
+	// MC BACKGROUND INVERTED total
+	TH1F *MC_BACK_INV_total_histo = (TH1F*) MC_BACK_total_histo->Clone("MC_BACK_INV_total_histo");
+
 	// DATA INVERTED total
 	TH1F *DATA_INV_total_histo = (TH1F*) DATA_total_histo->Clone("DATA_INV_total_histo");
 
@@ -941,9 +945,10 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 
 	cout << "MC SIGNAL total entries = " << MC_SIG_total_histo->Integral() <<endl;
 	cout << "MC BACKGROUND total entries = " << MC_BACK_total_histo->Integral() <<endl;
-	cout << "DATA INVERTED total entries = " << DATA_INV_total_histo->Integral() <<endl;
 	if (data_ReReco) cout << "DATA total entries = " << DATA_ReReco_total_histo->Integral() << endl;
 	else cout << "DATA total entries = " << DATA_PromptReco_total_histo->Integral() << endl;
+	cout << "MC BACKGROUND INVERTED total entries = " << MC_BACK_INV_total_histo->Integral() <<endl;	
+	cout << "DATA INVERTED total entries = " << DATA_INV_total_histo->Integral() <<endl;
 
 	cout << "========================" <<endl;	
 	cout << endl;
@@ -1012,6 +1017,36 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 		MC_BACK_total_histo->GetYaxis()->SetTitle("Events");
 
 		MC_BACK_total_histo->Write(titleh) ;
+		outfile-> Write();
+	}	
+
+	else if (sample == "MC_BACK_INV") {	
+
+		MC_BACK_INV_total_histo->Sumw2();
+
+		Nbins = MC_BACK_INV_total_histo->GetNbinsX();
+
+		if (x_min != -999 && x_max != -999){
+			if (x_max == MC_BACK_INV_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
+			else X_max = x_max - (x_max-x_min)/Nbins;
+			if (x_min == MC_BACK_INV_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
+			else X_min = x_min + (x_max-x_min)/Nbins;
+
+			MC_BACK_INV_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
+		}
+
+		MC_BACK_INV_total_histo->SetMarkerStyle(20);
+		MC_BACK_INV_total_histo->SetMinimum(0.1);
+
+		MC_BACK_INV_total_histo->Draw("E");
+		gPad->SetLogy();
+		MC_BACK_INV_total_histo->Draw("AXIS X+ Y+ SAME");
+		MC_BACK_INV_total_histo->Draw("AXIS SAME");
+		MC_BACK_INV_total_histo->GetXaxis()->SetTitle(namevariable);
+		MC_BACK_INV_total_histo->GetXaxis()->SetTitleSize(0.045);
+		MC_BACK_INV_total_histo->GetYaxis()->SetTitle("Events");
+
+		MC_BACK_INV_total_histo->Write(titleh) ;
 		outfile-> Write();
 	}	
 
@@ -1085,17 +1120,28 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	}  
 	else if (sample == "MC_BACK") {
 		leg->AddEntry(MC_BACK_total_histo,"MC background","pL");
-	}  
+	}
+	else if (sample == "MC_BACK_INV") {
+		if (inv_sigmaietaieta && !inv_isolation){
+			leg->AddEntry(MC_BACK_INV_total_histo,"#splitline{MC background,}{inverted #sigma_{i #eta i #eta}}","pL");
+		}
+		else if (!inv_sigmaietaieta && inv_isolation){
+			leg->AddEntry(MC_BACK_INV_total_histo,"#splitline{MC background,}{inverted isolation}","pL");
+		}
+		else {
+				cout << "ERROR: Wrong sample string (only \"MC_SIG\" or \"MC_BACK\" or \"DATA\" or \"MC_BACK_INV\" or \"DATA_INV\"). You wrote: \"" << geo << "\"" << endl << endl;		
+		}
+	} 
 	else if (sample == "DATA_INV") {
 	 	if (data_ReReco){ 
 			if (inv_sigmaietaieta && !inv_isolation){
-				leg->AddEntry(DATA_INV_total_histo,"DATA ReReco, inverted #sigma_{i #eta i #eta}","pL");
+				leg->AddEntry(DATA_INV_total_histo,"#splitline{DATA ReReco,}{inverted #sigma_{i #eta i #eta}}","pL");
 			}
 			else if (!inv_sigmaietaieta && inv_isolation){
-				leg->AddEntry(DATA_INV_total_histo,"DATA ReReco, inverted isolation","pL");
+				leg->AddEntry(DATA_INV_total_histo,"#splitline{DATA ReReco,}{inverted isolation}","pL");
 			}
 			else {
-				cout << "ERROR: Wrong geometry string (only \"MC_SIG\" or \"MC_BACK\" or \"DATA\" or \"DATA_INV\"). You writed: \"" << geo << "\"" << endl << endl;
+				cout << "ERROR: Wrong sample string (only \"MC_SIG\" or \"MC_BACK\" or \"DATA\" or \"MC_BACK_INV\" or \"DATA_INV\"). You wrote: \"" << geo << "\"" << endl << endl;
 			}
 		}
 		else{
@@ -1106,9 +1152,8 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 				leg->AddEntry(DATA_INV_total_histo,"DATA PromptReco, inverted isolation","pL");
 			}
 			else {
-				cout << "ERROR: Wrong geometry string (only \"MC_SIG\" or \"MC_BACK\" or \"DATA\" or \"DATA_INV\"). You writed: \"" << geo << "\"" << endl << endl;
+				cout << "ERROR: Wrong sample string (only \"MC_SIG\" or \"MC_BACK\" or \"DATA\" or \"DATA_INV\"). You wrote: \"" << geo << "\"" << endl << endl;
 			}
-		
 		}
 	}  
 	else {
@@ -1252,42 +1297,42 @@ void templates_id_sieie_6binPt() {
 
 
 void templates_PfIsoChargedHad_RhoCorrected_forFit_6binPt() {
-	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin01_", "PfIsoChargedHad #rho corrected for Fit, 180 < p_{T}^{#gamma1} < 200", 1, 0, 1.6);
-	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin02_", "PfIsoChargedHad #rho corrected for Fit, 200 < p_{T}^{#gamma1} < 250", 1, 0, 1.6);
-	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin03_", "PfIsoChargedHad #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 1, 0, 1.6);
-	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin04_", "PfIsoChargedHad #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350",1 , 0, 1.6);
-	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin05_", "PfIsoChargedHad #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400",1 , 0, 1.6);
-	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin06_", "PfIsoChargedHad #rho corrected for Fit, p_{T}^{#gamma1} > 400",1 , 0, 1.6);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin01_", "PfIsoChargedHad #rho corrected for Fit, 180 < p_{T}^{#gamma1} < 200", 1, -2, 2);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin02_", "PfIsoChargedHad #rho corrected for Fit, 200 < p_{T}^{#gamma1} < 250", 1, -2, 2);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin03_", "PfIsoChargedHad #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 1, -2, 2);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin04_", "PfIsoChargedHad #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350",1 , -2, 2);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin05_", "PfIsoChargedHad #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400",1 , -2, 2);
+	templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin06_", "PfIsoChargedHad #rho corrected for Fit, p_{T}^{#gamma1} > 400",1 , -2, 2);
 }
 
 
 void templates_PfIsoNeutralHad_RhoCorrected_forFit_6binPt() {
-	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin01_", "PfIsoNeutralHad #rho corrected for Fit, 180 < p_{T}^{#gamma1} < 200", 4, 0, 20);
-	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin02_", "PfIsoNeutralHad #rho corrected for Fit, 200 < p_{T}^{#gamma1} < 250", 4, 0, 20);
-	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin03_", "PfIsoNeutralHad #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 4, 0, 20);
-	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin04_", "PfIsoNeutralHad #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350", 4, 0, 20);
-	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin05_", "PfIsoNeutralHad #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400", 4, 0, 20);
-	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin06_", "PfIsoNeutralHad #rho corrected for Fit, p_{T}^{#gamma1} > 400", 4, 0, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin01_", "PfIsoNeutralHad #rho corrected for Fit, 180 < p_{T}^{#gamma1} < 200", 4, -10, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin02_", "PfIsoNeutralHad #rho corrected for Fit, 200 < p_{T}^{#gamma1} < 250", 4, -10, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin03_", "PfIsoNeutralHad #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 4, -10, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin04_", "PfIsoNeutralHad #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350", 4, -10, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin05_", "PfIsoNeutralHad #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400", 4, -10, 20);
+	templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin06_", "PfIsoNeutralHad #rho corrected for Fit, p_{T}^{#gamma1} > 400", 4, -10, 20);
 }
 
 
 void templates_PfIsoPhoton_RhoCorrected_forFit_6binPt() {
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_", "PfIsoPhoton #rho corrected for Fit, 180 < p_{T}^{#gamma1} < 200", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_", "PfIsoPhoton #rho corrected for Fit, 200 < p_{T}^{#gamma1} < 250", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_", "PfIsoPhoton #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_", "PfIsoPhoton #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_", "PfIsoPhoton #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_", "PfIsoPhoton #rho corrected for Fit, p_{T}^{#gamma1} > 400", 1, 0, 6);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_", "PfIsoPhoton #rho corrected for Fit, 180 < p_{T}^{#gamma1} < 200", 1, -10, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_", "PfIsoPhoton #rho corrected for Fit, 200 < p_{T}^{#gamma1} < 250", 1, -10, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_", "PfIsoPhoton #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 1, -10, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_", "PfIsoPhoton #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350", 1, -10, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_", "PfIsoPhoton #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400", 1, -10, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_", "PfIsoPhoton #rho corrected for Fit, p_{T}^{#gamma1} > 400", 1, -10, 6);	
 }
 
 
 void templates_PfIso_RhoCorrected_forFit_6binPt() {
-	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", "PfIso #rho corrected for Fit, 180 < p_{T}^{#gamma1} < 200", 4, 0, 20);
-	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", "PfIso #rho corrected for Fit, 200 < p_{T}^{#gamma1} < 250", 4, 0, 20);
-	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", "PfIso #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 4, 0, 20);
-	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", "PfIso #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350", 4, 0, 20);
-	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", "PfIso #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400", 4, 0, 20);
-	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", "PfIso #rho corrected for Fit, p_{T}^{#gamma1} > 400", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", "PfIso #rho corrected for Fit, 180 < p_{T}^{#gamma1} < 200", 4, -10, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", "PfIso #rho corrected for Fit, 200 < p_{T}^{#gamma1} < 250", 4, -10, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", "PfIso #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 4, -10, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", "PfIso #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350", 4, -10, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", "PfIso #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400", 4, -10, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", "PfIso #rho corrected for Fit, p_{T}^{#gamma1} > 400", 4, -10, 20);
 }
 
 

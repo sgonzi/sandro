@@ -1,6 +1,8 @@
 #define TotalAnalysis_cxx
 #include "GJetsAnalyzer.C"
 
+// ==================================== definitions for Fast Analysis
+
 bool ReReco_data(bool out) {
 	bool in = true;
 	out = in;
@@ -19,6 +21,8 @@ bool background_QCD(bool out) {
 	return out;
 }
 
+
+// ==================================== functions
 
 void TotalAnalysis_dataReReco(){
 
@@ -190,6 +194,8 @@ void TotalAnalysis_QCD_HT_xToy(){
 	MC_QCD_HT_1000ToInf.Loop();
 }
 
+
+// ==================================== collectives functions
 
 void FastAnalysis(){
 

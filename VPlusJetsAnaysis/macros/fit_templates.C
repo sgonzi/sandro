@@ -165,18 +165,23 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 
 	// ==================================== choose the tools
 
-	string folder_normal = "6_results_2013_06_25/"; // analysis folder 
-	string folder_inverted = "7_results_2013_06_25/"; // analysis folder with inverted sigmaietaieta cut
+	string folder_normal = "09_results_2013_07_04/"; // analysis folder 
+	string folder_inverted = "10_results_2013_07_04/"; // analysis folder with inverted sigmaietaieta cut
 
 	char geo[10] = "barrel";                 // "barrel", "endcaps" or "total"
 
 	bool inv_sigmaietaieta = true;          // inverted sigmaietaieta cut
 	bool inv_isolation = false;              // inverted isolation set cut
+
+	bool signal_MAD = true;                 // true: signal = MADGRAPH; false: signal = PYTHIA
+	bool background_QCD = true;             // true: background = MADGRAPH not filtered (QCD HT)
+	                                        // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 	
-	string sample_MC_SIG = "MC_SIG"; // "MC_SIG", "MC_BACK", "DATA" or "DATA_INV"
-	string sample_MC_BACK = "MC_BACK"; // "MC_SIG", "MC_BACK", "DATA" or "DATA_INV"
-	string sample_DATA = "DATA"; // "MC_SIG", "MC_BACK", "DATA" or "DATA_INV"
-	string sample_DATA_INV = "DATA_INV"; // "MC_SIG", "MC_BACK", "DATA" or "DATA_INV"
+	string sample_MC_SIG = "MC_SIG"; // "MC_SIG", "MC_BACK", "DATA" and "MC_BACK_INV", "DATA_INV"
+	string sample_MC_BACK = "MC_BACK";
+	string sample_DATA = "DATA"; 
+	string sample_MC_BACK_INV = "MC_BACK_INV"; 
+	string sample_DATA_INV = "DATA_INV"; 
 
 	string histo = titleh; 
 
@@ -188,6 +193,7 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	ss_g << geo;
 	ss_g >> Geo;
 	string geo_s = Geo + "/";
+	string SB_folder;
 	if (signal_MAD && background_QCD) {
 		SB_folder = "sM1_bQ1/";
 	}
@@ -200,8 +206,9 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	else {
 		SB_folder = "sM0_bQ0/";
 	}
-		string out_files = "output_files/";
+	string out_files = "output_files/";
 	string fit_pdf_folder = "fit_pdf_plots/";
+	string templates_folder = "templates/";	
 	string pdf_string = ".pdf";
 	string fit_root_folder = "fit_root_plots/";
 	string root_string = ".root";
@@ -212,8 +219,8 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	ss_r << root_string;
 	ss_r >> root_char;
 	
-	string address_normal = folder_normal + geo_s + out_files;
-	string address_inverted = folder_inverted + geo_s + out_files;
+	string address_normal = folder_normal + geo_s + SB_folder + templates_folder;
+	string address_inverted = folder_inverted + geo_s  + SB_folder + templates_folder;
 
 
 	// ==================================== exception controls
@@ -234,13 +241,16 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 		string sample_MC_SIG_mod = sample_MC_SIG + "_";
 		string sample_MC_BACK_mod = sample_MC_BACK + "_";		
 		string sample_DATA_mod = sample_DATA + "_";
+		string sample_MC_BACK_INV_mod = sample_MC_BACK_INV + "_";
 		string sample_DATA_INV_mod;
 	if (inv_sigmaietaieta && !inv_isolation){
 		string sigmaietaieta_s = "_sigmaietaieta";
+		sample_MC_BACK_INV_mod = sample_MC_BACK_INV + sigmaietaieta_s + "_";
 		sample_DATA_INV_mod = sample_DATA_INV + sigmaietaieta_s + "_";
 	}
 	else if (inv_isolation && !inv_sigmaietaieta){
 		string isolation_s = "_isolation";
+		sample_MC_BACK_INV_mod = sample_MC_BACK_INV + isolation_s + "_";
 		sample_DATA_INV_mod = sample_DATA_INV + isolation_s + "_";
 	}
 	else cout << "ERROR: you need to invert SIGMAIETAIETA or ISOLATION cut" << endl << endl;
@@ -249,11 +259,13 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	string infilename_MC_SIG = (sample_MC_SIG_mod + templates + histo + root_string).c_str();
 	string infilename_MC_BACK = (sample_MC_BACK_mod + templates + histo + root_string).c_str();
 	string infilename_DATA = (sample_DATA_mod + templates + histo + root_string).c_str();
+	string infilename_MC_BACK_INV = (sample_MC_BACK_INV_mod + templates + histo + root_string).c_str();
 	string infilename_DATA_INV = (sample_DATA_INV_mod + templates + histo + root_string).c_str();
 
 	TFile *f_MC_SIG = new TFile((address_normal + infilename_MC_SIG).c_str());
 	TFile *f_MC_BACK = new TFile((address_normal + infilename_MC_BACK).c_str());
 	TFile *f_DATA = new TFile((address_normal + infilename_DATA).c_str());
+	TFile *f_MC_BACK_INV = new TFile((address_inverted + infilename_MC_BACK_INV).c_str());
 	TFile *f_DATA_INV = new TFile((address_inverted + infilename_DATA_INV).c_str());
 
 	TH1F* h_MC_SIG = (TH1F*)f_MC_SIG->Get(histo.c_str());
@@ -262,6 +274,8 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	h_MC_BACK->Rebin(rebin);
 	TH1F* h_DATA = (TH1F*)f_DATA->Get(histo.c_str());
 	h_DATA->Rebin(rebin);
+	TH1F* h_MC_BACK_INV = (TH1F*)f_MC_BACK_INV->Get(histo.c_str());
+	h_MC_BACK_INV->Rebin(rebin);	
 	TH1F* h_DATA_INV = (TH1F*)f_DATA_INV->Get(histo.c_str());
 	h_DATA_INV->Rebin(rebin);
 
@@ -283,38 +297,53 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 		h_MC_BACK->GetXaxis()->SetRangeUser(X_min,X_max);
 	}
 	
+	if (background_QCD) {
+		h_MC_BACK->SetLineColor(kRed+2);	
+		h_MC_BACK_INV->SetLineColor(kRed+2);	
+	}
+	else {
+		h_MC_BACK->SetLineColor(kGreen+2);		
+		h_MC_BACK_INV->SetLineColor(kGreen+2);		
+	}
+	h_MC_BACK->SetFillColor(0);
+	h_MC_BACK->SetLineWidth(3);
 	h_MC_BACK->Draw("histo");
+	h_MC_BACK_INV->SetFillColor(0);
+	h_MC_BACK_INV->SetLineWidth(3);
+	h_MC_BACK_INV->SetLineStyle(2);	
+	h_MC_BACK_INV->Draw("histo same");
 	h_DATA_INV->Draw("ESAME");
 
 	TLegend *leg =new TLegend(0.6068,0.5478,0.8188,0.7480);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
-	leg->AddEntry(h_MC_BACK,"MC background","f");
-	leg->AddEntry(h_MC_BACK,"DATA (inverted cut)","pL");	
+	leg->AddEntry(h_MC_BACK,"MC background","l");
+	leg->AddEntry(h_MC_BACK_INV,"#splitline{MC background}{(inverted cut)}","l");
+	leg->AddEntry(h_DATA_INV,"#splitline{DATA}{(inverted cut)}","pL");	
 	leg->Draw();
 
 	canva_shape->Update();
 
-	canva_shape->SaveAs((folder_normal + geo_s + fit_pdf_folder + shape +  histo + pdf_string).c_str());
-	canva_shape->SaveAs((folder_normal + geo_s + fit_root_folder + shape + histo + root_string).c_str());
+	canva_shape->SaveAs((folder_normal + geo_s + SB_folder + fit_pdf_folder + shape +  histo + pdf_string).c_str());
+	canva_shape->SaveAs((folder_normal + geo_s + SB_folder + fit_root_folder + shape + histo + root_string).c_str());
 	
 	// ==================================== fit templates
 
 	RooRealVar x("x","PfIsoPhoton #rho corrected", x_min, x_max);
 
 	RooDataHist RooDataHist_MC_SIG("RooDataHist_MC_SIG","MC signal histo", x, h_MC_SIG); 
-	RooDataHist RooDataHist_MC_BACK("RooDataHist_MC_BACK","MC background histo", x, h_MC_BACK); 
+	//RooDataHist RooDataHist_MC_BACK("RooDataHist_MC_BACK","MC background histo", x, h_MC_BACK); 
 	RooDataHist RooDataHist_DATA("RooDataHist_DATA","DATA histo", x, h_DATA); 
 	RooDataHist RooDataHist_DATA_INV("RooDataHist_DATA_INV", "DATA with an inverted cut histo", x, h_DATA_INV); 		
 
 	RooHistPdf RooHistPdf_MC_SIG("RooHistPdf_MC_SIG","MC signal pdf", x, RooDataHist_MC_SIG);
-	RooHistPdf RooHistPdf_MC_BACK("RooHistPdf_MC_BACK","MC background pdf", x, RooDataHist_MC_BACK);
+	//RooHistPdf RooHistPdf_MC_BACK("RooHistPdf_MC_BACK","MC background pdf", x, RooDataHist_MC_BACK);
 	RooHistPdf RooHistPdf_DATA("RooHistPdf_DATA","DATA pdf", x, RooDataHist_DATA);
 	RooHistPdf RooHistPdf_DATA_INV("RooHistPdf_DATA_INV", "DATA with an inverted cut pdf", x, RooDataHist_DATA_INV);
 
-	RooRealVar f("f","purity", 0.9, 0.9, 1.);
-cout << "pispolo" << endl; 
+	RooRealVar f("f","purity", 0.90, 0.80, 1.);
+ 
 	// model(x) = f*RooHistPdf_MC_SIG(x) + (1-f)*RooHistPdf_DATA_INV(x)
  	RooAddPdf model("model", "MC signal and DATA with an inverted cut - Composite model with fraction", RooArgList(RooHistPdf_MC_SIG,RooHistPdf_DATA_INV), f);
 
@@ -385,3 +414,11 @@ void fit_templates_PfIso_RhoCorrected_6binPt() {
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin06_", 1, 0, 20);
 }
 
+void fit_templates_PfIso_RhoCorrected_forFit_6binPt() {
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", 1, -2, 10);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", 1, -2, 11);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", 1, -2, 14);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", 1, -2, 15);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", 1, -2, 17);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", 1, -2, 20);
+}

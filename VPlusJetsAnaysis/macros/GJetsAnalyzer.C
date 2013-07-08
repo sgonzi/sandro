@@ -61,14 +61,14 @@ void GJetsAnalyzer::Loop(){
 	bool data_ReReco = true;          // analysis with data ReReco or data PromptReco
 	string geo = "barrel";            // barrel or endcaps
 	bool TeP_corr = false;            // T&P correction
-	bool BackDataDriven_corr = false;  // background data-driven correction
+	bool BackDataDriven_corr = true;  // background data-driven correction
 	bool SigBack = true;              // to avoid double counting for SIGNAL and BACKGROUND
 	bool inv_sigmaietaieta = false;   // inverted sigmaietaieta cut
 	bool inv_isolation = false;       // inverted isolation set cut
 		
 	bool plothistos = false;          // please select which plots to show
 	bool textfile = true;             // if you want a text report for each sample
-	Int_t itype = 9;                  // it identifies histos with different analysis 
+	Int_t itype = 11;                  // it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -1016,12 +1016,12 @@ void GJetsAnalyzer::Loop(){
 								bin_Pt5 = (photonPt->at(iPhoPos) > 350 && photonPt->at(iPhoPos) < 400);
 								bin_Pt6 = (photonPt->at(iPhoPos) > 400);
 
-								if (bin_Pt1) BackDataDriven_F = 0.90793;
-								else if (bin_Pt2) BackDataDriven_F = 0.906;
-								else if (bin_Pt3) BackDataDriven_F = 0.91000;
-								else if (bin_Pt4) BackDataDriven_F = 0.94750;
-								else if (bin_Pt5) BackDataDriven_F = 0.98;
-								else if (bin_Pt6) BackDataDriven_F = 0.97;
+								if (bin_Pt1) BackDataDriven_F = 0.898643; //0.90793;
+								else if (bin_Pt2) BackDataDriven_F = 0.906496; //0.906;
+								else if (bin_Pt3) BackDataDriven_F = 0.916848; //0.91000;
+								else if (bin_Pt4) BackDataDriven_F = 0.937596; //0.94750;
+								else if (bin_Pt5) BackDataDriven_F = 0.985119; //0.98;
+								else if (bin_Pt6) BackDataDriven_F = 0.96313; //0.97;
 								else BackDataDriven_F = 1.;
 							}
 						}
