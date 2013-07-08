@@ -1,7 +1,7 @@
 ############################ N-tuplizer #######################
 
 # CVS
-export "SCRAM_ARCH=slc5_amd64_gcc462"
+setenv SCRAM_ARCH slc5_amd64_gcc462
 cmsrel CMSSW_5_3_6
 cd CMSSW_5_3_6/src
 cmsenv
