@@ -57,7 +57,7 @@ void GJetsAnalyzer::Loop(){
 
 	// ==================================== choose the tools
 	
-	bool RedAn = false;								// analysis with a reduced entries number for tests
+	bool RedAn = true;								// analysis with a reduced entries number for tests
 	bool data_ReReco = true;					// analysis with data ReReco or data PromptReco
 	string geo = "barrel";						// barrel or endcaps
 	bool TeP_corr = true;							// T&P correction
@@ -1437,12 +1437,16 @@ void GJetsAnalyzer::Loop(){
 						
 							// jets kinematic selection
 							if(jetPt->at(iJetPos) > 30. && TMath::Abs(jetEta->at(iJetPos)) < 2.5 ){
-							
-								SelectedJets_Pt.push_back(jetPt->at(iJetPos));
-								SelectedJets_E.push_back(jetE->at(iJetPos));
-								SelectedJets_Eta.push_back(jetEta->at(iJetPos));
-								SelectedJets_Phi.push_back(jetPhi->at(iJetPos));
-								SelectedJets_N += 1;
+
+								// jets pile-up ID correction							
+								if ( pow(jetRMS->at(iJetPos),2) <  0.06 || (1-jetBeta->at(iJetPos)) < 0.2 * TMath::Log(nVtx-0.65) ) {
+									
+									SelectedJets_Pt.push_back(jetPt->at(iJetPos));
+									SelectedJets_E.push_back(jetE->at(iJetPos));
+									SelectedJets_Eta.push_back(jetEta->at(iJetPos));
+									SelectedJets_Phi.push_back(jetPhi->at(iJetPos));
+									SelectedJets_N += 1;
+								}	// jets pile-up ID correction
 							} // end jets kinematic selection
 						} // end selection of cleaned jets vs. LEADING SelectedPhotons
 					}
