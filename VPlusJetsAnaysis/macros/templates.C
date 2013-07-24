@@ -1283,7 +1283,7 @@ void templates_PfIso_RhoCorrected_6binPt() {
 	templates("SelectedPhotons_PfIso_RhoCorr_1_bin03_", "PfIso #rho corrected, 250 < p_{T}^{#gamma1} < 300", 4, 0, 20);
 	templates("SelectedPhotons_PfIso_RhoCorr_1_bin04_", "PfIso #rho corrected, 300 < p_{T}^{#gamma1} < 350", 4, 0, 20);
 	templates("SelectedPhotons_PfIso_RhoCorr_1_bin05_", "PfIso #rho corrected, 350 < p_{T}^{#gamma1} < 400", 4, 0, 20);
-	templates("SelectedPhotons_PfIso_RhoCorr_1_bin06_", "PfIso #rho corrected, p_{T}^{#gamma1} > 400", 4, 0, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_1_bin06_", "PfIso #rho corrected, p_{T}^{#gamma1} > 400", 4, 0, 40);
 }
 
 void templates_id_sieie_6binPt() {
@@ -1332,7 +1332,7 @@ void templates_PfIso_RhoCorrected_forFit_6binPt() {
 	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", "PfIso #rho corrected for Fit, 250 < p_{T}^{#gamma1} < 300", 4, -10, 20);
 	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", "PfIso #rho corrected for Fit, 300 < p_{T}^{#gamma1} < 350", 4, -10, 20);
 	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", "PfIso #rho corrected for Fit, 350 < p_{T}^{#gamma1} < 400", 4, -10, 20);
-	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", "PfIso #rho corrected for Fit, p_{T}^{#gamma1} > 400", 4, -10, 20);
+	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", "PfIso #rho corrected for Fit, p_{T}^{#gamma1} > 400", 4, -10, 40);
 }
 
 

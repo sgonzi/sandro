@@ -236,7 +236,7 @@ void ZJetsAnalyzer::Loop(){
 					if ((lepPtGEN->at(0) > 20. && geo_selGEN_1) && (lepPtGEN->at(1) > 20. && geo_selGEN_2)) {
 
 						// llM kinematic selection
-						if (TMath::Abs(llMGEN-91) < 20) {
+						if (TMath::Abs(llMGEN-91) < 20 && TMath::Abs(llEtaGEN) < 1.479) {
 
 							// kin JetsGEN (cleaned vs. 2 leptonGEN) selection
 							if (SelectedJetsGEN_N > 0){

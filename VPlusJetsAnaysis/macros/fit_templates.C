@@ -174,7 +174,7 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	bool inv_isolation = false;              // inverted isolation set cut
 
 	bool signal_MAD = true;                 // true: signal = MADGRAPH; false: signal = PYTHIA
-	bool background_QCD = true;             // true: background = MADGRAPH not filtered (QCD HT)
+	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                        // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 	
 	string sample_MC_SIG = "MC_SIG"; // "MC_SIG", "MC_BACK", "DATA" and "MC_BACK_INV", "DATA_INV"
@@ -342,7 +342,7 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	RooHistPdf RooHistPdf_DATA("RooHistPdf_DATA","DATA pdf", x, RooDataHist_DATA);
 	RooHistPdf RooHistPdf_DATA_INV("RooHistPdf_DATA_INV", "DATA with an inverted cut pdf", x, RooDataHist_DATA_INV);
 
-	RooRealVar f("f","purity", 0.90, 0.80, 1.);
+	RooRealVar f("f","purity", 0.90, 0.8, 1.);
  
 	// model(x) = f*RooHistPdf_MC_SIG(x) + (1-f)*RooHistPdf_DATA_INV(x)
  	RooAddPdf model("model", "MC signal and DATA with an inverted cut - Composite model with fraction", RooArgList(RooHistPdf_MC_SIG,RooHistPdf_DATA_INV), f);
@@ -360,6 +360,27 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 
 	cout << "fitres = " << fitres << endl; 
 
+/*	
+	Double_t effe = f.getVal();
+	Double_t err_effe = f.getError();
+	
+	if (chi2>2){
+
+		do {
+		RooRealVar ef("ef","purity", effe, 0.80, 1.);
+		
+		fitres = model.fitTo(RooDataHist_DATA,
+		                         RooFit::SumW2Error(kTRUE),
+	                           RooFit::Range(x_min,x_max),
+	                           RooFit::Save(kTRUE));
+		effe = effe+0.1;
+		}
+
+		while (chi2 > 10);
+	}
+	cout << "chi2 = " << chi2 << endl;
+*/
+
 	model.plotOn (xframe,RooFit::LineColor(kBlue));
 	model.paramOn(xframe,RooFit::Layout(0.55,0.98,0.95));
 
@@ -373,7 +394,7 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	chi2  = xframe->chiSquare(1); // dof = 1 = number of floating parametes
 	cout << endl;
 	cout << "chi2 = " << chi2 << endl;
-	cout << endl;	
+	cout << endl;
 
 	string s_canva_fit = "fit";
 	TCanvas *canva_fit = new TCanvas(s_canva_fit.c_str(),s_canva_fit.c_str(),600,600);
@@ -411,7 +432,7 @@ void fit_templates_PfIso_RhoCorrected_6binPt() {
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin03_", 1, 0, 20);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin04_", 1, 0, 20);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin05_", 1, 0, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin06_", 1, 0, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin06_", 1, 0, 40);
 }
 
 void fit_templates_PfIso_RhoCorrected_forFit_6binPt() {
@@ -422,3 +443,24 @@ void fit_templates_PfIso_RhoCorrected_forFit_6binPt() {
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", 1, -2, 17);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", 1, -2, 20);
 }
+
+void fit_templates_PfIso_RhoCorrected_forFit_6binPt_10_20() {
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", 1, -10, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", 1, -10, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", 1, -10, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", 1, -10, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", 1, -10, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", 1, -10, 20);
+}
+
+void fit_templates_PfIso_RhoCorrected_forFit_6binPt_allcurve() {
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", 1, -7, 11);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", 1, -7, 13);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", 1, -7, 15);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", 1, -7, 16);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", 1, -7, 18);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", 1, -7, 31);
+}
+
+
+

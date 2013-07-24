@@ -57,18 +57,18 @@ void GJetsAnalyzer::Loop(){
 
 	// ==================================== choose the tools
 	
-	bool RedAn = false;               // analysis with a reduced entries number for tests
-	bool data_ReReco = true;          // analysis with data ReReco or data PromptReco
-	string geo = "barrel";            // barrel or endcaps
-	bool TeP_corr = false;            // T&P correction
-	bool BackDataDriven_corr = true;  // background data-driven correction
-	bool SigBack = true;              // to avoid double counting for SIGNAL and BACKGROUND
-	bool inv_sigmaietaieta = false;   // inverted sigmaietaieta cut
-	bool inv_isolation = false;       // inverted isolation set cut
+	bool RedAn = false;								// analysis with a reduced entries number for tests
+	bool data_ReReco = true;					// analysis with data ReReco or data PromptReco
+	string geo = "barrel";						// barrel or endcaps
+	bool TeP_corr = true;							// T&P correction
+	bool BackDataDriven_corr = false;	// background data-driven correction
+	bool SigBack = true;							// to avoid double counting for SIGNAL and BACKGROUND
+	bool inv_sigmaietaieta = false;		// inverted sigmaietaieta cut
+	bool inv_isolation = false;				// inverted isolation set cut
 		
-	bool plothistos = false;          // please select which plots to show
-	bool textfile = true;             // if you want a text report for each sample
-	Int_t itype = 11;                  // it identifies histos with different analysis 
+	bool plothistos = false;					// please select which plots to show
+	bool textfile = true;							// if you want a text report for each sample
+	Int_t itype = 14;									// it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -134,7 +134,7 @@ void GJetsAnalyzer::Loop(){
 		throw cms::Exception("WrongBool");
 	}
 	if (!(geo == "barrel" || geo == "endcaps")) {
-		cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps)\". You writed: \"" << geo << "\"" << endl << endl;
+		cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps)\". You wrote: \"" << geo << "\"" << endl << endl;
 		throw cms::Exception("WrongString");
 	}
 
@@ -885,7 +885,8 @@ void GJetsAnalyzer::Loop(){
 					} // end eta - definition
 
 					// photonGEN kinematic selection
-					if (photonPtGEN > 180. && geo_selGEN) {
+//					if (photonPtGEN > 180. && geo_selGEN) {
+					if (photonPtGEN > 0. && geo_selGEN) {
 
 						// kin JetsGEN (cleaned vs. photonGEN) selection
 						if (SelectedJetsGEN_N > 0){
@@ -894,10 +895,11 @@ void GJetsAnalyzer::Loop(){
 							if (SelectedJetsGEN_HT > 0){
 
 								nPhotonsGEN_->Fill(nPhotonsGEN, weight);
+								
 								photonPtGEN_->Fill(photonPtGEN, weight);
+								photonEGEN_->Fill(photonEGEN, weight);
 								photonEtaGEN_->Fill(photonEtaGEN, weight);
 								photonPhiGEN_->Fill(photonPhiGEN, weight);
-								photonEGEN_->Fill(photonEGEN, weight);
 
 								SelectedJetsGEN_N_->Fill(SelectedJetsGEN_N, weight);
 
@@ -907,15 +909,13 @@ void GJetsAnalyzer::Loop(){
 								SelectedJets_PhiGEN_1_->Fill(SelectedJetsGEN_Phi.at(0), weight);
 								
 								SelectedJetsGEN_HT_->Fill(SelectedJetsGEN_HT, weight);
-
-								HTParSum_->Fill(HTParSum, weight);
-
 							} // end HTGEN selection
 						} // end kin JetsGEN (cleaned vs. photonGEN) selection
 					} // end photonGEN kinematic selection
 				} // end photonGEN selection
 
 				pre_photonIsoSumPtDR03GEN_->Fill(photonIsoSumPtDR03GEN, weight);
+				HTParSum_->Fill(HTParSum, weight);
 
 				// clean jets GEN
 				SelectedJetsGEN_N = 0;
@@ -948,49 +948,173 @@ void GJetsAnalyzer::Loop(){
 						// T&P scale factors - definitions
 						float TeP_SF;
 						if (TeP_corr) {
-							if (isMC) TeP_SF = 1.;
+							if (!isMC) TeP_SF = 1.;
 							else {
 								bool reg_Pt1_Eta1 = false;
-								bool reg_Pt1_Eta2 = false;
-								bool reg_Pt1_Eta3 = false;
-								bool reg_Pt1_Eta4 = false;
 								bool reg_Pt2_Eta1 = false;
-								bool reg_Pt2_Eta2 = false;
-								bool reg_Pt2_Eta3 = false;
-								bool reg_Pt2_Eta4 = false;
+								bool reg_Pt3_Eta1 = false;
+								bool reg_Pt4_Eta1 = false;
+								bool reg_Pt5_Eta1 = false;
+								bool reg_Pt6_Eta1 = false;
+								bool reg_Pt7_Eta1 = false;
+								bool reg_Pt8_Eta1 = false;
+								bool reg_Pt9_Eta1 = false;
+								bool reg_Pt10_Eta1 = false;
+								bool reg_Pt11_Eta1 = false;
+								bool reg_Pt12_Eta1 = false;
+								bool reg_Pt13_Eta1 = false;
+								bool reg_Pt14_Eta1 = false;
+								bool reg_Pt15_Eta1 = false;								
+								bool reg_Pt16_Eta1 = false;
 
-								reg_Pt1_Eta1 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-								               (abs(photonEta->at(iPhoPos)) < 0.8);
+								bool reg_Pt1_Eta2 = false;
+								bool reg_Pt2_Eta2 = false;
+								bool reg_Pt3_Eta2 = false;
+								bool reg_Pt4_Eta2 = false;
+								bool reg_Pt5_Eta2 = false;
+								bool reg_Pt6_Eta2 = false;
+								bool reg_Pt7_Eta2 = false;
+								bool reg_Pt8_Eta2 = false;
+								bool reg_Pt9_Eta2 = false;
+								bool reg_Pt10_Eta2 = false;
+								bool reg_Pt11_Eta2 = false;
+								bool reg_Pt12_Eta2 = false;
+								bool reg_Pt13_Eta2 = false;
+								bool reg_Pt14_Eta2 = false;
+								bool reg_Pt15_Eta2 = false;								
+								bool reg_Pt16_Eta2 = false;
+								
+								reg_Pt1_Eta1 = (photonPt->at(iPhoPos) > 35. && photonPt->at(iPhoPos) < 37.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt2_Eta1 = (photonPt->at(iPhoPos) > 37. && photonPt->at(iPhoPos) < 39.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt3_Eta1 = (photonPt->at(iPhoPos) > 39. && photonPt->at(iPhoPos) < 41.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt4_Eta1 = (photonPt->at(iPhoPos) > 41. && photonPt->at(iPhoPos) < 43.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt5_Eta1 = (photonPt->at(iPhoPos) > 43. && photonPt->at(iPhoPos) < 45.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt6_Eta1 = (photonPt->at(iPhoPos) > 45. && photonPt->at(iPhoPos) < 50.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt7_Eta1 = (photonPt->at(iPhoPos) > 50. && photonPt->at(iPhoPos) < 60.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt8_Eta1 = (photonPt->at(iPhoPos) > 60. && photonPt->at(iPhoPos) < 70.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt9_Eta1 = (photonPt->at(iPhoPos) > 70. && photonPt->at(iPhoPos) < 80.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt10_Eta1 = (photonPt->at(iPhoPos) > 80. && photonPt->at(iPhoPos) < 90.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt11_Eta1 = (photonPt->at(iPhoPos) > 90. && photonPt->at(iPhoPos) < 100.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt12_Eta1 = (photonPt->at(iPhoPos) > 100. && photonPt->at(iPhoPos) < 150.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt13_Eta1 = (photonPt->at(iPhoPos) > 150. && photonPt->at(iPhoPos) < 200.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt14_Eta1 = (photonPt->at(iPhoPos) > 200. && photonPt->at(iPhoPos) < 300.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt15_Eta1 = (photonPt->at(iPhoPos) > 300. && photonPt->at(iPhoPos) < 500.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
+
+								reg_Pt16_Eta1 = (photonPt->at(iPhoPos) > 500. && photonPt->at(iPhoPos) < 1000.) && 
+								               (abs(photonEta->at(iPhoPos)) < 1.5);
 
 								reg_Pt1_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-								               (abs(photonEta->at(iPhoPos)) > 0.8 && abs(photonEta->at(iPhoPos)) < 1.4442);
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
 
-								reg_Pt1_Eta3 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-								               (abs(photonEta->at(iPhoPos)) > 1.4442 && abs(photonEta->at(iPhoPos)) < 2.5);
+								reg_Pt2_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
 
-								reg_Pt1_Eta4 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-								               (abs(photonEta->at(iPhoPos)) > 2.5);
+								reg_Pt3_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
 
-								reg_Pt2_Eta1 = (photonPt->at(iPhoPos) > 200) && 
-								               (abs(photonEta->at(iPhoPos)) < 0.8);
+								reg_Pt4_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
 
-								reg_Pt2_Eta2 = (photonPt->at(iPhoPos) > 200) && 
-								               (abs(photonEta->at(iPhoPos)) > 0.8 && abs(photonEta->at(iPhoPos)) < 1.4442);
+								reg_Pt5_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
 
-								reg_Pt2_Eta3 = (photonPt->at(iPhoPos) > 200) && 
-								               (abs(photonEta->at(iPhoPos)) > 1.4442 && abs(photonEta->at(iPhoPos)) < 2.5);
-							               
-								reg_Pt2_Eta4 = (photonPt->at(iPhoPos) > 200) && 
-								               (abs(photonEta->at(iPhoPos)) > 2.5);
+								reg_Pt6_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
 
-								if (reg_Pt1_Eta1) TeP_SF = 1.;
-								else if (reg_Pt1_Eta2) TeP_SF = 1.;
-								else if (reg_Pt1_Eta3) TeP_SF = 1.;
-								else if (reg_Pt1_Eta4) TeP_SF = 1.;
-								else if (reg_Pt2_Eta1) TeP_SF = 1.;
-								else if (reg_Pt2_Eta2) TeP_SF = 1.;
-								else if (reg_Pt2_Eta3) TeP_SF = 1.;
-								else if (reg_Pt2_Eta4) TeP_SF = 1.;
+								reg_Pt7_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
+
+								reg_Pt8_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
+
+								reg_Pt9_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
+
+								reg_Pt10_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
+
+								reg_Pt11_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
+
+								reg_Pt12_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
+
+								reg_Pt13_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
+
+								reg_Pt14_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
+
+								reg_Pt15_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
+
+								reg_Pt16_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
+								               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
+
+
+								if (reg_Pt1_Eta1) TeP_SF = 0.9746492;
+								else if (reg_Pt2_Eta1) TeP_SF = 0.9628126;
+								else if (reg_Pt3_Eta1) TeP_SF = 0.9692172;
+								else if (reg_Pt4_Eta1) TeP_SF = 0.9691368;
+								else if (reg_Pt5_Eta1) TeP_SF = 0.9724859;
+								else if (reg_Pt6_Eta1) TeP_SF = 0.9761798;
+								else if (reg_Pt7_Eta1) TeP_SF = 0.9656683;
+								else if (reg_Pt8_Eta1) TeP_SF = 0.9699661;
+								else if (reg_Pt9_Eta1) TeP_SF = 0.9877847;
+								else if (reg_Pt10_Eta1) TeP_SF = 0.9851634;
+								else if (reg_Pt11_Eta1) TeP_SF = 0.9913975;
+								else if (reg_Pt12_Eta1) TeP_SF = 0.9747586;
+								else if (reg_Pt13_Eta1) TeP_SF = 0.9704033;
+								else if (reg_Pt14_Eta1) TeP_SF = 0.965103;
+								else if (reg_Pt15_Eta1) TeP_SF = 1.010107;
+								else if (reg_Pt16_Eta1) TeP_SF = 1.008818;
+
+								else if (reg_Pt1_Eta2) TeP_SF = 0.9794486;
+								else if (reg_Pt2_Eta2) TeP_SF = 0.9839308;
+								else if (reg_Pt3_Eta2) TeP_SF = 0.9836198;
+								else if (reg_Pt4_Eta2) TeP_SF = 0.9832776;
+								else if (reg_Pt5_Eta2) TeP_SF = 0.9798149;
+								else if (reg_Pt6_Eta2) TeP_SF = 0.9827082;
+								else if (reg_Pt7_Eta2) TeP_SF = 0.9937122;
+								else if (reg_Pt8_Eta2) TeP_SF = 0.9990523;
+								else if (reg_Pt9_Eta2) TeP_SF = 1.011939;
+								else if (reg_Pt10_Eta2) TeP_SF = 1.004887;
+								else if (reg_Pt11_Eta2) TeP_SF = 0.9614111;
+								else if (reg_Pt12_Eta2) TeP_SF = 0.9437025;
+								else if (reg_Pt13_Eta2) TeP_SF = 0.9266722;
+								else if (reg_Pt14_Eta2) TeP_SF = 0.9656222;
+								else if (reg_Pt15_Eta2) TeP_SF = 0.6447101;
+								else if (reg_Pt16_Eta2) TeP_SF = 0.9;
+								
 								else TeP_SF = 1.;
 							}
 						}
@@ -1290,7 +1414,7 @@ void GJetsAnalyzer::Loop(){
 
 						// only counting of cleaned jets vs. ALL SelectedPhotons
 						bool closeALL = false;
-						for (unsigned int jPhoPos = 0; jPhoPos < SelectedPhotons_N; ++jPhoPos){
+						for (unsigned int jPhoPos = 0; jPhoPos < SelectedPhotons_N; jPhoPos++){
 							if ( deltaR(SelectedPhotons_Eta.at(jPhoPos), SelectedPhotons_Phi.at(jPhoPos), jetEta->at(iJetPos), jetPhi->at(iJetPos)) < 0.5) {
 								closeALL = true;
 								break;
@@ -1567,10 +1691,9 @@ void GJetsAnalyzer::Loop(){
 							
 							SelectedPhotons_Bit_1_->Fill(SelectedPhotons_Bit.at(0), weight_final);
 
-							/*
 							SelectedPhotons_TeP_SF_1_->Fill(SelectedPhotons_TeP_SF.at(0), weight_final);
-							SelectedPhotons_BackDataDriven_SF_1_->Fill(SelectedPhotons_BackDataDriven_F.at(0), weight_final);
-							*/
+							SelectedPhotons_BackDataDriven_F_1_->Fill(SelectedPhotons_BackDataDriven_F.at(0), weight_final);
+
 							
 							SelectedJetsALL_N_->Fill(SelectedJetsALL_N, weight_final);
 
@@ -1841,9 +1964,9 @@ void GJetsAnalyzer::Book_Histos(){
 
 		//plotsCompare_gen_03
 		SelectedJetsGEN_HT_ = new TH1F("SelectedJetsGEN_HT_","Selected Jets H_{T} GEN", 400, 0, 4000);
-		HTParSum_ = new TH1F("HTParSum_","H_{T} Partons Sum", 400, 0, 4000);
 		pre_photonIsoSumPtDR03GEN_ = new TH1F("pre_photonIsoSumPtDR03GEN_","photonIsoSumPtDR03GEN", 1300, -1100, 200);
 		photonIsoSumPtDR03GEN_ = new TH1F("photonIsoSumPtDR03GEN_","photonIsoSumPtDR03GEN", 1300, -1100, 200);
+		HTParSum_ = new TH1F("HTParSum_","H_{T} Partons Sum", 800, 0, 4000);
 	}
 
 	//plotsCompare_01
@@ -1858,10 +1981,8 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_Phi_1_ = new TH1F("SelectedPhotons_Phi_1_","Photon #varphi ", 1000, -3.1416, 3.1416);
 	SelectedPhotons_Bit_1_ = new TH1F("SelectedPhotons_Bit_1_","Photon bit ", 100, 0., 1000.);
 
-	/*
-	SelectedPhotons_TeP_SF_1_ = new TH1F("SelectedPhotons_TeP_SF_1_","Photon SF ", 200, 0.5, 1.5);
+	SelectedPhotons_TeP_SF_1_ = new TH1F("SelectedPhotons_TeP_SF_1_","Photon SF ", 200, 0.9, 1.1);
 	SelectedPhotons_BackDataDriven_F_1_ = new TH1F("SelectedPhotons_BackDataDriven_F_1_","Photon background data-driven F", 10, 0., 1.);
-	*/
 
 	//plotsCompare_02
 	SelectedPhotons_PassConversionVeto_1_ = new TH1F("SelectedPhotons_PassConversionVeto_1_","photonPassConversionVeto ", 10, -2, 2);
@@ -2150,9 +2271,9 @@ void GJetsAnalyzer::Plot_Histos(){
 	bool plot_gen_02 = false; // GEN jets variables
 	bool plot_gen_03 = false; // GEN H_T
 
-	bool plot_01 = false; // photon kinematics
+	bool plot_01 = true; // photon kinematics
 	bool plot_02 = false; // photon Isolation
-	bool plot_03 = true; // photon Isolation rho corrected
+	bool plot_03 = false; // photon Isolation rho corrected
 	bool plot_04 = false; // photon Isolation, 180 < p_T gamma < 200
 	bool plot_05 = false; // photon Isolation rho corrected, 180 < p_T gamma < 200
 	bool plot_06 = false; // photon Isolation, 200 < p_T gamma < 250
@@ -2227,11 +2348,11 @@ void GJetsAnalyzer::Plot_Histos(){
 		c_gen03->cd(1);
 		SelectedJetsGEN_HT_->Draw();
 		c_gen03->cd(2);
-		HTParSum_->Draw();
-		c_gen03->cd(3);
 		pre_photonIsoSumPtDR03GEN_->Draw();
-		c_gen03->cd(4);
+		c_gen03->cd(3);
 		photonIsoSumPtDR03GEN_->Draw();
+		c_gen03->cd(4);
+		HTParSum_->Draw();
 	}
 
 	if(plot_01){
@@ -2254,12 +2375,11 @@ void GJetsAnalyzer::Plot_Histos(){
 		SelectedPhotons_Phi_1_->Draw();
 		c01->cd(8);
 		SelectedPhotons_Bit_1_->Draw();
-		/*
 		c01->cd(9);
 		SelectedPhotons_TeP_SF_1_->Draw();	
 		c01->cd(10);
 		SelectedPhotons_BackDataDriven_F_1_->Draw();	
-		*/
+
 	}
 
 	if(plot_02){ 

@@ -179,9 +179,8 @@ void ZGenPlots(const char* titleh, const char* namevariable, const int rebin, co
 	Char_t DYJetsToLL_M_50_name[100];	
 
 	sprintf(DYJetsToLL_M_50_name,"DYJetsToLL_M_50_histos_%d_%s%s",itype, geo, root_char);	
-
 	cout << "DYJets file 91 is: " << DYJetsToLL_M_50_name << endl;
-
+	cout << endl;
 
 	// ==================================== load TFiles
 

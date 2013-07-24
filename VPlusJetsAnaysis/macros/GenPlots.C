@@ -989,8 +989,9 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 
 
 void GenPlots_01(){		
-	GenPlots("nPhotonsGEN_","Photons GEN N", 1, -999, -999);
-	GenPlots("photonPtGEN_","Photon GEN p_{T}", 2, 0, 2000);
+	GenPlots("nPhotonsGEN_","Photons GEN N", 1, 0, 10);
+//	GenPlots("photonPtGEN_","Photon GEN p_{T}", 2, 0, 2000);
+	GenPlots("photonPtGEN_","Photon GEN p_{T}", 1, 0, 1000);
 	GenPlots("photonEGEN_","Photon GEN E", 2, 0, 2000);
 	GenPlots("photonEtaGEN_","Photon GEN #eta", 30, -1.5, 1.5);
 	GenPlots("photonPhiGEN_","Photon GEN #varphi", 20, -999, -999);
