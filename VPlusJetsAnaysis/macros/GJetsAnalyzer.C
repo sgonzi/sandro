@@ -1124,7 +1124,7 @@ void GJetsAnalyzer::Loop(){
 						// background data-driven correction - definitions
 						float BackDataDriven_F;
 						if (BackDataDriven_corr) {
-							if (isMC) BackDataDriven_F = 1.;
+							if (!isMC) BackDataDriven_F = 0.;
 							else {
 								bool bin_Pt1 = false;
 								bool bin_Pt2 = false;
@@ -1146,10 +1146,10 @@ void GJetsAnalyzer::Loop(){
 								else if (bin_Pt4) BackDataDriven_F = 0.937596; //0.94750;
 								else if (bin_Pt5) BackDataDriven_F = 0.985119; //0.98;
 								else if (bin_Pt6) BackDataDriven_F = 0.96313; //0.97;
-								else BackDataDriven_F = 1.;
+								else BackDataDriven_F = 0.;
 							}
 						}
-						else BackDataDriven_F = 1.;
+						else BackDataDriven_F = 0.;
 						// end background data-driven correction - definitions
 
 
@@ -1484,7 +1484,7 @@ void GJetsAnalyzer::Loop(){
 
 					scale_TeP = SelectedPhotons_TeP_SF.at(0);
 					scale_BackDataDriven = SelectedPhotons_BackDataDriven_F.at(0);
-					weight_final = scale_TeP * scale_BackDataDriven * weight_withPU;
+					weight_final = scale_TeP * (1-scale_BackDataDriven) * weight_withPU;
 
 					iSelected2++;
 
@@ -1982,7 +1982,7 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_Bit_1_ = new TH1F("SelectedPhotons_Bit_1_","Photon bit ", 100, 0., 1000.);
 
 	SelectedPhotons_TeP_SF_1_ = new TH1F("SelectedPhotons_TeP_SF_1_","Photon SF ", 200, 0.9, 1.1);
-	SelectedPhotons_BackDataDriven_F_1_ = new TH1F("SelectedPhotons_BackDataDriven_F_1_","Photon background data-driven F", 10, 0., 1.);
+	SelectedPhotons_BackDataDriven_F_1_ = new TH1F("SelectedPhotons_BackDataDriven_F_1_","Photon background data-driven F", 100, 0., 1.);
 
 	//plotsCompare_02
 	SelectedPhotons_PassConversionVeto_1_ = new TH1F("SelectedPhotons_PassConversionVeto_1_","photonPassConversionVeto ", 10, -2, 2);
