@@ -11,7 +11,7 @@ string geo_string(string out) {
 }
 
 bool inv_sigmaietaieta(bool out) {
-	bool in = true;
+	bool in = false;
 	out = in;
 	return out;
 }
