@@ -130,7 +130,7 @@ void setMYStyle() {
 }
 
 
-void ratioGenPlots(const char* titlehGJets, const char* titlehZJets_mumu, const char* titlehZJets_ee, const char* titlehZJets_ll, const char* namevariable, const int rebin, const double x_min, const double x_max){
+void ratioGenPlots(const char* titleh, const char* titlehGJets, const char* titlehZJets_mumu, const char* titlehZJets_ee, const char* titlehZJets_ll, const char* namevariable, const int rebin, const double x_min, const double x_max){
 
   // Usage is: .L GenPlots.C++
   //       ie: GenPlots("HTParSum_","H_{T} Partons Sum", 1, 0, 100);
@@ -139,7 +139,7 @@ void ratioGenPlots(const char* titlehGJets, const char* titlehZJets_mumu, const 
 
 	// ==================================== choose the tools
 
-	string folder = "13_results_2013_07_22"; // analysis folder
+	string folder = "16_results_2013_07_24"; // analysis folder
 
 	char geo[100] = "barrel";               // "barrel", "endcaps" or "total"
 
@@ -148,7 +148,7 @@ void ratioGenPlots(const char* titlehGJets, const char* titlehZJets_mumu, const 
 
 	bool signal_MAD = true;                 // true: signal = MADGRAPH; false: signal = PYTHIA
 
-	Int_t itype = 13;                        // it identifies histos with different analysis 
+	Int_t itype = 16;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names
@@ -444,7 +444,7 @@ void ratioGenPlots(const char* titlehGJets, const char* titlehZJets_mumu, const 
 		G_Pt_XtoY_total_histo->SetLineWidth(3);
 		//G_Pt_XtoY_total_histo->SetFillColor(kGreen+2);  //for colors comment out Sumw2 in code
 	}
-		
+
 	// MC signal DiPhotonJets --------------------------------------------------
 	DiPhotonJets_histo=(TH1F*)DiPhotonJets_file->Get(titlehistoGJets);
 	DiPhotonJets_histo->Rebin(rebin);
@@ -514,8 +514,8 @@ void ratioGenPlots(const char* titlehGJets, const char* titlehZJets_mumu, const 
 	// ==================================== load Canvas
 	
   TCanvas *Canva = new TCanvas(titlehistoGJets,titlehistoGJets);  
-	TPad* upperPad = new TPad("upperPad", "upperPad",.005, .25, .995, .995);
-  TPad* lowerPad = new TPad("lowerPad", "lowerPad",.005, .005, .995, .2475);
+	TPad* upperPad = new TPad("upperPad", "upperPad",.005, .35, .995, .995);
+  TPad* lowerPad = new TPad("lowerPad", "lowerPad",.005, .005, .995, .3475);
   upperPad->Draw(); 			       
   lowerPad->Draw();
   
@@ -590,7 +590,7 @@ void ratioGenPlots(const char* titlehGJets, const char* titlehZJets_mumu, const 
 	ratio_histo_DEN->GetYaxis()->SetTitleOffset(1.2);
 	ratio_histo_DEN->GetYaxis()->SetTitle("Events");	
 
-	TLegend *leg =new TLegend(0.6068,0.5478,0.8188,0.7480);
+	TLegend *leg =new TLegend(0.5475,0.4709,0.8380,0.7485);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
@@ -600,7 +600,7 @@ void ratioGenPlots(const char* titlehGJets, const char* titlehZJets_mumu, const 
 	leg->AddEntry(ratio_histo_NUM_ll,"DYJetsToLL_M-50 (Z->ll)","l");
 	leg->Draw();
 
-  TPaveText* text = new TPaveText(0.6068,0.7722,0.8188,0.8571,"NDC");
+  TPaveText* text = new TPaveText(0.5475,0.7722,0.8380,0.8571,"NDC");
   text->SetFillColor(0);
   text->SetFillStyle(0);
   text->SetBorderSize(0);
@@ -650,8 +650,8 @@ void ratioGenPlots(const char* titlehGJets, const char* titlehZJets_mumu, const 
 	
 	root_string = ".root";
 	pdf_string = ".pdf";
-  Canva->SaveAs((folder_s + geo_s + GEN_folder + pdf_folder + titlehGJets + pdf_string).c_str());
-  Canva->SaveAs((folder_s + geo_s + GEN_folder + root_folder + titlehGJets + root_string).c_str());
+  Canva->SaveAs((folder_s + geo_s + GEN_folder + pdf_folder + titleh + pdf_string).c_str());
+  Canva->SaveAs((folder_s + geo_s + GEN_folder + root_folder + titleh + root_string).c_str());
 	Canva->Close();
 
 	// ==================================== report
@@ -661,7 +661,7 @@ void ratioGenPlots(const char* titlehGJets, const char* titlehZJets_mumu, const 
 	
 	stringstream ss_t;
 	char txt_char[100];
-	ss_t << folder_s + geo_s + GEN_folder + txt_folder + titlehGJets + txt_string;
+	ss_t << folder_s + geo_s + GEN_folder + txt_folder + titleh + txt_string;
 	ss_t >> txt_char;
 	
 	report.open(txt_char);
@@ -780,7 +780,59 @@ void ratioGenPlots(const char* titlehGJets, const char* titlehZJets_mumu, const 
 }
 
 
-void ratioGenPlots_01(){		
-	ratioGenPlots("photonPtGEN_", "llPtGEN_mumu_","llPtGEN_ee_","llPtGEN_ll_", "GEN p_{T}", 1, 0, 800);
+void ratioGenPlots_N0(){		
+	ratioGenPlots("ratioGenPlot_PtGEN_", "photonPtGEN_N0_", "llPtGEN_mumu_N0_","llPtGEN_ee_N0_","llPtGEN_ll_N0_", "GEN p_{T} (N^{jets}_{GEN} > 0)", 2, 0, 800);
 }
 
+void ratioGenPlots_N0_zoom(){
+	ratioGenPlots("ratioGenPlot_PtGEN_zoom_", "photonPtGEN_N0_", "llPtGEN_mumu_N0_","llPtGEN_ee_N0_","llPtGEN_ll_N0_", "GEN p_{T} (N^{jets}_{GEN} > 0)", 1, 100, 300);
+}
+
+
+void ratioGenPlots_excl1(){		
+	ratioGenPlots("ratioGenPlot_PtGEN_excl1_", "photonPtGEN_excl1_", "llPtGEN_mumu_excl1_","llPtGEN_ee_excl1_","llPtGEN_ll_excl1_", "GEN p_{T} (N^{jets}_{GEN} = 1)", 2, 0, 800);
+}
+
+void ratioGenPlots_excl1_zoom(){
+	ratioGenPlots("ratioGenPlot_PtGEN_excl1_zoom_", "photonPtGEN_excl1_", "llPtGEN_mumu_excl1_","llPtGEN_ee_excl1_","llPtGEN_ll_excl1_", "GEN p_{T} (N^{jets}_{GEN} = 1)", 1, 100, 300);
+}
+
+
+void ratioGenPlots_excl2(){		
+	ratioGenPlots("ratioGenPlot_PtGEN_excl2_", "photonPtGEN_excl2_", "llPtGEN_mumu_excl2_","llPtGEN_ee_excl2_","llPtGEN_ll_excl2_", "GEN p_{T} (N^{jets}_{GEN} = 2)", 2, 0, 800);
+}
+
+void ratioGenPlots_excl2_zoom(){
+	ratioGenPlots("ratioGenPlot_PtGEN_excl2_zoom_", "photonPtGEN_excl2_", "llPtGEN_mumu_excl2_","llPtGEN_ee_excl2_","llPtGEN_ll_excl2_", "GEN p_{T} (N^{jets}_{GEN} = 2)", 1, 100, 300);
+}
+
+
+void ratioGenPlots_N1(){		
+	ratioGenPlots("ratioGenPlot_PtGEN_N1_", "photonPtGEN_N1_", "llPtGEN_mumu_N1_","llPtGEN_ee_N1_","llPtGEN_ll_N1_", "GEN p_{T} (N^{jets}_{GEN} > 1)", 2, 0, 800);
+}
+
+void ratioGenPlots_N1_zoom(){
+	ratioGenPlots("ratioGenPlot_PtGEN_N1_zoom_", "photonPtGEN_N1_", "llPtGEN_mumu_N1_","llPtGEN_ee_N1_","llPtGEN_ll_N1_", "GEN p_{T} (N^{jets}_{GEN} > 1)", 1, 100, 300);
+}
+
+
+void ratioGenPlots_N2(){		
+	ratioGenPlots("ratioGenPlot_PtGEN_N2_", "photonPtGEN_N2_", "llPtGEN_mumu_N2_","llPtGEN_ee_N2_","llPtGEN_ll_N2_", "GEN p_{T} (N^{jets}_{GEN} > 2)", 2, 0, 800);
+}
+
+void ratioGenPlots_N2_zoom(){
+	ratioGenPlots("ratioGenPlot_PtGEN_N2_zoom_", "photonPtGEN_N2_", "llPtGEN_mumu_N2_","llPtGEN_ee_N2_","llPtGEN_ll_N2_", "GEN p_{T} (N^{jets}_{GEN} > 2)", 1, 100, 300);
+}
+
+void ratioGenPlots_TOT(){
+	ratioGenPlots_N0();
+	ratioGenPlots_N0_zoom();
+	ratioGenPlots_excl1();	
+	ratioGenPlots_excl1_zoom();	
+	ratioGenPlots_excl2();	
+	ratioGenPlots_excl2_zoom();	
+	ratioGenPlots_N1();
+	ratioGenPlots_N1_zoom();
+	ratioGenPlots_N2();
+	ratioGenPlots_N2_zoom();
+}

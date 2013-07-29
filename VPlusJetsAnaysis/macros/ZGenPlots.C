@@ -325,31 +325,31 @@ void ZGenPlots(const char* titleh, const char* namevariable, const int rebin, co
 
 void ZGenPlots_01() {		
 	ZGenPlots("nLeptonsGEN_mumu_","Leptons GEN N (Z->#mu#mu)", 1, 0, 10);
-	ZGenPlots("lepPtGEN_mumu_1_", "lepton 1 GEN p_{T} (Z->#mu#mu)", 1, 0, 1000);
-	ZGenPlots("lepEGEN_mumu_1_", "lepton 1 GEN E (Z->#mu#mu)", 1, 0, 1000);
+	ZGenPlots("lepPtGEN_mumu_1_", "lepton 1 GEN p_{T} (Z->#mu#mu)", 2, 0, 1000);
+	ZGenPlots("lepEGEN_mumu_1_", "lepton 1 GEN E (Z->#mu#mu)", 2, 0, 1000);
 	ZGenPlots("lepEtaGEN_mumu_1_", "lepton 1 GEN #eta (Z->#mu#mu)", 30, -1.5, 1.5);
 	ZGenPlots("lepPhiGEN_mumu_1_", "lepton 1 GEN #phi (Z->#mu#mu)", 20, -999, -999);
 }
 
 void ZGenPlots_02(){		
-	ZGenPlots("lepPtGEN_mumu_2_", "lepton 2 GEN p_{T} (Z->#mu#mu)", 1, 0, 1000);
-	ZGenPlots("lepEGEN_mumu_2_", "lepton 2 GEN E (Z->#mu#mu)", 1, 0, 1000);
+	ZGenPlots("lepPtGEN_mumu_2_", "lepton 2 GEN p_{T} (Z->#mu#mu)", 2, 0, 1000);
+	ZGenPlots("lepEGEN_mumu_2_", "lepton 2 GEN E (Z->#mu#mu)", 2, 0, 1000);
 	ZGenPlots("lepEtaGEN_mumu_2_", "lepton 2 GEN #eta (Z->#mu#mu)", 30, -1.5, 1.5);
 	ZGenPlots("lepPhiGEN_mumu_2_", "lepton 2 GEN #phi (Z->#mu#mu)", 20, -999, -999);
 }
 
 void ZGenPlots_03(){		
 	ZGenPlots("llMGEN_mumu_", "M^{ll} GEN (Z->#mu#mu)", 5, -999, -999);
-	// ZGenPlots("llPtGEN_mumu_", "p_{T}^{ll} GEN (Z->#mu#mu)", 2, 0, 1000);
-	ZGenPlots("llPtGEN_mumu_", "p_{T}^{ll} GEN (Z->#mu#mu)", 1, 0, 1000);
+	// ZGenPlots("llPtGEN_mumu_", "p_{T}^{ll} GEN (Z->#mu#mu)", 4, 0, 1000);
+	ZGenPlots("llPtGEN_mumu_", "p_{T}^{ll} GEN (Z->#mu#mu)", 2, 0, 1000);
 	ZGenPlots("llEtaGEN_mumu_", "#eta^{ll} GEN (Z->#mu#mu)", 30, -1.5, 1.5);
 	ZGenPlots("llPhiGEN_mumu_", "#phi^{ll} GEN (Z->#mu#mu)", 20, -999, -999);
 }
 
 void ZGenPlots_04(){		
 	ZGenPlots("SelectedJetsGEN_N_mumu_","Selected Jets GEN N (Z->#mu#mu)", 1, -999, -999);
-	ZGenPlots("SelectedJets_PtGEN_mumu_1_","Jet 1 GEN p_{T} (Z->#mu#mu)", 2, 0, 1000);
-	ZGenPlots("SelectedJets_EGEN_mumu_1_", "Jet 1 GEN E (Z->#mu#mu)", 2, 0, 1000);
+	ZGenPlots("SelectedJets_PtGEN_mumu_1_","Jet 1 GEN p_{T} (Z->#mu#mu)", 4, 0, 1000);
+	ZGenPlots("SelectedJets_EGEN_mumu_1_", "Jet 1 GEN E (Z->#mu#mu)", 4, 0, 1000);
 	ZGenPlots("SelectedJets_EtaGEN_mumu_1_","Jet 1 GEN #eta (Z->#mu#mu)", 50, -3, 3);
 	ZGenPlots("SelectedJets_PhiGEN_mumu_1_","Jet 1 GEN #varphi (Z->#mu#mu)", 20, -999, -999);
 	ZGenPlots("SelectedJetsGEN_HT_mumu_","Selected Jets H_{T} GEN (Z->#mu#mu)", 4, 0, 2000);
@@ -357,23 +357,23 @@ void ZGenPlots_04(){
 
 void ZGenPlots_05(){		
 	ZGenPlots("nLeptonsGEN_ee_","Leptons GEN N (Z->ee)", 1, 0, 10);
-	ZGenPlots("lepPtGEN_ee_1_", "lepton 1 GEN p_{T} (Z->ee)", 1, 0, 1000);
-	ZGenPlots("lepEGEN_ee_1_", "lepton 1 GEN E (Z->ee)", 1, 0, 1000);
+	ZGenPlots("lepPtGEN_ee_1_", "lepton 1 GEN p_{T} (Z->ee)", 2, 0, 1000);
+	ZGenPlots("lepEGEN_ee_1_", "lepton 1 GEN E (Z->ee)", 2, 0, 1000);
 	ZGenPlots("lepEtaGEN_ee_1_", "lepton 1 GEN #eta (Z->ee)", 30, -1.5, 1.5);
 	ZGenPlots("lepPhiGEN_ee_1_", "lepton 1 GEN #phi (Z->ee)", 20, -999, -999);
 }
 
 void ZGenPlots_06(){		
-	ZGenPlots("lepPtGEN_ee_2_", "lepton 2 GEN p_{T} (Z->ee)", 1, 0, 1000);
-	ZGenPlots("lepEGEN_ee_2_", "lepton 2 GEN E (Z->ee)", 1, 0, 1000);
+	ZGenPlots("lepPtGEN_ee_2_", "lepton 2 GEN p_{T} (Z->ee)", 2, 0, 1000);
+	ZGenPlots("lepEGEN_ee_2_", "lepton 2 GEN E (Z->ee)", 2, 0, 1000);
 	ZGenPlots("lepEtaGEN_ee_2_", "lepton 2 GEN #eta (Z->ee)", 30, -1.5, 1.5);
 	ZGenPlots("lepPhiGEN_ee_2_", "lepton 2 GEN #phi (Z->ee)", 20, -999, -999);
 }
 
 void ZGenPlots_07(){		
 	ZGenPlots("llMGEN_ee_", "M^{ll} GEN (Z->ee)",  5, -999, -999);
-	// ZGenPlots("llPtGEN_ee_", "p_{T}^{ll} GEN (Z->ee)", 2, 0, 1000); 
-	ZGenPlots("llPtGEN_ee_", "p_{T}^{ll} GEN (Z->ee)", 1, 0, 1000); 
+	// ZGenPlots("llPtGEN_ee_", "p_{T}^{ll} GEN (Z->ee)", 4, 0, 1000); 
+	ZGenPlots("llPtGEN_ee_", "p_{T}^{ll} GEN (Z->ee)", 2, 0, 1000); 
 	ZGenPlots("llEtaGEN_ee_", "#eta^{ll} GEN (Z->ee)", 30, -1.5, 1.5);
 	ZGenPlots("llPhiGEN_ee_", "#phi^{ll} GEN (Z->ee)", 20, -999, -999);
 }
@@ -381,8 +381,8 @@ void ZGenPlots_07(){
 
 void ZGenPlots_08(){		
 	ZGenPlots("SelectedJetsGEN_N_ee_","Selected Jets GEN N (Z->ee)", 1, -999, -999);
-	ZGenPlots("SelectedJets_PtGEN_ee_1_","Jet 1 GEN p_{T} (Z->ee)", 2, 0, 1000);
-	ZGenPlots("SelectedJets_EGEN_ee_1_", "Jet 1 GEN E (Z->ee)", 2, 0, 1000);
+	ZGenPlots("SelectedJets_PtGEN_ee_1_","Jet 1 GEN p_{T} (Z->ee)", 4, 0, 1000);
+	ZGenPlots("SelectedJets_EGEN_ee_1_", "Jet 1 GEN E (Z->ee)", 4, 0, 1000);
 	ZGenPlots("SelectedJets_EtaGEN_ee_1_","Jet 1 GEN #eta (Z->ee)", 50, -3, 3);
 	ZGenPlots("SelectedJets_PhiGEN_ee_1_","Jet 1 GEN #varphi (Z->ee)", 20, -999, -999);
 	ZGenPlots("SelectedJetsGEN_HT_ee_","Selected Jets H_{T} GEN (Z->ee)", 4, 0, 2000);
@@ -390,31 +390,31 @@ void ZGenPlots_08(){
 
 void ZGenPlots_09(){		
 	ZGenPlots("nLeptonsGEN_ll_","Leptons GEN N (Z->ll)", 1, 0, 10);
-	ZGenPlots("lepPtGEN_ll_1_", "lepton 1 GEN p_{T} (Z->ll)", 1, 0, 1000);
-	ZGenPlots("lepEGEN_ll_1_", "lepton 1 GEN E (Z->ll)", 1, 0, 1000);
+	ZGenPlots("lepPtGEN_ll_1_", "lepton 1 GEN p_{T} (Z->ll)", 2, 0, 1000);
+	ZGenPlots("lepEGEN_ll_1_", "lepton 1 GEN E (Z->ll)", 2, 0, 1000);
 	ZGenPlots("lepEtaGEN_ll_1_", "lepton 1 GEN #eta (Z->ll)", 30, -1.5, 1.5);
 	ZGenPlots("lepPhiGEN_ll_1_", "lepton 1 GEN #phi (Z->ll)", 20, -999, -999);
 }
 
 void ZGenPlots_10(){		
-	ZGenPlots("lepPtGEN_ll_2_", "lepton 2 GEN p_{T} (Z->ll)", 1, 0, 1000);
-	ZGenPlots("lepEGEN_ll_2_", "lepton 2 GEN E (Z->ll)", 1, 0, 1000);
+	ZGenPlots("lepPtGEN_ll_2_", "lepton 2 GEN p_{T} (Z->ll)", 2, 0, 1000);
+	ZGenPlots("lepEGEN_ll_2_", "lepton 2 GEN E (Z->ll)", 2, 0, 1000);
 	ZGenPlots("lepEtaGEN_ll_2_", "lepton 2 GEN #eta (Z->ll)", 30, -1.5, 1.5);
 	ZGenPlots("lepPhiGEN_ll_2_", "lepton 2 GEN #phi (Z->ll)", 20, -999, -999);
 }
 
 void ZGenPlots_11(){		
 	ZGenPlots("llMGEN_ll_", "M^{ll} GEN (Z->ll)",  5, -999, -999);
-	// ZGenPlots("llPtGEN_ll_", "p_{T}^{ll} GEN (Z->ll)", 2, 0, 1000); 
-	ZGenPlots("llPtGEN_ll_", "p_{T}^{ll} GEN (Z->ll)", 1, 0, 1000); 
+	// ZGenPlots("llPtGEN_ll_", "p_{T}^{ll} GEN (Z->ll)", 4, 0, 1000); 
+	ZGenPlots("llPtGEN_ll_", "p_{T}^{ll} GEN (Z->ll)", 2, 0, 1000); 
 	ZGenPlots("llEtaGEN_ll_", "#eta^{ll} GEN (Z->ll)", 30, -1.5, 1.5);
 	ZGenPlots("llPhiGEN_ll_", "#phi^{ll} GEN (Z->ll)", 20, -999, -999);
 }
 
 void ZGenPlots_12(){		
 	ZGenPlots("SelectedJetsGEN_N_ll_","Selected Jets GEN N (Z->ll)", 1, -999, -999);
-	ZGenPlots("SelectedJets_PtGEN_ll_1_","Jet 1 GEN p_{T} (Z->ll)", 2, 0, 1000);
-	ZGenPlots("SelectedJets_EGEN_ll_1_", "Jet 1 GEN E (Z->ll)", 2, 0, 1000);
+	ZGenPlots("SelectedJets_PtGEN_ll_1_","Jet 1 GEN p_{T} (Z->ll)", 4, 0, 1000);
+	ZGenPlots("SelectedJets_EGEN_ll_1_", "Jet 1 GEN E (Z->ll)", 4, 0, 1000);
 	ZGenPlots("SelectedJets_EtaGEN_ll_1_","Jet 1 GEN #eta (Z->ll)", 50, -3, 3);
 	ZGenPlots("SelectedJets_PhiGEN_ll_1_","Jet 1 GEN #varphi (Z->ll)", 20, -999, -999);
 	ZGenPlots("SelectedJetsGEN_HT_ll_","Selected Jets H_{T} GEN (Z->ll)", 4, 0, 2000);

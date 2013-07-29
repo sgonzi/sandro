@@ -96,6 +96,7 @@ void setMYStyle() {
 // For the statistics box:
 	myStyle->SetOptFile(0);
 	myStyle->SetOptStat(0); // To display the mean and RMS:	 SetOptStat("mr");
+	myStyle->SetOptFit(0); // To display the mean and RMS:	 SetOptStat("mr");
 	myStyle->SetStatColor(kWhite);
 	myStyle->SetStatFont(42);
 	myStyle->SetStatFontSize(0.025);
@@ -165,12 +166,12 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 
 	// ==================================== choose the tools
 
-	string folder_normal = "09_results_2013_07_04/"; // analysis folder 
-	string folder_inverted = "10_results_2013_07_04/"; // analysis folder with inverted sigmaietaieta cut
+	string folder_normal = "14_results_2013_07_24/"; // analysis folder 
+	string folder_inverted = "15_results_2013_07_24/"; // analysis folder with inverted sigmaietaieta cut
 
 	char geo[10] = "barrel";                 // "barrel", "endcaps" or "total"
 
-	bool inv_sigmaietaieta = true;          // inverted sigmaietaieta cut
+	bool inv_sigmaietaieta = true;           // inverted sigmaietaieta cut
 	bool inv_isolation = false;              // inverted isolation set cut
 
 	bool signal_MAD = true;                 // true: signal = MADGRAPH; false: signal = PYTHIA
@@ -314,7 +315,7 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	h_MC_BACK_INV->Draw("histo same");
 	h_DATA_INV->Draw("ESAME");
 
-	TLegend *leg =new TLegend(0.6068,0.5478,0.8188,0.7480);
+	TLegend *leg =new TLegend(0.6068,0.6975,0.8188,0.8977);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
@@ -382,26 +383,32 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 */
 
 	model.plotOn (xframe,RooFit::LineColor(kBlue));
-	model.paramOn(xframe,RooFit::Layout(0.55,0.98,0.95));
-
-	RooDataHist_DATA.statOn (xframe,RooFit::Layout(0.55,0.98,0.65));
-
-	cout << endl;
-	f.Print();
-	cout << endl;
-
 	double chi2;
 	chi2  = xframe->chiSquare(1); // dof = 1 = number of floating parametes
 	cout << endl;
 	cout << "chi2 = " << chi2 << endl;
 	cout << endl;
+	
+	model.plotOn(xframe,Components("RooHistPdf_MC_SIG, "),LineStyle(kDashed)) ;
+	model.plotOn(xframe,Components("RooHistPdf_DATA_INV"),LineStyle(kDashed)) ;
+		
+//	model.paramOn(xframe,RooFit::Layout(0.55,0.98,0.95)); // box dati
+
+//	RooDataHist_DATA.statOn (xframe,RooFit::Layout(0.55,0.98,0.65)); // box statistica
+
+	cout << endl;
+	f.Print();
+	cout << endl;
+
+
 
 	string s_canva_fit = "fit";
 	TCanvas *canva_fit = new TCanvas(s_canva_fit.c_str(),s_canva_fit.c_str(),600,600);
  	canva_fit->SetLogy();
 	
-	TString chi2txt = "#chi^{2}/dof = " + floatToString(xframe->chiSquare(1)) ; // dof = 1 = number of floating parametes
-	TLatex* txt = new TLatex(0.1695,0.1766,chi2txt);
+//	TString chi2txt = "#chi^{2}/dof = " + floatToString(xframe->chiSquare(1)) ; // dof = 1 = number of floating parametes
+	TString chi2txt = "#chi^{2}/dof = " + floatToString(chi2) ; // dof = 1 = number of floating parametes
+	TLatex* txt = new TLatex(0.5638,0.8287,chi2txt);
 	txt->SetNDC();
 	txt->SetTextSize(0.04) ;
 	txt->SetTextColor(kRed) ;
@@ -428,13 +435,14 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 
 void fit_templates_PfIso_RhoCorrected_6binPt() {
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin01_", 1, 0, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin02_", 1, 0, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin02_", 1, 0, 13.3);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin03_", 1, 0, 20);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin04_", 1, 0, 20);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin05_", 1, 0, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin06_", 1, 0, 40);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin06_", 1, 0, 30);
 }
 
+/*
 void fit_templates_PfIso_RhoCorrected_forFit_6binPt() {
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", 1, -2, 10);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", 1, -2, 11);
@@ -443,6 +451,7 @@ void fit_templates_PfIso_RhoCorrected_forFit_6binPt() {
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", 1, -2, 17);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", 1, -2, 20);
 }
+*/
 
 void fit_templates_PfIso_RhoCorrected_forFit_6binPt_10_20() {
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", 1, -10, 20);
@@ -454,12 +463,12 @@ void fit_templates_PfIso_RhoCorrected_forFit_6binPt_10_20() {
 }
 
 void fit_templates_PfIso_RhoCorrected_forFit_6binPt_allcurve() {
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", 1, -7, 11);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", 1, -7, 13);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", 1, -7, 15);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", 1, -7, 16);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", 1, -7, 18);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", 1, -7, 31);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", 1, -8, 11);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", 1, -8, 13);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", 1, -8, 15);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", 1, -8, 16);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", 1, -8, 18);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", 1, -8, 31);
 }
 
 

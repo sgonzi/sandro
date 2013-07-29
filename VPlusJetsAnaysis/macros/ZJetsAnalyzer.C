@@ -63,7 +63,7 @@ void ZJetsAnalyzer::Loop(){
 		
 	bool plothistos = false;					// please select which plots to show
 	bool textfile = true;							// if you want a text report for each sample
-	Int_t itype = 13;									// it identifies histos with different analysis 
+	Int_t itype = 16;									// it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -206,6 +206,7 @@ void ZJetsAnalyzer::Loop(){
 			// LeptonsGEN selection
 			if (nLeptonsGEN >= 2 && (nLeptonsGEN == (int)lepPtGEN->size()) ){
 
+/*				
 				// eta - definition
 				bool geo_selGEN_1 = false;
 				if (geo == "barrel") {
@@ -228,12 +229,13 @@ void ZJetsAnalyzer::Loop(){
 				else {
 					cout << "ERROR: Wrong geometry string writed (only barrel or endcaps)" << endl;
 				} // end eta - definition
+*/
 
 				// double muon or double electron selection
 				if ((lepChIdGEN->at(0)*lepChIdGEN->at(1) == -169) || (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -121)){	
 
 					// leptonGEN kinematic selection
-					if ((lepPtGEN->at(0) > 20. && geo_selGEN_1) && (lepPtGEN->at(1) > 20. && geo_selGEN_2)) {
+					if ((lepPtGEN->at(0) > 20. && TMath::Abs(lepEtaGEN->at(0)) < 2.4) && (lepPtGEN->at(1) > 20. && TMath::Abs(lepEtaGEN->at(1)) < 2.4)) {
 
 						// llM kinematic selection
 						if (TMath::Abs(llMGEN-91) < 20 && TMath::Abs(llEtaGEN) < 1.479) {
@@ -246,88 +248,127 @@ void ZJetsAnalyzer::Loop(){
 
 									if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -169){
 									
-										nLeptonsGEN_mumu_->Fill(nLeptonsGEN, weight);
+										nLeptonsGEN_mumu_N0_->Fill(nLeptonsGEN, weight);
 										
-										lepPtGEN_mumu_1_->Fill(lepPtGEN->at(0), weight);
-										lepEGEN_mumu_1_->Fill(lepEGEN->at(0), weight);
-										lepEtaGEN_mumu_1_->Fill(lepEtaGEN->at(0), weight);
-										lepPhiGEN_mumu_1_->Fill(lepPhiGEN->at(0), weight);
+										lepPtGEN_mumu_N0_1_->Fill(lepPtGEN->at(0), weight);
+										lepEGEN_mumu_N0_1_->Fill(lepEGEN->at(0), weight);
+										lepEtaGEN_mumu_N0_1_->Fill(lepEtaGEN->at(0), weight);
+										lepPhiGEN_mumu_N0_1_->Fill(lepPhiGEN->at(0), weight);
 
-										lepPtGEN_mumu_2_->Fill(lepPtGEN->at(1), weight);
-										lepEGEN_mumu_2_->Fill(lepEGEN->at(1), weight);
-										lepEtaGEN_mumu_2_->Fill(lepEtaGEN->at(1), weight);
-										lepPhiGEN_mumu_2_->Fill(lepPhiGEN->at(1), weight);
+										lepPtGEN_mumu_N0_2_->Fill(lepPtGEN->at(1), weight);
+										lepEGEN_mumu_N0_2_->Fill(lepEGEN->at(1), weight);
+										lepEtaGEN_mumu_N0_2_->Fill(lepEtaGEN->at(1), weight);
+										lepPhiGEN_mumu_N0_2_->Fill(lepPhiGEN->at(1), weight);
 
-										llMGEN_mumu_->Fill(llMGEN, weight);
-										llPtGEN_mumu_->Fill(llPtGEN, weight);
-										llEtaGEN_mumu_->Fill(llEtaGEN, weight);
-										llPhiGEN_mumu_->Fill(llPhiGEN, weight);
+										llMGEN_mumu_N0_->Fill(llMGEN, weight);
+										llPtGEN_mumu_N0_->Fill(llPtGEN, weight);
+										llEtaGEN_mumu_N0_->Fill(llEtaGEN, weight);
+										llPhiGEN_mumu_N0_->Fill(llPhiGEN, weight);
 
-										SelectedJetsGEN_N_mumu_->Fill(SelectedJetsGEN_N, weight);
+										SelectedJetsGEN_N_mumu_N0_->Fill(SelectedJetsGEN_N, weight);
 
-										SelectedJets_PtGEN_mumu_1_->Fill(SelectedJetsGEN_Pt.at(0), weight);
-										SelectedJets_EGEN_mumu_1_->Fill(SelectedJetsGEN_E.at(0), weight);
-										SelectedJets_EtaGEN_mumu_1_->Fill(SelectedJetsGEN_Eta.at(0), weight);
-										SelectedJets_PhiGEN_mumu_1_->Fill(SelectedJetsGEN_Phi.at(0), weight);
+										SelectedJets_PtGEN_mumu_N0_1_->Fill(SelectedJetsGEN_Pt.at(0), weight);
+										SelectedJets_EGEN_mumu_N0_1_->Fill(SelectedJetsGEN_E.at(0), weight);
+										SelectedJets_EtaGEN_mumu_N0_1_->Fill(SelectedJetsGEN_Eta.at(0), weight);
+										SelectedJets_PhiGEN_mumu_N0_1_->Fill(SelectedJetsGEN_Phi.at(0), weight);
 								
-										SelectedJetsGEN_HT_mumu_->Fill(SelectedJetsGEN_HT, weight);
+										SelectedJetsGEN_HT_mumu_N0_->Fill(SelectedJetsGEN_HT, weight);
 									}
 
 									if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -121){
 
-										nLeptonsGEN_ee_->Fill(nLeptonsGEN, weight);
+										nLeptonsGEN_ee_N0_->Fill(nLeptonsGEN, weight);
 										
-										lepPtGEN_ee_1_->Fill(lepPtGEN->at(0), weight);
-										lepEGEN_ee_1_->Fill(lepEGEN->at(0), weight);
-										lepEtaGEN_ee_1_->Fill(lepEtaGEN->at(0), weight);
-										lepPhiGEN_ee_1_->Fill(lepPhiGEN->at(0), weight);
+										lepPtGEN_ee_N0_1_->Fill(lepPtGEN->at(0), weight);
+										lepEGEN_ee_N0_1_->Fill(lepEGEN->at(0), weight);
+										lepEtaGEN_ee_N0_1_->Fill(lepEtaGEN->at(0), weight);
+										lepPhiGEN_ee_N0_1_->Fill(lepPhiGEN->at(0), weight);
 
-										lepPtGEN_ee_2_->Fill(lepPtGEN->at(1), weight);
-										lepEGEN_ee_2_->Fill(lepEGEN->at(1), weight);
-										lepEtaGEN_ee_2_->Fill(lepEtaGEN->at(1), weight);
-										lepPhiGEN_ee_2_->Fill(lepPhiGEN->at(1), weight);
+										lepPtGEN_ee_N0_2_->Fill(lepPtGEN->at(1), weight);
+										lepEGEN_ee_N0_2_->Fill(lepEGEN->at(1), weight);
+										lepEtaGEN_ee_N0_2_->Fill(lepEtaGEN->at(1), weight);
+										lepPhiGEN_ee_N0_2_->Fill(lepPhiGEN->at(1), weight);
 
-										llMGEN_ee_->Fill(llMGEN, weight);
-										llPtGEN_ee_->Fill(llPtGEN, weight);
-										llEtaGEN_ee_->Fill(llEtaGEN, weight);
-										llPhiGEN_ee_->Fill(llPhiGEN, weight);
+										llMGEN_ee_N0_->Fill(llMGEN, weight);
+										llPtGEN_ee_N0_->Fill(llPtGEN, weight);
+										llEtaGEN_ee_N0_->Fill(llEtaGEN, weight);
+										llPhiGEN_ee_N0_->Fill(llPhiGEN, weight);
 
-										SelectedJetsGEN_N_ee_->Fill(SelectedJetsGEN_N, weight);
+										SelectedJetsGEN_N_ee_N0_->Fill(SelectedJetsGEN_N, weight);
 	
-										SelectedJets_PtGEN_ee_1_->Fill(SelectedJetsGEN_Pt.at(0), weight);
-										SelectedJets_EGEN_ee_1_->Fill(SelectedJetsGEN_E.at(0), weight);
-										SelectedJets_EtaGEN_ee_1_->Fill(SelectedJetsGEN_Eta.at(0), weight);
-										SelectedJets_PhiGEN_ee_1_->Fill(SelectedJetsGEN_Phi.at(0), weight);
+										SelectedJets_PtGEN_ee_N0_1_->Fill(SelectedJetsGEN_Pt.at(0), weight);
+										SelectedJets_EGEN_ee_N0_1_->Fill(SelectedJetsGEN_E.at(0), weight);
+										SelectedJets_EtaGEN_ee_N0_1_->Fill(SelectedJetsGEN_Eta.at(0), weight);
+										SelectedJets_PhiGEN_ee_N0_1_->Fill(SelectedJetsGEN_Phi.at(0), weight);
 								
-										SelectedJetsGEN_HT_ee_->Fill(SelectedJetsGEN_HT, weight);
+										SelectedJetsGEN_HT_ee_N0_->Fill(SelectedJetsGEN_HT, weight);
 									}
 
-									nLeptonsGEN_ll_->Fill(nLeptonsGEN, weight);
+									nLeptonsGEN_ll_N0_->Fill(nLeptonsGEN, weight);
 
-									lepPtGEN_ll_1_->Fill(lepPtGEN->at(0), weight);
-									lepEGEN_ll_1_->Fill(lepEGEN->at(0), weight);
-									lepEtaGEN_ll_1_->Fill(lepEtaGEN->at(0), weight);
-									lepPhiGEN_ll_1_->Fill(lepPhiGEN->at(0), weight);
+									lepPtGEN_ll_N0_1_->Fill(lepPtGEN->at(0), weight);
+									lepEGEN_ll_N0_1_->Fill(lepEGEN->at(0), weight);
+									lepEtaGEN_ll_N0_1_->Fill(lepEtaGEN->at(0), weight);
+									lepPhiGEN_ll_N0_1_->Fill(lepPhiGEN->at(0), weight);
 
-									lepPtGEN_ll_2_->Fill(lepPtGEN->at(1), weight);
-									lepEGEN_ll_2_->Fill(lepEGEN->at(1), weight);
-									lepEtaGEN_ll_2_->Fill(lepEtaGEN->at(1), weight);
-									lepPhiGEN_ll_2_->Fill(lepPhiGEN->at(1), weight);
+									lepPtGEN_ll_N0_2_->Fill(lepPtGEN->at(1), weight);
+									lepEGEN_ll_N0_2_->Fill(lepEGEN->at(1), weight);
+									lepEtaGEN_ll_N0_2_->Fill(lepEtaGEN->at(1), weight);
+									lepPhiGEN_ll_N0_2_->Fill(lepPhiGEN->at(1), weight);
 
-									llMGEN_ll_->Fill(llMGEN, weight);									
-									llPtGEN_ll_->Fill(llPtGEN, weight);
-									llEtaGEN_ll_->Fill(llEtaGEN, weight);
-									llPhiGEN_ll_->Fill(llPhiGEN, weight);
+									llMGEN_ll_N0_->Fill(llMGEN, weight);									
+									llPtGEN_ll_N0_->Fill(llPtGEN, weight);
+									llEtaGEN_ll_N0_->Fill(llEtaGEN, weight);
+									llPhiGEN_ll_N0_->Fill(llPhiGEN, weight);
 
-									SelectedJetsGEN_N_ll_->Fill(SelectedJetsGEN_N, weight);
+									SelectedJetsGEN_N_ll_N0_->Fill(SelectedJetsGEN_N, weight);
 
-									SelectedJets_PtGEN_ll_1_->Fill(SelectedJetsGEN_Pt.at(0), weight);
-									SelectedJets_EGEN_ll_1_->Fill(SelectedJetsGEN_E.at(0), weight);
-									SelectedJets_EtaGEN_ll_1_->Fill(SelectedJetsGEN_Eta.at(0), weight);
-									SelectedJets_PhiGEN_ll_1_->Fill(SelectedJetsGEN_Phi.at(0), weight);
+									SelectedJets_PtGEN_ll_N0_1_->Fill(SelectedJetsGEN_Pt.at(0), weight);
+									SelectedJets_EGEN_ll_N0_1_->Fill(SelectedJetsGEN_E.at(0), weight);
+									SelectedJets_EtaGEN_ll_N0_1_->Fill(SelectedJetsGEN_Eta.at(0), weight);
+									SelectedJets_PhiGEN_ll_N0_1_->Fill(SelectedJetsGEN_Phi.at(0), weight);
 								
-									SelectedJetsGEN_HT_ll_->Fill(SelectedJetsGEN_HT, weight);
+									SelectedJetsGEN_HT_ll_N0_->Fill(SelectedJetsGEN_HT, weight);
 
+									if (SelectedJetsGEN_N == 1){
+										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -169){
+											llPtGEN_mumu_excl1_->Fill(llPtGEN, weight);
+										}		
+										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -121){
+											llPtGEN_ee_excl1_->Fill(llPtGEN, weight);
+										}		
+										llPtGEN_ll_excl1_->Fill(llPtGEN, weight);
+									}
+
+									if (SelectedJetsGEN_N == 2){
+										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -169){
+											llPtGEN_mumu_excl2_->Fill(llPtGEN, weight);
+										}		
+										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -121){
+											llPtGEN_ee_excl2_->Fill(llPtGEN, weight);
+										}		
+										llPtGEN_ll_excl2_->Fill(llPtGEN, weight);
+									}
+
+									if (SelectedJetsGEN_N > 1){
+										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -169){
+											llPtGEN_mumu_N1_->Fill(llPtGEN, weight);
+										}		
+										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -121){
+											llPtGEN_ee_N1_->Fill(llPtGEN, weight);
+										}		
+										llPtGEN_ll_N1_->Fill(llPtGEN, weight);
+									}
+
+									if (SelectedJetsGEN_N > 2){
+										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -169){
+											llPtGEN_mumu_N2_->Fill(llPtGEN, weight);
+										}		
+										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -121){
+											llPtGEN_ee_N2_->Fill(llPtGEN, weight);
+										}		
+										llPtGEN_ll_N2_->Fill(llPtGEN, weight);
+									}
 								} // end HTGEN selection
 							} // end kin JetsGEN (cleaned vs. 2 leptonGEN) selection
 						} // end llM kinematic selection
@@ -372,96 +413,114 @@ void ZJetsAnalyzer::Book_Histos(){
 	if(isMC){
 
 		//plotsCompare_gen_01
-		nLeptonsGEN_mumu_ = new TH1F("nLeptonsGEN_mumu_","Leptons GEN N (Z->#mu#mu)", 50, 0, 50);
+		nLeptonsGEN_mumu_N0_ = new TH1F("nLeptonsGEN_mumu_N0_","Leptons GEN N (Z->#mu#mu)", 50, 0, 50);
 
-		lepPtGEN_mumu_1_ = new TH1F("lepPtGEN_mumu_1_", "lepton 1 GEN p_{T} (Z->#mu#mu)", 400, 0., 4000.);
-		lepEGEN_mumu_1_ = new TH1F("lepEGEN_mumu_1_", "lepton 1 GEN E (Z->#mu#mu)", 400, 0., 4000.);
-		lepEtaGEN_mumu_1_ = new TH1F("lepEtaGEN_mumu_1_", "lepton 1 GEN #eta (Z->#mu#mu)", 3000, -3, 3);
-		lepPhiGEN_mumu_1_ = new TH1F("lepPhiGEN_mumu_1_", "lepton 1 GEN #phi (Z->#mu#mu)", 1000, -3.1416, 3.1416);
+		lepPtGEN_mumu_N0_1_ = new TH1F("lepPtGEN_mumu_N0_1_", "lepton 1 GEN p_{T} (Z->#mu#mu)", 800, 0., 4000.);
+		lepEGEN_mumu_N0_1_ = new TH1F("lepEGEN_mumu_N0_1_", "lepton 1 GEN E (Z->#mu#mu)", 800, 0., 4000.);
+		lepEtaGEN_mumu_N0_1_ = new TH1F("lepEtaGEN_mumu_N0_1_", "lepton 1 GEN #eta (Z->#mu#mu)", 3000, -3, 3);
+		lepPhiGEN_mumu_N0_1_ = new TH1F("lepPhiGEN_mumu_N0_1_", "lepton 1 GEN #phi (Z->#mu#mu)", 1000, -3.1416, 3.1416);
 
 		//plotsCompare_gen_02
-		lepPtGEN_mumu_2_ = new TH1F("lepPtGEN_mumu_2_", "lepton 2 GEN p_{T} (Z->#mu#mu)", 400, 0., 4000.);
-		lepEGEN_mumu_2_ = new TH1F("lepEGEN_mumu_2_", "lepton 2 GEN E (Z->#mu#mu)", 400, 0., 4000.);
-		lepEtaGEN_mumu_2_ = new TH1F("lepEtaGEN_mumu_2_", "lepton 2 GEN #eta (Z->#mu#mu)", 3000, -3, 3);
-		lepPhiGEN_mumu_2_ = new TH1F("lepPhiGEN_mumu_2_", "lepton 2 GEN #phi (Z->#mu#mu)", 1000, -3.1416, 3.1416);
+		lepPtGEN_mumu_N0_2_ = new TH1F("lepPtGEN_mumu_N0_2_", "lepton 2 GEN p_{T} (Z->#mu#mu)", 800, 0., 4000.);
+		lepEGEN_mumu_N0_2_ = new TH1F("lepEGEN_mumu_N0_2_", "lepton 2 GEN E (Z->#mu#mu)", 800, 0., 4000.);
+		lepEtaGEN_mumu_N0_2_ = new TH1F("lepEtaGEN_mumu_N0_2_", "lepton 2 GEN #eta (Z->#mu#mu)", 3000, -3, 3);
+		lepPhiGEN_mumu_N0_2_ = new TH1F("lepPhiGEN_mumu_N0_2_", "lepton 2 GEN #phi (Z->#mu#mu)", 1000, -3.1416, 3.1416);
 
 		//plotsCompare_gen_03
-		llMGEN_mumu_ = new TH1F("llMGEN_mumu_", "M^{ll} GEN (Z->#mu#mu)", 600, 60., 120.);
-		llPtGEN_mumu_ = new TH1F("llPtGEN_mumu_", "p_{T}^{ll} GEN (Z->#mu#mu)", 400, 0., 4000.);
-		llEtaGEN_mumu_ = new TH1F("llEtaGEN_mumu_", "#eta^{ll} GEN (Z->#mu#mu)", 3000, -3, 3);
-		llPhiGEN_mumu_ = new TH1F("llPhiGEN_mumu_", "#phi^{ll} GEN (Z->#mu#mu)", 1000, -3.1416, 3.1416);
+		llMGEN_mumu_N0_ = new TH1F("llMGEN_mumu_N0_", "M^{ll} GEN (Z->#mu#mu)", 600, 60., 120.);
+		llPtGEN_mumu_N0_ = new TH1F("llPtGEN_mumu_N0_", "p_{T}^{ll} GEN (Z->#mu#mu)", 800, 0., 4000.);
+		llEtaGEN_mumu_N0_ = new TH1F("llEtaGEN_mumu_N0_", "#eta^{ll} GEN (Z->#mu#mu)", 3000, -3, 3);
+		llPhiGEN_mumu_N0_ = new TH1F("llPhiGEN_mumu_N0_", "#phi^{ll} GEN (Z->#mu#mu)", 1000, -3.1416, 3.1416);
 
 		//plotsCompare_gen_04
-		SelectedJetsGEN_N_mumu_ = new TH1F("SelectedJetsGEN_N_mumu_","Selected Jets GEN N (Z->#mu#mu)", 10, 0, 10);
-		SelectedJets_PtGEN_mumu_1_ = new TH1F("SelectedJets_PtGEN_mumu_1_","Jet 1 GEN p_{T} (Z->#mu#mu)", 400, 0., 4000.);
-		SelectedJets_EGEN_mumu_1_ = new TH1F("SelectedJets_EGEN_mumu_1_", "Jet 1 GEN E (Z->#mu#mu)", 400, 0., 4000.);
-		SelectedJets_EtaGEN_mumu_1_ = new TH1F("SelectedJets_EtaGEN_mumu_1_","Jet 1 GEN #eta (Z->#mu#mu)", 3000, -3, 3);
-		SelectedJets_PhiGEN_mumu_1_ = new TH1F("SelectedJets_PhiGEN_mumu_1_","Jet 1 GEN #varphi (Z->#mu#mu)", 1000, -3.1416, 3.1416);
+		SelectedJetsGEN_N_mumu_N0_ = new TH1F("SelectedJetsGEN_N_mumu_N0_","Selected Jets GEN N (Z->#mu#mu)", 10, 0, 10);
+		SelectedJets_PtGEN_mumu_N0_1_ = new TH1F("SelectedJets_PtGEN_mumu_N0_1_","Jet 1 GEN p_{T} (Z->#mu#mu)", 800, 0., 4000.);
+		SelectedJets_EGEN_mumu_N0_1_ = new TH1F("SelectedJets_EGEN_mumu_N0_1_", "Jet 1 GEN E (Z->#mu#mu)", 800, 0., 4000.);
+		SelectedJets_EtaGEN_mumu_N0_1_ = new TH1F("SelectedJets_EtaGEN_mumu_N0_1_","Jet 1 GEN #eta (Z->#mu#mu)", 3000, -3, 3);
+		SelectedJets_PhiGEN_mumu_N0_1_ = new TH1F("SelectedJets_PhiGEN_mumu_N0_1_","Jet 1 GEN #varphi (Z->#mu#mu)", 1000, -3.1416, 3.1416);
 
-		SelectedJetsGEN_HT_mumu_ = new TH1F("SelectedJetsGEN_HT_mumu_","Selected Jets H_{T} GEN (Z->#mu#mu)", 400, 0, 4000);
+		SelectedJetsGEN_HT_mumu_N0_ = new TH1F("SelectedJetsGEN_HT_mumu_N0_","Selected Jets H_{T} GEN (Z->#mu#mu)", 400, 0, 4000);
 		
 		//plotsCompare_gen_05
-		nLeptonsGEN_ee_ = new TH1F("nLeptonsGEN_ee_","Leptons GEN N (Z->ee)", 50, 0, 50);
+		nLeptonsGEN_ee_N0_ = new TH1F("nLeptonsGEN_ee_N0_","Leptons GEN N (Z->ee)", 50, 0, 50);
 
-		lepPtGEN_ee_1_ = new TH1F("lepPtGEN_ee_1_", "lepton 1 GEN p_{T} (Z->ee)", 400, 0., 4000.);
-		lepEGEN_ee_1_ = new TH1F("lepEGEN_ee_1_", "lepton 1 GEN E (Z->ee)", 400, 0., 4000.);
-		lepEtaGEN_ee_1_ = new TH1F("lepEtaGEN_ee_1_", "lepton 1 GEN #eta (Z->ee)", 3000, -3, 3);
-		lepPhiGEN_ee_1_ = new TH1F("lepPhiGEN_ee_1_", "lepton 1 GEN #phi (Z->ee)", 1000, -3.1416, 3.1416);
+		lepPtGEN_ee_N0_1_ = new TH1F("lepPtGEN_ee_N0_1_", "lepton 1 GEN p_{T} (Z->ee)", 800, 0., 4000.);
+		lepEGEN_ee_N0_1_ = new TH1F("lepEGEN_ee_N0_1_", "lepton 1 GEN E (Z->ee)", 800, 0., 4000.);
+		lepEtaGEN_ee_N0_1_ = new TH1F("lepEtaGEN_ee_N0_1_", "lepton 1 GEN #eta (Z->ee)", 3000, -3, 3);
+		lepPhiGEN_ee_N0_1_ = new TH1F("lepPhiGEN_ee_N0_1_", "lepton 1 GEN #phi (Z->ee)", 1000, -3.1416, 3.1416);
 
 		//plotsCompare_gen_06
-		lepPtGEN_ee_2_ = new TH1F("lepPtGEN_ee_2_", "lepton 2 GEN p_{T} (Z->ee)", 400, 0., 4000.);
-		lepEGEN_ee_2_ = new TH1F("lepEGEN_ee_2_", "lepton 2 GEN E (Z->ee)", 400, 0., 4000.);
-		lepEtaGEN_ee_2_ = new TH1F("lepEtaGEN_ee_2_", "lepton 2 GEN #eta (Z->ee)", 3000, -3, 3);
-		lepPhiGEN_ee_2_ = new TH1F("lepPhiGEN_ee_2_", "lepton 2 GEN #phi (Z->ee)", 1000, -3.1416, 3.1416);
+		lepPtGEN_ee_N0_2_ = new TH1F("lepPtGEN_ee_N0_2_", "lepton 2 GEN p_{T} (Z->ee)", 800, 0., 4000.);
+		lepEGEN_ee_N0_2_ = new TH1F("lepEGEN_ee_N0_2_", "lepton 2 GEN E (Z->ee)", 800, 0., 4000.);
+		lepEtaGEN_ee_N0_2_ = new TH1F("lepEtaGEN_ee_N0_2_", "lepton 2 GEN #eta (Z->ee)", 3000, -3, 3);
+		lepPhiGEN_ee_N0_2_ = new TH1F("lepPhiGEN_ee_N0_2_", "lepton 2 GEN #phi (Z->ee)", 1000, -3.1416, 3.1416);
 
 		//plotsCompare_gen_07
-		llMGEN_ee_ = new TH1F("llMGEN_ee_", "M^{ll} GEN (Z->ee)", 600, 60., 120.);
-		llPtGEN_ee_ = new TH1F("llPtGEN_ee_", "p_{T}^{ll} GEN (Z->ee)", 400, 0., 4000.);
-		llEtaGEN_ee_ = new TH1F("llEtaGEN_ee_", "#eta^{ll} GEN (Z->ee)", 3000, -3, 3);
-		llPhiGEN_ee_ = new TH1F("llPhiGEN_ee_", "#phi^{ll} GEN (Z->ee)", 1000, -3.1416, 3.1416);
+		llMGEN_ee_N0_ = new TH1F("llMGEN_ee_N0_", "M^{ll} GEN (Z->ee)", 600, 60., 120.);
+		llPtGEN_ee_N0_ = new TH1F("llPtGEN_ee_N0_", "p_{T}^{ll} GEN (Z->ee)", 800, 0., 4000.);
+		llEtaGEN_ee_N0_ = new TH1F("llEtaGEN_ee_N0_", "#eta^{ll} GEN (Z->ee)", 3000, -3, 3);
+		llPhiGEN_ee_N0_ = new TH1F("llPhiGEN_ee_N0_", "#phi^{ll} GEN (Z->ee)", 1000, -3.1416, 3.1416);
 
 		//plotsCompare_gen_08
-		SelectedJetsGEN_N_ee_ = new TH1F("SelectedJetsGEN_N_ee_","Selected Jets GEN N (Z->ee)", 10, 0, 10);
-		SelectedJets_PtGEN_ee_1_ = new TH1F("SelectedJets_PtGEN_ee_1_","Jet 1 GEN p_{T} (Z->ee)", 400, 0., 4000.);
-		SelectedJets_EGEN_ee_1_ = new TH1F("SelectedJets_EGEN_ee_1_", "Jet 1 GEN E (Z->ee)", 400, 0., 4000.);
-		SelectedJets_EtaGEN_ee_1_ = new TH1F("SelectedJets_EtaGEN_ee_1_","Jet 1 GEN #eta (Z->ee)", 3000, -3, 3);
-		SelectedJets_PhiGEN_ee_1_ = new TH1F("SelectedJets_PhiGEN_ee_1_","Jet 1 GEN #varphi (Z->ee)", 1000, -3.1416, 3.1416);
+		SelectedJetsGEN_N_ee_N0_ = new TH1F("SelectedJetsGEN_N_ee_N0_","Selected Jets GEN N (Z->ee)", 10, 0, 10);
+		SelectedJets_PtGEN_ee_N0_1_ = new TH1F("SelectedJets_PtGEN_ee_N0_1_","Jet 1 GEN p_{T} (Z->ee)", 800, 0., 4000.);
+		SelectedJets_EGEN_ee_N0_1_ = new TH1F("SelectedJets_EGEN_ee_N0_1_", "Jet 1 GEN E (Z->ee)", 800, 0., 4000.);
+		SelectedJets_EtaGEN_ee_N0_1_ = new TH1F("SelectedJets_EtaGEN_ee_N0_1_","Jet 1 GEN #eta (Z->ee)", 3000, -3, 3);
+		SelectedJets_PhiGEN_ee_N0_1_ = new TH1F("SelectedJets_PhiGEN_ee_N0_1_","Jet 1 GEN #varphi (Z->ee)", 1000, -3.1416, 3.1416);
 
-		SelectedJetsGEN_HT_ee_ = new TH1F("SelectedJetsGEN_HT_ee_","Selected Jets H_{T} GEN (Z->ee)", 400, 0, 4000);
+		SelectedJetsGEN_HT_ee_N0_ = new TH1F("SelectedJetsGEN_HT_ee_N0_","Selected Jets H_{T} GEN (Z->ee)", 400, 0, 4000);
 
 		//plotsCompare_gen_09
-		nLeptonsGEN_ll_ = new TH1F("nLeptonsGEN_ll_","Leptons GEN N (Z->ll)", 50, 0, 50);
+		nLeptonsGEN_ll_N0_ = new TH1F("nLeptonsGEN_ll_N0_","Leptons GEN N (Z->ll)", 50, 0, 50);
 
-		lepPtGEN_ll_1_ = new TH1F("lepPtGEN_ll_1_", "lepton 1 GEN p_{T} (Z->ll)", 400, 0., 4000.);
-		lepEGEN_ll_1_ = new TH1F("lepEGEN_ll_1_", "lepton 1 GEN E (Z->ll)", 400, 0., 4000.);
-		lepEtaGEN_ll_1_ = new TH1F("lepEtaGEN_ll_1_", "lepton 1 GEN #eta (Z->ll)", 3000, -3, 3);
-		lepPhiGEN_ll_1_ = new TH1F("lepPhiGEN_ll_1_", "lepton 1 GEN #phi (Z->ll)", 1000, -3.1416, 3.1416);
+		lepPtGEN_ll_N0_1_ = new TH1F("lepPtGEN_ll_N0_1_", "lepton 1 GEN p_{T} (Z->ll)", 800, 0., 4000.);
+		lepEGEN_ll_N0_1_ = new TH1F("lepEGEN_ll_N0_1_", "lepton 1 GEN E (Z->ll)", 800, 0., 4000.);
+		lepEtaGEN_ll_N0_1_ = new TH1F("lepEtaGEN_ll_N0_1_", "lepton 1 GEN #eta (Z->ll)", 3000, -3, 3);
+		lepPhiGEN_ll_N0_1_ = new TH1F("lepPhiGEN_ll_N0_1_", "lepton 1 GEN #phi (Z->ll)", 1000, -3.1416, 3.1416);
 
 		//plotsCompare_gen_10
-		lepPtGEN_ll_2_ = new TH1F("lepPtGEN_ll_2_", "lepton 2 GEN p_{T} (Z->ll)", 400, 0., 4000.);
-		lepEGEN_ll_2_ = new TH1F("lepEGEN_ll_2_", "lepton 2 GEN E (Z->ll)", 400, 0., 4000.);
-		lepEtaGEN_ll_2_ = new TH1F("lepEtaGEN_ll_2_", "lepton 2 GEN #eta (Z->ll)", 3000, -3, 3);
-		lepPhiGEN_ll_2_ = new TH1F("lepPhiGEN_ll_2_", "lepton 2 GEN #phi (Z->ll)", 1000, -3.1416, 3.1416);
+		lepPtGEN_ll_N0_2_ = new TH1F("lepPtGEN_ll_N0_2_", "lepton 2 GEN p_{T} (Z->ll)", 800, 0., 4000.);
+		lepEGEN_ll_N0_2_ = new TH1F("lepEGEN_ll_N0_2_", "lepton 2 GEN E (Z->ll)", 800, 0., 4000.);
+		lepEtaGEN_ll_N0_2_ = new TH1F("lepEtaGEN_ll_N0_2_", "lepton 2 GEN #eta (Z->ll)", 3000, -3, 3);
+		lepPhiGEN_ll_N0_2_ = new TH1F("lepPhiGEN_ll_N0_2_", "lepton 2 GEN #phi (Z->ll)", 1000, -3.1416, 3.1416);
 
 		//plotsCompare_gen_11
-		llMGEN_ll_ = new TH1F("llMGEN_ll_", "M^{ll} GEN (Z->ll)", 600, 60., 120.);
-		llPtGEN_ll_ = new TH1F("llPtGEN_ll_", "p_{T}^{ll} GEN (Z->ll)", 400, 0., 4000.);
-		llEtaGEN_ll_ = new TH1F("llEtaGEN_ll_", "#eta^{ll} GEN (Z->ll)", 3000, -3, 3);
-		llPhiGEN_ll_ = new TH1F("llPhiGEN_ll_", "#phi^{ll} GEN (Z->ll)", 1000, -3.1416, 3.1416);
+		llMGEN_ll_N0_ = new TH1F("llMGEN_ll_N0_", "M^{ll} GEN (Z->ll)", 600, 60., 120.);
+		llPtGEN_ll_N0_ = new TH1F("llPtGEN_ll_N0_", "p_{T}^{ll} GEN (Z->ll)", 800, 0., 4000.);
+		llEtaGEN_ll_N0_ = new TH1F("llEtaGEN_ll_N0_", "#eta^{ll} GEN (Z->ll)", 3000, -3, 3);
+		llPhiGEN_ll_N0_ = new TH1F("llPhiGEN_ll_N0_", "#phi^{ll} GEN (Z->ll)", 1000, -3.1416, 3.1416);
 
 		//plotsCompare_gen_12
-		SelectedJetsGEN_N_ll_ = new TH1F("SelectedJetsGEN_N_ll_","Selected Jets GEN N (Z->ll)", 10, 0, 10);
-		SelectedJets_PtGEN_ll_1_ = new TH1F("SelectedJets_PtGEN_ll_1_","Jet 1 GEN p_{T} (Z->ll)", 400, 0., 4000.);
-		SelectedJets_EGEN_ll_1_ = new TH1F("SelectedJets_EGEN_ll_1_", "Jet 1 GEN E (Z->ll)", 400, 0., 4000.);
-		SelectedJets_EtaGEN_ll_1_ = new TH1F("SelectedJets_EtaGEN_ll_1_","Jet 1 GEN #eta (Z->ll)", 3000, -3, 3);
-		SelectedJets_PhiGEN_ll_1_ = new TH1F("SelectedJets_PhiGEN_ll_1_","Jet 1 GEN #varphi (Z->ll)", 1000, -3.1416, 3.1416);
+		SelectedJetsGEN_N_ll_N0_ = new TH1F("SelectedJetsGEN_N_ll_N0_","Selected Jets GEN N (Z->ll)", 10, 0, 10);
+		SelectedJets_PtGEN_ll_N0_1_ = new TH1F("SelectedJets_PtGEN_ll_N0_1_","Jet 1 GEN p_{T} (Z->ll)", 800, 0., 4000.);
+		SelectedJets_EGEN_ll_N0_1_ = new TH1F("SelectedJets_EGEN_ll_N0_1_", "Jet 1 GEN E (Z->ll)", 800, 0., 4000.);
+		SelectedJets_EtaGEN_ll_N0_1_ = new TH1F("SelectedJets_EtaGEN_ll_N0_1_","Jet 1 GEN #eta (Z->ll)", 3000, -3, 3);
+		SelectedJets_PhiGEN_ll_N0_1_ = new TH1F("SelectedJets_PhiGEN_ll_N0_1_","Jet 1 GEN #varphi (Z->ll)", 1000, -3.1416, 3.1416);
 
-		SelectedJetsGEN_HT_ll_ = new TH1F("SelectedJetsGEN_HT_ll_","Selected Jets H_{T} GEN (Z->ll)", 400, 0, 4000);
+		SelectedJetsGEN_HT_ll_N0_ = new TH1F("SelectedJetsGEN_HT_ll_N0_","Selected Jets H_{T} GEN (Z->ll)", 400, 0, 4000);
 
 		//plotsCompare_gen_13
-
 		HTParSum_ = new TH1F("HTParSum_","H_{T} Partons Sum", 400, 0, 4000);
 
+		//plotsCompare_gen_14
+		llPtGEN_mumu_excl1_ = new TH1F("llPtGEN_mumu_excl1_", "p_{T}^{ll} GEN (Z->#mu#mu), N^{jets}_{GEN} = 1", 800, 0., 4000.);
+		llPtGEN_ee_excl1_ = new TH1F("llPtGEN_ee_excl1_", "p_{T}^{ll} GEN (Z->ee), N^{jets}_{GEN} = 1", 800, 0., 4000.);
+		llPtGEN_ll_excl1_ = new TH1F("llPtGEN_ll_excl1_", "p_{T}^{ll} GEN (Z->ll), N^{jets}_{GEN} = 1", 800, 0., 4000.);
+
+		//plotsCompare_gen_15
+		llPtGEN_mumu_excl2_ = new TH1F("llPtGEN_mumu_excl2_", "p_{T}^{ll} GEN (Z->#mu#mu), N^{jets}_{GEN} = 2", 800, 0., 4000.);
+		llPtGEN_ee_excl2_ = new TH1F("llPtGEN_ee_excl2_", "p_{T}^{ll} GEN (Z->ee), N^{jets}_{GEN} = 2", 800, 0., 4000.);
+		llPtGEN_ll_excl2_ = new TH1F("llPtGEN_ll_excl2_", "p_{T}^{ll} GEN (Z->ll), N^{jets}_{GEN} = 2", 800, 0., 4000.);
+
+		//plotsCompare_gen_16
+		llPtGEN_mumu_N1_ = new TH1F("llPtGEN_mumu_N1_", "p_{T}^{ll} GEN (Z->#mu#mu), N^{jets}_{GEN} > 1", 800, 0., 4000.);
+		llPtGEN_ee_N1_ = new TH1F("llPtGEN_ee_N1_", "p_{T}^{ll} GEN (Z->ee), N^{jets}_{GEN} > 1", 800, 0., 4000.);
+		llPtGEN_ll_N1_ = new TH1F("llPtGEN_ll_N1_", "p_{T}^{ll} GEN (Z->ll), N^{jets}_{GEN} > 1", 800, 0., 4000.);
+
+		//plotsCompare_gen_17
+		llPtGEN_mumu_N2_ = new TH1F("llPtGEN_mumu_N2_", "p_{T}^{ll} GEN (Z->#mu#mu), N^{jets}_{GEN} > 2", 800, 0., 4000.);
+		llPtGEN_ee_N2_ = new TH1F("llPtGEN_ee_N2_", "p_{T}^{ll} GEN (Z->ee), N^{jets}_{GEN} > 2", 800, 0., 4000.);
+		llPtGEN_ll_N2_ = new TH1F("llPtGEN_ll_N2_", "p_{T}^{ll} GEN (Z->ll), N^{jets}_{GEN} > 2", 800, 0., 4000.);
 	}
 
 
@@ -487,6 +546,10 @@ void ZJetsAnalyzer::Plot_Histos(){
 	bool plot_gen_11 = true; // GEN ll kinematics (Z->ll)
 	bool plot_gen_12 = true; // GEN jets variables (Z->ll)
 	bool plot_gen_13 = true; // GEN HTParSum
+	bool plot_gen_14 = true; // GEN ll kinematics (N GEN jets = 1)
+	bool plot_gen_15 = true; // GEN ll kinematics (N GEN jets = 2)
+	bool plot_gen_16 = true; // GEN ll kinematics (N GEN jets > 1)
+	bool plot_gen_17 = true; // GEN ll kinematics (N GEN jets > 2)
 	 		
 	gStyle->SetOptStat(1111111);
 
@@ -495,15 +558,15 @@ void ZJetsAnalyzer::Plot_Histos(){
 		gPad->SetLogy();
 		c_gen01->Divide(3,2);
 		c_gen01->cd(1);
-		nLeptonsGEN_mumu_->Draw();
+		nLeptonsGEN_mumu_N0_->Draw();
 		c_gen01->cd(2);
-		lepPtGEN_mumu_1_->Draw();
+		lepPtGEN_mumu_N0_1_->Draw();
 		c_gen01->cd(3);
-		lepEGEN_mumu_1_->Draw();
+		lepEGEN_mumu_N0_1_->Draw();
 		c_gen01->cd(4);
-		lepEtaGEN_mumu_1_->Draw();
+		lepEtaGEN_mumu_N0_1_->Draw();
 		c_gen01->cd(5);
-		lepPhiGEN_mumu_1_->Draw();
+		lepPhiGEN_mumu_N0_1_->Draw();
 		c_gen01->cd(6);
 	}
 
@@ -513,13 +576,13 @@ void ZJetsAnalyzer::Plot_Histos(){
 		c_gen02->Divide(3,2);
 		c_gen02->cd(1);
 		c_gen02->cd(2);
-		lepPtGEN_mumu_2_->Draw();
+		lepPtGEN_mumu_N0_2_->Draw();
 		c_gen02->cd(3);
-		lepEGEN_mumu_2_->Draw();
+		lepEGEN_mumu_N0_2_->Draw();
 		c_gen02->cd(4);
-		lepEtaGEN_mumu_2_->Draw();
+		lepEtaGEN_mumu_N0_2_->Draw();
 		c_gen02->cd(5);
-		lepPhiGEN_mumu_2_->Draw();
+		lepPhiGEN_mumu_N0_2_->Draw();
 		c_gen02->cd(6);
 	}
 
@@ -528,13 +591,13 @@ void ZJetsAnalyzer::Plot_Histos(){
 		gPad->SetLogy();
 		c_gen03->Divide(2,2);
 		c_gen03->cd(1);
-		llMGEN_mumu_->Draw();
+		llMGEN_mumu_N0_->Draw();
 		c_gen03->cd(2);
-		llPtGEN_mumu_->Draw();
+		llPtGEN_mumu_N0_->Draw();
 		c_gen03->cd(3);
-		llEtaGEN_mumu_->Draw();
+		llEtaGEN_mumu_N0_->Draw();
 		c_gen03->cd(4);
-		llPhiGEN_mumu_->Draw();
+		llPhiGEN_mumu_N0_->Draw();
 	}
 
 	if(plot_gen_04){
@@ -542,17 +605,17 @@ void ZJetsAnalyzer::Plot_Histos(){
 		gPad->SetLogy();
 		c_gen04->Divide(3,2);
 		c_gen04->cd(1);
-		SelectedJetsGEN_N_mumu_->Draw();
+		SelectedJetsGEN_N_mumu_N0_->Draw();
 		c_gen04->cd(2);
-		SelectedJets_PtGEN_mumu_1_->Draw();
+		SelectedJets_PtGEN_mumu_N0_1_->Draw();
 		c_gen04->cd(3);
-		SelectedJets_EGEN_mumu_1_->Draw();
+		SelectedJets_EGEN_mumu_N0_1_->Draw();
 		c_gen04->cd(4);
-		SelectedJets_EtaGEN_mumu_1_->Draw();
+		SelectedJets_EtaGEN_mumu_N0_1_->Draw();
 		c_gen04->cd(5);
-		SelectedJets_PhiGEN_mumu_1_->Draw();
+		SelectedJets_PhiGEN_mumu_N0_1_->Draw();
 		c_gen04->cd(6);
-		SelectedJetsGEN_HT_mumu_->Draw();
+		SelectedJetsGEN_HT_mumu_N0_->Draw();
 	}
 
 	if(plot_gen_05){
@@ -560,15 +623,15 @@ void ZJetsAnalyzer::Plot_Histos(){
 		gPad->SetLogy();
 		c_gen05->Divide(3,2);
 		c_gen05->cd(1);
-		nLeptonsGEN_ee_->Draw();
+		nLeptonsGEN_ee_N0_->Draw();
 		c_gen05->cd(2);
-		lepPtGEN_ee_1_->Draw();
+		lepPtGEN_ee_N0_1_->Draw();
 		c_gen05->cd(3);
-		lepEGEN_ee_1_->Draw();
+		lepEGEN_ee_N0_1_->Draw();
 		c_gen05->cd(4);
-		lepEtaGEN_ee_1_->Draw();
+		lepEtaGEN_ee_N0_1_->Draw();
 		c_gen05->cd(5);
-		lepPhiGEN_ee_1_->Draw();
+		lepPhiGEN_ee_N0_1_->Draw();
 		c_gen05->cd(6);
 	}
 
@@ -578,13 +641,13 @@ void ZJetsAnalyzer::Plot_Histos(){
 		c_gen06->Divide(3,2);
 		c_gen06->cd(1);
 		c_gen06->cd(2);
-		lepPtGEN_ee_2_->Draw();
+		lepPtGEN_ee_N0_2_->Draw();
 		c_gen06->cd(3);
-		lepEGEN_ee_2_->Draw();
+		lepEGEN_ee_N0_2_->Draw();
 		c_gen06->cd(4);
-		lepEtaGEN_ee_2_->Draw();
+		lepEtaGEN_ee_N0_2_->Draw();
 		c_gen06->cd(5);
-		lepPhiGEN_ee_2_->Draw();
+		lepPhiGEN_ee_N0_2_->Draw();
 		c_gen06->cd(6);
 	}
 
@@ -593,13 +656,13 @@ void ZJetsAnalyzer::Plot_Histos(){
 		gPad->SetLogy();
 		c_gen07->Divide(2,2);
 		c_gen07->cd(1);
-		llMGEN_ee_->Draw();
+		llMGEN_ee_N0_->Draw();
 		c_gen07->cd(2);
-		llPtGEN_ee_->Draw();
+		llPtGEN_ee_N0_->Draw();
 		c_gen07->cd(3);
-		llEtaGEN_ee_->Draw();
+		llEtaGEN_ee_N0_->Draw();
 		c_gen07->cd(4);
-		llPhiGEN_ee_->Draw();
+		llPhiGEN_ee_N0_->Draw();
 	}
 
 	if(plot_gen_08){
@@ -607,17 +670,17 @@ void ZJetsAnalyzer::Plot_Histos(){
 		gPad->SetLogy();
 		c_gen08->Divide(3,2);
 		c_gen08->cd(1);
-		SelectedJetsGEN_N_ee_->Draw();
+		SelectedJetsGEN_N_ee_N0_->Draw();
 		c_gen08->cd(2);
-		SelectedJets_PtGEN_ee_1_->Draw();
+		SelectedJets_PtGEN_ee_N0_1_->Draw();
 		c_gen08->cd(3);
-		SelectedJets_EGEN_ee_1_->Draw();
+		SelectedJets_EGEN_ee_N0_1_->Draw();
 		c_gen08->cd(4);
-		SelectedJets_EtaGEN_ee_1_->Draw();
+		SelectedJets_EtaGEN_ee_N0_1_->Draw();
 		c_gen08->cd(5);
-		SelectedJets_PhiGEN_ee_1_->Draw();
+		SelectedJets_PhiGEN_ee_N0_1_->Draw();
 		c_gen08->cd(6);
-		SelectedJetsGEN_HT_ee_->Draw();
+		SelectedJetsGEN_HT_ee_N0_->Draw();
 	}
 
 	if(plot_gen_09){
@@ -625,15 +688,15 @@ void ZJetsAnalyzer::Plot_Histos(){
 		gPad->SetLogy();
 		c_gen09->Divide(3,2);
 		c_gen09->cd(1);
-		nLeptonsGEN_ll_->Draw();
+		nLeptonsGEN_ll_N0_->Draw();
 		c_gen09->cd(2);
-		lepPtGEN_ll_1_->Draw();
+		lepPtGEN_ll_N0_1_->Draw();
 		c_gen09->cd(3);
-		lepEGEN_ll_1_->Draw();
+		lepEGEN_ll_N0_1_->Draw();
 		c_gen09->cd(4);
-		lepEtaGEN_ll_1_->Draw();
+		lepEtaGEN_ll_N0_1_->Draw();
 		c_gen09->cd(5);
-		lepPhiGEN_ll_1_->Draw();
+		lepPhiGEN_ll_N0_1_->Draw();
 		c_gen09->cd(6);
 	}
 
@@ -643,13 +706,13 @@ void ZJetsAnalyzer::Plot_Histos(){
 		c_gen10->Divide(3,2);
 		c_gen10->cd(1);
 		c_gen10->cd(2);
-		lepPtGEN_ll_2_->Draw();
+		lepPtGEN_ll_N0_2_->Draw();
 		c_gen10->cd(3);
-		lepEGEN_ll_2_->Draw();
+		lepEGEN_ll_N0_2_->Draw();
 		c_gen10->cd(4);
-		lepEtaGEN_ll_2_->Draw();
+		lepEtaGEN_ll_N0_2_->Draw();
 		c_gen10->cd(5);
-		lepPhiGEN_ll_2_->Draw();
+		lepPhiGEN_ll_N0_2_->Draw();
 		c_gen10->cd(6);
 	}
 
@@ -658,13 +721,13 @@ void ZJetsAnalyzer::Plot_Histos(){
 		gPad->SetLogy();
 		c_gen11->Divide(2,2);
 		c_gen11->cd(1);
-		llMGEN_ll_->Draw();
+		llMGEN_ll_N0_->Draw();
 		c_gen11->cd(2);
-		llPtGEN_ll_->Draw();
+		llPtGEN_ll_N0_->Draw();
 		c_gen11->cd(3);
-		llEtaGEN_ll_->Draw();
+		llEtaGEN_ll_N0_->Draw();
 		c_gen11->cd(4);
-		llPhiGEN_ll_->Draw();
+		llPhiGEN_ll_N0_->Draw();
 	}
 
 	if(plot_gen_12){
@@ -672,17 +735,17 @@ void ZJetsAnalyzer::Plot_Histos(){
 		gPad->SetLogy();
 		c_gen12->Divide(3,2);
 		c_gen12->cd(1);
-		SelectedJetsGEN_N_ll_->Draw();
+		SelectedJetsGEN_N_ll_N0_->Draw();
 		c_gen12->cd(2);
-		SelectedJets_PtGEN_ll_1_->Draw();
+		SelectedJets_PtGEN_ll_N0_1_->Draw();
 		c_gen12->cd(3);
-		SelectedJets_EGEN_ll_1_->Draw();
+		SelectedJets_EGEN_ll_N0_1_->Draw();
 		c_gen12->cd(4);
-		SelectedJets_EtaGEN_ll_1_->Draw();
+		SelectedJets_EtaGEN_ll_N0_1_->Draw();
 		c_gen12->cd(5);
-		SelectedJets_PhiGEN_ll_1_->Draw();
+		SelectedJets_PhiGEN_ll_N0_1_->Draw();
 		c_gen12->cd(6);
-		SelectedJetsGEN_HT_ll_->Draw();
+		SelectedJetsGEN_HT_ll_N0_->Draw();
 	}
 
 	if(plot_gen_13){
@@ -691,6 +754,54 @@ void ZJetsAnalyzer::Plot_Histos(){
 		c_gen13->Divide(1,1);
 		c_gen13->cd(1);
 		HTParSum_->Draw();
+	}
+
+	if(plot_gen_14){
+		TCanvas *c_gen14 = new TCanvas("c_gen14", "GEN ll kinematics (N GEN jets = 1)", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c_gen14->Divide(3,1);
+		c_gen14->cd(1);
+		llPtGEN_mumu_excl1_->Draw();
+		c_gen14->cd(2);
+		llPtGEN_ee_excl1_->Draw();
+		c_gen14->cd(3);
+		llPtGEN_ll_excl1_->Draw();
+	}
+
+	if(plot_gen_15){
+		TCanvas *c_gen15 = new TCanvas("c_gen15", "GEN ll kinematics (N GEN jets = 2)", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c_gen15->Divide(3,1);
+		c_gen15->cd(1);
+		llPtGEN_mumu_excl2_->Draw();
+		c_gen15->cd(2);
+		llPtGEN_ee_excl2_->Draw();
+		c_gen15->cd(3);
+		llPtGEN_ll_excl2_->Draw();
+	}
+
+	if(plot_gen_16){
+		TCanvas *c_gen16 = new TCanvas("c_gen16", "GEN ll kinematics (N GEN jets > 1)", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c_gen16->Divide(3,1);
+		c_gen16->cd(1);
+		llPtGEN_mumu_N1_->Draw();
+		c_gen16->cd(2);
+		llPtGEN_ee_N1_->Draw();
+		c_gen16->cd(3);
+		llPtGEN_ll_N1_->Draw();
+	}
+
+	if(plot_gen_17){
+		TCanvas *c_gen17 = new TCanvas("c_gen17", "GEN ll kinematics (N GEN jets > 2)", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c_gen17->Divide(3,1);
+		c_gen17->cd(1);
+		llPtGEN_mumu_N2_->Draw();
+		c_gen17->cd(2);
+		llPtGEN_ee_N2_->Draw();
+		c_gen17->cd(3);
+		llPtGEN_ll_N2_->Draw();
 	}
 
 

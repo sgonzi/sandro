@@ -22,8 +22,8 @@ void corrected_plotsCompare_01(){
 
 	corrected_comparestack("Nvtx_", "N^{vtx} ", 1, -999, -999);
 
-	corrected_comparestack("SelectedPhotons_Pt_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}]", 2, 0, 2000);
-	corrected_comparestack("SelectedPhotons_E_1_", "E^{#gamma1} [GeV]", 2, 0, 2000);
+	corrected_comparestack("SelectedPhotons_Pt_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}]", 4, 0, 2000);
+	corrected_comparestack("SelectedPhotons_E_1_", "E^{#gamma1} [GeV]", 4, 0, 2000);
 
 	string geom;
 	geom = geo_string(geom);
@@ -328,8 +328,8 @@ void corrected_plotsCompare_21(){
 
 
 void corrected_plotsCompare_22(){
-	corrected_comparestack("SelectedJets_Pt_1_", "p_{T}^{jet1} [GeV/#font[12]{c}]", 2, 0, 2000);
-	corrected_comparestack("SelectedJets_E_1_", "E^{jet1}[GeV]", 2, 0, 3000);
+	corrected_comparestack("SelectedJets_Pt_1_", "p_{T}^{jet1} [GeV/#font[12]{c}]", 4, 0, 2000);
+	corrected_comparestack("SelectedJets_E_1_", "E^{jet1}[GeV]", 4, 0, 3000);
 	corrected_comparestack("SelectedJets_Eta_1_", "#eta^{jet1}", 50, -3, 3);
 	corrected_comparestack("SelectedJets_Phi_1_", "#varphi^{jet1}", 20, -999, -999);
 }
@@ -361,8 +361,8 @@ void corrected_plotsCompare_25(){
 
 
 void corrected_plotsCompare_26(){
-	corrected_comparestack("SelectedPhotons_Pt_excl1_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}], 1 jet exclusive", 2, 0, 2000);
-	corrected_comparestack("SelectedPhotons_E_excl1_1_", "E^{#gamma1} [GeV], 1 jet exclusive", 2, 0, 2000);
+	corrected_comparestack("SelectedPhotons_Pt_excl1_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}], 1 jet exclusive", 4, 0, 2000);
+	corrected_comparestack("SelectedPhotons_E_excl1_1_", "E^{#gamma1} [GeV], 1 jet exclusive", 4, 0, 2000);
 
 	string geom;
 	geom = geo_string(geom);
@@ -378,16 +378,16 @@ void corrected_plotsCompare_26(){
 
 
 void corrected_plotsCompare_27(){
-	corrected_comparestack("SelectedJets_Pt_excl1_1_", "p_{T}^{jet1} [GeV/#font[12]{c}], 1 jet exclusive", 2, 0, 1500);
-	corrected_comparestack("SelectedJets_E_excl1_1_", "E^{jet1} [GeV], 1 jet exclusive", 2, 0, 2500);
+	corrected_comparestack("SelectedJets_Pt_excl1_1_", "p_{T}^{jet1} [GeV/#font[12]{c}], 1 jet exclusive", 4, 0, 1500);
+	corrected_comparestack("SelectedJets_E_excl1_1_", "E^{jet1} [GeV], 1 jet exclusive", 4, 0, 2500);
 	corrected_comparestack("SelectedJets_Eta_excl1_1_", "#eta^{jet1}, 1 jet exclusive", 50, -3, 3);
 	corrected_comparestack("SelectedJets_Phi_excl1_1_", "#varphi^{jet1}, 1 jet exclusive", 20, -999, -999);
 }
 
 
 void corrected_plotsCompare_28(){
-	corrected_comparestack("SelectedPhotons_Pt_excl2_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}], 2 jet exclusive", 2, 0, 2000);
-	corrected_comparestack("SelectedPhotons_E_excl2_1_", "E^{#gamma1} [GeV], 2 jet exclusive", 2, 0, 2000);
+	corrected_comparestack("SelectedPhotons_Pt_excl2_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}], 2 jet exclusive", 4, 0, 2000);
+	corrected_comparestack("SelectedPhotons_E_excl2_1_", "E^{#gamma1} [GeV], 2 jet exclusive", 4, 0, 2000);
 	
 	string geom;
 	geom = geo_string(geom);
@@ -403,16 +403,16 @@ void corrected_plotsCompare_28(){
 
 
 void corrected_plotsCompare_29(){
-	corrected_comparestack("SelectedJets_Pt_excl2_1_", "p_{T}^{jet1} [GeV/#font[12]{c}], 2 jet exclusive", 2, 0, 1500);
-	corrected_comparestack("SelectedJets_E_excl2_1_", "E^{jet1} [GeV], 2 jet exclusive", 2, 0, 2500);
+	corrected_comparestack("SelectedJets_Pt_excl2_1_", "p_{T}^{jet1} [GeV/#font[12]{c}], 2 jet exclusive", 4, 0, 1500);
+	corrected_comparestack("SelectedJets_E_excl2_1_", "E^{jet1} [GeV], 2 jet exclusive", 4, 0, 2500);
 	corrected_comparestack("SelectedJets_Eta_excl2_1_", "#eta^{jet1}, 2 jet exclusive", 50, -3, 3);
 	corrected_comparestack("SelectedJets_Phi_excl2_1_", "#varphi^{jet1}, 2 jet exclusive", 20, -999, -999);
 }
 
 
 void corrected_plotsCompare_30(){
-	corrected_comparestack("SelectedJets_Pt_excl2_2_", "p_{T}^{jet2} [GeV/#font[12]{c}], 2 jet exclusive", 2, 0, 1500);
-	corrected_comparestack("SelectedJets_E_excl2_2_", "E^{jet2} [GeV], 2 jet exclusive", 2, 0, 2500);
+	corrected_comparestack("SelectedJets_Pt_excl2_2_", "p_{T}^{jet2} [GeV/#font[12]{c}], 2 jet exclusive", 4, 0, 1500);
+	corrected_comparestack("SelectedJets_E_excl2_2_", "E^{jet2} [GeV], 2 jet exclusive", 4, 0, 2500);
 	corrected_comparestack("SelectedJets_Eta_excl2_2_", "#eta^{jet2}, 2 jet exclusive", 50, -3, 3);
 	corrected_comparestack("SelectedJets_Phi_excl2_2_", "#varphi^{jet2}, 2 jet exclusive", 20, -999, -999);
 	corrected_comparestack("SelectedJets_HT_excl2_", "Selected Jets H_{T}, 2 jet exclusive", 4, 0, 3000);	
@@ -420,8 +420,8 @@ void corrected_plotsCompare_30(){
 
 
 void corrected_plotsCompare_31(){
-	corrected_comparestack("SelectedJets_Pt_2_", "p_{T}^{jet2} [GeV/#font[12]{c}]", 2, 0, 1500);
-	corrected_comparestack("SelectedJets_E_2_", "E^{jet2} [GeV]", 2, 0, 2500);
+	corrected_comparestack("SelectedJets_Pt_2_", "p_{T}^{jet2} [GeV/#font[12]{c}]", 4, 0, 1500);
+	corrected_comparestack("SelectedJets_E_2_", "E^{jet2} [GeV]", 4, 0, 2500);
 	corrected_comparestack("SelectedJets_Eta_2_", "#eta^{jet2}", 50, -3, 3);
 	corrected_comparestack("SelectedJets_Phi_2_", "#varphi^{jet2}", 20, -999, -999);
 }
@@ -436,8 +436,8 @@ void corrected_plotsCompare_32(){
 
 
 void corrected_plotsCompare_33(){
-	corrected_comparestack("SelectedJets_Pt_3_", "p_{T}^{jet3} [GeV/#font[12]{c}]", 2, 0, 1000);
-	corrected_comparestack("SelectedJets_E_3_", "E^{jet3} [GeV]", 2, 0, 2000);
+	corrected_comparestack("SelectedJets_Pt_3_", "p_{T}^{jet3} [GeV/#font[12]{c}]", 4, 0, 1000);
+	corrected_comparestack("SelectedJets_E_3_", "E^{jet3} [GeV]", 4, 0, 2000);
 	corrected_comparestack("SelectedJets_Eta_3_", "#eta^{jet3}", 50, -3, 3);
 	corrected_comparestack("SelectedJets_Phi_3_", "#varphi^{jet3}", 20, -999, -999);
 }

@@ -139,7 +139,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 
 	// ==================================== choose the tools
 
-	string folder = "09_results_2013_07_04"; // analysis folder
+	string folder = "16_results_2013_07_04"; // analysis folder
 
 	char geo[100] = "barrel";               // "barrel", "endcaps" or "total"
 
@@ -150,7 +150,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 //	bool background_QCD = true;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                        // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 
-	Int_t itype = 9;                        // it identifies histos with different analysis 
+	Int_t itype = 16;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names
@@ -989,25 +989,25 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 
 
 void GenPlots_01(){		
-	GenPlots("nPhotonsGEN_","Photons GEN N", 1, 0, 10);
-//	GenPlots("photonPtGEN_","Photon GEN p_{T}", 2, 0, 2000);
-	GenPlots("photonPtGEN_","Photon GEN p_{T}", 1, 0, 1000);
-	GenPlots("photonEGEN_","Photon GEN E", 2, 0, 2000);
-	GenPlots("photonEtaGEN_","Photon GEN #eta", 30, -1.5, 1.5);
-	GenPlots("photonPhiGEN_","Photon GEN #varphi", 20, -999, -999);
+	GenPlots("nPhotonsGEN_N0_","Photons GEN N", 1, 0, 10);
+//	GenPlots("photonPtGEN_N0_","Photon GEN p_{T}", 2, 0, 2000);
+	GenPlots("photonPtGEN_N0_","Photon GEN p_{T}", 2, 0, 1000);
+	GenPlots("photonEGEN_N0_","Photon GEN E", 4, 0, 2000);
+	GenPlots("photonEtaGEN_N0_","Photon GEN #eta", 30, -1.5, 1.5);
+	GenPlots("photonPhiGEN_N0_","Photon GEN #varphi", 20, -999, -999);
 }
 
 void GenPlots_02(){	
-	GenPlots("SelectedJetsGEN_N_","Selected Jets GEN N", 1, -999, -999);
-	GenPlots("SelectedJets_PtGEN_1_","Jet 1 GEN p_{T} ", 2, 0, 2000);
-	GenPlots("SelectedJets_EGEN_1_", "Jet 1 GEN E", 2, 0, 3000);
-	GenPlots("SelectedJets_EtaGEN_1_","Jet 1 GEN #eta ", 50, -3, 3);
-	GenPlots("SelectedJets_PhiGEN_1_","Jet 1 GEN #varphi ", 20, -999, -999);
+	GenPlots("SelectedJetsGEN_N_N0_","Selected Jets GEN N", 1, -999, -999);
+	GenPlots("SelectedJets_PtGEN_N0_1_","Jet 1 GEN p_{T} ", 4, 0, 2000);
+	GenPlots("SelectedJets_EGEN_N0_1_", "Jet 1 GEN E", 4, 0, 3000);
+	GenPlots("SelectedJets_EtaGEN_N0_1_","Jet 1 GEN #eta ", 50, -3, 3);
+	GenPlots("SelectedJets_PhiGEN_N0_1_","Jet 1 GEN #varphi ", 20, -999, -999);
 }
 
 
 void GenPlots_03(){		
-	GenPlots("SelectedJetsGEN_HT_","Selected Jets H_{T} GEN", 4, 0, 3000);
+	GenPlots("SelectedJetsGEN_HT_N0_","Selected Jets H_{T} GEN", 4, 0, 3000);
 	GenPlots("HTParSum_","H_{T} Partons Sum", 2, 0, 2000);
 	GenPlots("pre_photonIsoSumPtDR03GEN_","photonIsoSumPtDR03GEN", 1, -999, -999);
 	GenPlots("photonIsoSumPtDR03GEN_","photonIsoSumPtDR03GEN", 1, -999, -999);
