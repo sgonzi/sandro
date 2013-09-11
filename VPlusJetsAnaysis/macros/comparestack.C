@@ -139,7 +139,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 
 	// ==================================== choose the tools
 
-	string folder = "17_results_2013_07_24"; // analysis folder
+	string folder = "22_results_2013_09_07"; // analysis folder
 
 	char geo[100] = "barrel";                // "barrel", "endcaps" or "total"
 
@@ -153,7 +153,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 
-	Int_t itype = 17;                        // it identifies histos with different analysis 
+	Int_t itype = 22;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names

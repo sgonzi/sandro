@@ -160,14 +160,14 @@ TString floatToString(float number){
 }
 
 
-void fit_templates (const char* titleh, const int rebin, const double x_min, const double x_max){
+void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, const int rebin, const double x_min, const double x_max){
 
 	setMYStyle();
 
 	// ==================================== choose the tools
 
-	string folder_normal = "14_results_2013_07_24/"; // analysis folder 
-	string folder_inverted = "15_results_2013_07_24/"; // analysis folder with inverted sigmaietaieta cut
+	string folder_normal = "21_results_2013_09_07/"; // analysis folder 
+	string folder_inverted = "22_results_2013_09_07/"; // analysis folder with inverted sigmaietaieta cut
 
 	char geo[10] = "barrel";                 // "barrel", "endcaps" or "total"
 
@@ -185,7 +185,11 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	string sample_DATA_INV = "DATA_INV"; 
 
 	string histo = titleh; 
-
+	string histo_Templ_MC_SIG = histo + bin_aa; 
+	string histo_Templ_MC_BACK = histo + bin_bb;
+	string histo_Templ_DATA = histo + bin_aa;
+	string histo_Templ_MC_BACK_INV = histo + bin_bb;
+	string histo_Templ_DATA_INV = histo + bin_bb;	
 
 	// ==================================== assign files names
 	
@@ -257,11 +261,11 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	else cout << "ERROR: you need to invert SIGMAIETAIETA or ISOLATION cut" << endl << endl;
 
 	string templates = "template_";
-	string infilename_MC_SIG = (sample_MC_SIG_mod + templates + histo + root_string).c_str();
-	string infilename_MC_BACK = (sample_MC_BACK_mod + templates + histo + root_string).c_str();
-	string infilename_DATA = (sample_DATA_mod + templates + histo + root_string).c_str();
-	string infilename_MC_BACK_INV = (sample_MC_BACK_INV_mod + templates + histo + root_string).c_str();
-	string infilename_DATA_INV = (sample_DATA_INV_mod + templates + histo + root_string).c_str();
+	string infilename_MC_SIG = (sample_MC_SIG_mod + templates + histo_Templ_MC_SIG + root_string).c_str();
+	string infilename_MC_BACK = (sample_MC_BACK_mod + templates + histo_Templ_MC_BACK + root_string).c_str();
+	string infilename_DATA = (sample_DATA_mod + templates + histo_Templ_DATA + root_string).c_str();
+	string infilename_MC_BACK_INV = (sample_MC_BACK_INV_mod + templates + histo_Templ_MC_BACK_INV + root_string).c_str();
+	string infilename_DATA_INV = (sample_DATA_INV_mod + templates + histo_Templ_DATA_INV + root_string).c_str();
 
 	TFile *f_MC_SIG = new TFile((address_normal + infilename_MC_SIG).c_str());
 	TFile *f_MC_BACK = new TFile((address_normal + infilename_MC_BACK).c_str());
@@ -269,16 +273,27 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	TFile *f_MC_BACK_INV = new TFile((address_inverted + infilename_MC_BACK_INV).c_str());
 	TFile *f_DATA_INV = new TFile((address_inverted + infilename_DATA_INV).c_str());
 
-	TH1F* h_MC_SIG = (TH1F*)f_MC_SIG->Get(histo.c_str());
+	TH1F* h_MC_SIG = (TH1F*)f_MC_SIG->Get(histo_Templ_MC_SIG.c_str());
 	h_MC_SIG->Rebin(rebin);
-	TH1F* h_MC_BACK = (TH1F*)f_MC_BACK->Get(histo.c_str());
+	TH1F* h_MC_BACK = (TH1F*)f_MC_BACK->Get(histo_Templ_MC_BACK.c_str());
 	h_MC_BACK->Rebin(rebin);
-	TH1F* h_DATA = (TH1F*)f_DATA->Get(histo.c_str());
+	TH1F* h_DATA = (TH1F*)f_DATA->Get(histo_Templ_DATA.c_str());
 	h_DATA->Rebin(rebin);
-	TH1F* h_MC_BACK_INV = (TH1F*)f_MC_BACK_INV->Get(histo.c_str());
+	TH1F* h_MC_BACK_INV = (TH1F*)f_MC_BACK_INV->Get(histo_Templ_MC_BACK_INV.c_str());
 	h_MC_BACK_INV->Rebin(rebin);	
-	TH1F* h_DATA_INV = (TH1F*)f_DATA_INV->Get(histo.c_str());
+	TH1F* h_DATA_INV = (TH1F*)f_DATA_INV->Get(histo_Templ_DATA_INV.c_str());
 	h_DATA_INV->Rebin(rebin);
+
+	double scale = 1/h_DATA_INV->Integral();
+
+	TH1F* h_MC_BACK_scaled = (TH1F*)h_MC_BACK->Clone("h_MC_BACK_scaled");
+	h_MC_BACK_scaled->Sumw2();
+	h_MC_BACK_scaled->Scale(h_DATA_INV->Integral()/h_MC_BACK_scaled->Integral());
+	TH1F* h_MC_BACK_INV_scaled = (TH1F*)h_MC_BACK_INV->Clone("h_MC_BACK_INV_scaled");
+	h_MC_BACK_INV_scaled->Sumw2();
+	h_MC_BACK_INV_scaled->Scale(h_DATA_INV->Integral()/h_MC_BACK_INV_scaled->Integral());
+	TH1F* h_DATA_INV_scaled = (TH1F*)h_DATA_INV->Clone("h_DATA_INV_scaled");
+	h_DATA_INV_scaled->Sumw2();
 
 	string s_canva_shape = "shape";
 	TCanvas *canva_shape = new TCanvas(s_canva_shape.c_str(),s_canva_shape.c_str(),600,600);
@@ -287,47 +302,49 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	int Nbins;
 	double X_min, X_max;
 
-	Nbins = h_MC_BACK->GetNbinsX();
+	Nbins = h_MC_BACK_scaled->GetNbinsX();
 
 	if (x_min != -999 && x_max != -999){
-		if (x_max == h_MC_BACK->GetXaxis()->GetXmax()) X_max = x_max;
+		if (x_max == h_MC_BACK_scaled->GetXaxis()->GetXmax()) X_max = x_max;
 		else X_max = x_max - (x_max-x_min)/Nbins;
-		if (x_min == h_MC_BACK->GetXaxis()->GetXmin()) X_min = x_min;
+		if (x_min == h_MC_BACK_scaled->GetXaxis()->GetXmin()) X_min = x_min;
 		else X_min = x_min + (x_max-x_min)/Nbins;
 
-		h_MC_BACK->GetXaxis()->SetRangeUser(X_min,X_max);
+		h_MC_BACK_scaled->GetXaxis()->SetRangeUser(X_min,X_max);
 	}
 	
 	if (background_QCD) {
-		h_MC_BACK->SetLineColor(kRed+2);	
-		h_MC_BACK_INV->SetLineColor(kRed+2);	
+		h_MC_BACK_scaled->SetLineColor(kRed+2);	
+//		h_MC_BACK_INV_scaled->SetLineColor(kRed+2);	
+		h_MC_BACK_INV_scaled->SetLineColor(kViolet+2);	
 	}
 	else {
-		h_MC_BACK->SetLineColor(kGreen+2);		
-		h_MC_BACK_INV->SetLineColor(kGreen+2);		
+		h_MC_BACK_scaled->SetLineColor(kGreen+2);		
+//		h_MC_BACK_INV_scaled->SetLineColor(kGreen+2);		
+		h_MC_BACK_INV_scaled->SetLineColor(kViolet+2);				
 	}
-	h_MC_BACK->SetFillColor(0);
-	h_MC_BACK->SetLineWidth(3);
-	h_MC_BACK->Draw("histo");
-	h_MC_BACK_INV->SetFillColor(0);
-	h_MC_BACK_INV->SetLineWidth(3);
-	h_MC_BACK_INV->SetLineStyle(2);	
-	h_MC_BACK_INV->Draw("histo same");
-	h_DATA_INV->Draw("ESAME");
+	h_MC_BACK_scaled->SetFillColor(0);
+	h_MC_BACK_scaled->SetLineWidth(3);
+	h_MC_BACK_scaled->Draw("histo");
+	h_MC_BACK_INV_scaled->SetFillColor(0);
+	h_MC_BACK_INV_scaled->SetLineWidth(3);
+	h_MC_BACK_INV_scaled->SetLineStyle(2);	
+	h_MC_BACK_INV_scaled->Draw("histo same");
+	h_DATA_INV_scaled->Draw("ESAME");
 
 	TLegend *leg =new TLegend(0.6068,0.6975,0.8188,0.8977);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
-	leg->AddEntry(h_MC_BACK,"MC background","l");
-	leg->AddEntry(h_MC_BACK_INV,"#splitline{MC background}{(inverted cut)}","l");
-	leg->AddEntry(h_DATA_INV,"#splitline{DATA}{(inverted cut)}","pL");	
+	leg->AddEntry(h_MC_BACK_scaled,"MC background","l");
+	leg->AddEntry(h_MC_BACK_INV_scaled,"#splitline{MC background}{(inverted cut)}","l");
+	leg->AddEntry(h_DATA_INV_scaled,"#splitline{DATA}{(inverted cut)}","pL");	
 	leg->Draw();
 
 	canva_shape->Update();
 
-	canva_shape->SaveAs((folder_normal + geo_s + SB_folder + fit_pdf_folder + shape +  histo + pdf_string).c_str());
-	canva_shape->SaveAs((folder_normal + geo_s + SB_folder + fit_root_folder + shape + histo + root_string).c_str());
+	canva_shape->SaveAs((folder_normal + geo_s + SB_folder + fit_pdf_folder + shape + histo + bin_aa + bin_bb + pdf_string).c_str());
+	canva_shape->SaveAs((folder_normal + geo_s + SB_folder + fit_root_folder + shape + histo + bin_aa + bin_bb + root_string).c_str());
 	
 	// ==================================== fit templates
 
@@ -343,7 +360,7 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	RooHistPdf RooHistPdf_DATA("RooHistPdf_DATA","DATA pdf", x, RooDataHist_DATA);
 	RooHistPdf RooHistPdf_DATA_INV("RooHistPdf_DATA_INV", "DATA with an inverted cut pdf", x, RooDataHist_DATA_INV);
 
-	RooRealVar f("f","purity", 0.90, 0.8, 1.);
+	RooRealVar f("f","purity", 0.5, 0., 1.);
  
 	// model(x) = f*RooHistPdf_MC_SIG(x) + (1-f)*RooHistPdf_DATA_INV(x)
  	RooAddPdf model("model", "MC signal and DATA with an inverted cut - Composite model with fraction", RooArgList(RooHistPdf_MC_SIG,RooHistPdf_DATA_INV), f);
@@ -357,30 +374,11 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	RooFitResult* fitres = model.fitTo(RooDataHist_DATA,
 	                                   RooFit::SumW2Error(kTRUE),
 	                                   RooFit::Range(x_min,x_max),
-	                                   RooFit::Save(kTRUE)); 
+	                                   RooFit::Save(kTRUE),
+	                                   Minos(true)); 
 
 	cout << "fitres = " << fitres << endl; 
 
-/*	
-	Double_t effe = f.getVal();
-	Double_t err_effe = f.getError();
-	
-	if (chi2>2){
-
-		do {
-		RooRealVar ef("ef","purity", effe, 0.80, 1.);
-		
-		fitres = model.fitTo(RooDataHist_DATA,
-		                         RooFit::SumW2Error(kTRUE),
-	                           RooFit::Range(x_min,x_max),
-	                           RooFit::Save(kTRUE));
-		effe = effe+0.1;
-		}
-
-		while (chi2 > 10);
-	}
-	cout << "chi2 = " << chi2 << endl;
-*/
 
 	model.plotOn (xframe,RooFit::LineColor(kBlue));
 	double chi2;
@@ -427,48 +425,81 @@ void fit_templates (const char* titleh, const int rebin, const double x_min, con
 	
 	canva_fit->Update();
 
-	canva_fit->SaveAs((folder_normal + geo_s + SB_folder + fit_pdf_folder + fit +  histo + pdf_string).c_str());
-	canva_fit->SaveAs((folder_normal + geo_s + SB_folder + fit_root_folder + fit + histo + root_string).c_str());
+	canva_fit->SaveAs((folder_normal + geo_s + SB_folder + fit_pdf_folder + fit +  histo + bin_aa + bin_bb + pdf_string).c_str());
+	canva_fit->SaveAs((folder_normal + geo_s + SB_folder + fit_root_folder + fit + histo + bin_aa + bin_bb + root_string).c_str());
 
 }
 
 
-void fit_templates_PfIso_RhoCorrected_6binPt() {
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin01_", 1, 0, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin02_", 1, 0, 13.3);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin03_", 1, 0, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin04_", 1, 0, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin05_", 1, 0, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin06_", 1, 0, 30);
+void fit_templates_PfIso_RhoCorrected_20binPt() {
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "01_", "01_", 1, 0, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "02_", "02_", 1, 0, 13.3);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "03_", "03_", 1, 0, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "04_", "04_", 1, 0, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "05_", "05_", 1, 0, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "06_", "06_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "07_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "08_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "09_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "10_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "11_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "12_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "13_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "14_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "15_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "16_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "17_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "18_", "20_", 1, 0, 30);	
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "19_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "20_", "20_", 1, 0, 30);
 }
 
-/*
-void fit_templates_PfIso_RhoCorrected_forFit_6binPt() {
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", 1, -2, 10);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", 1, -2, 11);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", 1, -2, 14);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", 1, -2, 15);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", 1, -2, 17);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", 1, -2, 20);
-}
-*/
 
-void fit_templates_PfIso_RhoCorrected_forFit_6binPt_10_20() {
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", 1, -10, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", 1, -10, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", 1, -10, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", 1, -10, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", 1, -10, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", 1, -10, 20);
+void fit_templates_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_20binPt() {
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "01_", "01_", 1, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "02_", "02_", 1, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "03_", "03_", 1, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "04_", "04_", 1, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "05_", "05_", 1, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "06_", "06_", 1, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "07_", "20_", 1, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "08_", "20_", 1, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "09_", "20_", 2, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "10_", "20_", 2, -6, 6);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "11_", "20_", 2, -6, 6);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "12_", "20_", 2, -6, 6);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "13_", "20_", 2, -6, 6);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "14_", "20_", 2, -6, 6);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "15_", "20_", 2, -6, 6);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "16_", "20_", 2, -6, 3);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "17_", "20_", 2, -6, 6);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "18_", "20_", 2, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "19_", "20_", 2, -6, 6);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "20_", "20_", 2, -6, 6);
 }
 
-void fit_templates_PfIso_RhoCorrected_forFit_6binPt_allcurve() {
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", 1, -8, 11);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", 1, -8, 13);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", 1, -8, 15);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", 1, -8, 16);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", 1, -8, 18);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", 1, -8, 31);
+
+void fit_templates_PfIso_RhoCorrected_forFit_20binPt() {
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "01_", "01_", 1, -8, 9);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "02_", "02_", 1, -8, 13);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "03_", "03_", 1, -8, 13);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "04_", "04_", 1, -8, 16);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "05_", "05_", 1, -8, 18);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "06_", "06_", 1, -8, 19);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "07_", "20_", 1, -8, 21);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "08_", "20_", 1, -8, 22);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "09_", "20_", 2, -8, 22);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "10_", "20_", 2, -8, 24);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "11_", "20_", 2, -8, 25);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "12_", "20_", 2, -8, 24);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "13_", "20_", 2, -8, 25);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "14_", "20_", 2, -8, 15);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "15_", "20_", 2, -8, 18);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "16_", "20_", 2, -8, 15);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "17_", "20_", 2, -8, 10);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "18_", "20_", 2, -8, 17);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "19_", "20_", 2, -8, 18);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "20_", "20_", 1, -8, 26);
 }
 
 

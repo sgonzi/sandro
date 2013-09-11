@@ -139,20 +139,20 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 
 	// ==================================== choose the tools
 
-	string folder = "16_results_2013_07_24"; // analysis folder
+	string folder = "23_results_2013_09_07"; // analysis folder
 
 	char geo[100] = "barrel";                // "barrel", "endcaps" or "total"
 
 	bool data_ReReco = true;                // true: data = ReReco
 	                                         // false: data = PromptReco
 
-	bool inv_sigmaietaieta = false;          // inverted sigmaietaieta cut
+	bool inv_sigmaietaieta = true;          // inverted sigmaietaieta cut
 	bool inv_isolation = false;              // inverted isolation set cut
 
 	bool signal_MAD = true;                  // true: signal = MADGRAPH; false: signal = PYTHIA
-	bool background_QCD = true;             // true: background = MADGRAPH not filtered (QCD HT)
+	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
-	Int_t itype = 16;                        // it identifies histos with different analysis 
+	Int_t itype = 23;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names

@@ -139,7 +139,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 
 	// ==================================== choose the tools
 
-	string folder = "16_results_2013_07_04"; // analysis folder
+	string folder = "14_results_2013_07_24"; // analysis folder
 
 	char geo[100] = "barrel";               // "barrel", "endcaps" or "total"
 
@@ -150,7 +150,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 //	bool background_QCD = true;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                        // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 
-	Int_t itype = 16;                        // it identifies histos with different analysis 
+	Int_t itype = 14;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names
@@ -1009,7 +1009,7 @@ void GenPlots_02(){
 void GenPlots_03(){		
 	GenPlots("SelectedJetsGEN_HT_N0_","Selected Jets H_{T} GEN", 4, 0, 3000);
 	GenPlots("HTParSum_","H_{T} Partons Sum", 2, 0, 2000);
-	GenPlots("pre_photonIsoSumPtDR03GEN_","photonIsoSumPtDR03GEN", 1, -999, -999);
+	GenPlots("pre_photonIsoSumPtDR03GEN_","photonIsoSumPtDR03GEN", 1, 0, 20);
 	GenPlots("photonIsoSumPtDR03GEN_","photonIsoSumPtDR03GEN", 1, -999, -999);
 }
 

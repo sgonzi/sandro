@@ -20,6 +20,7 @@ class GJetsAnalyzer {
 		string       file_address_s;
 		bool         isTEST;
 		bool         isMC;
+		bool         Sig;		
   	Int_t        mysample;
 		TTree       *fChain;   //!pointer to the analyzed TTree or TChain
 		Int_t        fCurrent;  //!current Tree number in a TChain
@@ -465,6 +466,9 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 
 	isMC = false;
 	if (mysample == 0 || mysample > 17) isMC = true;
+
+	Sig = false;
+	if ((mysample == 0) || (mysample > 20 && mysample < 25) || (mysample > 30 && mysample < 42) || (mysample == 51)) Sig = true;
 	
   if (tree == 0) {
 
