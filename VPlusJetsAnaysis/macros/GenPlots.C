@@ -1011,6 +1011,7 @@ void GenPlots_03(){
 	GenPlots("HTParSum_","H_{T} Partons Sum", 2, 0, 2000);
 	GenPlots("pre_photonIsoSumPtDR03GEN_","photonIsoSumPtDR03GEN", 1, 0, 20);
 	GenPlots("photonIsoSumPtDR03GEN_","photonIsoSumPtDR03GEN", 1, -999, -999);
+	GenPlots("photonIsoSumPtDR03GEN_precut2_","photonIsoSumPtDR03GEN pre cut 2", 1, -999, -999);
 }
 
 void GenPlots_TOT(){	

@@ -16,6 +16,7 @@
 #include <TBox.h>
 #include <TLine.h>
 #include <sstream>
+#include <fstream>
 #include <TMath.h>
 #include "TF1.h"
 #include <TLatex.h>
@@ -217,6 +218,8 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	string pdf_string = ".pdf";
 	string fit_root_folder = "fit_root_plots/";
 	string root_string = ".root";
+	string fit_txt_folder = "fit_txt_plots/";
+	string txt_string = ".txt";
 	string fit = "fit_";
 	string shape = "shape_";	
 	stringstream ss_r;
@@ -284,7 +287,6 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	TH1F* h_DATA_INV = (TH1F*)f_DATA_INV->Get(histo_Templ_DATA_INV.c_str());
 	h_DATA_INV->Rebin(rebin);
 
-	double scale = 1/h_DATA_INV->Integral();
 
 	TH1F* h_MC_BACK_scaled = (TH1F*)h_MC_BACK->Clone("h_MC_BACK_scaled");
 	h_MC_BACK_scaled->Sumw2();
@@ -295,14 +297,30 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	TH1F* h_DATA_INV_scaled = (TH1F*)h_DATA_INV->Clone("h_DATA_INV_scaled");
 	h_DATA_INV_scaled->Sumw2();
 
+	TH1F *ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled = (TH1F*) h_DATA_INV_scaled->Clone("ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled");
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->Sumw2();
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->Divide(h_MC_BACK_scaled);
+
+	TH1F *ratio_histo_DATA_INV_scaled_OV_MC_BACK_INV_scaled = (TH1F*) h_DATA_INV_scaled->Clone("ratio_histo_DATA_INV_scaled_OV_MC_BACK_INV_scaled");
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_INV_scaled->Sumw2();
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_INV_scaled->Divide(h_MC_BACK_INV_scaled);
+
+
 	string s_canva_shape = "shape";
 	TCanvas *canva_shape = new TCanvas(s_canva_shape.c_str(),s_canva_shape.c_str(),600,600);
 	canva_shape->SetLogy();
+	TPad* upperPad_shape = new TPad("upperPad_shape", "upperPad_shape",.005, .25, .995, .995);
+  TPad* lowerPad_shape = new TPad("lowerPad_shape", "lowerPad_shape",.005, .005, .995, .2475);
+  upperPad_shape->Draw(); 			       
+  lowerPad_shape->Draw();
 
 	int Nbins;
 	double X_min, X_max;
 
 	Nbins = h_MC_BACK_scaled->GetNbinsX();
+
+	// upper Pad
+  upperPad_shape->cd();
 
 	if (x_min != -999 && x_max != -999){
 		if (x_max == h_MC_BACK_scaled->GetXaxis()->GetXmax()) X_max = x_max;
@@ -331,6 +349,7 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	h_MC_BACK_INV_scaled->SetLineStyle(2);	
 	h_MC_BACK_INV_scaled->Draw("histo same");
 	h_DATA_INV_scaled->Draw("ESAME");
+	gPad->SetLogy();
 
 	TLegend *leg =new TLegend(0.6068,0.6975,0.8188,0.8977);
 	leg->SetFillColor(0); 
@@ -341,7 +360,64 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	leg->AddEntry(h_DATA_INV_scaled,"#splitline{DATA}{(inverted cut)}","pL");	
 	leg->Draw();
 
-	canva_shape->Update();
+	// lower Pad
+	lowerPad_shape-> cd();
+
+	float xbox_min,xbox_max;
+	if (x_min == -999 && x_max == -999){
+		xbox_min = h_MC_BACK_scaled->GetXaxis()->GetXmin();
+		xbox_max = h_MC_BACK_scaled->GetXaxis()->GetXmax();
+	}
+	else {
+		xbox_min = x_min;
+		xbox_max = x_max;
+	}	
+
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->Draw("");
+	TBox *box_1 = new TBox(xbox_min,0.9,xbox_max,1.1);
+	box_1->SetFillColor(22);
+	box_1->Draw();
+
+	TBox *box_2 = new TBox(xbox_min,0.95,xbox_max,1.05);
+	box_2->SetFillColor(14);
+	box_2->Draw();
+
+  TLine *line = new TLine(xbox_min,1,xbox_max,1);
+  line->SetLineColor(kBlack);
+  line->Draw();
+
+	if (x_min != -999 && x_max != -999){
+		if (x_max == h_MC_BACK_scaled->GetXaxis()->GetXmax()) X_max = x_max;
+		else X_max = x_max - (x_max-x_min)/Nbins;
+		if (x_min == h_MC_BACK_scaled->GetXaxis()->GetXmin()) X_min = x_min;
+		else X_min = x_min + (x_max-x_min)/Nbins;
+
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->GetXaxis()->SetRangeUser(X_min,X_max);
+	}
+	
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->Draw("P E0 SAME");
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_INV_scaled->Draw("P E0 SAME");
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->Draw("AXIS X+ Y+ SAME");
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->Draw("AXIS SAME");
+  ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->GetXaxis()->SetTitle("");
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->GetYaxis()->SetTitle("MC/DATA sidebands");
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->GetYaxis()->SetTitleSize(0.10);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->GetYaxis()->SetTitleOffset(0.6);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->GetYaxis()->SetLabelSize(0.1);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->GetXaxis()->SetLabelSize(0.1);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->GetYaxis()->SetRangeUser(0.1,2);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->GetYaxis()->SetNdivisions(505, "kTRUE");
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->SetMarkerStyle(20);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->SetMarkerColor(kGreen+2);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->SetMarkerSize(0.7);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_scaled->SetLineColor(kGreen+2);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_INV_scaled->SetMarkerStyle(20);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_INV_scaled->SetMarkerColor(kViolet+2);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_INV_scaled->SetMarkerSize(0.7);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_INV_scaled->SetLineColor(kViolet+2);
+	ratio_histo_DATA_INV_scaled_OV_MC_BACK_INV_scaled->SetLineStyle(2);
+
+//	canva_shape->Update();
 
 	canva_shape->SaveAs((folder_normal + geo_s + SB_folder + fit_pdf_folder + shape + histo + bin_aa + bin_bb + pdf_string).c_str());
 	canva_shape->SaveAs((folder_normal + geo_s + SB_folder + fit_root_folder + shape + histo + bin_aa + bin_bb + root_string).c_str());
@@ -375,7 +451,8 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	                                   RooFit::SumW2Error(kTRUE),
 	                                   RooFit::Range(x_min,x_max),
 	                                   RooFit::Save(kTRUE),
-	                                   Minos(true)); 
+	                                   Minos(true)
+	                                   ); 
 
 	cout << "fitres = " << fitres << endl; 
 
@@ -387,8 +464,8 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	cout << "chi2 = " << chi2 << endl;
 	cout << endl;
 	
-	model.plotOn(xframe,Components("RooHistPdf_MC_SIG, "),LineStyle(kDashed)) ;
-	model.plotOn(xframe,Components("RooHistPdf_DATA_INV"),LineStyle(kDashed)) ;
+	model.plotOn(xframe,Components("RooHistPdf_MC_SIG"),LineStyle(kDashed),LineColor(kGray+3)) ;
+	model.plotOn(xframe,Components("RooHistPdf_DATA_INV"),LineStyle(kDashed),LineColor(kRed+2)) ;
 		
 //	model.paramOn(xframe,RooFit::Layout(0.55,0.98,0.95)); // box dati
 
@@ -398,15 +475,67 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	f.Print();
 	cout << endl;
 
+	double F;
+	F  = f.getVal();
+	double ErrLo;
+	ErrLo  = f.getAsymErrorLo();
+	double ErrHi;
+	ErrHi  = f.getAsymErrorHi();
 
+	// ==================================== report
 
+	cout << "Writing report file... " << endl;
+	ofstream report;
+	
+	stringstream ss_t;
+	char txt_char[100];
+	ss_t << folder_normal + geo_s + SB_folder + fit_txt_folder + fit + histo + bin_aa + bin_bb + txt_string;
+	ss_t >> txt_char;
+	
+	report.open(txt_char);
+	
+	report << "F = " << F << endl;
+
+	report << "Error Low = " << ErrLo << endl;
+	report << "Error High = " << ErrHi << endl;
+
+	report << "chi2 = " << chi2 << endl;
+		
+	report << F << " & " << ErrLo << " & " << ErrHi << " & " << chi2 << " \\\\" <<endl;	
+	report << endl;
+	
+	report.close();
+	cout << "...writing report file finished. " << endl;
+
+	// ==================================== finish report
+
+	TH1F* h_MC_SIG_postFit = (TH1F*) h_MC_SIG->Clone("h_MC_SIG_postFit");
+	h_MC_SIG_postFit->Scale(F*h_DATA->Integral()/h_MC_SIG->Integral());
+
+	TH1F* h_DATA_INV_postFit = (TH1F*) h_DATA_INV->Clone("h_DATA_INV_postFit");
+	h_DATA_INV_postFit->Scale((1-F)*h_DATA->Integral()/h_DATA_INV->Integral());
+
+	h_MC_SIG_postFit->Add(h_DATA_INV_postFit);
+
+	TH1F *ratio_histo_Data_fit = (TH1F*) h_DATA->Clone("ratio_histo_Data_fit");
+	ratio_histo_Data_fit->Sumw2();
+	ratio_histo_Data_fit->Divide(h_MC_SIG_postFit);
+
+	
 	string s_canva_fit = "fit";
 	TCanvas *canva_fit = new TCanvas(s_canva_fit.c_str(),s_canva_fit.c_str(),600,600);
  	canva_fit->SetLogy();
+	TPad* upperPad_fit = new TPad("upperPad_fit", "upperPad_fit",.005, .25, .995, .995);
+  TPad* lowerPad_fit = new TPad("lowerPad_fit", "lowerPad_fit",.005, .005, .995, .2475);
+  upperPad_fit->Draw(); 			       
+  lowerPad_fit->Draw();
+
+	// upper Pad
+  upperPad_fit->cd();
 	
 //	TString chi2txt = "#chi^{2}/dof = " + floatToString(xframe->chiSquare(1)) ; // dof = 1 = number of floating parametes
 	TString chi2txt = "#chi^{2}/dof = " + floatToString(chi2) ; // dof = 1 = number of floating parametes
-	TLatex* txt = new TLatex(0.5638,0.8287,chi2txt);
+	TLatex* txt = new TLatex(0.1638,0.8287,chi2txt);
 	txt->SetNDC();
 	txt->SetTextSize(0.04) ;
 	txt->SetTextColor(kRed) ;
@@ -422,13 +551,128 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	string title_X = h_DATA->GetXaxis()->GetTitle();
 	xframe->GetXaxis()->SetTitle(title_X.c_str());
 	xframe->Draw();
+	gPad->SetLogy();
+
+
+	TLegend *leg_fit =new TLegend(0.6746,0.6922,0.8457,0.8541);
+	leg_fit->SetFillColor(0); 
+  leg_fit->SetFillStyle(0); 
+  leg_fit->SetBorderSize(0);
+	leg_fit->AddEntry(h_DATA,"DATA","pL");	
+  cout << "xframe objects:\n";
+  for (int i=0; i<xframe->numItems(); i++) {
+    TString obj_name=xframe->nameOf(i); if (obj_name=="") continue;
+    cout << Form("%d. '%s'\n",i,obj_name.Data());}
+  TString names[] = {"model_Norm[x]_Range[fit_nll_model_RooDataHist_DATA]_NormRange[fit_nll_model_RooDataHist_DATA]",
+  									 "model_Norm[x]_Comp[RooHistPdf_MC_SIG]_Range[fit_nll_model_RooDataHist_DATA]_NormRange[fit_nll_model_RooDataHist_DATA]",
+  									 "model_Norm[x]_Comp[RooHistPdf_DATA_INV]_Range[fit_nll_model_RooDataHist_DATA]_NormRange[fit_nll_model_RooDataHist_DATA]",
+									   ""
+									   };
+
+  TString signs[] = {"Fit",
+  									 "Signal",
+  									 "Background"
+  									 };
+  									 
+  Int_t i=-1;
+  while ( names[++i] != "" ) {
+    TObject *obj = xframe->findObject(names[i].Data());
+    if (!obj) {
+      Warning("fitBi4",Form("Can't find item='%s' in the xframe!\n",names[i].Data()));
+      continue;
+    }
+    leg_fit->AddEntry(obj,signs[i],"l");
+  }
+	leg_fit->Draw();
+
+
+	// lower Pad
+  lowerPad_fit->cd();
+
+	ratio_histo_Data_fit->Draw("");
+
+	if (x_min == -999 && x_max == -999){
+		xbox_min = h_MC_BACK_scaled->GetXaxis()->GetXmin();
+		xbox_max = h_MC_BACK_scaled->GetXaxis()->GetXmax();
+	}
+	else {
+		xbox_min = x_min;
+		xbox_max = x_max;
+	}	
+
+	ratio_histo_Data_fit->Draw("");
+	TBox *box_1_fit = new TBox(xbox_min,0.9,xbox_max,1.1);
+	box_1_fit->SetFillColor(22);
+	box_1_fit->Draw();
+
+	TBox *box_2_fit = new TBox(xbox_min,0.95,xbox_max,1.05);
+	box_2_fit->SetFillColor(14);
+	box_2_fit->Draw();
+
+  TLine *line_fit = new TLine(xbox_min,1,xbox_max,1);
+  line_fit->SetLineColor(kBlack);
+  line_fit->Draw();
+
+	if (x_min != -999 && x_max != -999){
+		if (x_max == h_MC_BACK_scaled->GetXaxis()->GetXmax()) X_max = x_max;
+		else X_max = x_max - (x_max-x_min)/Nbins;
+		if (x_min == h_MC_BACK_scaled->GetXaxis()->GetXmin()) X_min = x_min;
+		else X_min = x_min + (x_max-x_min)/Nbins;
+
+	ratio_histo_Data_fit->GetXaxis()->SetRangeUser(X_min,X_max);
+	h_DATA->GetXaxis()->SetRangeUser(X_min,X_max);
+	h_MC_SIG_postFit->GetXaxis()->SetRangeUser(X_min,X_max);
+	}
+
+
+	ratio_histo_Data_fit->Draw("P E0 SAME");
+	ratio_histo_Data_fit->Draw("AXIS X+ Y+ SAME");
+	ratio_histo_Data_fit->Draw("AXIS SAME");
+  ratio_histo_Data_fit->GetXaxis()->SetTitle("");
+	ratio_histo_Data_fit->GetYaxis()->SetTitle("DATA/fit");
+	ratio_histo_Data_fit->GetYaxis()->SetTitleSize(0.10);
+	ratio_histo_Data_fit->GetYaxis()->SetTitleOffset(0.6);
+	ratio_histo_Data_fit->GetYaxis()->SetLabelSize(0.1);
+	ratio_histo_Data_fit->GetXaxis()->SetLabelSize(0.1);
+	ratio_histo_Data_fit->GetYaxis()->SetRangeUser(0.1,2.);
+	ratio_histo_Data_fit->GetYaxis()->SetNdivisions(505, "kTRUE");
+	ratio_histo_Data_fit->SetMarkerStyle(20);
+	ratio_histo_Data_fit->SetMarkerColor(kBlack);
+	ratio_histo_Data_fit->SetMarkerSize(0.7);
+	ratio_histo_Data_fit->SetLineColor(kBlack);
+
 	
-	canva_fit->Update();
+//	canva_fit->Update();
 
 	canva_fit->SaveAs((folder_normal + geo_s + SB_folder + fit_pdf_folder + fit +  histo + bin_aa + bin_bb + pdf_string).c_str());
 	canva_fit->SaveAs((folder_normal + geo_s + SB_folder + fit_root_folder + fit + histo + bin_aa + bin_bb + root_string).c_str());
 
+
 }
+
+void fit_templates_id_sieie_20binPt() {
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "01_", "01_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "02_", "02_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "03_", "03_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "04_", "04_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "05_", "05_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "06_", "06_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "07_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "08_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "09_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "10_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "11_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "12_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "13_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "14_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "15_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "16_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "17_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "18_", "20_", 1, 0, 0.012);	
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "19_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "20_", "20_", 1, 0, 0.012);
+}
+
 
 
 void fit_templates_PfIso_RhoCorrected_20binPt() {
@@ -456,14 +700,14 @@ void fit_templates_PfIso_RhoCorrected_20binPt() {
 
 
 void fit_templates_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_20binPt() {
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "01_", "01_", 1, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "02_", "02_", 1, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "03_", "03_", 1, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "04_", "04_", 1, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "05_", "05_", 1, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "06_", "06_", 1, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "07_", "20_", 1, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "08_", "20_", 1, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "01_", "01_", 2, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "02_", "02_", 2, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "03_", "03_", 2, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "04_", "04_", 2, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "05_", "05_", 2, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "06_", "06_", 2, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "07_", "20_", 2, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "08_", "20_", 2, -6, 4);
 	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "09_", "20_", 2, -6, 4);
 	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "10_", "20_", 2, -6, 6);
 	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "11_", "20_", 2, -6, 6);

@@ -57,7 +57,7 @@ void GJetsAnalyzer::Loop(){
 
 	// ==================================== choose the tools
 	
-	bool RedAn = true;								// analysis with a reduced entries number for tests
+	bool RedAn = false;								// analysis with a reduced entries number for tests
 
 	bool data_ReReco = true;					// analysis with data ReReco or data PromptReco
 	string geo = "barrel";						// barrel or endcaps
@@ -68,9 +68,9 @@ void GJetsAnalyzer::Loop(){
 	bool inv_sigmaietaieta = false;		// inverted sigmaietaieta cut
 	bool inv_isolation = false;				// inverted isolation set cut
 		
-	bool plothistos = true;						// please select which plots to show
+	bool plothistos = false;						// please select which plots to show
 	bool textfile = true;							// if you want a text report for each sample
-	Int_t itype = 24;									// it identifies histos with different analysis 
+	Int_t itype = 29;									// it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -1042,11 +1042,12 @@ void GJetsAnalyzer::Loop(){
 		// ==================================== REC selection
 
 			
-		// T&P scale factors - definitions
+		// Efficiency corrections
 		if(nPhotons > 0 && (nPhotons == (int)photonPt->size()) ) {
 
 			for(unsigned int iPhoPos = 0; iPhoPos < photonPt->size(); iPhoPos++) {
-					
+				
+				// T&P scale factors - definitions	
 				float TeP_SF;
 				if (TeP_corr) {
 					if (!isMC) TeP_SF = 1.;
@@ -1222,14 +1223,9 @@ void GJetsAnalyzer::Loop(){
 				else TeP_SF = 1.;
 
 				photonTeP_SF.push_back(TeP_SF);
-			}
-		} // end T&P scale factors - definitions
+				// end T&P scale factors - definitions
 
-		// background data-driven correction - definitions
-		if(nPhotons > 0 && (nPhotons == (int)photonPt->size()) ) {
-
-			for(unsigned int iPhoPos = 0; iPhoPos < photonPt->size(); iPhoPos++) {
-
+				// background data-driven correction - definitions
 				float BackDataDriven_F;
 				if (BackDataDriven_corr) {
 					if (isMC) BackDataDriven_F = 1.;
@@ -1299,8 +1295,10 @@ void GJetsAnalyzer::Loop(){
 				else BackDataDriven_F = 1.;
 
 			photonBackDataDriven_F.push_back(BackDataDriven_F);
+			// end background data-driven correction - definitions
+
 			}
-		}	// end background data-driven correction - definitions
+		}	// end Efficiency corrections
 
 
 		// SelectedPhotons collection selection
@@ -1311,232 +1309,234 @@ void GJetsAnalyzer::Loop(){
 
 			for(unsigned int iPhoPos = 0; iPhoPos < photonPt->size(); iPhoPos++) {
 
-				// PF isolation variables - definitions
-				photonPfIso = 0;
-				photonIsoFPR = 0;
+				Photons_Pt_preTriMatch.push_back(photonPt->at(iPhoPos));
+				TeP_SF_preTriMatch.push_back(photonTeP_SF.at(iPhoPos));
+				BackDataDriven_F_preTriMatch.push_back(photonBackDataDriven_F.at(iPhoPos));
+
+				// photon trigger matching selection (to be changed in the next N-tuple production step)
+				if (isTriggerMatchedFamily4) {
+
+					// PF isolation variables - definitions
+					photonPfIso = 0;
+					photonIsoFPR = 0;
 	
-				photonPfIso = photonPfIsoChargedHad->at(iPhoPos) + photonPfIsoNeutralHad->at(iPhoPos) + photonPfIsoPhoton->at(iPhoPos);
-				photonIsoFPR = photonIsoFPRCharged->at(iPhoPos) + photonIsoFPRNeutral->at(iPhoPos) + photonIsoFPRPhoton->at(iPhoPos);
-				// end PF isolation variables - definitions
+					photonPfIso = photonPfIsoChargedHad->at(iPhoPos) + photonPfIsoNeutralHad->at(iPhoPos) + photonPfIsoPhoton->at(iPhoPos);
+					photonIsoFPR = photonIsoFPRCharged->at(iPhoPos) + photonIsoFPRNeutral->at(iPhoPos) + photonIsoFPRPhoton->at(iPhoPos);
+					// end PF isolation variables - definitions
 
-				// Rho corrected PF isolation variables - definitions
-				double EA_CH, EA_NH, EA_Ph;
-				if (abs(photonEta->at(iPhoPos)) < 1.0) {
-					 EA_CH = 0.012;
-					 EA_NH = 0.030;
-					 EA_Ph = 0.148;
-				}
-				else if (abs(photonEta->at(iPhoPos)) >= 1.0 && abs(photonEta->at(iPhoPos)) < 1.479) {
-					 EA_CH = 0.010;
-					 EA_NH = 0.057;
-					 EA_Ph = 0.130;
-				}
-				else if (abs(photonEta->at(iPhoPos)) >= 1.479 && abs(photonEta->at(iPhoPos)) < 2.0) {
-					 EA_CH = 0.014;
-					 EA_NH = 0.039;
-					 EA_Ph = 0.112;
-				}
-				else if (abs(photonEta->at(iPhoPos)) >= 2.0 && abs(photonEta->at(iPhoPos)) < 2.2) {
-					 EA_CH = 0.012;
-					 EA_NH = 0.015;
-					 EA_Ph = 0.216;	
-				}
-				else if (abs(photonEta->at(iPhoPos)) >= 2.2 && abs(photonEta->at(iPhoPos)) < 2.3) {
-					 EA_CH = 0.016;
-					 EA_NH = 0.024;
-					 EA_Ph = 0.262;	
-				}
-				else if (abs(photonEta->at(iPhoPos)) >= 2.3 && abs(photonEta->at(iPhoPos)) < 2.4) {
-					 EA_CH = 0.020;
-					 EA_NH = 0.039;
-					 EA_Ph = 0.260; 	
-				}
-				else {
-					 EA_CH = 0.012;
-					 EA_NH = 0.072;
-					 EA_Ph = 0.266; 
-				}
+					// Rho corrected PF isolation variables - definitions
+					double EA_CH, EA_NH, EA_Ph;
+					if (abs(photonEta->at(iPhoPos)) < 1.0) {
+						 EA_CH = 0.012;
+						 EA_NH = 0.030;
+						 EA_Ph = 0.148;
+					}
+					else if (abs(photonEta->at(iPhoPos)) >= 1.0 && abs(photonEta->at(iPhoPos)) < 1.479) {
+						 EA_CH = 0.010;
+						 EA_NH = 0.057;
+						 EA_Ph = 0.130;
+					}
+					else if (abs(photonEta->at(iPhoPos)) >= 1.479 && abs(photonEta->at(iPhoPos)) < 2.0) {
+						 EA_CH = 0.014;
+						 EA_NH = 0.039;
+						 EA_Ph = 0.112;
+					}
+					else if (abs(photonEta->at(iPhoPos)) >= 2.0 && abs(photonEta->at(iPhoPos)) < 2.2) {
+						 EA_CH = 0.012;
+						 EA_NH = 0.015;
+						 EA_Ph = 0.216;	
+					}
+					else if (abs(photonEta->at(iPhoPos)) >= 2.2 && abs(photonEta->at(iPhoPos)) < 2.3) {
+						 EA_CH = 0.016;
+						 EA_NH = 0.024;
+						 EA_Ph = 0.262;	
+					}
+					else if (abs(photonEta->at(iPhoPos)) >= 2.3 && abs(photonEta->at(iPhoPos)) < 2.4) {
+						 EA_CH = 0.020;
+						 EA_NH = 0.039;
+						 EA_Ph = 0.260; 	
+					}
+					else {
+						 EA_CH = 0.012;
+						 EA_NH = 0.072;
+						 EA_Ph = 0.266; 
+					}
 					
-				photonPfIsoChargedHad_RhoCorr = 0;
-				photonPfIsoNeutralHad_RhoCorr = 0;
-				photonPfIsoPhoton_RhoCorr = 0;
-				photonPfIsoChargedHad_RhoCorr = max(photonPfIsoChargedHad->at(iPhoPos) - rho*EA_CH, 0.);
-				photonPfIsoNeutralHad_RhoCorr = max(photonPfIsoNeutralHad->at(iPhoPos) - rho*EA_NH, 0.);
-				photonPfIsoPhoton_RhoCorr = max(photonPfIsoPhoton->at(iPhoPos) - rho*EA_Ph, 0.);
+					photonPfIsoChargedHad_RhoCorr = 0;
+					photonPfIsoNeutralHad_RhoCorr = 0;
+					photonPfIsoPhoton_RhoCorr = 0;
+					photonPfIsoChargedHad_RhoCorr = max(photonPfIsoChargedHad->at(iPhoPos) - rho*EA_CH, 0.);
+					photonPfIsoNeutralHad_RhoCorr = max(photonPfIsoNeutralHad->at(iPhoPos) - rho*EA_NH, 0.);
+					photonPfIsoPhoton_RhoCorr = max(photonPfIsoPhoton->at(iPhoPos) - rho*EA_Ph, 0.);
 
-				photonPfIso_RhoCorr = 0;
-				photonPfIso_RhoCorr = photonPfIsoChargedHad_RhoCorr + photonPfIsoNeutralHad_RhoCorr + photonPfIsoPhoton_RhoCorr;
+					photonPfIso_RhoCorr = 0;
+					photonPfIso_RhoCorr = photonPfIsoChargedHad_RhoCorr + photonPfIsoNeutralHad_RhoCorr + photonPfIsoPhoton_RhoCorr;
 
-				photonPfIsoChargedHad_RhoCorr_forFit = 0;
-				photonPfIsoNeutralHad_RhoCorr_forFit = 0;
-				photonPfIsoPhoton_RhoCorr_forFit = 0;
-				photonPfIsoChargedHad_RhoCorr_forFit = photonPfIsoChargedHad->at(iPhoPos) - rho*EA_CH;
-				photonPfIsoNeutralHad_RhoCorr_forFit = photonPfIsoNeutralHad->at(iPhoPos) - rho*EA_NH;
-				photonPfIsoPhoton_RhoCorr_forFit = photonPfIsoPhoton->at(iPhoPos) - rho*EA_Ph;
+					photonPfIsoChargedHad_RhoCorr_forFit = 0;
+					photonPfIsoNeutralHad_RhoCorr_forFit = 0;
+					photonPfIsoPhoton_RhoCorr_forFit = 0;
+					photonPfIsoChargedHad_RhoCorr_forFit = photonPfIsoChargedHad->at(iPhoPos) - rho*EA_CH;
+					photonPfIsoNeutralHad_RhoCorr_forFit = photonPfIsoNeutralHad->at(iPhoPos) - rho*EA_NH;
+					photonPfIsoPhoton_RhoCorr_forFit = photonPfIsoPhoton->at(iPhoPos) - rho*EA_Ph;
 
-				photonPfIso_RhoCorr_forFit = 0;
-				photonPfIso_RhoCorr_forFit = photonPfIsoChargedHad_RhoCorr_forFit + photonPfIsoNeutralHad_RhoCorr_forFit + photonPfIsoPhoton_RhoCorr_forFit;
-				// end Rho corrected PF isolation variables - definitions
+					photonPfIso_RhoCorr_forFit = 0;
+					photonPfIso_RhoCorr_forFit = photonPfIsoChargedHad_RhoCorr_forFit + photonPfIsoNeutralHad_RhoCorr_forFit + photonPfIsoPhoton_RhoCorr_forFit;
+					// end Rho corrected PF isolation variables - definitions
 
-				// photon quality selection - definitions
-				bool PassConversionVeto = false;
-				bool hadronicOverEm2012 = false;
-				bool sigmaietaieta = false;
-				bool iso_CH = false;
-				bool iso_NH = false;
-				bool iso_Ph = false;
+					// photon quality selection - definitions
+					bool PassConversionVeto = false;
+					bool hadronicOverEm2012 = false;
+					bool sigmaietaieta = false;
+					bool iso_CH = false;
+					bool iso_NH = false;
+					bool iso_Ph = false;
 
-				if (photonPassConversionVeto->at(iPhoPos) == 1) PassConversionVeto = true;
-				else PassConversionVeto = false;
-				if (photonid_hadronicOverEm2012->at(iPhoPos) < 0.05) hadronicOverEm2012 = true;
-				else hadronicOverEm2012 = false;
+					if (photonPassConversionVeto->at(iPhoPos) == 1) PassConversionVeto = true;
+					else PassConversionVeto = false;
+					if (photonid_hadronicOverEm2012->at(iPhoPos) < 0.05) hadronicOverEm2012 = true;
+					else hadronicOverEm2012 = false;
 					
-				if (geo == "barrel") {
-					if (!inv_sigmaietaieta){
-						if (photonid_sieie->at(iPhoPos) < 0.011) sigmaietaieta = true;
-						else sigmaietaieta = false;
-					}
-					else {
-						if (photonid_sieie->at(iPhoPos) >= 0.011 && photonid_sieie->at(iPhoPos) <= 0.014) sigmaietaieta = true;
-						else sigmaietaieta = false;
-					}	
-					if (!inv_isolation){
-						if(photonPfIsoChargedHad_RhoCorr < 1.5) iso_CH = true;
-						else iso_CH = false;
-						if(photonPfIsoNeutralHad_RhoCorr < (1.0 + 0.04*photonPt->at(iPhoPos))) iso_NH = true;
-						else iso_NH = false;
-						if(photonPfIsoPhoton_RhoCorr < (0.7 + 0.005*photonPt->at(iPhoPos))) iso_Ph = true;
-						else iso_Ph = false;
-					}
-					else {
-						if(photonPfIsoChargedHad_RhoCorr >= 1.5) iso_CH = true;
-						else iso_CH = false;
-						if(photonPfIsoNeutralHad_RhoCorr < (1.0 + 0.04*photonPt->at(iPhoPos))) iso_NH = true;
-						else iso_NH = false;
-						if(photonPfIsoPhoton_RhoCorr < (0.7 + 0.005*photonPt->at(iPhoPos))) iso_Ph = true;
-						else iso_Ph = false;
-					}
-				}
-
-				else if (geo == "endcaps"){
-					if (!inv_sigmaietaieta){
-						if (photonid_sieie->at(iPhoPos) < 0.033) sigmaietaieta = true;
-						else sigmaietaieta = false;
-					}
-					else {
-						if (photonid_sieie->at(iPhoPos) >= 0.033) sigmaietaieta = true;
-						else sigmaietaieta = false;
-					}
-					if (!inv_isolation){
-						if(photonPfIsoChargedHad_RhoCorr < 1.2) iso_CH = true;
-						else iso_CH = false;
-						if(photonPfIsoNeutralHad_RhoCorr < (1.5 + 0.04*photonPt->at(iPhoPos))) iso_NH = true;
-						else iso_NH = false;
-						if(photonPfIsoPhoton_RhoCorr < (1.0 + 0.005*photonPt->at(iPhoPos))) iso_Ph = true;
-						else iso_Ph = false;
-					}
-					else {
-						if(photonPfIsoChargedHad_RhoCorr >= 1.2) iso_CH = true;
-						else iso_CH = false;
-						if(photonPfIsoNeutralHad_RhoCorr < (1.5 + 0.04*photonPt->at(iPhoPos))) iso_NH = true;
-						else iso_NH = false;
-						if(photonPfIsoPhoton_RhoCorr < (1.0 + 0.005*photonPt->at(iPhoPos))) iso_Ph = true;
-						else iso_Ph = false;
-					}								
-				}
-					
-				else {
-					cout << "ERROR: Wrong geometry string writed (only barrel or endcaps)" << endl;
-				} 
-				// end photon quality selection - definitions
-
-				// Cut Based Photon 2012 - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
-				bool geo_quality_sel = false;
-				
-				Photons_Pt_prePassConversionVeto.push_back(photonPt->at(iPhoPos));
-				Photon_PassConversionVeto_prePassConversionVeto.push_back(photonPassConversionVeto->at(iPhoPos));
-				TeP_SF_prePassConversionVeto.push_back(photonTeP_SF.at(iPhoPos));
-				BackDataDriven_F_prePassConversionVeto.push_back(photonBackDataDriven_F.at(iPhoPos));
-
-				if(PassConversionVeto){ 
-				
-					Photons_Pt_prehadronicOverEm2012.push_back(photonPt->at(iPhoPos));
-					Photons_hadronicOverEm2012_prehadronicOverEm2012.push_back(photonid_hadronicOverEm2012->at(iPhoPos));
-					TeP_SF_prehadronicOverEm2012.push_back(photonTeP_SF.at(iPhoPos));
-					BackDataDriven_F_prehadronicOverEm2012.push_back(photonBackDataDriven_F.at(iPhoPos));
-				
-					if(hadronicOverEm2012){
-
-						Photons_Pt_presigmaietaieta.push_back(photonPt->at(iPhoPos));
-						Photons_sigmaietaieta_presigmaietaieta.push_back(photonid_sieie->at(iPhoPos));
-						TeP_SF_presigmaietaieta.push_back(photonTeP_SF.at(iPhoPos));
-						BackDataDriven_F_presigmaietaieta.push_back(photonBackDataDriven_F.at(iPhoPos));
-
-						if (sigmaietaieta) {
-
-							Photons_Pt_preiso_CH.push_back(photonPt->at(iPhoPos));
-							Photons_iso_CH_preiso_CH.push_back(photonPfIsoChargedHad_RhoCorr);
-							TeP_SF_preiso_CH.push_back(photonTeP_SF.at(iPhoPos));
-							BackDataDriven_F_preiso_CH.push_back(photonBackDataDriven_F.at(iPhoPos));
-
-							if (iso_CH) {
-
-							Photons_Pt_preiso_NH.push_back(photonPt->at(iPhoPos));
-							Photons_iso_NH_preiso_NH.push_back(photonPfIsoNeutralHad_RhoCorr);
-							TeP_SF_preiso_NH.push_back(photonTeP_SF.at(iPhoPos));
-							BackDataDriven_F_preiso_NH.push_back(photonBackDataDriven_F.at(iPhoPos));
-
-								if (iso_NH) {
-
-									Photons_Pt_preiso_Ph.push_back(photonPt->at(iPhoPos));
-									Photons_iso_Ph_preiso_Ph.push_back(photonPfIsoPhoton_RhoCorr);
-									TeP_SF_preiso_Ph.push_back(photonTeP_SF.at(iPhoPos));
-									BackDataDriven_F_preiso_Ph.push_back(photonBackDataDriven_F.at(iPhoPos));
-
-									if (iso_Ph) {
-
-										geo_quality_sel = true;
-									}
-								}
-							}			
+					if (geo == "barrel") {
+						if (!inv_sigmaietaieta){
+							if (photonid_sieie->at(iPhoPos) < 0.011) sigmaietaieta = true;
+							else sigmaietaieta = false;
+						}
+						else {
+							if (photonid_sieie->at(iPhoPos) >= 0.011 && photonid_sieie->at(iPhoPos) <= 0.014) sigmaietaieta = true;
+							else sigmaietaieta = false;
+						}	
+						if (!inv_isolation){
+							if(photonPfIsoChargedHad_RhoCorr < 1.5) iso_CH = true;
+							else iso_CH = false;
+							if(photonPfIsoNeutralHad_RhoCorr < (1.0 + 0.04*photonPt->at(iPhoPos))) iso_NH = true;
+							else iso_NH = false;
+							if(photonPfIsoPhoton_RhoCorr < (0.7 + 0.005*photonPt->at(iPhoPos))) iso_Ph = true;
+							else iso_Ph = false;
+						}
+						else {
+							if(photonPfIsoChargedHad_RhoCorr >= 1.5) iso_CH = true;
+							//if(photonPfIsoChargedHad_RhoCorr < 1.5) iso_CH = true;
+							else iso_CH = false;
+							//if(photonPfIsoNeutralHad_RhoCorr >= (1.0 + 0.04*photonPt->at(iPhoPos))) iso_NH = true;							
+							if(photonPfIsoNeutralHad_RhoCorr < (1.0 + 0.04*photonPt->at(iPhoPos))) iso_NH = true;
+							else iso_NH = false;
+							//if(photonPfIsoPhoton_RhoCorr >= (0.7 + 0.005*photonPt->at(iPhoPos))) iso_Ph = true;
+							if(photonPfIsoPhoton_RhoCorr < (0.7 + 0.005*photonPt->at(iPhoPos))) iso_Ph = true;
+							else iso_Ph = false;
 						}
 					}
-				}
-				// end Cut Based Photon 2012 - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
 
-				// photon quality selection
-				if(geo_quality_sel){ 
-
-					IDIsoPhotons_N += 1;
-
-					// eta - definition
-					// (photonBit |= (it->isEB() << 0) => (*photonBit)[0]&1) with 2^0 = 1
-					bool geo_sel = false;
-					if (geo == "barrel") {
-						geo_sel = photonBit->at(iPhoPos)&1;
-					}
 					else if (geo == "endcaps"){
-						geo_sel = photonBit->at(iPhoPos)&2;
+						if (!inv_sigmaietaieta){
+							if (photonid_sieie->at(iPhoPos) < 0.033) sigmaietaieta = true;
+							else sigmaietaieta = false;
+						}
+						else {
+							if (photonid_sieie->at(iPhoPos) >= 0.033) sigmaietaieta = true;
+							else sigmaietaieta = false;
+						}
+						if (!inv_isolation){
+							if(photonPfIsoChargedHad_RhoCorr < 1.2) iso_CH = true;
+							else iso_CH = false;
+							if(photonPfIsoNeutralHad_RhoCorr < (1.5 + 0.04*photonPt->at(iPhoPos))) iso_NH = true;
+							else iso_NH = false;
+							if(photonPfIsoPhoton_RhoCorr < (1.0 + 0.005*photonPt->at(iPhoPos))) iso_Ph = true;
+							else iso_Ph = false;
+						}
+						else {
+							if(photonPfIsoChargedHad_RhoCorr >= 1.2) iso_CH = true;
+							else iso_CH = false;
+							if(photonPfIsoNeutralHad_RhoCorr < (1.5 + 0.04*photonPt->at(iPhoPos))) iso_NH = true;
+							else iso_NH = false;
+							if(photonPfIsoPhoton_RhoCorr < (1.0 + 0.005*photonPt->at(iPhoPos))) iso_Ph = true;
+							else iso_Ph = false;
+						}								
 					}
+					
 					else {
-						cout << "Error: Wrong geometry string writed" << endl;
-					} // end eta - definition
+						cout << "ERROR: Wrong geometry string writed (only barrel or endcaps)" << endl;
+					} 
+					// end photon quality selection - definitions
 
-					Photons_Pt_preAcc.push_back(photonPt->at(iPhoPos));
-					Photons_Eta_preAcc.push_back(photonEta->at(iPhoPos));
-					TeP_SF_preAcc.push_back(photonTeP_SF.at(iPhoPos));
-					BackDataDriven_F_preAcc.push_back(photonBackDataDriven_F.at(iPhoPos));
+					// Cut Based Photon 2012 - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
+					bool geo_quality_sel = false;
+				
+					Photons_Pt_prePassConversionVeto.push_back(photonPt->at(iPhoPos));
+					Photon_PassConversionVeto_prePassConversionVeto.push_back(photonPassConversionVeto->at(iPhoPos));
+					TeP_SF_prePassConversionVeto.push_back(photonTeP_SF.at(iPhoPos));
+					BackDataDriven_F_prePassConversionVeto.push_back(photonBackDataDriven_F.at(iPhoPos));
 
-					// photon kinematic selection
-					if (photonPt->at(iPhoPos) > 100. && geo_sel) {
+					if(PassConversionVeto){ 
+				
+						Photons_Pt_prehadronicOverEm2012.push_back(photonPt->at(iPhoPos));
+						Photons_hadronicOverEm2012_prehadronicOverEm2012.push_back(photonid_hadronicOverEm2012->at(iPhoPos));
+						TeP_SF_prehadronicOverEm2012.push_back(photonTeP_SF.at(iPhoPos));
+						BackDataDriven_F_prehadronicOverEm2012.push_back(photonBackDataDriven_F.at(iPhoPos));
+				
+						if(hadronicOverEm2012){
 
-						Photons_Pt_preTriMatch.push_back(photonPt->at(iPhoPos));
-						TeP_SF_preTriMatch.push_back(photonTeP_SF.at(iPhoPos));
-						BackDataDriven_F_preTriMatch.push_back(photonBackDataDriven_F.at(iPhoPos));
+							Photons_Pt_presigmaietaieta.push_back(photonPt->at(iPhoPos));
+							Photons_sigmaietaieta_presigmaietaieta.push_back(photonid_sieie->at(iPhoPos));
+							TeP_SF_presigmaietaieta.push_back(photonTeP_SF.at(iPhoPos));
+							BackDataDriven_F_presigmaietaieta.push_back(photonBackDataDriven_F.at(iPhoPos));
 
+							if (sigmaietaieta) {
 
-						// photon trigger matching selection (to be changed in the next N-tuple production step)
-						if (isTriggerMatchedFamily4) {
+								Photons_Pt_preiso_CH.push_back(photonPt->at(iPhoPos));
+								Photons_iso_CH_preiso_CH.push_back(photonPfIsoChargedHad_RhoCorr);
+								TeP_SF_preiso_CH.push_back(photonTeP_SF.at(iPhoPos));
+								BackDataDriven_F_preiso_CH.push_back(photonBackDataDriven_F.at(iPhoPos));
+
+								if (iso_CH) {
+
+									Photons_Pt_preiso_NH.push_back(photonPt->at(iPhoPos));
+									Photons_iso_NH_preiso_NH.push_back(photonPfIsoNeutralHad_RhoCorr);
+									TeP_SF_preiso_NH.push_back(photonTeP_SF.at(iPhoPos));
+									BackDataDriven_F_preiso_NH.push_back(photonBackDataDriven_F.at(iPhoPos));
+
+									if (iso_NH) {
+
+										Photons_Pt_preiso_Ph.push_back(photonPt->at(iPhoPos));
+										Photons_iso_Ph_preiso_Ph.push_back(photonPfIsoPhoton_RhoCorr);
+										TeP_SF_preiso_Ph.push_back(photonTeP_SF.at(iPhoPos));
+										BackDataDriven_F_preiso_Ph.push_back(photonBackDataDriven_F.at(iPhoPos));
+
+										if (iso_Ph) {
+
+											geo_quality_sel = true;
+										}
+									}
+								}			
+							}
+						}
+					}
+					// end Cut Based Photon 2012 - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
+
+					// photon quality selection
+					if(geo_quality_sel){ 
+
+						IDIsoPhotons_N += 1;
+
+						// eta - definition
+						// (photonBit |= (it->isEB() << 0) => (*photonBit)[0]&1) with 2^0 = 1
+						bool geo_sel = false;
+						if (geo == "barrel") {
+							geo_sel = photonBit->at(iPhoPos)&1;
+						}
+						else if (geo == "endcaps"){
+							geo_sel = photonBit->at(iPhoPos)&2;
+						}
+						else {
+							cout << "Error: Wrong geometry string writed" << endl;
+						} // end eta - definition
+
+						Photons_Pt_preAcc.push_back(photonPt->at(iPhoPos));
+						Photons_Eta_preAcc.push_back(photonEta->at(iPhoPos));
+						TeP_SF_preAcc.push_back(photonTeP_SF.at(iPhoPos));
+						BackDataDriven_F_preAcc.push_back(photonBackDataDriven_F.at(iPhoPos));
+
+						// photon kinematic selection
+						if (photonPt->at(iPhoPos) > 100. && geo_sel) {
 
 							SelectedPhotons_Pt.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_E.push_back(photonE->at(iPhoPos));
@@ -1740,6 +1740,12 @@ void GJetsAnalyzer::Loop(){
 				if(nPhotons > 0 && (nPhotons == (int)photonPt->size()) ) {
 					gamma_Pt_1_postcut2_->Fill(photonPt->at(0), weight_final_preGammacuts);
 
+					if (Photons_Pt_preTriMatch.size() > 0 && TeP_SF_preTriMatch.size() > 0 && BackDataDriven_F_preTriMatch.size() > 0){
+						double weight_final_preTriMatch = TeP_SF_preTriMatch.at(0) * BackDataDriven_F_preTriMatch.at(0) * weight_withPU;
+						gamma_Pt_1_preTriMatch_->Fill(Photons_Pt_preTriMatch.at(0), weight_final_preTriMatch);
+					}
+			}
+
 					if (Photons_Pt_prePassConversionVeto.size() > 0 && Photon_PassConversionVeto_prePassConversionVeto.size() > 0 && TeP_SF_prePassConversionVeto.size() > 0 && BackDataDriven_F_prePassConversionVeto.size() > 0){
 						double weight_final_prePassConversionVeto = TeP_SF_prePassConversionVeto.at(0) * BackDataDriven_F_prePassConversionVeto.at(0) * weight_withPU;
 						gamma_Pt_1_prePassConversionVeto_->Fill(Photons_Pt_prePassConversionVeto.at(0), weight_final_prePassConversionVeto);
@@ -1782,13 +1788,8 @@ void GJetsAnalyzer::Loop(){
 						gamma_Eta_1_preAcc_->Fill(Photons_Eta_preAcc.at(0), weight_final_preAcc);
 					}
 
-					if (Photons_Pt_preTriMatch.size() > 0 && TeP_SF_preTriMatch.size() > 0 && BackDataDriven_F_preTriMatch.size() > 0){
-						double weight_final_preTriMatch = TeP_SF_preTriMatch.at(0) * BackDataDriven_F_preTriMatch.at(0) * weight_withPU;
-						gamma_Pt_1_preTriMatch_->Fill(Photons_Pt_preTriMatch.at(0), weight_final_preTriMatch);
-					}
-			}
 
-				// ID+Iso+kin Photons selection (then, on the LEADING one)
+				// TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
 				if (SelectedPhotons_N > 0){
 					iSelected3++;
 
@@ -2480,7 +2481,7 @@ void GJetsAnalyzer::Loop(){
 							
 						} // end HT selection
 					} // end kin Jets (cleaned vs. Photons) selection 
-				} // end ID+Iso+kin Photons selection (then, on the LEADING one)
+				} // end TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
 			} // end Isolation at GEN level
 		}// end trigger family selection
 		
@@ -2709,7 +2710,7 @@ void GJetsAnalyzer::Loop(){
 	cout << "Number of selected events 0 (Ntuple preselection), unweighted = " << iSelected0 << endl;
 	cout << "Number of selected events 1 (trigger family 4), unweighted = " << iSelected1 << endl;		
 	cout << "Number of selected events 2 (Iso at GEN level), unweighted = " << iSelected2 << endl;
-	cout << "Number of selected events 3 (ID+Iso+kin Photons: then, on the LEADING one), unweighted = " << iSelected3 << endl;
+	cout << "Number of selected events 3 (TriMatch+(ID+Iso)+kin Photons: then, on the LEADING one), unweighted = " << iSelected3 << endl;
 	cout << "Number of selected events 4 (kin Jets: then, cleaned vs. LEADING Photon), unweighted = " << iSelected4 << endl;
 	cout << "Number of selected events 5 (HT), unweighted = " << iSelected5 << endl;
 	cout << "Number of selected events (all selections), unweighted = " << iSelected5 << endl;
@@ -3337,9 +3338,11 @@ void GJetsAnalyzer::Book_Histos(){
 		photonIsoSumPtDR03GEN_precut2_ = new TH1F("photonIsoSumPtDR03GEN_precut2_","photonIsoSumPtDR03GEN pre cut 2", 1300, -1100, 200);
 	}
 
-	//plotsCompare_PrePostCuts_02
 	gamma_Pt_1_postcut2_ = new TH1F("gamma_Pt_1_postcut2_","Photon p_{T} post cut 2", 800, 0., 4000.);
 
+	gamma_Pt_1_preTriMatch_ = new TH1F("gamma_Pt_1_preTriMatch_","Photon p_{T} pre Trigger Matching cut", 800, 0., 4000.);
+
+	//plotsCompare_PrePostCuts_02
 	gamma_Pt_1_prePassConversionVeto_ = new TH1F("gamma_Pt_1_prePassConversionVeto_","Photon p_{T} pre PassConversionVeto cut", 800, 0., 4000.);
 	gamma_PassConversionVeto_1_prePassConversionVeto_ = new TH1F("gamma_PassConversionVeto_1_prePassConversionVeto_","photonPassConversionVeto pre PassConversionVeto cut", 10, -2, 2);
 
@@ -3361,7 +3364,6 @@ void GJetsAnalyzer::Book_Histos(){
 	//plotsCompare_PrePostCuts_03
 	gamma_Pt_1_preAcc_ = new TH1F("gamma_Pt_1_preAcc_","Photon p_{T} pre Acc cut", 800, 0., 4000.);
 	gamma_Eta_1_preAcc_ = new TH1F("gamma_Eta_1_preAcc_","Photon #eta pre Acc cut", 3000, -3, 3);
-	gamma_Pt_1_preTriMatch_ = new TH1F("gamma_Pt_1_preTriMatch_","Photon p_{T} pre Trigger Matching cut", 800, 0., 4000.);
 
 	gamma_Pt_1_postcut3_ = new TH1F("gamma_Pt_1_postcut3_","Photon p_{T} post cut 3", 800, 0., 4000.);
 	jets_deltaR_1_predeltaR_ = new TH1F("jets_deltaR_1_predeltaR_","#DeltaR #gamma1-jet1 - N^{jets} #geq 1 pre #DeltaR cut", 600, 0, 6);
@@ -3574,7 +3576,7 @@ void GJetsAnalyzer::Plot_Histos(){
 		if(plot_gen_04){
 			TCanvas *c_gen04 = new TCanvas("c_gen04", "GEN photon kinematics vs. N GEN jets", 10, 10, 700, 700);
 			gPad->SetLogy();
-			c_gen04->Divide(2,2);
+			c_gen04->Divide(3,2);
 			c_gen04->cd(1);
 			photonPtGEN_excl1_->Draw();
 			c_gen04->cd(2);
@@ -3583,6 +3585,8 @@ void GJetsAnalyzer::Plot_Histos(){
 			photonPtGEN_N1_->Draw();
 			c_gen04->cd(4);
 			photonPtGEN_N2_->Draw();
+			c_gen04->cd(4);
+			photonIsoSumPtDR03GEN_precut2_->Draw();			
 		}
 	}
 
@@ -4799,11 +4803,9 @@ void GJetsAnalyzer::Plot_Histos(){
 		c_PrePost01->cd(2);
 		gamma_Pt_1_postcut1_->Draw();
 		c_PrePost01->cd(3);
-		if(isMC){
-			photonIsoSumPtDR03GEN_precut2_->Draw();		
-		}
-		c_PrePost01->cd(4);
 		gamma_Pt_1_postcut2_->Draw();
+		c_PrePost01->cd(4);		
+		gamma_Pt_1_preTriMatch_->Draw();		
 	}
 
 	if(plot_PrePost_02){
@@ -4845,18 +4847,16 @@ void GJetsAnalyzer::Plot_Histos(){
 		c_PrePost03->cd(2);
 		gamma_Eta_1_preAcc_->Draw();
 		c_PrePost03->cd(3);
-		gamma_Pt_1_preTriMatch_->Draw();
-		c_PrePost03->cd(4);
 		gamma_Pt_1_postcut3_->Draw();
-		c_PrePost03->cd(5);
+		c_PrePost03->cd(4);
 		jets_deltaR_1_predeltaR_->Draw();
-		c_PrePost03->cd(6);
+		c_PrePost03->cd(5);
 		jets_Pt_1_preAcc_->Draw();
-		c_PrePost03->cd(7);
+		c_PrePost03->cd(6);
 		jets_Eta_1_preAcc_->Draw();
-		c_PrePost03->cd(8);
+		c_PrePost03->cd(7);
 		gamma_Pt_1_postcut4_->Draw();
-		c_PrePost03->cd(9);
+		c_PrePost03->cd(8);
 		jets_HT_preHT_->Draw();
 	}
 
@@ -5010,7 +5010,7 @@ void GJetsAnalyzer::Text_File(){
 	text << "Number of selected events 0 (Ntuple preselection), unweighted = " << iSelected0 << endl;
 	text << "Number of selected events 1 (trigger family 4), unweighted = " << iSelected1 << endl;		
 	text << "Number of selected events 2 (Iso at GEN level), unweighted = " << iSelected2 << endl;
-	text << "Number of selected events 3 (ID+Iso+kin Photons: then, on the LEADING one), unweighted = " << iSelected3 << endl;
+	text << "Number of selected events 3 (TriMatch+(ID+Iso)+kin Photons: then, on the LEADING one), unweighted = " << iSelected3 << endl;
 	text << "Number of selected events 4 (kin Jets: then, cleaned vs. LEADING Photon), unweighted = " << iSelected4 << endl;
 	text << "Number of selected events 5 (HT), unweighted = " << iSelected5 << endl;
 	text << "Number of selected events (all selections), unweighted = " << iSelected5 << endl;

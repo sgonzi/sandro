@@ -886,6 +886,42 @@ void corrected_plotsCompare_62(){
 }
 
 
+void corrected_plotsCompare_PrePostCuts_01(){
+	corrected_comparestack("gamma_Pt_1_precut1_","Photon p_{T} pre cut 1", 1, -999, -999);
+	corrected_comparestack("gamma_Pt_1_postcut1_","Photon p_{T} post cut 1", 1, -999, -999);
+	corrected_comparestack("gamma_Pt_1_postcut2_","Photon p_{T} post cut 2", 1, -999, -999);
+	corrected_comparestack("gamma_Pt_1_preTriMatch_","Photon p_{T} pre Trigger Matching cut", 1, -999, -999);
+}
+
+
+void corrected_plotsCompare_PrePostCuts_02(){
+	corrected_comparestack("gamma_Pt_1_prePassConversionVeto_","Photon p_{T} pre PassConversionVeto cut", 1, -999, -999);
+	corrected_comparestack("gamma_PassConversionVeto_1_prePassConversionVeto_","photonPassConversionVeto pre PassConversionVeto cut", 1, -999, -999);
+	corrected_comparestack("gamma_Pt_1_prehadronicOverEm2012_","Photon p_{T} pre hadronicOverEm2012 cut", 1, -999, -999);
+	corrected_comparestack("gamma_hadronicOverEm2012_1_prehadronicOverEm2012_","photon ID: hadronicOverEm2012 pre hadronicOverEm2012 cut", 1, -999, -999);
+	corrected_comparestack("gamma_Pt_1_presigmaietaieta_","Photon p_{T} pre sigmaietaieta cut", 1, -999, -999);
+	corrected_comparestack("gamma_sigmaietaieta_1_presigmaietaieta_","photon ID: #sigma_{i#etai#eta} pre #sigma_{i#etai#eta} cut", 1, -999, -999);
+	corrected_comparestack("gamma_Pt_1_preiso_CH_","Photon p_{T} pre iso_CH cut", 1, -999, -999);
+	corrected_comparestack("gamma_iso_CH_1_preiso_CH_","photon PfIsoChargedHad #rho corrected pre iso_CH cut", 1, -999, -999);
+	corrected_comparestack("gamma_Pt_1_preiso_NH_","Photon p_{T} pre iso_CH cut", 1, -999, -999);
+	corrected_comparestack("gamma_iso_NH_1_preiso_NH_","photon PfIsoNeutralHad #rho corrected pre iso_NH cut", 1, -999, -999);
+	corrected_comparestack("gamma_Pt_1_preiso_Ph_","Photon p_{T} pre iso_NH cut", 1, -999, -999);
+	corrected_comparestack("gamma_iso_Ph_1_preiso_Ph_","photon PfIso #rho corrected pre iso_Ph cut", 1, -999, -999);
+}
+
+
+void corrected_plotsCompare_PrePostCuts_03(){
+	corrected_comparestack("gamma_Pt_1_preAcc_","Photon p_{T} pre Acc cut", 1, -999, -999);
+	corrected_comparestack("gamma_Eta_1_preAcc_","Photon #eta pre Acc cut", 1, -999, -999);
+	corrected_comparestack("gamma_Pt_1_postcut3_","Photon p_{T} post cut 3", 1, -999, -999);
+	corrected_comparestack("jets_deltaR_1_predeltaR_","#DeltaR #gamma1-jet1 - N^{jets} #geq 1 pre #DeltaR cut", 1, -999, -999);
+	corrected_comparestack("jets_Pt_1_preAcc_","Jet 1 p_{T} pre Acc cut", 1, -999, -999);
+	corrected_comparestack("jets_Eta_1_preAcc_","Jet 1 #eta pre Acc cut", 1, -999, -999);
+	corrected_comparestack("gamma_Pt_1_postcut4_","Photon p_{T} post cut 4", 1, -999, -999);
+	corrected_comparestack("jets_HT_preHT_","Selected Jets H_{T} pre H_{T} cut", 1, -999, -999);
+}
+
+
 // ------------------------------------------------------
 
 void corrected_plotsCompare_TOT(){
@@ -951,4 +987,7 @@ void corrected_plotsCompare_TOT(){
 	corrected_plotsCompare_60();
 	corrected_plotsCompare_61();
 	corrected_plotsCompare_62();
+	corrected_plotsCompare_PrePostCuts_01();
+	corrected_plotsCompare_PrePostCuts_02();
+	corrected_plotsCompare_PrePostCuts_03();	
 }
