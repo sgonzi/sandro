@@ -182,7 +182,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 	// ==================================== assign files names
 
 					
-//	Char_t GJets_HT_40To100_name[100];
+	Char_t GJets_HT_40To100_name[100];
 	Char_t GJets_HT_100To200_name[100];	
 	Char_t GJets_HT_200To400_name[100];
 	Char_t GJets_HT_400ToInf_name[100];
@@ -222,12 +222,12 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 
 	
 	if(signal_MAD){
-//		sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
 		sprintf(GJets_HT_100To200_name,"MC_GJets_HT-100To200_histos_%d_%s%s",itype, geo, root_char);	
 		sprintf(GJets_HT_200To400_name,"MC_GJets_HT-200To400_histos_%d_%s%s",itype, geo, root_char);
 		sprintf(GJets_HT_400ToInf_name,"MC_GJets_HT-400ToInf_histos_%d_%s%s",itype, geo, root_char);
 
-//		cout << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
+		cout << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
 		cout << "GJets file 22 is: " << GJets_HT_100To200_name << endl;	
 		cout << "GJets file 23 is: " << GJets_HT_200To400_name << endl;
 		cout << "GJets file 24 is: " << GJets_HT_400ToInf_name << endl;
@@ -311,7 +311,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 
 	// ==================================== load TFiles
 
-//	TFile *GJets_HT_40To100_file;
+	TFile *GJets_HT_40To100_file;
 	TFile *GJets_HT_100To200_file;	
 	TFile *GJets_HT_200To400_file;
 	TFile *GJets_HT_400ToInf_file;
@@ -351,7 +351,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 
 
 	if(signal_MAD){	
-		//GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
+		GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
 		GJets_HT_100To200_file = new TFile((address+GJets_HT_100To200_name).c_str());	
 		GJets_HT_200To400_file = new TFile((address+GJets_HT_200To400_name).c_str());
 		GJets_HT_400ToInf_file = new TFile((address+GJets_HT_400ToInf_name).c_str()); 
@@ -410,7 +410,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 	cout << endl;	
 
 
-//	TH1F *GJets_HT_40To100_histo;
+	TH1F *GJets_HT_40To100_histo;
 	TH1F *GJets_HT_100To200_histo;
 	TH1F *GJets_HT_200To400_histo;
 	TH1F *GJets_HT_400ToInf_histo;
@@ -457,10 +457,9 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 		
 	if(signal_MAD){				
 		//--- MC signal GJets_HT-xToy ----------------------------------------------
-/*
+
 		GJets_HT_40To100_histo=(TH1F*)GJets_HT_40To100_file->Get(titlehisto);
 		GJets_HT_40To100_histo->Rebin(rebin);
-*/
 		
 		GJets_HT_100To200_histo=(TH1F*)GJets_HT_100To200_file->Get(titlehisto);
 		GJets_HT_100To200_histo->Rebin(rebin);
@@ -471,15 +470,15 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 		GJets_HT_400ToInf_histo=(TH1F*)GJets_HT_400ToInf_file->Get(titlehisto);
 		GJets_HT_400ToInf_histo->Rebin(rebin);
 
-//		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
+		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
 		cout << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
 		cout << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
 		cout << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
 		cout << endl;
 		
-		GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_100To200_histo->Clone("GJets_HT_xToy_total_histo");
+		GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_40To100_histo->Clone("GJets_HT_xToy_total_histo");
 		//--- GJets_HT_xToy_total_histo->Sumw2();
-//		GJets_HT_xToy_total_histo->Add(GJets_HT_40To100_histo);	
+		GJets_HT_xToy_total_histo->Add(GJets_HT_100To200_histo);	
 		GJets_HT_xToy_total_histo->Add(GJets_HT_200To400_histo);
 		GJets_HT_xToy_total_histo->Add(GJets_HT_400ToInf_histo);  
 		GJets_HT_xToy_total_histo->SetLineColor(5);
@@ -775,7 +774,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 	else{
 		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets - PYT","l");
 	}
-	leg->AddEntry(DiPhotonJets_total_histo,"DiPhotonJets","l");
+	leg->AddEntry(DiPhotonJets_total_histo,"Diphotons + jets","l");
 //	if (!background_QCD){
 		leg->AddEntry(QCD_Pt_x_y_EMEnriched_total_histo,"QCD EMEnriched","l");
 		leg->AddEntry(QCD_Pt_x_y_BCtoE_total_histo,"QCD BCtoE","l");
@@ -818,7 +817,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 
 	if(signal_MAD){
 		report << endl;
-//		report << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
+		report << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
 		report << "GJets file 22 is: " << GJets_HT_100To200_name << endl;	
 		report << "GJets file 23 is: " << GJets_HT_200To400_name << endl;
 		report << "GJets file 24 is: " << GJets_HT_400ToInf_name << endl;
@@ -871,7 +870,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 	report << endl;	
 
 	if(signal_MAD) {
-//		report << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
+		report << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
 		report << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
 		report << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
 		report << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
@@ -942,7 +941,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
 
 	
 	if(signal_MAD){	
-	//	GJets_HT_40To100_file->Close();	
+		GJets_HT_40To100_file->Close();	
 		GJets_HT_100To200_file->Close();	
 		GJets_HT_200To400_file->Close();
 		GJets_HT_400ToInf_file->Close(); 

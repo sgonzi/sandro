@@ -89,19 +89,16 @@ class GJetsAnalyzer {
 		vector<float>  *photonIsoFPRCharged;
 		vector<float>  *photonIsoFPRNeutral;
 		vector<float>  *photonIsoFPRPhoton;
+		vector<float>  *photonIsoFPRRandomConeCharged;
+		vector<float>  *photonIsoFPRRandomConeNeutral;
+		vector<float>  *photonIsoFPRRandomConePhoton;
 		vector<int>  *photonBit;
+		vector<int>  *TriMatchF4Path_photon;
 		// ---- trigger variables ---------------------------------------------
 		vector<int>    *fired;
 		vector<int>    *prescaleL1;
 		vector<int>    *prescaleHLT;
 		Int_t        isTriggered;
-		// ---- trigger matching variables ---------------------------------------------
-		Int_t        isTriggerMatchedFamily1;
-		Int_t        isTriggerMatchedFamily2;
-		Int_t        isTriggerMatchedFamily3;
-		Int_t        isTriggerMatchedFamily4;
-		Int_t        isTriggerMatchedFamily5;
-		Int_t        isTriggerMatchedFamily6;
 		// ---- lepton variables ----------------------------------------------
 		vector<float>  *lepPt;
 		vector<float>  *lepEta;
@@ -113,6 +110,12 @@ class GJetsAnalyzer {
 		vector<int>    *lepChId;
 		vector<float>  *lepR9orChi2ndof;
 		vector<int>    *lepId;
+		vector<int>    *TriMatchF1Path_doubleMu;
+		vector<int>    *TriMatchF2Path_doubleEle;
+		vector<int>    *TriMatchF3Path_MuEle_muon;
+		vector<int>    *TriMatchF3Path_MuEle_electron;
+		vector<int>    *TriMatchF5Path_singleMu;
+		vector<int>    *TriMatchF6Path_singleEle;
 		// ---- jet variables -------------------------------------------------
 		vector<int>    *jetVeto;
 		vector<float>  *jetPt;
@@ -228,7 +231,9 @@ class GJetsAnalyzer {
 		vector<float>  *lepHadronicOverEm;
 		Double_t      eventWeight;
 		Double_t      PUWeight;
-
+		Double_t      PUWeightSysUp;
+		Double_t      PUWeightSysDown;
+		
   	// List of branches
 	  // ---- global event variables ----------------------------------------
   	TBranch      *b_isRealData;
@@ -293,19 +298,16 @@ class GJetsAnalyzer {
   	TBranch      *b_photonIsoFPRCharged;
   	TBranch      *b_photonIsoFPRNeutral;
   	TBranch      *b_photonIsoFPRPhoton;
+  	TBranch      *b_photonIsoFPRRandomConeCharged;
+  	TBranch      *b_photonIsoFPRRandomConeNeutral;
+  	TBranch      *b_photonIsoFPRRandomConePhoton;
   	TBranch      *b_photonBit;
+  	TBranch      *b_TriMatchF4Path_photon;
 		// ---- trigger variables ---------------------------------------------  
   	TBranch      *b_fired;
   	TBranch      *b_prescaleL1;
   	TBranch      *b_prescaleHLT;
   	TBranch      *b_isTriggered;
-	  // ---- trigger matching variables ---------------------------------------------
-  	TBranch      *b_isTriggerMatchedFamily1;
-  	TBranch      *b_isTriggerMatchedFamily2;
-  	TBranch      *b_isTriggerMatchedFamily3;
-  	TBranch      *b_isTriggerMatchedFamily4;
-  	TBranch      *b_isTriggerMatchedFamily5;
-  	TBranch      *b_isTriggerMatchedFamily6;
 	  // ---- lepton variables ----------------------------------------------
   	TBranch      *b_lepPt;
   	TBranch      *b_lepEta;
@@ -317,6 +319,12 @@ class GJetsAnalyzer {
   	TBranch      *b_lepChId;
   	TBranch      *b_lepR9orChi2ndof;
   	TBranch      *b_lepId;
+  	TBranch      *b_TriMatchF1Path_doubleMu;
+  	TBranch      *b_TriMatchF2Path_doubleEle;
+  	TBranch      *b_TriMatchF3Path_MuEle_muon;
+  	TBranch      *b_TriMatchF3Path_MuEle_electron;
+  	TBranch      *b_TriMatchF5Path_singleMu;
+  	TBranch      *b_TriMatchF6Path_singleEle;
 	  // ---- jet variables -------------------------------------------------  
   	TBranch      *b_jetVeto;
   	TBranch      *b_jetPt;
@@ -432,6 +440,8 @@ class GJetsAnalyzer {
   	TBranch      *b_lepHadronicOverEm;
   	TBranch      *b_eventWeight;
   	TBranch      *b_PUWeight;
+  	TBranch      *b_PUWeightSysUp;
+  	TBranch      *b_PUWeightSysDown;  	
 	
 		GJetsAnalyzer(TTree *tree = 0, Int_t isample = -1);
 		virtual ~GJetsAnalyzer();
@@ -549,7 +559,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 
 // data ReReco ----------------------------------------------------------
 		else if (mysample == 1){
-			file_sample = "Photon_Run2012A-22Jan2013-v1_AOD.root";
+			file_sample = "Photon_Run2012A-22Jan2013-v1_AOD_v2.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
@@ -582,7 +592,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 		}
 
 		else if (mysample == 4){
-			file_sample = "SinglePhotonParked_Run2012D-22Jan2013-v1_AOD.root";
+			file_sample = "SinglePhotonParked_Run2012D-22Jan2013-v1_AOD_v2.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
@@ -1136,19 +1146,16 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	photonIsoFPRCharged = 0;
 	photonIsoFPRNeutral = 0;
 	photonIsoFPRPhoton = 0;
+	photonIsoFPRRandomConeCharged = 0;
+	photonIsoFPRRandomConeNeutral = 0;
+	photonIsoFPRRandomConePhoton = 0;
 	photonBit = 0;
+	TriMatchF4Path_photon = 0;
 	// ---- trigger variables ---------------------------------------------
 	fired = 0;
 	prescaleL1 = 0;
 	prescaleHLT = 0;
 	isTriggered = 0;
-	// ---- trigger matching variables ---------------------------------------------
-	isTriggerMatchedFamily1 = 0;
-	isTriggerMatchedFamily2 = 0;
-	isTriggerMatchedFamily3 = 0;
-	isTriggerMatchedFamily4 = 0;
-	isTriggerMatchedFamily5 = 0;
-	isTriggerMatchedFamily6 = 0;
 	// ---- lepton variables ----------------------------------------------
 	lepPt = 0;
 	lepEta = 0;
@@ -1160,6 +1167,12 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	lepChId = 0;
 	lepR9orChi2ndof = 0;
 	lepId = 0;
+	TriMatchF1Path_doubleMu = 0;
+	TriMatchF2Path_doubleEle = 0;
+	TriMatchF3Path_MuEle_muon = 0;
+	TriMatchF3Path_MuEle_electron = 0;
+	TriMatchF5Path_singleMu = 0;
+	TriMatchF6Path_singleEle = 0;
 	// ---- jet variables -------------------------------------------------
 	jetVeto = 0;
 	jetPt = 0;
@@ -1276,6 +1289,8 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	if(isMC && !isTEST){
 		eventWeight = 0;
 		PUWeight = 0;
+		PUWeightSysUp = 0;
+		PUWeightSysDown = 0;				
 	}
 	
   // Set branch addresses and branch pointers
@@ -1347,19 +1362,16 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("photonIsoFPRCharged", &photonIsoFPRCharged, &b_photonIsoFPRCharged);
   fChain->SetBranchAddress("photonIsoFPRNeutral", &photonIsoFPRNeutral, &b_photonIsoFPRNeutral);
   fChain->SetBranchAddress("photonIsoFPRPhoton", &photonIsoFPRPhoton, &b_photonIsoFPRPhoton);
+  fChain->SetBranchAddress("photonIsoFPRRandomConeCharged", &photonIsoFPRRandomConeCharged, &b_photonIsoFPRRandomConeCharged);
+  fChain->SetBranchAddress("photonIsoFPRRandomConeNeutral", &photonIsoFPRRandomConeNeutral, &b_photonIsoFPRRandomConeNeutral);
+  fChain->SetBranchAddress("photonIsoFPRRandomConePhoton", &photonIsoFPRRandomConePhoton, &b_photonIsoFPRRandomConePhoton);
   fChain->SetBranchAddress("photonBit", &photonBit, &b_photonBit);
+  fChain->SetBranchAddress("TriMatchF4Path_photon", &TriMatchF4Path_photon, &b_TriMatchF4Path_photon);  
   // ---- trigger variables ---------------------------------------------
   fChain->SetBranchAddress("fired", &fired, &b_fired);
   fChain->SetBranchAddress("prescaleL1", &prescaleL1, &b_prescaleL1);
   fChain->SetBranchAddress("prescaleHLT", &prescaleHLT, &b_prescaleHLT);
   fChain->SetBranchAddress("isTriggered", &isTriggered, &b_isTriggered);
-  // ---- trigger matching variables ---------------------------------------------
-  fChain->SetBranchAddress("isTriggerMatchedFamily1", &isTriggerMatchedFamily1, &b_isTriggerMatchedFamily1);
-  fChain->SetBranchAddress("isTriggerMatchedFamily2", &isTriggerMatchedFamily2, &b_isTriggerMatchedFamily2);
-  fChain->SetBranchAddress("isTriggerMatchedFamily3", &isTriggerMatchedFamily3, &b_isTriggerMatchedFamily3);
-  fChain->SetBranchAddress("isTriggerMatchedFamily4", &isTriggerMatchedFamily4, &b_isTriggerMatchedFamily4);
-  fChain->SetBranchAddress("isTriggerMatchedFamily5", &isTriggerMatchedFamily5, &b_isTriggerMatchedFamily5);
-  fChain->SetBranchAddress("isTriggerMatchedFamily6", &isTriggerMatchedFamily6, &b_isTriggerMatchedFamily6);
   // ---- lepton variables ----------------------------------------------
   fChain->SetBranchAddress("lepPt", &lepPt, &b_lepPt);
   fChain->SetBranchAddress("lepEta", &lepEta, &b_lepEta);
@@ -1371,6 +1383,12 @@ void GJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("lepChId", &lepChId, &b_lepChId);
   fChain->SetBranchAddress("lepR9orChi2ndof", &lepR9orChi2ndof, &b_lepR9orChi2ndof);
   fChain->SetBranchAddress("lepId", &lepId, &b_lepId);
+  fChain->SetBranchAddress("TriMatchF1Path_doubleMu", &TriMatchF1Path_doubleMu, b_TriMatchF1Path_doubleMu);
+  fChain->SetBranchAddress("TriMatchF2Path_doubleEle", &TriMatchF2Path_doubleEle, b_TriMatchF2Path_doubleEle);
+  fChain->SetBranchAddress("TriMatchF3Path_MuEle_muon", &TriMatchF3Path_MuEle_muon, b_TriMatchF3Path_MuEle_muon);
+  fChain->SetBranchAddress("TriMatchF3Path_MuEle_electron", &TriMatchF3Path_MuEle_electron, b_TriMatchF3Path_MuEle_electron);
+  fChain->SetBranchAddress("TriMatchF5Path_singleMu", &TriMatchF5Path_singleMu, b_TriMatchF5Path_singleMu);
+  fChain->SetBranchAddress("TriMatchF6Path_singleEle", &TriMatchF6Path_singleEle, b_TriMatchF6Path_singleEle);  
   // ---- jet variables -------------------------------------------------
   fChain->SetBranchAddress("jetVeto", &jetVeto, &b_jetVeto);
   fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);
@@ -1487,6 +1505,8 @@ void GJetsAnalyzer::Init(TTree *tree) {
 	if(isMC && !isTEST){
 	  fChain->SetBranchAddress("eventWeight", &eventWeight, &b_eventWeight); 
 	  fChain->SetBranchAddress("PUWeight", &PUWeight, &b_PUWeight);
+	  fChain->SetBranchAddress("PUWeightSysUp", &PUWeightSysUp, &b_PUWeightSysUp); 
+	  fChain->SetBranchAddress("PUWeightSysDown", &PUWeightSysDown, &b_PUWeightSysDown);
 	}
   Notify();
 }

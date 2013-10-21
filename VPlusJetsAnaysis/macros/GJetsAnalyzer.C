@@ -144,7 +144,7 @@ void GJetsAnalyzer::Loop(){
 	// ==================================== numeric and definition side of the code
 	
 	double Lumi_t;
-	if (data_ReReco) Lumi_t = 19789.; // /pb
+	if (data_ReReco) Lumi_t = 19712.; // /pb
 	else Lumi_t = 19027.853; // /pb
 	double xsec = 1.;
 	double FiltEff = 1.;
@@ -942,7 +942,7 @@ void GJetsAnalyzer::Loop(){
 						geo_selGEN = TMath::Abs(photonEtaGEN) > 1.479 && TMath::Abs(photonEtaGEN) < 3.;
 					}
 					else {
-						cout << "ERROR: Wrong geometry string writed (only barrel or endcaps)" << endl;
+						cout << "ERROR: Wrong geometry string written (only barrel or endcaps)" << endl;
 					} // end eta - definition
 
 					// photonGEN kinematic selection
@@ -1454,7 +1454,7 @@ void GJetsAnalyzer::Loop(){
 					}
 					
 					else {
-						cout << "ERROR: Wrong geometry string writed (only barrel or endcaps)" << endl;
+						cout << "ERROR: Wrong geometry string written (only barrel or endcaps)" << endl;
 					} 
 					// end photon quality selection - definitions
 
@@ -1527,7 +1527,7 @@ void GJetsAnalyzer::Loop(){
 							geo_sel = photonBit->at(iPhoPos)&2;
 						}
 						else {
-							cout << "Error: Wrong geometry string writed" << endl;
+							cout << "Error: Wrong geometry string written" << endl;
 						} // end eta - definition
 
 						Photons_Pt_preAcc.push_back(photonPt->at(iPhoPos));

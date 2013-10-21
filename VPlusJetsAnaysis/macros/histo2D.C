@@ -228,7 +228,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 		throw cms::Exception("WrongBool");
 	}
 	if (!(Geo == "barrel" || Geo == "endcaps" || Geo == "total")) {
-		cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps\" or \"total\"). You writed: \"" << geo << "\"" << endl << endl;
+		cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps\" or \"total\"). You wrote: \"" << geo << "\"" << endl << endl;
 		throw cms::Exception("WrongString");
 	}	
 
@@ -236,7 +236,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 	// ==================================== assign files names
 
 					
-//	Char_t GJets_HT_40To100_name[100];
+	Char_t GJets_HT_40To100_name[100];
 	Char_t GJets_HT_100To200_name[100];	
 	Char_t GJets_HT_200To400_name[100];
 	Char_t GJets_HT_400ToInf_name[100];
@@ -276,12 +276,12 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 
 	
 	if(signal_MAD){
-//		sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
 		sprintf(GJets_HT_100To200_name,"MC_GJets_HT-100To200_histos_%d_%s%s",itype, geo, root_char);	
 		sprintf(GJets_HT_200To400_name,"MC_GJets_HT-200To400_histos_%d_%s%s",itype, geo, root_char);
 		sprintf(GJets_HT_400ToInf_name,"MC_GJets_HT-400ToInf_histos_%d_%s%s",itype, geo, root_char);
 
-//		cout << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
+		cout << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
 		cout << "GJets file 22 is: " << GJets_HT_100To200_name << endl;	
 		cout << "GJets file 23 is: " << GJets_HT_200To400_name << endl;
 		cout << "GJets file 24 is: " << GJets_HT_400ToInf_name << endl;
@@ -365,7 +365,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 
 	// ==================================== load TFiles
 
-//	TFile *GJets_HT_40To100_file;
+	TFile *GJets_HT_40To100_file;
 	TFile *GJets_HT_100To200_file;	
 	TFile *GJets_HT_200To400_file;
 	TFile *GJets_HT_400ToInf_file;
@@ -405,7 +405,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 
 
 	if(signal_MAD){	
-		//GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
+		GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
 		GJets_HT_100To200_file = new TFile((address+GJets_HT_100To200_name).c_str());	
 		GJets_HT_200To400_file = new TFile((address+GJets_HT_200To400_name).c_str());
 		GJets_HT_400ToInf_file = new TFile((address+GJets_HT_400ToInf_name).c_str()); 
@@ -463,7 +463,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 	cout << "========================" <<endl;	
 	cout << endl;	
 
-//	TH2F *GJets_HT_40To100_histo;
+	TH2F *GJets_HT_40To100_histo;
 	TH2F *GJets_HT_100To200_histo;
 	TH2F *GJets_HT_200To400_histo;
 	TH2F *GJets_HT_400ToInf_histo;
@@ -510,10 +510,9 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 	
 	if(signal_MAD){				
 		//--- MC signal GJets_HT-xToy ----------------------------------------------
-/*
+
 		GJets_HT_40To100_histo=(TH2F*)GJets_HT_40To100_file->Get(titlehisto);
 		GJets_HT_40To100_histo->Rebin2D(rebinX, rebinY);
-*/
 		
 		GJets_HT_100To200_histo=(TH2F*)GJets_HT_100To200_file->Get(titlehisto);
 		GJets_HT_100To200_histo->Rebin2D(rebinX, rebinY);
@@ -524,15 +523,15 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 		GJets_HT_400ToInf_histo=(TH2F*)GJets_HT_400ToInf_file->Get(titlehisto);
 		GJets_HT_400ToInf_histo->Rebin2D(rebinX, rebinY);
 
-//		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
+		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
 		cout << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
 		cout << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
 		cout << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
 		cout << endl;
 		
-		GJets_HT_xToy_total_histo = (TH2F*) GJets_HT_100To200_histo->Clone("GJets_HT_xToy_total_histo");
+		GJets_HT_xToy_total_histo = (TH2F*) GJets_HT_40To100_histo->Clone("GJets_HT_xToy_total_histo");
 		//--- GJets_HT_xToy_total_histo->Sumw2();
-//		GJets_HT_xToy_total_histo->Add(GJets_HT_40To100_histo);	
+		GJets_HT_xToy_total_histo->Add(GJets_HT_100To200_histo);	
 		GJets_HT_xToy_total_histo->Add(GJets_HT_200To400_histo);
 		GJets_HT_xToy_total_histo->Add(GJets_HT_400ToInf_histo);  
 		GJets_HT_xToy_total_histo->SetLineColor(1);
@@ -782,7 +781,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 	}
 
 	BACK_histo->SetFillColor(kBlack);
-	SIG_histo->GetXaxis()->SetTitle("#gamma1 #sigma_{i#etai#eta}");
+	SIG_histo->GetXaxis()->SetTitle("#sigma_{i#etai#eta}^{#gamma_{1}}");
 	SIG_histo->GetXaxis()->SetTitleOffset(1.1);
 	SIG_histo->GetYaxis()->SetTitle(titleYaxis);
 	SIG_histo->GetYaxis()->SetTitleOffset(1.1);
@@ -876,7 +875,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 
 	if(signal_MAD){
 		report << endl;
-//		report << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
+		report << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
 		report << "GJets file 22 is: " << GJets_HT_100To200_name << endl;	
 		report << "GJets file 23 is: " << GJets_HT_200To400_name << endl;
 		report << "GJets file 24 is: " << GJets_HT_400ToInf_name << endl;
@@ -929,7 +928,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 	report << endl;	
 
 	if(signal_MAD) {
-//		report << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
+		report << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
 		report << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
 		report << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
 		report << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
@@ -999,7 +998,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 
 	
 	if(signal_MAD){	
-	//	GJets_HT_40To100_file->Close();	
+		GJets_HT_40To100_file->Close();	
 		GJets_HT_100To200_file->Close();	
 		GJets_HT_200To400_file->Close();
 		GJets_HT_400ToInf_file->Close(); 

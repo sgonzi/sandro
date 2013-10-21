@@ -19,7 +19,7 @@ void XSec(){
   // Usage is: .L comparestack.C+
   //       ie: comparestack("ptPhoton_","P_{T}^{#gamma} [GeV]")
 
-//	Char_t GJets_HT_40To100_name[100];
+	Char_t GJets_HT_40To100_name[100];
 	Char_t GJets_HT_100To200_name[100];							
 	Char_t GJets_HT_200To400_name[100];
 	Char_t GJets_HT_400ToInf_name[100];
@@ -61,7 +61,7 @@ void XSec(){
   Char_t titlehisto[100] = "accepted/XSec";
 
 
-//	sprintf(GJets_HT_40To100_name,"samples/GJets_HT-40To100_8TeV-madgraph_v2_Summer12_DR53X-PU_S10_START53_V19-v1.root");
+	sprintf(GJets_HT_40To100_name,"samples/GJets_HT-40To100_8TeV-madgraph_v2_Summer12_DR53X-PU_S10_START53_V19-v1.root");
 	sprintf(GJets_HT_100To200_name,"samples/GJets_HT-100To200_8TeV-madgraph_Summer12_DR53X-PU_S10_START53_V19-v1.root");
 	sprintf(GJets_HT_200To400_name,"samples/GJets_HT-200To400_8TeV-madgraph_v2_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
 	sprintf(GJets_HT_400ToInf_name,"samples/GJets_HT-400ToInf_8TeV-madgraph_v3_Summer12_DR53X-PU_S10_START53_V7C-v1.root");
@@ -95,7 +95,7 @@ void XSec(){
 	sprintf(QCD_HT_1000ToInf_name,"samples/QCD_HT-1000ToInf_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
 
 
-//	TFile *GJets_HT_40To100_file = new TFile(GJets_HT_40To100_name);
+	TFile *GJets_HT_40To100_file = new TFile(GJets_HT_40To100_name);
 	TFile *GJets_HT_100To200_file = new TFile(GJets_HT_100To200_name);
 	TFile *GJets_HT_200To400_file = new TFile(GJets_HT_200To400_name);
 	TFile *GJets_HT_400ToInf_file = new TFile(GJets_HT_400ToInf_name); 
@@ -129,7 +129,7 @@ void XSec(){
 	TFile *QCD_HT_1000ToInf_file  = new TFile(QCD_HT_1000ToInf_name); 
 
 
-//	TH1F *GJets_HT_40To100_histo = (TH1F*)GJets_HT_40To100_file->Get(titlehisto);
+	TH1F *GJets_HT_40To100_histo = (TH1F*)GJets_HT_40To100_file->Get(titlehisto);
 	TH1F *GJets_HT_100To200_histo = (TH1F*)GJets_HT_100To200_file->Get(titlehisto);
 	TH1F *GJets_HT_200To400_histo = (TH1F*)GJets_HT_200To400_file->Get(titlehisto);
 	TH1F *GJets_HT_400ToInf_histo = (TH1F*)GJets_HT_400ToInf_file->Get(titlehisto);
@@ -162,7 +162,7 @@ void XSec(){
 	TH1F *QCD_HT_500To1000_histo  = (TH1F*)QCD_HT_500To1000_file->Get(titlehisto);
 	TH1F *QCD_HT_1000ToInf_histo  = (TH1F*)QCD_HT_1000ToInf_file->Get(titlehisto);
 
-  double /*XSec_GJets_HT_40To100,*/ XSec_GJets_HT_100To200, XSec_GJets_HT_200To400, XSec_GJets_HT_400ToInf, 
+  double XSec_GJets_HT_40To100, XSec_GJets_HT_100To200, XSec_GJets_HT_200To400, XSec_GJets_HT_400ToInf, 
          XSec_G_Pt_15to30, XSec_G_Pt_30to50, XSec_G_Pt_50to80, XSec_G_Pt_80to120, XSec_G_Pt_120to170, XSec_G_Pt_170to300,
          XSec_G_Pt_300to470, XSec_G_Pt_470to800, XSec_G_Pt_800to1400, XSec_G_Pt_1400to1800, XSec_G_Pt_1800,
          XSec_DiPhotonJets,
@@ -172,7 +172,7 @@ void XSec(){
          XSec_QCD_Pt_250_350_BCtoE, XSec_QCD_Pt_350_BCtoE,
          XSec_QCD_HT_100To250, XSec_QCD_HT_250To500, XSec_QCD_HT_500To1000, XSec_QCD_HT_1000ToInf;  
 
-//  XSec_GJets_HT_40To100 = GJets_HT_40To100_histo->GetBinContent(1)/GJets_HT_40To100_histo->GetBinContent(2);
+  XSec_GJets_HT_40To100 = GJets_HT_40To100_histo->GetBinContent(1)/GJets_HT_40To100_histo->GetBinContent(2);
   XSec_GJets_HT_100To200 = GJets_HT_100To200_histo->GetBinContent(1)/GJets_HT_100To200_histo->GetBinContent(2);
   XSec_GJets_HT_200To400 = GJets_HT_200To400_histo->GetBinContent(1)/GJets_HT_200To400_histo->GetBinContent(2);
   XSec_GJets_HT_400ToInf = GJets_HT_400ToInf_histo->GetBinContent(1)/GJets_HT_400ToInf_histo->GetBinContent(2); 
@@ -206,7 +206,7 @@ void XSec(){
   XSec_QCD_HT_1000ToInf = QCD_HT_1000ToInf_histo->GetBinContent(1)/QCD_HT_1000ToInf_histo->GetBinContent(2);
 
 	cout << endl;		
-//	cout << "XSec GJets_HT-40To100 = " << XSec_GJets_HT_40To100 << " /pb" << endl;  
+	cout << "XSec GJets_HT-40To100 = " << XSec_GJets_HT_40To100 << " /pb" << endl;  
 	cout << "XSec GJets_HT-100To200 = " << XSec_GJets_HT_100To200 << " /pb" << endl;
 	cout << "XSec GJets_HT-200To400 = " << XSec_GJets_HT_200To400 << " /pb" << endl;  
 	cout << "XSec GJets_HT-400ToInf = " << XSec_GJets_HT_400ToInf << " /pb" << endl;

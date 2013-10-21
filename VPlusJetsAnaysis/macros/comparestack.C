@@ -212,7 +212,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 		throw cms::Exception("WrongBool");
 	}
 	if (!(Geo == "barrel" || Geo == "endcaps" || Geo == "total")) {
-		cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps\" or \"total\"). You writed: \"" << geo << "\"" << endl << endl;
+		cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps\" or \"total\"). You wrote: \"" << geo << "\"" << endl << endl;
 		throw cms::Exception("WrongString");
 	}	
 
@@ -232,7 +232,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	Char_t DATA_PR_Run2012C_PromptReco_name[100];
 	Char_t DATA_PR_Run2012D_PromptReco_name[100];
 					
-//	Char_t GJets_HT_40To100_name[100];
+	Char_t GJets_HT_40To100_name[100];
 	Char_t GJets_HT_100To200_name[100];	
 	Char_t GJets_HT_200To400_name[100];
 	Char_t GJets_HT_400ToInf_name[100];
@@ -308,12 +308,12 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	}
 	
 	if(signal_MAD){
-//		sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
 		sprintf(GJets_HT_100To200_name,"MC_GJets_HT-100To200_histos_%d_%s%s",itype, geo, root_char);	
 		sprintf(GJets_HT_200To400_name,"MC_GJets_HT-200To400_histos_%d_%s%s",itype, geo, root_char);
 		sprintf(GJets_HT_400ToInf_name,"MC_GJets_HT-400ToInf_histos_%d_%s%s",itype, geo, root_char);
 
-//		cout << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
+		cout << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
 		cout << "GJets file 22 is: " << GJets_HT_100To200_name << endl;	
 		cout << "GJets file 23 is: " << GJets_HT_200To400_name << endl;
 		cout << "GJets file 24 is: " << GJets_HT_400ToInf_name << endl;
@@ -410,7 +410,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	TFile *DATA_PR_Run2012C_PromptReco_file;
 	TFile *DATA_PR_Run2012D_PromptReco_file;
 
-//	TFile *GJets_HT_40To100_file;
+	TFile *GJets_HT_40To100_file;
 	TFile *GJets_HT_100To200_file;	
 	TFile *GJets_HT_200To400_file;
 	TFile *GJets_HT_400ToInf_file;
@@ -465,7 +465,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	}
 	
 	if(signal_MAD){	
-		//GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
+		GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
 		GJets_HT_100To200_file = new TFile((address+GJets_HT_100To200_name).c_str());	
 		GJets_HT_200To400_file = new TFile((address+GJets_HT_200To400_name).c_str());
 		GJets_HT_400ToInf_file = new TFile((address+GJets_HT_400ToInf_name).c_str()); 
@@ -538,7 +538,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	TH1F *DATA_PR_Run2012D_PromptReco_histo;
 	TH1F *DATA_PromptReco_total_histo;
 
-//	TH1F *GJets_HT_40To100_histo;
+	TH1F *GJets_HT_40To100_histo;
 	TH1F *GJets_HT_100To200_histo;
 	TH1F *GJets_HT_200To400_histo;
 	TH1F *GJets_HT_400ToInf_histo;
@@ -657,10 +657,9 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	
 	if(signal_MAD){				
 		//--- MC signal GJets_HT-xToy ----------------------------------------------
-/*
+
 		GJets_HT_40To100_histo=(TH1F*)GJets_HT_40To100_file->Get(titlehisto);
 		GJets_HT_40To100_histo->Rebin(rebin);
-*/
 		
 		GJets_HT_100To200_histo=(TH1F*)GJets_HT_100To200_file->Get(titlehisto);
 		GJets_HT_100To200_histo->Rebin(rebin);
@@ -671,15 +670,15 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 		GJets_HT_400ToInf_histo=(TH1F*)GJets_HT_400ToInf_file->Get(titlehisto);
 		GJets_HT_400ToInf_histo->Rebin(rebin);
 
-//		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
+		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
 		cout << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
 		cout << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
 		cout << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
 		cout << endl;
 		
-		GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_100To200_histo->Clone("GJets_HT_xToy_total_histo");
+		GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_40To100_histo->Clone("GJets_HT_xToy_total_histo");
 		//--- GJets_HT_xToy_total_histo->Sumw2();
-//		GJets_HT_xToy_total_histo->Add(GJets_HT_40To100_histo);	
+		GJets_HT_xToy_total_histo->Add(GJets_HT_100To200_histo);
 		GJets_HT_xToy_total_histo->Add(GJets_HT_200To400_histo);
 		GJets_HT_xToy_total_histo->Add(GJets_HT_400ToInf_histo);  
 		GJets_HT_xToy_total_histo->SetLineColor(1);
@@ -1003,7 +1002,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	else{
 		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets - PYT","f");
 	}
-	leg->AddEntry(DiPhotonJets_total_histo,"DiPhotonJets","f");
+	leg->AddEntry(DiPhotonJets_total_histo,"Diphotons + jets","f");
 	if (!background_QCD){
 		leg->AddEntry(QCD_Pt_x_y_EMEnriched_total_histo,"QCD EMEnriched","f");
 		leg->AddEntry(QCD_Pt_x_y_BCtoE_total_histo,"QCD BCtoE","f");
@@ -1112,7 +1111,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 
 	if(signal_MAD){
 		report << endl;
-//		report << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
+		report << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
 		report << "GJets file 22 is: " << GJets_HT_100To200_name << endl;	
 		report << "GJets file 23 is: " << GJets_HT_200To400_name << endl;
 		report << "GJets file 24 is: " << GJets_HT_400ToInf_name << endl;
@@ -1180,7 +1179,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 		report << "DATA_PR_Run2012D_PromptReco entries = " << DATA_PR_Run2012D_PromptReco_histo->Integral() << endl;  
 	}
 	if(signal_MAD) {
-//		report << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
+		report << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
 		report << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
 		report << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
 		report << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
@@ -1269,7 +1268,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	}
 	
 	if(signal_MAD){	
-	//	GJets_HT_40To100_file->Close();	
+		GJets_HT_40To100_file->Close();	
 		GJets_HT_100To200_file->Close();	
 		GJets_HT_200To400_file->Close();
 		GJets_HT_400ToInf_file->Close(); 

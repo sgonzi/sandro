@@ -238,7 +238,7 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 		throw cms::Exception("WrongBool");
 	}
 	if (!(Geo == "barrel" || Geo == "endcaps" || Geo == "total")) {
-		cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps)\" or \"total\". You writed: \"" << geo << "\"" << endl << endl;
+		cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps)\" or \"total\". You wrote: \"" << geo << "\"" << endl << endl;
 		throw cms::Exception("WrongString");
 	}	
 

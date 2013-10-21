@@ -70,10 +70,9 @@ void TotalAnalysis_dataPromptReco(){
 void TotalAnalysis_GJets_HT_xToy(){
 
 	// MC signal GJets_HT-xToy ----------------------------------------------
-/*
-	GJetsAnalyzer MC_GJets_HT_40To100(0,11);
+
+	GJetsAnalyzer MC_GJets_HT_40To100(0,21);
 	MC_GJets_HT_40To100.Loop();
-*/
 
 	GJetsAnalyzer MC_GJets_HT_100To200(0,22);
 	MC_GJets_HT_100To200.Loop();

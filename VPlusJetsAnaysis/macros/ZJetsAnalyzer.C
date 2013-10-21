@@ -216,7 +216,7 @@ void ZJetsAnalyzer::Loop(){
 					geo_selGEN_1 = TMath::Abs(lepEtaGEN->at(0)) > 1.479 && TMath::Abs(lepEtaGEN->at(0)) < 3.;
 				}
 				else {
-					cout << "ERROR: Wrong geometry string writed (only barrel or endcaps)" << endl;
+					cout << "ERROR: Wrong geometry string written (only barrel or endcaps)" << endl;
 				} 
 
 				bool geo_selGEN_2 = false;
@@ -227,7 +227,7 @@ void ZJetsAnalyzer::Loop(){
 					geo_selGEN_2 = TMath::Abs(lepEtaGEN->at(1)) > 1.479 && TMath::Abs(lepEtaGEN->at(1)) < 3.;
 				}
 				else {
-					cout << "ERROR: Wrong geometry string writed (only barrel or endcaps)" << endl;
+					cout << "ERROR: Wrong geometry string written (only barrel or endcaps)" << endl;
 				} // end eta - definition
 */
 
