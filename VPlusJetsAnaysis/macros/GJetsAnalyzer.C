@@ -312,8 +312,8 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_GJets_HT-40To100";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 1.;
-		xsec = 1.; //da cambiare
+		nEvents = 19857930.;
+		xsec = 20930.;
 		FiltEff = 1.;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -327,7 +327,7 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 9612703;
-		xsec = 5212.0; //da cambiare
+		xsec = 5325.77; 
 		FiltEff = 1.;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -341,7 +341,7 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 58627147;
-		xsec = 1008.03; //da cambiare
+		xsec = 1008.03;
 		FiltEff = 1.;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -354,8 +354,8 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_GJets_HT-400ToInf";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 42345850;
-		xsec = 105.418; //da cambiare
+		nEvents = 42391678;
+		xsec = 105.418;
 		FiltEff = 1.;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -370,9 +370,9 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 1970745;
-		xsec = 200061.7; //da cambiare
+		xsec = 200061.7; 
 		FiltEff = 1.;
-		kFac = 1.3;
+		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
 		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
 		cout << "Running on " << sample << endl;
@@ -384,9 +384,9 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 1993325;
-		xsec = 19931.62; //da cambiare
+		xsec = 19931.62; 
 		FiltEff = 1.;
-		kFac = 1.3;
+		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
 		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
 		cout << "Running on " << sample << endl;
@@ -398,9 +398,9 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 1995062;
-		xsec = 3322.309; //da cambiare
+		xsec = 3322.309; 
 		FiltEff = 1.;
-		kFac = 1.3;
+		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
 		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
 		cout << "Running on " << sample << endl;
@@ -411,10 +411,10 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_G_Pt-80to120";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 1992627;
-		xsec = 558.2865; //da cambiare
+		nEvents = 1992627
+		xsec = 558.2865;
 		FiltEff = 1.;
-		kFac = 1.3;
+		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
 		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
 		cout << "Running on " << sample << endl;
@@ -426,9 +426,9 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 2000043;
-		xsec = 108.0068; //da cambiare
+		xsec = 108.0068;
 		FiltEff = 1.;
-		kFac = 1.3;
+		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
 		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
 		cout << "Running on " << sample << endl;
@@ -440,9 +440,9 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 2000069;
-		xsec = 30.12207; //da cambiare
+		xsec = 30.12207;
 		FiltEff = 1.;
-		kFac = 1.3;
+		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
 		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
 		cout << "Running on " << sample << endl;
@@ -454,9 +454,9 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 2000130;
-		xsec = 2.138632; //da cambiare
+		xsec = 2.138632;
 		FiltEff = 1.;
-		kFac = 1.3;
+		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
 		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
 		cout << "Running on " << sample << endl;
@@ -468,9 +468,9 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 1975231;
-		xsec = 0.2119244; //da cambiare
+		xsec = 0.2119244;
 		FiltEff = 1.;
-		kFac = 1.3;
+		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
 		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
 		cout << "Running on " << sample << endl;
@@ -482,9 +482,9 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 1973504;
-		xsec = 0.007077847; //da cambiare
+		xsec = 0.007077847;
 		FiltEff = 1.;
-		kFac = 1.3;
+		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
 		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
 		cout << "Running on " << sample << endl;
@@ -496,9 +496,9 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 1984890;
-		xsec = 0.000045103; //da cambiare 4.510327E-5
+		xsec = 4.510327E-5; 
 		FiltEff = 1.;
-		kFac = 1.3;
+		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
 		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
 		cout << "Running on " << sample << endl;
@@ -509,10 +509,10 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_G_Pt-1800";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 1939122;
-		xsec = 0.000001867; //da cambiare 1.867141E-6
+		nEvents = 1919122;
+		xsec = 1.867141E-6; 
 		FiltEff = 1.;
-		kFac = 1.3;
+		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
 		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
 		cout << "Running on " << sample << endl;
@@ -525,7 +525,7 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 1156284;
-		xsec = 75.39; //da cambiare
+		xsec = 75.39;
 		FiltEff = 1;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -539,8 +539,8 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_20_30_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 35040695;
-		xsec = 2.88651E8; //da cambiare
+		nEvents = 34940695;
+		xsec = 2.88651E8; 
 		FiltEff = 0.0101;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -554,7 +554,7 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 33088888;
-		xsec = 7.43031E7; //da cambiare
+		xsec = 7.43031E7; 
 		FiltEff = 0.0621;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -568,7 +568,7 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 34542763;
-		xsec = 1.19391E6; //da cambiare
+		xsec = 1.19391E6; 
 		FiltEff = 0.1539;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -581,8 +581,8 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_170_250_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 31761753;
-		xsec = 30980.0; //da cambiare
+		nEvents = 31697066;
+		xsec = 30980.0; 
 		FiltEff = 0.148;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -595,8 +595,8 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_250_350_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 34611322;
-		xsec = 4245.29; //da cambiare
+		nEvents = 34511322;
+		xsec = 4245.29; 
 		FiltEff = 0.131;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -609,8 +609,8 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_350_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 34080562;
-		xsec = 810.454; //da cambiare
+		nEvents = 34030562;
+		xsec = 810.454;
 		FiltEff = 0.11;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -694,7 +694,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_350_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 1948532 ;
+		nEvents = 1948532;
 		xsec = 811.0;
 		FiltEff = 0.0295;
 		kFac = 1.;
@@ -711,7 +711,7 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 50129518;
-		xsec = 1.0515E7; //da cambiare
+		xsec = 1.0515E7; 
 		FiltEff = 1.;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -725,7 +725,7 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 27062078;
-		xsec = 276000.0; //da cambiare
+		xsec = 276000.0; 
 		FiltEff = 1.;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -739,7 +739,7 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 30599292;
-		xsec = 8631.07; //da cambiare
+		xsec = 8631.07; 
 		FiltEff = 1.;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation
@@ -753,7 +753,7 @@ void GJetsAnalyzer::Loop(){
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
 		nEvents = 13843863;
-		xsec = 210.585; //da cambiare
+		xsec = 210.585;
 		FiltEff = 1.;
 		kFac = 1.;
 		// weight = 1.; // temporary weight=1 for eff. calculation

@@ -65,17 +65,17 @@ void XSec_Nevents(){
 	sprintf(GJets_HT_100To200_name,"samples/GJets_HT-100To200_8TeV-madgraph_Summer12_DR53X-PU_S10_START53_V19-v1.root");
 	sprintf(GJets_HT_200To400_name,"samples/GJets_HT-200To400_8TeV-madgraph_v2_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
 	sprintf(GJets_HT_400ToInf_name,"samples/GJets_HT-400ToInf_8TeV-madgraph_v3_Summer12_DR53X-PU_S10_START53_V7C-v1.root");
-	sprintf(G_Pt_15to30_name,"samples/G_Pt-15to30_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
-	sprintf(G_Pt_30to50_name,"samples/G_Pt-30to50_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
-	sprintf(G_Pt_50to80_name,"samples/G_Pt-50to80_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
-	sprintf(G_Pt_80to120_name,"samples/G_Pt-80to120_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
-	sprintf(G_Pt_120to170_name,"samples/G_Pt-120to170_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");	
-	sprintf(G_Pt_170to300_name,"samples/G_Pt-170to300_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
-	sprintf(G_Pt_300to470_name,"samples/G_Pt-300to470_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");	
-	sprintf(G_Pt_470to800_name,"samples/G_Pt-470to800_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
-	sprintf(G_Pt_800to1400_name,"samples/G_Pt-800to1400_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
-	sprintf(G_Pt_1400to1800_name,"samples/G_Pt-1400to1800_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
-	sprintf(G_Pt_1800_name,"samples/G_Pt-1800_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
+	sprintf(G_Pt_15to30_name,"samples/G_Pt-15to30_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");
+	sprintf(G_Pt_30to50_name,"samples/G_Pt-30to50_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");
+	sprintf(G_Pt_50to80_name,"samples/G_Pt-50to80_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");
+	sprintf(G_Pt_80to120_name,"samples/G_Pt-80to120_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");
+	sprintf(G_Pt_120to170_name,"samples/G_Pt-120to170_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");	
+	sprintf(G_Pt_170to300_name,"samples/G_Pt-170to300_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");
+	sprintf(G_Pt_300to470_name,"samples/G_Pt-300to470_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");	
+	sprintf(G_Pt_470to800_name,"samples/G_Pt-470to800_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");
+	sprintf(G_Pt_800to1400_name,"samples/G_Pt-800to1400_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");
+	sprintf(G_Pt_1400to1800_name,"samples/G_Pt-1400to1800_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");
+	sprintf(G_Pt_1800_name,"samples/G_Pt-1800_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");
 	sprintf(DiPhotonJets_name,"samples/DiPhotonJets_8TeV-madgraph-tarball-v2_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
 	sprintf(QCD_Pt_20_30_EMEnriched_name,"samples/QCD_Pt_20_30_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
 	sprintf(QCD_Pt_30_80_EMEnriched_name,"samples/QCD_Pt_30_80_EMEnriched_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");	
@@ -91,8 +91,8 @@ void XSec_Nevents(){
 	sprintf(QCD_Pt_350_BCtoE_name,"samples/QCD_Pt_350_BCtoE_TuneZ2star_8TeV_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v2.root");	
 	sprintf(QCD_HT_100To250_name,"samples/QCD_HT-100To250_TuneZ2star_8TeV-madgraph-pythia_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
 	sprintf(QCD_HT_250To500_name,"samples/QCD_HT-250To500_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
-	sprintf(QCD_HT_500To1000_name,"samples/QCD_HT-500To1000_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
-	sprintf(QCD_HT_1000ToInf_name,"samples/QCD_HT-1000ToInf_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
+	sprintf(QCD_HT_500To1000_name,"samples/QCD_HT-500To1000_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");
+	sprintf(QCD_HT_1000ToInf_name,"samples/QCD_HT-1000ToInf_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");
 
 
 	TFile *GJets_HT_40To100_file = new TFile(GJets_HT_40To100_name);
@@ -207,7 +207,8 @@ void XSec_Nevents(){
   XSec_QCD_HT_500To1000 = QCD_HT_500To1000_histo_XSec->GetBinContent(1)/QCD_HT_500To1000_histo_XSec->GetBinContent(2);
   XSec_QCD_HT_1000ToInf = QCD_HT_1000ToInf_histo_XSec->GetBinContent(1)/QCD_HT_1000ToInf_histo_XSec->GetBinContent(2);
 
-	cout << endl;		
+	cout << endl;
+	cout << "#######################" << endl;
 	cout << "XSec GJets_HT-40To100 = " << XSec_GJets_HT_40To100 << " /pb" << endl;  
 	cout << "XSec GJets_HT-100To200 = " << XSec_GJets_HT_100To200 << " /pb" << endl;
 	cout << "XSec GJets_HT-200To400 = " << XSec_GJets_HT_200To400 << " /pb" << endl;  
@@ -245,8 +246,7 @@ void XSec_Nevents(){
 	cout << "XSec QCD_HT-250To500 = " << XSec_QCD_HT_250To500 << " /pb" << endl;  	
 	cout << "XSec QCD_HT-500To1000 = " << XSec_QCD_HT_500To1000 << " /pb" << endl;  
 	cout << "XSec QCD_HT-1000ToInf = " << XSec_QCD_HT_1000ToInf << " /pb" << endl;  
-	cout << endl;
-	
+	cout << "#######################" << endl;	
 
 // N events ---------------
 	
@@ -283,7 +283,7 @@ void XSec_Nevents(){
 	TH1F *QCD_HT_500To1000_histo_Nevents  = (TH1F*)QCD_HT_500To1000_file->Get(titlehisto_Nevents);
 	TH1F *QCD_HT_1000ToInf_histo_Nevents  = (TH1F*)QCD_HT_1000ToInf_file->Get(titlehisto_Nevents);
 
-  double Nevents_GJets_HT_40To100, Nevents_GJets_HT_100To200, Nevents_GJets_HT_200To400, Nevents_GJets_HT_400ToInf, 
+  int Nevents_GJets_HT_40To100, Nevents_GJets_HT_100To200, Nevents_GJets_HT_200To400, Nevents_GJets_HT_400ToInf, 
          Nevents_G_Pt_15to30, Nevents_G_Pt_30to50, Nevents_G_Pt_50to80, Nevents_G_Pt_80to120, Nevents_G_Pt_120to170, Nevents_G_Pt_170to300,
          Nevents_G_Pt_300to470, Nevents_G_Pt_470to800, Nevents_G_Pt_800to1400, Nevents_G_Pt_1400to1800, Nevents_G_Pt_1800,
          Nevents_DiPhotonJets,
@@ -326,7 +326,8 @@ void XSec_Nevents(){
   Nevents_QCD_HT_500To1000 = QCD_HT_500To1000_histo_Nevents->GetEntries();
   Nevents_QCD_HT_1000ToInf = QCD_HT_1000ToInf_histo_Nevents->GetEntries();
 
-	cout << endl;		
+	cout << endl;	
+	cout << "#######################" << endl;
 	cout << "N events GJets_HT-40To100 = " << Nevents_GJets_HT_40To100 << endl;  
 	cout << "N events GJets_HT-100To200 = " << Nevents_GJets_HT_100To200 << endl;
 	cout << "N events GJets_HT-200To400 = " << Nevents_GJets_HT_200To400 << endl;  
@@ -364,6 +365,7 @@ void XSec_Nevents(){
 	cout << "N events QCD_HT-250To500 = " << Nevents_QCD_HT_250To500 << endl;  	
 	cout << "N events QCD_HT-500To1000 = " << Nevents_QCD_HT_500To1000 << endl;  
 	cout << "N events QCD_HT-1000ToInf = " << Nevents_QCD_HT_1000ToInf << endl;  
+	cout << "#######################" << endl;
 	cout << endl;
-		
+				
 }

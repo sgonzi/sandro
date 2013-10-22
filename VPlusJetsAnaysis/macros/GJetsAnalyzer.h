@@ -682,7 +682,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 
 // MC signal GJets_HT-xToy ----------------------------------------------  
 		else if (mysample == 21){
-			file_sample = "GJets_HT-40To100_8TeV-madgraph_v2_Summer12_DR53X-PU_S10_START53_V19-v1.root";
+			file_sample = "GJets_HT-40To100_8TeV-madgraph_Summer12_DR53X-PU_S10_START53_V19-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
@@ -995,7 +995,7 @@ GJetsAnalyzer::GJetsAnalyzer(TTree *tree, Int_t isample) {
 
 // MC background QCD HT-xToy --------------------------------------------
 		else if (mysample == 81){
-			file_sample = "QCD_HT-100To250_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			file_sample = "QCD_HT-100To250_TuneZ2star_8TeV-madgraph-pythia_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
