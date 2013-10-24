@@ -83,7 +83,7 @@ void ZJetsAnalyzer::Loop(){
 	// ==================================== numeric and definition side of the code
 	
 	double Lumi_t;
-	if (data_ReReco) Lumi_t = 19789.; // /pb
+	if (data_ReReco) Lumi_t = 19712.; // /pb
 	else Lumi_t = 19027.853; // /pb
 	double xsec = 1.;
 	double FiltEff = 1.;
@@ -119,7 +119,7 @@ void ZJetsAnalyzer::Loop(){
 		sample = "DYJetsToLL_M_50";
 	sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 30459503;
+		nEvents = 30458871;
 		xsec = 3503.71; 
 		FiltEff = 1.;
 		kFac = 1.;
