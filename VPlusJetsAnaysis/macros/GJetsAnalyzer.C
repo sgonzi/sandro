@@ -1833,7 +1833,7 @@ void GJetsAnalyzer::Loop(){
 			SelectedJets_HT += SelectedJets_Pt.at(zJetPos);
 		}
 
-		if (SelectedPhotons_N > 0 && SelectedJets_N > 1){
+		if (SelectedPhotons_N > 0 && SelectedJets_N > 0){
 			TLorentzVector PtEtaPhiE_tmpPho = TLorentzVector(0,0,0,0);
 			PtEtaPhiE_tmpPho.SetPtEtaPhiE(SelectedPhotons_Pt.at(0), SelectedPhotons_Eta.at(0), SelectedPhotons_Phi.at(0), SelectedPhotons_E.at(0));
 			vPtEtaPhiE.push_back(PtEtaPhiE_tmpPho);
