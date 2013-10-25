@@ -1548,11 +1548,12 @@ void GJetsAnalyzer::Loop(){
 							if(!RandomCone) {
 //								if(photonPfIsoPhoton_RhoCorr < (0.7 + 0.005*photonPt->at(iPhoPos))) iso_Ph = true;
 								if(photonPfIsoPhoton_RhoCorr < 10) iso_Ph = true; // Relaxed cut for Fit on that variable
+								else iso_Ph = false;
 							}
 							else {
 								if(photonIsoFPRPhoton_RhoCorr_forFit < 10) iso_Ph = true;
+								else iso_Ph = false;
 							}
-							else iso_Ph = false;
 						}
 						else {
 							if(photonPfIsoChargedHad_RhoCorr >= 1.5) iso_CH = true;
@@ -1584,11 +1585,12 @@ void GJetsAnalyzer::Loop(){
 							if(!RandomCone) {
 //							if(photonPfIsoPhoton_RhoCorr < (1.0 + 0.005*photonPt->at(iPhoPos))) iso_Ph = true;
 								if(photonPfIsoPhoton_RhoCorr < 10) iso_Ph = true; // Relaxed cut for Fit on that variable
+								else iso_Ph = false;
 							}
 							else {
 								if(photonIsoFPRPhoton_RhoCorr_forFit < 10) iso_Ph = true;
+								else iso_Ph = false;
 							}
-							else iso_Ph = false;
 						}
 						else {
 							if(photonPfIsoChargedHad_RhoCorr >= 1.2) iso_CH = true;
