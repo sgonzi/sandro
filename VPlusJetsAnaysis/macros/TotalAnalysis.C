@@ -248,7 +248,7 @@ void TotalAnalysis(){
 	TotalAnalysis_dataReReco();
 	//TotalAnalysis_dataPromptReco();
 	TotalAnalysis_GJets_HT_xToy();
-	//TotalAnalysis_G_Pt_XtoY();
+	TotalAnalysis_G_Pt_XtoY();
 	TotalAnalysis_DiPhotonJets();
 	TotalAnalysis_QCD_Pt_x_y_EMEnriched();
 	TotalAnalysis_QCD_Pt_x_y_BCtoE();
