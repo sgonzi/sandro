@@ -139,21 +139,21 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 
 	// ==================================== choose the tools
 
-	string folder = "22_results_2013_09_07"; // analysis folder
+	string folder = "01_results_2013_10_25"; // analysis folder
 
 	char geo[100] = "barrel";                // "barrel", "endcaps" or "total"
 
 	bool data_ReReco = true;                // true: data = ReReco
 	                                         // false: data = PromptReco
 
-	bool inv_sigmaietaieta = true;          // inverted sigmaietaieta cut
+	bool inv_sigmaietaieta = false;          // inverted sigmaietaieta cut
 	bool inv_isolation = false;              // inverted isolation set cut
 
 	bool signal_MAD = true;                  // true: signal = MADGRAPH; false: signal = PYTHIA
 	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 
-	Int_t itype = 22;                        // it identifies histos with different analysis 
+	Int_t itype = 1;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names
@@ -984,6 +984,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	MC_stack->Draw("SAME");
 	DATA_total_histo->Draw("ESAME");
 	gPad->SetLogy();
+	gPad->SetLogx(); // for p_T plot	
 	DATA_total_histo->Draw("AXIS X+ Y+ SAME");
 	DATA_total_histo->Draw("AXIS SAME");
 	DATA_total_histo->GetXaxis()->SetTitle(namevariable);
@@ -994,21 +995,21 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
- 	if (data_ReReco) leg->AddEntry(DATA_total_histo,"Data ReReco","pL");
+ 	if (data_ReReco) leg->AddEntry(DATA_total_histo,"Data","pL");
 	else leg->AddEntry(DATA_total_histo,"Data PromptReco","pL");
 		if(signal_MAD){
-		leg->AddEntry(GJets_HT_xToy_total_histo,"#gamma + jets - MAD","f");
+		leg->AddEntry(GJets_HT_xToy_total_histo,"#gamma + jets - #font[32]{MAD}","f");
 	}
 	else{
-		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets - PYT","f");
+		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets - #font[32]{PYT}","f");
 	}
-	leg->AddEntry(DiPhotonJets_total_histo,"Diphotons + jets","f");
+	leg->AddEntry(DiPhotonJets_total_histo,"2#gamma + jets - #font[32]{MAD}","f");
 	if (!background_QCD){
-		leg->AddEntry(QCD_Pt_x_y_EMEnriched_total_histo,"QCD EMEnriched","f");
-		leg->AddEntry(QCD_Pt_x_y_BCtoE_total_histo,"QCD BCtoE","f");
+		leg->AddEntry(QCD_Pt_x_y_EMEnriched_total_histo,"QCD EM Enriched - #font[32]{PYT}","f");
+		leg->AddEntry(QCD_Pt_x_y_BCtoE_total_histo,"QCD b,c #rightarrow e - #font[32]{PYT}","f");
 	}
 	else {
-		leg->AddEntry(QCD_HT_xToy_total_histo,"QCD HT","f");
+		leg->AddEntry(QCD_HT_xToy_total_histo,"QCD - #font[32]{MAD}","f");
 	}
 	leg->Draw();
 
@@ -1017,7 +1018,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
   text->SetFillStyle(0);
   text->SetBorderSize(0);
   text->AddText("CMS Preliminary");
-  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.79 fb^{-1}");
+  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
   else text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
   text->SetTextAlign(11);
   text->Draw();
@@ -1025,7 +1026,8 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	
 	// lower Pad
 	lowerPad-> cd();
-
+	gPad->SetLogx(); // for p_T plot
+	
 	float xbox_min,xbox_max;
 	if (x_min == -999 && x_max == -999){
 		xbox_min = ratio_histo->GetXaxis()->GetXmin();

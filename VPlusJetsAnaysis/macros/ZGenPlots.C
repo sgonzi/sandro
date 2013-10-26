@@ -271,7 +271,7 @@ void ZGenPlots(const char* titleh, const char* namevariable, const int rebin, co
   text->SetFillStyle(0);
   text->SetBorderSize(0);
   text->AddText("CMS Simulation");
-  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.79 fb^{-1}");
+  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
   else text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
   text->SetTextAlign(11);
   text->Draw();

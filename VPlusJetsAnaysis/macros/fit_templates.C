@@ -356,8 +356,8 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
 	leg->AddEntry(h_MC_BACK_scaled,"MC background","l");
-	leg->AddEntry(h_MC_BACK_INV_scaled,"#splitline{MC background}{(inverted cut)}","l");
-	leg->AddEntry(h_DATA_INV_scaled,"#splitline{DATA}{(inverted cut)}","pL");	
+	leg->AddEntry(h_MC_BACK_INV_scaled,"#splitline{MC background}{(sidebands)}","l");
+	leg->AddEntry(h_DATA_INV_scaled,"#splitline{Data}{(sidebands)}","pL");	
 	leg->Draw();
 
 	// lower Pad
@@ -657,7 +657,8 @@ void fit_templates_id_sieie_20binPt() {
 	fit_templates("SelectedPhotons_id_sieie_1_bin", "04_", "04_", 1, 0, 0.012);
 	fit_templates("SelectedPhotons_id_sieie_1_bin", "05_", "05_", 1, 0, 0.012);
 	fit_templates("SelectedPhotons_id_sieie_1_bin", "06_", "06_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "07_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "07_", "07_", 1, 0, 0.012);
+/*
 	fit_templates("SelectedPhotons_id_sieie_1_bin", "08_", "20_", 1, 0, 0.012);
 	fit_templates("SelectedPhotons_id_sieie_1_bin", "09_", "20_", 1, 0, 0.012);
 	fit_templates("SelectedPhotons_id_sieie_1_bin", "10_", "20_", 1, 0, 0.012);
@@ -671,6 +672,7 @@ void fit_templates_id_sieie_20binPt() {
 	fit_templates("SelectedPhotons_id_sieie_1_bin", "18_", "20_", 1, 0, 0.012);	
 	fit_templates("SelectedPhotons_id_sieie_1_bin", "19_", "20_", 1, 0, 0.012);
 	fit_templates("SelectedPhotons_id_sieie_1_bin", "20_", "20_", 1, 0, 0.012);
+*/
 }
 
 
@@ -682,7 +684,8 @@ void fit_templates_PfIso_RhoCorrected_20binPt() {
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "04_", "04_", 1, 0, 20);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "05_", "05_", 1, 0, 20);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "06_", "06_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "07_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "07_", "07_", 1, 0, 30);
+/*
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "08_", "20_", 1, 0, 30);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "09_", "20_", 1, 0, 30);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "10_", "20_", 1, 0, 30);
@@ -696,6 +699,7 @@ void fit_templates_PfIso_RhoCorrected_20binPt() {
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "18_", "20_", 1, 0, 30);	
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "19_", "20_", 1, 0, 30);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "20_", "20_", 1, 0, 30);
+*/
 }
 
 
@@ -706,7 +710,8 @@ void fit_templates_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_20binPt() {
 	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "04_", "04_", 2, -6, 4);
 	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "05_", "05_", 2, -6, 4);
 	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "06_", "06_", 2, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "07_", "20_", 2, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "07_", "07_", 2, -6, 4);
+/*	
 	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "08_", "20_", 2, -6, 4);
 	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "09_", "20_", 2, -6, 4);
 	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "10_", "20_", 2, -6, 6);
@@ -720,6 +725,7 @@ void fit_templates_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_20binPt() {
 	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "18_", "20_", 2, -6, 4);
 	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "19_", "20_", 2, -6, 6);
 	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "20_", "20_", 2, -6, 6);
+*/
 }
 
 
@@ -730,7 +736,8 @@ void fit_templates_PfIso_RhoCorrected_forFit_20binPt() {
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "04_", "04_", 1, -8, 16);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "05_", "05_", 1, -8, 18);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "06_", "06_", 1, -8, 19);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "07_", "20_", 1, -8, 21);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "07_", "07_", 1, -8, 21);
+/*
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "08_", "20_", 1, -8, 22);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "09_", "20_", 2, -8, 22);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "10_", "20_", 2, -8, 24);
@@ -744,6 +751,7 @@ void fit_templates_PfIso_RhoCorrected_forFit_20binPt() {
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "18_", "20_", 2, -8, 17);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "19_", "20_", 2, -8, 18);
 	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "20_", "20_", 1, -8, 26);
+*/
 }
 
 

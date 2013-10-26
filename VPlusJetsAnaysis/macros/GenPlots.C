@@ -769,18 +769,18 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
 	if(signal_MAD){
-		leg->AddEntry(GJets_HT_xToy_total_histo,"#gamma + jets - MAD","l");
+		leg->AddEntry(GJets_HT_xToy_total_histo,"#gamma + jets - #font[32]{MAD}","l");
 	}
 	else{
-		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets - PYT","l");
+		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets - #font[32]{PYT}","l");
 	}
-	leg->AddEntry(DiPhotonJets_total_histo,"Diphotons + jets","l");
+	leg->AddEntry(DiPhotonJets_total_histo,"2#gamma + jets - #font[32]{MAD}","l");
 //	if (!background_QCD){
-		leg->AddEntry(QCD_Pt_x_y_EMEnriched_total_histo,"QCD EMEnriched","l");
-		leg->AddEntry(QCD_Pt_x_y_BCtoE_total_histo,"QCD BCtoE","l");
+		leg->AddEntry(QCD_Pt_x_y_EMEnriched_total_histo,"QCD EM Enriched - #font[32]{PYT}","l");
+		leg->AddEntry(QCD_Pt_x_y_BCtoE_total_histo,"QCD b,c #rightarrow e - #font[32]{PYT}","l");
 //	}
 //	else {
-		leg->AddEntry(QCD_HT_xToy_total_histo,"QCD HT","l");
+		leg->AddEntry(QCD_HT_xToy_total_histo,"QCD - #font[32]{MAD}","l");
 //	}
 	leg->Draw();
 
@@ -789,7 +789,7 @@ void GenPlots(const char* titleh, const char* namevariable, const int rebin, con
   text->SetFillStyle(0);
   text->SetBorderSize(0);
   text->AddText("CMS Simulation");
-  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.79 fb^{-1}");
+  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
   else text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
   text->SetTextAlign(11);
   text->Draw();

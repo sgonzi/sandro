@@ -593,10 +593,10 @@ void ratioGenPlots(const char* titleh, const char* titlehGJets, const char* titl
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
-	leg->AddEntry(ratio_histo_DEN,"#splitline{#gamma + jets - MAD}{and DiPhotonJets}","l");
-	leg->AddEntry(ratio_histo_NUM_mumu,"DYJetsToLL_M-50 (Z->#mu#mu)","l");
-	leg->AddEntry(ratio_histo_NUM_ee,"DYJetsToLL_M-50 (Z->ee)","l");
-	leg->AddEntry(ratio_histo_NUM_ll,"DYJetsToLL_M-50 (Z->ll)","l");
+	leg->AddEntry(ratio_histo_DEN,"#splitline{#gamma + jets - #font[32]{MAD}}{and 2#gamma + jets - #font[32]{MAD}}","l");
+	leg->AddEntry(ratio_histo_NUM_mumu,"DYJetsToLL_M-50 (Z->#mu#mu) - #font[32]{MAD}","l");
+	leg->AddEntry(ratio_histo_NUM_ee,"DYJetsToLL_M-50 (Z->ee) - #font[32]{MAD}","l");
+	leg->AddEntry(ratio_histo_NUM_ll,"DYJetsToLL_M-50 (Z->ll) - #font[32]{MAD}","l");
 	leg->Draw();
 
   TPaveText* text = new TPaveText(0.5475,0.7722,0.8380,0.8571,"NDC");
@@ -604,7 +604,7 @@ void ratioGenPlots(const char* titleh, const char* titlehGJets, const char* titl
   text->SetFillStyle(0);
   text->SetBorderSize(0);
   text->AddText("CMS Simulation");
-  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.79 fb^{-1}");
+  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
   else text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
   text->SetTextAlign(11);
   text->Draw();

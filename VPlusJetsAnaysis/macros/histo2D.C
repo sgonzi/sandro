@@ -823,16 +823,16 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
 	if(signal_MAD){
-		leg->AddEntry(SIG_histo,"#splitline{SIGNAL:}{#gamma + jets (MAD) and DiPhotonJets}","f");
+		leg->AddEntry(SIG_histo,"#splitline{SIGNAL:}{#gamma + jets and 2#gamma + jets (#font[32]{MAD})}","f");
 	}
 	else{
-		leg->AddEntry(SIG_histo,"#splitline{SIGNAL:}{#gamma + jets (PYT) and DiPhotonJets}","f");
+		leg->AddEntry(SIG_histo,"#splitline{SIGNAL:}{#gamma + jets (#font[32]{PYT}) and 2#gamma + jets (#font[32]{MAD})}","f");
 	}
 	if (!background_QCD){
-		leg->AddEntry(BACK_histo, "#splitline{BACKGROUND:}{QCD EMEnriched and QCD BCtoE}","f");
+		leg->AddEntry(BACK_histo, "#splitline{BACKGROUND:}{QCD EM Enriched and QCD b,c #rightarrow e (#font[32]{PYT})}","f");
 	}
 	else {
-		leg->AddEntry(BACK_histo, "#splitline{BACKGROUND:}{QCD HT}","f");
+		leg->AddEntry(BACK_histo, "#splitline{BACKGROUND:}{QCD (#font[32]{MAD})}","f");
 	}
 	leg->Draw();
 
@@ -842,7 +842,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
   text->SetFillStyle(0);
   text->SetBorderSize(0);
   text->AddText("CMS Preliminary");
-  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.79 fb^{-1}");
+  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
   else text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
   text->SetTextAlign(11);
   text->Draw();
@@ -913,6 +913,18 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 		report << "QCD BCtoE file 73 is: " << QCD_Pt_80_170_BCtoE_name << endl;
 		report << "QCD BCtoE file 74 is: " << QCD_Pt_170_250_BCtoE_name << endl;
 		report << "QCD BCtoE file 75 is: " << QCD_Pt_250_350_BCtoE_name << endl;
+
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+
+
+
 		report << "QCD BCtoE file 76 is: " << QCD_Pt_350_BCtoE_name << endl;	
 	}
 
@@ -1044,37 +1056,249 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 }
 
 void histo2D_normal() {
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_", "#gamma1 PfIso #rho corrected", "p_{T}^{#gamma} > 180 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin01_", "#gamma1 PfIso #rho corrected", "180 < p_{T}^{#gamma} < 200 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin02_", "#gamma1 PfIso #rho corrected", "200 < p_{T}^{#gamma} < 250 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin03_", "#gamma1 PfIso #rho corrected", "250 < p_{T}^{#gamma} < 300 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin04_", "#gamma1 PfIso #rho corrected", "300 < p_{T}^{#gamma} < 350 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin05_", "#gamma1 PfIso #rho corrected", "350 < p_{T}^{#gamma} < 400 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin06_", "#gamma1 PfIso #rho corrected", "p_{T}^{#gamma} > 400 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin01_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin02_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin03_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin04_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin05_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin06_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin07_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+/*
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin08_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin09_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin10_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin11_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin12_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin13_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin14_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin15_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin16_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin17_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin18_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin19_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, 0., 20.);
+*/
 
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_", "#gamma1 PfIso #rho corrected for Fit", "p_{T}^{#gamma} > 180 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin01_", "#gamma1 PfIso #rho corrected for Fit", "180 < p_{T}^{#gamma} < 200 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin02_", "#gamma1 PfIso #rho corrected for Fit", "200 < p_{T}^{#gamma} < 250 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin03_", "#gamma1 PfIso #rho corrected for Fit", "250 < p_{T}^{#gamma} < 300 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin04_", "#gamma1 PfIso #rho corrected for Fit", "300 < p_{T}^{#gamma} < 350 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin05_", "#gamma1 PfIso #rho corrected for Fit", "350 < p_{T}^{#gamma} < 400 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin06_", "#gamma1 PfIso #rho corrected for Fit", "p_{T}^{#gamma} > 400 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+/*
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);	
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);	
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);	
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);	
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);	
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);	
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);	
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);	
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);	
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);	
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+*/
+
+
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+/*
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin08", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin09", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);	
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin10", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin11", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);	
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin12", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);	
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin13", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);	
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin14", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);	
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin15", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);	
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin16", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);	
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin17", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);	
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin18", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);	
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin19", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);	
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin20", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 4, 0., 0.012, -10., 20.);	
+*/
+
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+/*
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin08", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin09", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin10", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin11", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin12", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin13", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin14", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin15", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin16", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin17", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin18", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin19", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin20", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+*/
+
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+/*
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin08", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin09", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);	
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin10", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);	
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin11", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin12", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin13", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin14", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin15", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin16", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin17", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin18", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin19", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin20", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 2, 1, 0., 0.012, -10., 6.);
+*/
 }
 
-void histo2D_inverted_sieie() {
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_", "#gamma1 PfIso #rho corrected", "p_{T}^{#gamma} > 180 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, 0., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin01_", "#gamma1 PfIso #rho corrected", "180 < p_{T}^{#gamma} < 200 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, 0., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin02_", "#gamma1 PfIso #rho corrected", "200 < p_{T}^{#gamma} < 250 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, 0., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin03_", "#gamma1 PfIso #rho corrected", "250 < p_{T}^{#gamma} < 300 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, 0., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin04_", "#gamma1 PfIso #rho corrected", "300 < p_{T}^{#gamma} < 350 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, 0., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin05_", "#gamma1 PfIso #rho corrected", "350 < p_{T}^{#gamma} < 400 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, 0., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin06_", "#gamma1 PfIso #rho corrected", "p_{T}^{#gamma} > 400 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, 0., 20.);
 
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_", "#gamma1 PfIso #rho corrected for Fit", "p_{T}^{#gamma} > 180 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin01_", "#gamma1 PfIso #rho corrected for Fit", "180 < p_{T}^{#gamma} < 200 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin02_", "#gamma1 PfIso #rho corrected for Fit", "200 < p_{T}^{#gamma} < 250 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin03_", "#gamma1 PfIso #rho corrected for Fit", "250 < p_{T}^{#gamma} < 300 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin04_", "#gamma1 PfIso #rho corrected for Fit", "300 < p_{T}^{#gamma} < 350 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin05_", "#gamma1 PfIso #rho corrected for Fit", "350 < p_{T}^{#gamma} < 400 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
-	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin06_", "#gamma1 PfIso #rho corrected for Fit", "p_{T}^{#gamma} > 400 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}", 2, 4, 0.010, 0.025, -10., 20.);
+void histo2D_inverted_sieie() {
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin01_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin02_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin03_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin04_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin05_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin06_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin07_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+/*
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin08_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin09_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin10_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin11_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin12_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin13_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin14_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin15_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin16_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin17_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin18_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin19_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, 0., 20.);
+*/
+
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+/*
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin09_, "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin10_, "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin11_, "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin12_, "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);	
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin13_, "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);	
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin14_, "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin15_, "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin16_, "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin17_, "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin18_, "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin19_, "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin20_, "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10, 6.);
+*/
+
+
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+/*
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+	histo2D("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 4, 0.010, 0.025, -10., 20.);
+*/
+
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.0252, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+/*
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);		
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_forFit_vs_sieie_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}, 2, 1, 0.010, 0.025, -10., 6.);
+*/
+
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+/*
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+	histo2D("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_forFit_vs_sieie_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", "10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}] - inv. #sigma_{i#etai#eta}^{#gamma_{1}}", 2, 1, 0.010, 0.025, -10., 6.);
+*/
+
 }

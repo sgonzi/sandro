@@ -734,6 +734,7 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 	MC_stack->Draw("SAME");
 	DATA_total_histo->Draw("ESAME");
 	gPad->SetLogy();
+//	gPad->SetLogx(); // for p_T plot	
 	DATA_total_histo->Draw("AXIS X+ Y+ SAME");
 	DATA_total_histo->Draw("AXIS SAME");
 	DATA_total_histo->GetXaxis()->SetTitle(namevariable);
@@ -744,15 +745,15 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
- 	if (data_ReReco) leg->AddEntry(DATA_total_histo,"Data ReReco","pL");
+ 	if (data_ReReco) leg->AddEntry(DATA_total_histo,"Data","pL");
 	else leg->AddEntry(DATA_total_histo,"Data PromptReco","pL");
 		if(signal_MAD){
-		leg->AddEntry(GJets_HT_xToy_total_histo,"#gamma + jets - MAD","f");
+		leg->AddEntry(GJets_HT_xToy_total_histo,"#gamma + jets - #font[32]{MAD}","f");
 	}
 	else{
-		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets - PYT","f");
+		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets - #font[32]{PYT}","f");
 	}
-	leg->AddEntry(DiPhotonJets_total_histo,"Diphotons + jets","f");
+	leg->AddEntry(DiPhotonJets_total_histo,"2#gamma + jets - #font[32]{MAD}","f");
 	leg->Draw();
 
   TPaveText* text = new TPaveText(0.6068,0.7722,0.8188,0.8571,"NDC");
@@ -760,7 +761,7 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
   text->SetFillStyle(0);
   text->SetBorderSize(0);
   text->AddText("CMS Preliminary");
-  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.79 fb^{-1}");
+  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
   else text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
   text->SetTextAlign(11);
   text->Draw();
