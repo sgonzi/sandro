@@ -1095,28 +1095,28 @@ void GJetsAnalyzer::Loop(){
 
 				if (range_Pt01 && TriMatchF4Path_sel_8){
 					TriMatchF4Path_AND_pTrange = true;
-					if (!isMC) Tri_PF = 1.;	
-					else Tri_PF = 1/6886.55;
+					if (isMC) Tri_PF = 1.;	
+					else Tri_PF = 6886.55;
 				}
 				else if (range_Pt02 && TriMatchF4Path_sel_32){ 
 					TriMatchF4Path_AND_pTrange = true;
-					if (!isMC) Tri_PF = 1.;	
-					Tri_PF = 1/885.49;
+					if (isMC) Tri_PF = 1.;	
+					Tri_PF = 885.49;
 				}
 				else if (range_Pt03 && TriMatchF4Path_sel_128){ 
 					TriMatchF4Path_AND_pTrange = true;
-					if (!isMC) Tri_PF = 1.;	
-					Tri_PF = 1/147.59;
+					if (isMC) Tri_PF = 1.;	
+					Tri_PF = 147.59;
 				}
 				else if (range_Pt04 && TriMatchF4Path_sel_512){ 
 					TriMatchF4Path_AND_pTrange = true;
-					if (!isMC) Tri_PF = 1.;	
-					Tri_PF = 1/70.53;
+					if (isMC) Tri_PF = 1.;	
+					Tri_PF = 70.53;
 				}
 				else if (range_Pt05 && TriMatchF4Path_sel_4096){ 
 					TriMatchF4Path_AND_pTrange = true;
-					if (!isMC) Tri_PF = 1.;	
-					Tri_PF = 1/1.0;
+					if (isMC) Tri_PF = 1.;	
+					Tri_PF = 1.0;
 				}
 				else {
 					TriMatchF4Path_AND_pTrange = false;

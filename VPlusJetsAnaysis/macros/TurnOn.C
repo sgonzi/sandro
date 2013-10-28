@@ -60,7 +60,6 @@ void TurnOn::Loop(){
 	bool data_ReReco = true;					// analysis with data ReReco or data PromptReco
 	string geo = "barrel";						// barrel or endcaps
 	bool SigBack = true;							// to avoid double counting for SIGNAL and BACKGROUND
-	bool TeP_corr = true;							// T&P correction
 		
 	bool plothistos = false;					// please select which plots to show
 	bool textfile = true;							// if you want a text report for each sample
@@ -143,20 +142,6 @@ void TurnOn::Loop(){
 
 	Float_t weight = 1; 
 	Float_t weight_withPU = 1;
-	Float_t scale_TeP = 1.;
-	Float_t scale_TeP_sel_1 = 1.;
-	Float_t scale_TeP_sel_2 = 1.;
-	Float_t scale_TeP_sel_4 = 1.;
-	Float_t scale_TeP_sel_8 = 1.;
-	Float_t scale_TeP_sel_16 = 1.;
-	Float_t scale_TeP_sel_32 = 1.;
-	Float_t scale_TeP_sel_64 = 1.;
-	Float_t scale_TeP_sel_128 = 1.;
-	Float_t scale_TeP_sel_256 = 1.;
-	Float_t scale_TeP_sel_512 = 1.;
-	Float_t scale_TeP_sel_1024 = 1.;
-	Float_t scale_TeP_sel_2048 = 1.;
-	Float_t scale_TeP_sel_4096 = 1.;
 	Float_t weight_final = 1;
 	Float_t weight_final_sel_1 = 1.;
 	Float_t weight_final_sel_2 = 1.;
@@ -886,186 +871,6 @@ void TurnOn::Loop(){
 				photonTriMatchF4Path_sel_2048.push_back(TriMatchF4Path_sel_2048);
 				photonTriMatchF4Path_sel_4096.push_back(TriMatchF4Path_sel_4096);
 				// end Trigger Matching - definitions
-
-				
-				// T&P scale factors - definitions	
-				float TeP_SF;
-				if (TeP_corr) {
-					if (!isMC) TeP_SF = 1.;
-					else {
-						bool reg_Pt1_Eta1 = false;
-						bool reg_Pt2_Eta1 = false;
-						bool reg_Pt3_Eta1 = false;
-						bool reg_Pt4_Eta1 = false;
-						bool reg_Pt5_Eta1 = false;
-						bool reg_Pt6_Eta1 = false;
-						bool reg_Pt7_Eta1 = false;
-						bool reg_Pt8_Eta1 = false;
-						bool reg_Pt9_Eta1 = false;
-						bool reg_Pt10_Eta1 = false;
-						bool reg_Pt11_Eta1 = false;
-						bool reg_Pt12_Eta1 = false;
-						bool reg_Pt13_Eta1 = false;
-						bool reg_Pt14_Eta1 = false;
-						bool reg_Pt15_Eta1 = false;								
-						bool reg_Pt16_Eta1 = false;
-
-						bool reg_Pt1_Eta2 = false;
-						bool reg_Pt2_Eta2 = false;
-						bool reg_Pt3_Eta2 = false;
-						bool reg_Pt4_Eta2 = false;
-						bool reg_Pt5_Eta2 = false;
-						bool reg_Pt6_Eta2 = false;
-						bool reg_Pt7_Eta2 = false;
-						bool reg_Pt8_Eta2 = false;
-						bool reg_Pt9_Eta2 = false;
-						bool reg_Pt10_Eta2 = false;
-						bool reg_Pt11_Eta2 = false;
-						bool reg_Pt12_Eta2 = false;
-						bool reg_Pt13_Eta2 = false;
-						bool reg_Pt14_Eta2 = false;
-						bool reg_Pt15_Eta2 = false;								
-						bool reg_Pt16_Eta2 = false;
-								
-						reg_Pt1_Eta1 = (photonPt->at(iPhoPos) > 35. && photonPt->at(iPhoPos) < 37.) && 
-						               (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt2_Eta1 = (photonPt->at(iPhoPos) > 37. && photonPt->at(iPhoPos) < 39.) && 
-						               (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt3_Eta1 = (photonPt->at(iPhoPos) > 39. && photonPt->at(iPhoPos) < 41.) && 
-						               (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt4_Eta1 = (photonPt->at(iPhoPos) > 41. && photonPt->at(iPhoPos) < 43.) && 
-						               (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt5_Eta1 = (photonPt->at(iPhoPos) > 43. && photonPt->at(iPhoPos) < 45.) && 
-						               (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt6_Eta1 = (photonPt->at(iPhoPos) > 45. && photonPt->at(iPhoPos) < 50.) && 
-						               (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt7_Eta1 = (photonPt->at(iPhoPos) > 50. && photonPt->at(iPhoPos) < 60.) && 
-						               (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt8_Eta1 = (photonPt->at(iPhoPos) > 60. && photonPt->at(iPhoPos) < 70.) && 
-						               (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt9_Eta1 = (photonPt->at(iPhoPos) > 70. && photonPt->at(iPhoPos) < 80.) && 
-						               (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt10_Eta1 = (photonPt->at(iPhoPos) > 80. && photonPt->at(iPhoPos) < 90.) && 
-						                (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt11_Eta1 = (photonPt->at(iPhoPos) > 90. && photonPt->at(iPhoPos) < 100.) && 
-						                (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt12_Eta1 = (photonPt->at(iPhoPos) > 100. && photonPt->at(iPhoPos) < 150.) && 
-						                (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt13_Eta1 = (photonPt->at(iPhoPos) > 150. && photonPt->at(iPhoPos) < 200.) && 
-						                (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt14_Eta1 = (photonPt->at(iPhoPos) > 200. && photonPt->at(iPhoPos) < 300.) && 
-						                (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt15_Eta1 = (photonPt->at(iPhoPos) > 300. && photonPt->at(iPhoPos) < 500.) && 
-						                (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt16_Eta1 = (photonPt->at(iPhoPos) > 500. && photonPt->at(iPhoPos) < 1000.) && 
-						                (abs(photonEta->at(iPhoPos)) < 1.5);
-
-						reg_Pt1_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt2_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt3_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt4_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt5_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt6_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt7_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt8_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt9_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						               (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt10_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						                (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt11_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						                (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt12_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						                (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt13_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						                (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt14_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						                (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt15_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						                (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-						reg_Pt16_Eta2 = (photonPt->at(iPhoPos) > 0 && photonPt->at(iPhoPos) < 200) && 
-						                (abs(photonEta->at(iPhoPos)) > 1.5 && abs(photonEta->at(iPhoPos)) < 2.5);
-
-
-						if (reg_Pt1_Eta1) TeP_SF = 0.9746492;
-						else if (reg_Pt2_Eta1) TeP_SF = 0.9628126;
-						else if (reg_Pt3_Eta1) TeP_SF = 0.9692172;
-						else if (reg_Pt4_Eta1) TeP_SF = 0.9691368;
-						else if (reg_Pt5_Eta1) TeP_SF = 0.9724859;
-						else if (reg_Pt6_Eta1) TeP_SF = 0.9761798;
-						else if (reg_Pt7_Eta1) TeP_SF = 0.9656683;
-						else if (reg_Pt8_Eta1) TeP_SF = 0.9699661;
-						else if (reg_Pt9_Eta1) TeP_SF = 0.9877847;
-						else if (reg_Pt10_Eta1) TeP_SF = 0.9851634;
-						else if (reg_Pt11_Eta1) TeP_SF = 0.9913975;
-						else if (reg_Pt12_Eta1) TeP_SF = 0.9747586;
-						else if (reg_Pt13_Eta1) TeP_SF = 0.9704033;
-						else if (reg_Pt14_Eta1) TeP_SF = 0.965103;
-						else if (reg_Pt15_Eta1) TeP_SF = 1.010107;
-						else if (reg_Pt16_Eta1) TeP_SF = 1.008818;
-
-						else if (reg_Pt1_Eta2) TeP_SF = 0.9794486;
-						else if (reg_Pt2_Eta2) TeP_SF = 0.9839308;
-						else if (reg_Pt3_Eta2) TeP_SF = 0.9836198;
-						else if (reg_Pt4_Eta2) TeP_SF = 0.9832776;
-						else if (reg_Pt5_Eta2) TeP_SF = 0.9798149;
-						else if (reg_Pt6_Eta2) TeP_SF = 0.9827082;
-						else if (reg_Pt7_Eta2) TeP_SF = 0.9937122;
-						else if (reg_Pt8_Eta2) TeP_SF = 0.9990523;
-						else if (reg_Pt9_Eta2) TeP_SF = 1.011939;
-						else if (reg_Pt10_Eta2) TeP_SF = 1.004887;
-						else if (reg_Pt11_Eta2) TeP_SF = 0.9614111;
-						else if (reg_Pt12_Eta2) TeP_SF = 0.9437025;
-						else if (reg_Pt13_Eta2) TeP_SF = 0.9266722;
-						else if (reg_Pt14_Eta2) TeP_SF = 0.9656222;
-						else if (reg_Pt15_Eta2) TeP_SF = 0.6447101;
-						else if (reg_Pt16_Eta2) TeP_SF = 0.9;
-								
-						else TeP_SF = 1.;
-					}
-				}
-				else TeP_SF = 1.;
-				
-				photonTeP_SF.push_back(TeP_SF);
-				// end T&P scale factors - definitions
-
 			}
 		}	// end Efficiency corrections
 
@@ -1221,7 +1026,6 @@ void TurnOn::Loop(){
 						SelectedPhotons_Pt.push_back(photonPt->at(iPhoPos));
 						SelectedPhotons_Eta.push_back(photonEta->at(iPhoPos)); 
 						SelectedPhotons_Phi.push_back(photonPhi->at(iPhoPos));
-						SelectedPhotons_TeP_SF.push_back(photonTeP_SF.at(iPhoPos));
 						SelectedPhotons_N+=1;
 
 						// photon trigger matching selection
@@ -1243,7 +1047,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_1.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_1.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_1.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_1.push_back(photonTeP_SF.at(iPhoPos));
 							SelectedPhotons_N_sel_1+=1;
 						} 
 
@@ -1251,7 +1054,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_2.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_2.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_2.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_2.push_back(photonTeP_SF.at(iPhoPos));
 							SelectedPhotons_N_sel_2+=1;
 						} 
 						
@@ -1259,7 +1061,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_4.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_4.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_4.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_4.push_back(photonTeP_SF.at(iPhoPos));							
 							SelectedPhotons_N_sel_4+=1;
 						} 
 
@@ -1267,7 +1068,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_8.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_8.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_8.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_8.push_back(photonTeP_SF.at(iPhoPos));
 							SelectedPhotons_N_sel_8+=1;
 						} 
 
@@ -1275,7 +1075,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_16.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_16.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_16.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_16.push_back(photonTeP_SF.at(iPhoPos));
 							SelectedPhotons_N_sel_16+=1;
 						} 
 
@@ -1283,7 +1082,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_32.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_32.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_32.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_32.push_back(photonTeP_SF.at(iPhoPos));
 							SelectedPhotons_N_sel_32+=1;
 						} 
 
@@ -1291,7 +1089,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_64.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_64.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_64.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_64.push_back(photonTeP_SF.at(iPhoPos));
 							SelectedPhotons_N_sel_64+=1;
 						} 
 					
@@ -1299,7 +1096,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_128.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_128.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_128.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_128.push_back(photonTeP_SF.at(iPhoPos));
 							SelectedPhotons_N_sel_128+=1;
 						} 
 
@@ -1307,7 +1103,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_256.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_256.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_256.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_256.push_back(photonTeP_SF.at(iPhoPos));
 							SelectedPhotons_N_sel_256+=1;
 						} 
 
@@ -1315,7 +1110,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_512.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_512.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_512.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_512.push_back(photonTeP_SF.at(iPhoPos));
 							SelectedPhotons_N_sel_512+=1;
 						} 
 
@@ -1323,7 +1117,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_1024.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_1024.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_1024.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_1024.push_back(photonTeP_SF.at(iPhoPos));
 							SelectedPhotons_N_sel_1024+=1;
 						} 
 
@@ -1331,7 +1124,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_2048.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_2048.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_2048.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_2048.push_back(photonTeP_SF.at(iPhoPos));
 							SelectedPhotons_N_sel_2048+=1;
 						} 
 
@@ -1339,7 +1131,6 @@ void TurnOn::Loop(){
 							SelectedPhotons_Pt_sel_4096.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_4096.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_4096.push_back(photonPhi->at(iPhoPos));
-							SelectedPhotons_TeP_SF_sel_4096.push_back(photonTeP_SF.at(iPhoPos));
 							SelectedPhotons_N_sel_4096+=1;
 						} 
 
@@ -1837,68 +1628,54 @@ void TurnOn::Loop(){
 
 		// scaling factors definitions
 		if(SelectedPhotons_N > 0) {
-			scale_TeP = SelectedPhotons_TeP_SF.at(0);
-			weight_final = scale_TeP * weight_withPU;
+			weight_final = weight_withPU;
 		} 
 		if(SelectedPhotons_N_sel_1 > 0) {
-			scale_TeP_sel_1 = SelectedPhotons_TeP_SF_sel_1.at(0);
-			weight_final_sel_1 = scale_TeP_sel_1 * weight_withPU;
+			weight_final_sel_1 = weight_withPU;
 		} 		
 		if(SelectedPhotons_N_sel_2 > 0) {
-			scale_TeP_sel_2 = SelectedPhotons_TeP_SF_sel_2.at(0);
-			weight_final_sel_2 = scale_TeP_sel_2 * weight_withPU;
+			weight_final_sel_2 = weight_withPU;
 		} 		
 		if(SelectedPhotons_N_sel_4 > 0) {
-			scale_TeP_sel_4 = SelectedPhotons_TeP_SF_sel_4.at(0);
-			weight_final_sel_4 = scale_TeP_sel_4 * weight_withPU;
+			weight_final_sel_4 = weight_withPU;
 		} 		
 		if(SelectedPhotons_N_sel_8 > 0) {
-			scale_TeP_sel_8 = SelectedPhotons_TeP_SF_sel_8.at(0);
-			weight_final_sel_8 = scale_TeP_sel_8 * weight_withPU;
+			weight_final_sel_8 = weight_withPU;
 		} 		
 		if(SelectedPhotons_N_sel_16 > 0) {
-			scale_TeP_sel_16 = SelectedPhotons_TeP_SF_sel_16.at(0);
-			weight_final_sel_16 = scale_TeP_sel_16 * weight_withPU;
+			weight_final_sel_16 = weight_withPU;
 		} 		
-					if(SelectedPhotons_N_sel_32 > 0) {
-			scale_TeP_sel_32 = SelectedPhotons_TeP_SF_sel_32.at(0);
-			weight_final_sel_32 = scale_TeP_sel_32 * weight_withPU;
+		if(SelectedPhotons_N_sel_32 > 0) {
+			weight_final_sel_32 = weight_withPU;
 		} 			
 		if(SelectedPhotons_N_sel_64 > 0) {
-			scale_TeP_sel_64 = SelectedPhotons_TeP_SF_sel_64.at(0);
-			weight_final_sel_64 = scale_TeP_sel_64 * weight_withPU;
+			weight_final_sel_64 = weight_withPU;
 		}
 		if(SelectedPhotons_N_sel_128 > 0) {
-			scale_TeP_sel_128 = SelectedPhotons_TeP_SF_sel_128.at(0);
-			weight_final_sel_128 = scale_TeP_sel_128 * weight_withPU;
+			weight_final_sel_128 = weight_withPU;
 		} 
 		if(SelectedPhotons_N_sel_256 > 0) {
-			scale_TeP_sel_256 = SelectedPhotons_TeP_SF_sel_256.at(0);
-			weight_final_sel_256 = scale_TeP_sel_256 * weight_withPU;
+			weight_final_sel_256 = weight_withPU;
 		} 				
 		if(SelectedPhotons_N_sel_512 > 0) {
-			scale_TeP_sel_512 = SelectedPhotons_TeP_SF_sel_512.at(0);
-			weight_final_sel_512 = scale_TeP_sel_512 * weight_withPU;
-		} 				
-		if(SelectedPhotons_N_sel_4096 > 0) {
-			scale_TeP_sel_4096 = SelectedPhotons_TeP_SF_sel_4096.at(0);
-			weight_final_sel_4096 = scale_TeP_sel_4096 * weight_withPU;
+			weight_final_sel_512 = weight_withPU;
 		} 				
 		if(SelectedPhotons_N_sel_1024 > 0) {
-			scale_TeP_sel_1024 = SelectedPhotons_TeP_SF_sel_1024.at(0);
-			weight_final_sel_1024 = scale_TeP_sel_1024 * weight_withPU;
+			weight_final_sel_1024 = weight_withPU;
 		} 				
 		if(SelectedPhotons_N_sel_2048 > 0) {
-			scale_TeP_sel_2048 = SelectedPhotons_TeP_SF_sel_2048.at(0);
-			weight_final_sel_2048 = scale_TeP_sel_2048 * weight_withPU;
+			weight_final_sel_2048 = weight_withPU;
 		} 		
+		if(SelectedPhotons_N_sel_4096 > 0) {
+			weight_final_sel_4096 = weight_withPU;
+		} 				
 		// end scaling factors definitions
 
 
 		// =========== Analysis selection
 		
 		// trigger family selection
-		if ((1 & isTriggered) || (32 & isTriggered)) {
+		if (17 & isTriggered) { // OR di DoubleMu (1) and SingleMu (16) HLT paths families
 
 			// Isolation at GEN level
 			if (isoGEN) {
@@ -2244,7 +2021,6 @@ void TurnOn::Loop(){
 		photonTriMatchF4Path_sel_2048.clear();		
 		photonTriMatchF4Path_sel_4096.clear();
 						
-		photonTeP_SF.clear();
 
 		SelectedPhotons_Pt.clear();
 		SelectedPhotons_Pt_sel_1.clear();
@@ -2291,20 +2067,6 @@ void TurnOn::Loop(){
 		SelectedPhotons_Phi_sel_2048.clear();
 		SelectedPhotons_Phi_sel_4096.clear();
 
-		SelectedPhotons_TeP_SF.clear();
-		SelectedPhotons_TeP_SF_sel_1.clear();
-		SelectedPhotons_TeP_SF_sel_2.clear();
-		SelectedPhotons_TeP_SF_sel_4.clear();
-		SelectedPhotons_TeP_SF_sel_8.clear();
-		SelectedPhotons_TeP_SF_sel_16.clear();
-		SelectedPhotons_TeP_SF_sel_32.clear();
-		SelectedPhotons_TeP_SF_sel_64.clear();
-		SelectedPhotons_TeP_SF_sel_128.clear();
-		SelectedPhotons_TeP_SF_sel_256.clear();
-		SelectedPhotons_TeP_SF_sel_512.clear();
-		SelectedPhotons_TeP_SF_sel_1024.clear();
-		SelectedPhotons_TeP_SF_sel_2048.clear();
-		SelectedPhotons_TeP_SF_sel_4096.clear();
 		// end clean photons
 			 
 		// if (Cut(ientry) < 0) continue;
