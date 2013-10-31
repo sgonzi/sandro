@@ -44,6 +44,7 @@
 #include "FWCore/Utilities/interface/Exception.h"
 #endif
 
+using namespace std;
 using namespace RooFit;
 
 void setMYStyle() {
@@ -161,17 +162,18 @@ TString floatToString(float number){
 }
 
 
-void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, const int rebin, const double x_min, const double x_max){
+void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, const char* namevariable, const int rebin, const double x_min, const double x_max){
 
 	setMYStyle();
 
 	// ==================================== choose the tools
 
-	string folder_normal = "21_results_2013_09_07/"; // analysis folder 
-	string folder_inverted = "22_results_2013_09_07/"; // analysis folder with inverted sigmaietaieta cut
+	string folder_normal = "04_results_2013_10_25/"; // analysis folder 
+	string folder_inverted = "05_results_2013_10_25/"; // analysis folder with inverted sigmaietaieta cut
 
 	char geo[10] = "barrel";                 // "barrel", "endcaps" or "total"
 
+	bool RandomCone = true;								 // Random cone
 	bool inv_sigmaietaieta = true;           // inverted sigmaietaieta cut
 	bool inv_isolation = false;              // inverted isolation set cut
 
@@ -185,8 +187,11 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	string sample_MC_BACK_INV = "MC_BACK_INV"; 
 	string sample_DATA_INV = "DATA_INV"; 
 
-	string histo = titleh; 
-	string histo_Templ_MC_SIG = histo + bin_aa; 
+	string histo = titleh;
+	string histoRC = "SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin"; 
+	string histo_Templ_MC_SIG;
+	if (!RandomCone) histo_Templ_MC_SIG = histo + bin_aa; 
+	else histo_Templ_MC_SIG = histoRC + bin_aa;
 	string histo_Templ_MC_BACK = histo + bin_bb;
 	string histo_Templ_DATA = histo + bin_aa;
 	string histo_Templ_MC_BACK_INV = histo + bin_bb;
@@ -221,7 +226,9 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	string fit_txt_folder = "fit_txt_plots/";
 	string txt_string = ".txt";
 	string fit = "fit_";
-	string shape = "shape_";	
+	string shape = "shape_";
+	
+	
 	stringstream ss_r;
 	char root_char[10];
 	ss_r << root_string;
@@ -348,6 +355,7 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	h_MC_BACK_INV_scaled->SetLineWidth(3);
 	h_MC_BACK_INV_scaled->SetLineStyle(2);	
 	h_MC_BACK_INV_scaled->Draw("histo same");
+	h_DATA_INV_scaled->SetMarkerSize(0.7);
 	h_DATA_INV_scaled->Draw("ESAME");
 	gPad->SetLogy();
 
@@ -419,12 +427,24 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 
 //	canva_shape->Update();
 
+	string RandomCone_string = "RandomCone";	
+	if (RandomCone){
+	pdf_string = RandomCone_string + pdf_string;
+	root_string = RandomCone_string + root_string;
+	txt_string = RandomCone_string + txt_string;
+	}
+	else{
+		pdf_string = pdf_string;
+		root_string = root_string;
+		txt_string = txt_string;
+	}
+
 	canva_shape->SaveAs((folder_normal + geo_s + SB_folder + fit_pdf_folder + shape + histo + bin_aa + bin_bb + pdf_string).c_str());
 	canva_shape->SaveAs((folder_normal + geo_s + SB_folder + fit_root_folder + shape + histo + bin_aa + bin_bb + root_string).c_str());
 	
 	// ==================================== fit templates
 
-	RooRealVar x("x","PfIsoPhoton #rho corrected", x_min, x_max);
+	RooRealVar x("x", namevariable, x_min, x_max);
 
 	RooDataHist RooDataHist_MC_SIG("RooDataHist_MC_SIG","MC signal histo", x, h_MC_SIG); 
 	//RooDataHist RooDataHist_MC_BACK("RooDataHist_MC_BACK","MC background histo", x, h_MC_BACK); 
@@ -442,7 +462,7 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
  	RooAddPdf model("model", "MC signal and DATA with an inverted cut - Composite model with fraction", RooArgList(RooHistPdf_MC_SIG,RooHistPdf_DATA_INV), f);
 
 	RooPlot* xframe = x.frame(RooFit::Name("xframe"), 
-	                          RooFit::Title("PfIsoPhoton #rho corrected"), 
+	                          RooFit::Title(namevariable), 
 	                          RooFit::Range(x_min, x_max));
 
 	RooDataHist_DATA.plotOn(xframe);
@@ -457,7 +477,7 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	cout << "fitres = " << fitres << endl; 
 
 
-	model.plotOn (xframe,RooFit::LineColor(kBlue));
+	model.plotOn (xframe,RooFit::LineColor(kBlue),RooFit::MarkerSize(0.7));
 	double chi2;
 	chi2  = xframe->chiSquare(1); // dof = 1 = number of floating parametes
 	cout << endl;
@@ -488,7 +508,7 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 	ofstream report;
 	
 	stringstream ss_t;
-	char txt_char[100];
+	char txt_char[200];
 	ss_t << folder_normal + geo_s + SB_folder + fit_txt_folder + fit + histo + bin_aa + bin_bb + txt_string;
 	ss_t >> txt_char;
 	
@@ -651,108 +671,130 @@ void fit_templates (const char* titleh, const char* bin_aa, const char* bin_bb, 
 }
 
 void fit_templates_id_sieie_20binPt() {
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "01_", "01_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "02_", "02_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "03_", "03_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "04_", "04_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "05_", "05_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "06_", "06_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "07_", "07_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "01_", "01_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "02_", "02_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "03_", "03_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "04_", "04_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "05_", "05_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "06_", "06_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "07_", "07_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
 /*
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "08_", "20_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "09_", "20_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "10_", "20_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "11_", "20_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "12_", "20_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "13_", "20_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "14_", "20_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "15_", "20_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "16_", "20_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "17_", "20_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "18_", "20_", 1, 0, 0.012);	
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "19_", "20_", 1, 0, 0.012);
-	fit_templates("SelectedPhotons_id_sieie_1_bin", "20_", "20_", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "08_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "09_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "10_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "11_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "12_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "13_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "14_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "15_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "16_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "17_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "18_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);	
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "19_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
+	fit_templates("SelectedPhotons_id_sieie_1_bin", "20_", "20_", "#sigma_{i#etai#eta}^{#gamma_{1}}", 1, 0, 0.012);
 */
 }
 
-
-
-void fit_templates_PfIso_RhoCorrected_20binPt() {
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "01_", "01_", 1, 0, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "02_", "02_", 1, 0, 13.3);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "03_", "03_", 1, 0, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "04_", "04_", 1, 0, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "05_", "05_", 1, 0, 20);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "06_", "06_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "07_", "07_", 1, 0, 30);
+void fit_templates_PfIso_RhoCorr_20binPt() {
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "01_", "01_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "02_", "02_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 13.3);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "03_", "03_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "04_", "04_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "05_", "05_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 20);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "06_", "06_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "07_", "07_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
 /*
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "08_", "20_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "09_", "20_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "10_", "20_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "11_", "20_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "12_", "20_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "13_", "20_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "14_", "20_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "15_", "20_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "16_", "20_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "17_", "20_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "18_", "20_", 1, 0, 30);	
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "19_", "20_", 1, 0, 30);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "20_", "20_", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "08_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "09_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "10_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "11_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "12_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "13_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "14_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "15_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "16_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "17_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "18_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);	
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "19_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_1_bin", "20_", "20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}]", 1, 0, 30);
 */
 }
 
 
 void fit_templates_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_20binPt() {
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "01_", "01_", 2, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "02_", "02_", 2, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "03_", "03_", 2, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "04_", "04_", 2, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "05_", "05_", 2, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "06_", "06_", 2, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "07_", "07_", 2, -6, 4);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "01_", "01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "02_", "02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "03_", "03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "04_", "04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "05_", "05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "06_", "06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "07_", "07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
 /*	
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "08_", "20_", 2, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "09_", "20_", 2, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "10_", "20_", 2, -6, 6);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "11_", "20_", 2, -6, 6);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "12_", "20_", 2, -6, 6);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "13_", "20_", 2, -6, 6);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "14_", "20_", 2, -6, 6);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "15_", "20_", 2, -6, 6);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "16_", "20_", 2, -6, 3);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "17_", "20_", 2, -6, 6);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "18_", "20_", 2, -6, 4);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "19_", "20_", 2, -6, 6);
-	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "20_", "20_", 2, -6, 6);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "08_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "09_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "10_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "11_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "12_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "13_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "14_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "15_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "16_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "17_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "18_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "19_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin", "20_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 2, -10, 10);
 */
 }
 
 
-void fit_templates_PfIso_RhoCorrected_forFit_20binPt() {
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "01_", "01_", 1, -8, 9);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "02_", "02_", 1, -8, 13);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "03_", "03_", 1, -8, 13);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "04_", "04_", 1, -8, 16);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "05_", "05_", 1, -8, 18);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "06_", "06_", 1, -8, 19);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "07_", "07_", 1, -8, 21);
+void fit_templates_PfIso_RhoCorr_forFit_20binPt() {
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "01_", "01_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 1, -8, 9);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "02_", "02_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 1, -8, 13);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "03_", "03_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 1, -8, 13);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "04_", "04_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 1, -8, 16);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "05_", "05_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 1, -8, 18);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "06_", "06_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 1, -8, 19);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "07_", "07_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 1, -8, 21);
 /*
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "08_", "20_", 1, -8, 22);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "09_", "20_", 2, -8, 22);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "10_", "20_", 2, -8, 24);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "11_", "20_", 2, -8, 25);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "12_", "20_", 2, -8, 24);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "13_", "20_", 2, -8, 25);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "14_", "20_", 2, -8, 15);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "15_", "20_", 2, -8, 18);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "16_", "20_", 2, -8, 15);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "17_", "20_", 2, -8, 10);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "18_", "20_", 2, -8, 17);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "19_", "20_", 2, -8, 18);
-	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "20_", "20_", 1, -8, 26);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "08_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 1, -8, 22);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "09_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 2, -8, 22);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "10_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 2, -8, 24);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "11_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 2, -8, 25);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "12_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 2, -8, 24);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "13_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 2, -8, 25);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "14_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 2, -8, 15);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "15_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 2, -8, 18);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "16_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 2, -8, 15);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "17_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 2, -8, 10);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "18_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 2, -8, 17);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "19_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 2, -8, 18);
+	fit_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin", "20_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 1, -8, 26);
 */
 }
 
 
+void fit_templates_IsoFPRPhoton_RhoCorr_forFit_20binPt() {
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "01_", "01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "02_", "02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "03_", "03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "04_", "04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "05_", "05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 7.5);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "06_", "06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "07_", "07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+/*
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "08_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "09_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "10_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "11_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "12_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "13_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "14_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "15_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "16_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "17_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "18_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "19_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+	fit_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin", "20_", "20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 2, -10, 10);
+*/
+}
 

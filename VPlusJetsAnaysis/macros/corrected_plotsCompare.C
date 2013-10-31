@@ -2,6 +2,8 @@
 #include "corrected_comparestack.C"
 #include <string>
 
+using namespace std;
+
 // ==================================== definitions
 
 string geo_string(string out) {

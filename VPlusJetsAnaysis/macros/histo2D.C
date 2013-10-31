@@ -24,6 +24,7 @@
 #include "FWCore/Utilities/interface/Exception.h"
 #endif
 
+using namespace std;
 
 void setMYStyle() {
 
@@ -214,7 +215,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 	}	
 	
 	stringstream ss_r;
-	char root_char[100];
+	char root_char[200];
 	ss_r << root_string;
 	ss_r >> root_char;
 
@@ -837,15 +838,23 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 	leg->Draw();
 
 
-  TPaveText* text = new TPaveText(0.1678,0.8042,0.3809,0.8899,"NDC");
-  text->SetFillColor(0);
-  text->SetFillStyle(0);
-  text->SetBorderSize(0);
-  text->AddText("CMS Preliminary");
-  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
-  else text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
-  text->SetTextAlign(11);
-  text->Draw();
+  TPaveText* text_1 = new TPaveText(0.1194,0.9310,0.3313,0.9780,"NDC");
+  text_1->SetFillColor(0);
+  text_1->SetFillStyle(0);
+  text_1->SetBorderSize(0);
+  text_1->AddText("CMS Preliminary");
+  text_1->SetTextAlign(11);
+  text_1->Draw();
+
+  TPaveText* text_2 = new TPaveText(0.5627,0.9310,0.8678,0.9780,"NDC");
+  text_2->SetFillColor(0);
+  text_2->SetFillStyle(0);
+  text_2->SetBorderSize(0);
+  if (data_ReReco) text_2->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
+  else text_2->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
+  text_2->SetTextAlign(11);
+  text_2->Draw();
+
 
 	TPaveText *Tex_pT = new TPaveText(0.0034,0.0035,0.3104,0.0507,"NDC");
 	Tex_pT->SetFillColor(0);
@@ -865,7 +874,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 	ofstream report;
 	
 	stringstream ss_t;
-	char txt_char[100];
+	char txt_char[200];
 	ss_t << folder_s + geo_s + SB_folder + txt_folder + titleh + txt_string;
 	ss_t >> txt_char;
 	

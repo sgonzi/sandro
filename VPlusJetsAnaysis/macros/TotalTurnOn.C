@@ -1,6 +1,8 @@
 #define TotalTurnOn_cxx
 #include "TurnOn.C"
 
+using namespace std;
+
 // ==================================== definitions for Fast Analysis
 
 bool ReReco_data(bool out) {

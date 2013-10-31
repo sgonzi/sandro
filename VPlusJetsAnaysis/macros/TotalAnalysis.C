@@ -1,6 +1,8 @@
 #define TotalAnalysis_cxx
 #include "GJetsAnalyzer.C"
 
+using namespace std;
+
 // ==================================== definitions for Fast Analysis
 
 bool ReReco_data(bool out) {

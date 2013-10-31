@@ -22,6 +22,7 @@
 #include "FWCore/Utilities/interface/Exception.h"
 #endif
 
+using namespace std;
 
 void setMYStyle() {
 
@@ -145,7 +146,8 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 
 	bool data_ReReco = true;                // true: data = ReReco
 	                                         // false: data = PromptReco
-
+	                                         
+	bool logX = false;											// log X scale for p_T plot
 	bool inv_sigmaietaieta = true;          // inverted sigmaietaieta cut
 	bool inv_isolation = false;              // inverted isolation set cut
 
@@ -197,7 +199,7 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 	}	
 	
 	stringstream ss_r;
-	char root_char[100];
+	char root_char[200];
 	ss_r << root_string;
 	ss_r >> root_char;
 
@@ -715,7 +717,8 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 
 		DATA_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
 	}
-
+	
+	DATA_total_histo->SetMarkerSize(0.7);
 	DATA_total_histo->SetMarkerStyle(20);
 	DATA_total_histo->SetMinimum(0.1);
 	DATA_total_histo->Draw("E");
@@ -734,42 +737,60 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 	MC_stack->Draw("SAME");
 	DATA_total_histo->Draw("ESAME");
 	gPad->SetLogy();
-//	gPad->SetLogx(); // for p_T plot	
+	if (logX){
+		gPad->SetLogx(); // for p_T plot	
+	}	
 	DATA_total_histo->Draw("AXIS X+ Y+ SAME");
 	DATA_total_histo->Draw("AXIS SAME");
 	DATA_total_histo->GetXaxis()->SetTitle(namevariable);
 	DATA_total_histo->GetXaxis()->SetTitleSize(0.05);
 	DATA_total_histo->GetYaxis()->SetTitle("Events");
 
-	TLegend *leg =new TLegend(0.6068,0.5478,0.8188,0.7480);
+	TLegend *leg =new TLegend(0.5475,0.6124,0.8322,0.8753);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
  	if (data_ReReco) leg->AddEntry(DATA_total_histo,"Data","pL");
 	else leg->AddEntry(DATA_total_histo,"Data PromptReco","pL");
 		if(signal_MAD){
-		leg->AddEntry(GJets_HT_xToy_total_histo,"#gamma + jets - #font[32]{MAD}","f");
+		leg->AddEntry(GJets_HT_xToy_total_histo,"#gamma + jets","f");
 	}
 	else{
-		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets - #font[32]{PYT}","f");
+		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets","f");
 	}
-	leg->AddEntry(DiPhotonJets_total_histo,"2#gamma + jets - #font[32]{MAD}","f");
+	leg->AddEntry(DiPhotonJets_total_histo,"2#gamma + jets","f");
+	if (!background_QCD){
+		leg->AddEntry(QCD_Pt_x_y_EMEnriched_total_histo,"QCD EM Enriched","f");
+		leg->AddEntry(QCD_Pt_x_y_BCtoE_total_histo,"QCD b,c #rightarrow e","f");
+	}
+	else {
+		leg->AddEntry(QCD_HT_xToy_total_histo,"QCD","f");
+	}
 	leg->Draw();
 
-  TPaveText* text = new TPaveText(0.6068,0.7722,0.8188,0.8571,"NDC");
-  text->SetFillColor(0);
-  text->SetFillStyle(0);
-  text->SetBorderSize(0);
-  text->AddText("CMS Preliminary");
-  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
-  else text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
-  text->SetTextAlign(11);
-  text->Draw();
+  TPaveText* text_1 = new TPaveText(0.1194,0.9310,0.3313,0.9780,"NDC");
+  text_1->SetFillColor(0);
+  text_1->SetFillStyle(0);
+  text_1->SetBorderSize(0);
+  text_1->AddText("CMS Preliminary");
+  text_1->SetTextAlign(11);
+  text_1->Draw();
+
+  TPaveText* text_2 = new TPaveText(0.5627,0.9310,0.8678,0.9780,"NDC");
+  text_2->SetFillColor(0);
+  text_2->SetFillStyle(0);
+  text_2->SetBorderSize(0);
+  if (data_ReReco) text_2->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
+  else text_2->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
+  text_2->SetTextAlign(11);
+  text_2->Draw();
 
 	
 	// lower Pad
 	lowerPad-> cd();
-
+	if (logX){
+		gPad->SetLogx(); // for p_T plot	
+	}
 	float xbox_min,xbox_max;
 	if (x_min == -999 && x_max == -999){
 		xbox_min = ratio_histo->GetXaxis()->GetXmin();
@@ -830,7 +851,7 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 	ofstream report;
 	
 	stringstream ss_t;
-	char txt_char[100];
+	char txt_char[200];
 	ss_t << folder_s + geo_s + SB_folder + txt_folder + titleh + txt_string;
 	ss_t >> txt_char;
 	

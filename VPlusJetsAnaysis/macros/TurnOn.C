@@ -20,6 +20,7 @@
 #include "FWCore/Utilities/interface/Exception.h"
 #endif
 
+using namespace std;
 
 //#ifdef __MAKECINT__
 //#pragma link C++ class vector<float>+;
@@ -142,7 +143,13 @@ void TurnOn::Loop(){
 
 	Float_t weight = 1; 
 	Float_t weight_withPU = 1;
-	Float_t weight_final = 1;
+	Float_t weight_final_D1 = 1;
+	Float_t weight_final_D8 = 1;
+	Float_t weight_final_D32 = 1;
+	Float_t weight_final_D128 = 1;
+	Float_t weight_final_D512 = 1;
+	Float_t weight_final_D2048 = 1;			
+
 	Float_t weight_final_sel_1 = 1.;
 	Float_t weight_final_sel_2 = 1.;
 	Float_t weight_final_sel_4 = 1.;
@@ -750,20 +757,26 @@ void TurnOn::Loop(){
 	TFile *fhistos= new TFile(outputname, "RECREATE");
 	Book_Histos();
  
-	iSelected0 = 0; 
-	iSelected1 = 0;
-	iSelected2 = 0;
-	iSelected3 = 0;
-	iSelected4 = 0;
-	iSelected5 = 0;
-	iSelected6 = 0;
-	iSelected7 = 0;	
-	iSelected8 = 0;
-	iSelected9 = 0;
-	iSelected10 = 0;	
-	iSelected11 = 0;	
-	iSelected12 = 0;
-	iSelected13 = 0;
+	iSelected_D1 = 0; 
+	iSelected_D8 = 0; 
+	iSelected_D32 = 0; 
+	iSelected_D128 = 0; 
+	iSelected_D512 = 0; 
+	iSelected_D2048 = 0; 
+
+	iSelected_sel1 = 0;
+	iSelected_sel2 = 0;
+	iSelected_sel4 = 0;
+	iSelected_sel8 = 0;
+	iSelected_sel16 = 0;
+	iSelected_sel32 = 0;
+	iSelected_sel64 = 0;	
+	iSelected_sel128 = 0;
+	iSelected_sel256 = 0;
+	iSelected_sel512 = 0;	
+	iSelected_sel1024 = 0;	
+	iSelected_sel2048 = 0;
+	iSelected_sel4096 = 0;
 			
 	// ==================================== loop on entries
 	
@@ -878,7 +891,12 @@ void TurnOn::Loop(){
 		// SelectedPhotons collection selection
 		if(nPhotons > 0 && (nPhotons == (int)photonPt->size()) ) {
 
-			SelectedPhotons_N = 0;					 
+			SelectedPhotons_N_D1 = 0;
+			SelectedPhotons_N_D8 = 0;
+			SelectedPhotons_N_D32 = 0;
+			SelectedPhotons_N_D128 = 0;
+			SelectedPhotons_N_D512 = 0;
+			SelectedPhotons_N_D2048 = 0;					 
 
 			for(unsigned int iPhoPos = 0; iPhoPos < photonPt->size(); iPhoPos++) {
 
@@ -1022,12 +1040,7 @@ void TurnOn::Loop(){
 
 					// photon kinematic selection
 					if (photonPt->at(iPhoPos) > 0. && geo_sel) {
-
-						SelectedPhotons_Pt.push_back(photonPt->at(iPhoPos));
-						SelectedPhotons_Eta.push_back(photonEta->at(iPhoPos)); 
-						SelectedPhotons_Phi.push_back(photonPhi->at(iPhoPos));
-						SelectedPhotons_N+=1;
-
+						
 						// photon trigger matching selection
 						bool TriMatchF4Path_sel_1 = photonTriMatchF4Path_sel_1.at(iPhoPos);
 						bool TriMatchF4Path_sel_2 = photonTriMatchF4Path_sel_2.at(iPhoPos);
@@ -1043,91 +1056,128 @@ void TurnOn::Loop(){
 						bool TriMatchF4Path_sel_2048 = photonTriMatchF4Path_sel_2048.at(iPhoPos);
 						bool TriMatchF4Path_sel_4096 = photonTriMatchF4Path_sel_4096.at(iPhoPos);
 
-						if (TriMatchF4Path_sel_1) {
+						if (TriMatchF4Path_sel_8){ 
+							SelectedPhotons_Pt_D8.push_back(photonPt->at(iPhoPos));
+							SelectedPhotons_Eta_D8.push_back(photonEta->at(iPhoPos)); 
+							SelectedPhotons_Phi_D8.push_back(photonPhi->at(iPhoPos));
+							SelectedPhotons_N_D8+=1;
+						}
+
+						if (TriMatchF4Path_sel_32){ 
+							SelectedPhotons_Pt_D32.push_back(photonPt->at(iPhoPos));
+							SelectedPhotons_Eta_D32.push_back(photonEta->at(iPhoPos)); 
+							SelectedPhotons_Phi_D32.push_back(photonPhi->at(iPhoPos));
+							SelectedPhotons_N_D32+=1;
+						}
+
+						if (TriMatchF4Path_sel_128){ 
+							SelectedPhotons_Pt_D128.push_back(photonPt->at(iPhoPos));
+							SelectedPhotons_Eta_D128.push_back(photonEta->at(iPhoPos)); 
+							SelectedPhotons_Phi_D128.push_back(photonPhi->at(iPhoPos));
+							SelectedPhotons_N_D128+=1;
+						}
+
+						if (TriMatchF4Path_sel_512){ 
+							SelectedPhotons_Pt_D512.push_back(photonPt->at(iPhoPos));
+							SelectedPhotons_Eta_D512.push_back(photonEta->at(iPhoPos)); 
+							SelectedPhotons_Phi_D512.push_back(photonPhi->at(iPhoPos));
+							SelectedPhotons_N_D512+=1;
+						}
+
+						if (TriMatchF4Path_sel_2048){ 
+							SelectedPhotons_Pt_D2048.push_back(photonPt->at(iPhoPos));
+							SelectedPhotons_Eta_D2048.push_back(photonEta->at(iPhoPos)); 
+							SelectedPhotons_Phi_D2048.push_back(photonPhi->at(iPhoPos));
+							SelectedPhotons_N_D2048+=1;
+						}
+
+
+
+						if (TriMatchF4Path_sel_1 && TriMatchF4Path_sel_1) {
 							SelectedPhotons_Pt_sel_1.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_1.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_1.push_back(photonPhi->at(iPhoPos));
 							SelectedPhotons_N_sel_1+=1;
 						} 
 
-						if (TriMatchF4Path_sel_2) {
+						if (TriMatchF4Path_sel_1 && TriMatchF4Path_sel_2) {
 							SelectedPhotons_Pt_sel_2.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_2.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_2.push_back(photonPhi->at(iPhoPos));
 							SelectedPhotons_N_sel_2+=1;
 						} 
 						
-						if (TriMatchF4Path_sel_4) {
+						if (TriMatchF4Path_sel_8 && TriMatchF4Path_sel_4) {
 							SelectedPhotons_Pt_sel_4.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_4.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_4.push_back(photonPhi->at(iPhoPos));
 							SelectedPhotons_N_sel_4+=1;
 						} 
 
-						if (TriMatchF4Path_sel_8) {
+						if (TriMatchF4Path_sel_8 && TriMatchF4Path_sel_8) {
 							SelectedPhotons_Pt_sel_8.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_8.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_8.push_back(photonPhi->at(iPhoPos));
 							SelectedPhotons_N_sel_8+=1;
 						} 
 
-						if (TriMatchF4Path_sel_16) {
+						if (TriMatchF4Path_sel_8 && TriMatchF4Path_sel_16) {
 							SelectedPhotons_Pt_sel_16.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_16.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_16.push_back(photonPhi->at(iPhoPos));
 							SelectedPhotons_N_sel_16+=1;
 						} 
 
-						if (TriMatchF4Path_sel_32) {
+						if (TriMatchF4Path_sel_8 && TriMatchF4Path_sel_32) {
 							SelectedPhotons_Pt_sel_32.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_32.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_32.push_back(photonPhi->at(iPhoPos));
 							SelectedPhotons_N_sel_32+=1;
 						} 
 
-						if (TriMatchF4Path_sel_64) {
+						if (TriMatchF4Path_sel_8 && TriMatchF4Path_sel_64) {
 							SelectedPhotons_Pt_sel_64.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_64.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_64.push_back(photonPhi->at(iPhoPos));
 							SelectedPhotons_N_sel_64+=1;
 						} 
 					
-						if (TriMatchF4Path_sel_128) {
+						if (TriMatchF4Path_sel_32 && TriMatchF4Path_sel_128) {
 							SelectedPhotons_Pt_sel_128.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_128.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_128.push_back(photonPhi->at(iPhoPos));
 							SelectedPhotons_N_sel_128+=1;
 						} 
 
-						if (TriMatchF4Path_sel_256) {
+						if (TriMatchF4Path_sel_32 && TriMatchF4Path_sel_256) {
 							SelectedPhotons_Pt_sel_256.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_256.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_256.push_back(photonPhi->at(iPhoPos));
 							SelectedPhotons_N_sel_256+=1;
 						} 
 
-						if (TriMatchF4Path_sel_512) {
+						if (TriMatchF4Path_sel_128 && TriMatchF4Path_sel_512) {
 							SelectedPhotons_Pt_sel_512.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_512.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_512.push_back(photonPhi->at(iPhoPos));
 							SelectedPhotons_N_sel_512+=1;
 						} 
 
-						if (TriMatchF4Path_sel_1024) {
+						if (TriMatchF4Path_sel_128 && TriMatchF4Path_sel_1024) {
 							SelectedPhotons_Pt_sel_1024.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_1024.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_1024.push_back(photonPhi->at(iPhoPos));
 							SelectedPhotons_N_sel_1024+=1;
 						} 
 
-						if (TriMatchF4Path_sel_2048) {
+						if (TriMatchF4Path_sel_512 && TriMatchF4Path_sel_2048) {
 							SelectedPhotons_Pt_sel_2048.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_2048.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_2048.push_back(photonPhi->at(iPhoPos));
 							SelectedPhotons_N_sel_2048+=1;
 						} 
 
-						if (TriMatchF4Path_sel_4096) {
+						if (TriMatchF4Path_sel_2048 && TriMatchF4Path_sel_4096) {
 							SelectedPhotons_Pt_sel_4096.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_4096.push_back(photonEta->at(iPhoPos)); 
 							SelectedPhotons_Phi_sel_4096.push_back(photonPhi->at(iPhoPos));
@@ -1139,18 +1189,17 @@ void TurnOn::Loop(){
 			} 
 		} // end SelectedPhotons collection selection
 
-			
+	
+		// jetVeto: jets vs. SelectedPhotons_D1
+		if(SelectedPhotons_N_D1 > 0 && (nJets > 0 && (nJets == (int)jetPt->size())) ){
 
-		// jetVeto: jets vs. SelectedPhotons 
-		if(SelectedPhotons_N > 0 && (nJets > 0 && (nJets == (int)jetPt->size())) ){
-
-			SelectedJets_N = 0;
+			SelectedJets_N_D1 = 0;
 
 			for (unsigned int iJetPos = 0; (int)iJetPos < nJets; iJetPos++) {
 
-				// selection of cleaned jets vs. LEADING SelectedPhotons
+				// selection of cleaned jets vs. LEADING SelectedPhotons_D1
 				bool closeLEA = false;
-				if ( deltaR(SelectedPhotons_Eta.at(0), SelectedPhotons_Phi.at(0), jetEta->at(iJetPos), jetPhi->at(iJetPos)) < 0.5) {
+				if ( deltaR(SelectedPhotons_Eta_D1.at(0), SelectedPhotons_Phi_D1.at(0), jetEta->at(iJetPos), jetPhi->at(iJetPos)) < 0.5) {
 					closeLEA = true;
 				}
 				if (!closeLEA){
@@ -1161,13 +1210,158 @@ void TurnOn::Loop(){
 						// jets pile-up ID correction							
 						if ( pow(jetRMS->at(iJetPos),2) <  0.06 || (1-jetBeta->at(iJetPos)) < 0.2 * TMath::Log(nVtx-0.64) ) {
 									
-							SelectedJets_Pt.push_back(jetPt->at(iJetPos));
-							SelectedJets_N+= 1;
+							SelectedJets_Pt_D1.push_back(jetPt->at(iJetPos));
+							SelectedJets_N_D1+= 1;
 						}	// jets pile-up ID correction
 					} // end jets kinematic selection
-				} // end selection of cleaned jets vs. LEADING SelectedPhotons
+				} // end selection of cleaned jets vs. LEADING SelectedPhotons_D1
 			}
-		} // jetVeto: jets vs. SelectedPhotons
+		} // jetVeto: jets vs. SelectedPhotons_D1	
+			
+
+		// jetVeto: jets vs. SelectedPhotons_D8
+		if(SelectedPhotons_N_D8 > 0 && (nJets > 0 && (nJets == (int)jetPt->size())) ){
+
+			SelectedJets_N_D8 = 0;
+
+			for (unsigned int iJetPos = 0; (int)iJetPos < nJets; iJetPos++) {
+
+				// selection of cleaned jets vs. LEADING SelectedPhotons_D8
+				bool closeLEA = false;
+				if ( deltaR(SelectedPhotons_Eta_D8.at(0), SelectedPhotons_Phi_D8.at(0), jetEta->at(iJetPos), jetPhi->at(iJetPos)) < 0.5) {
+					closeLEA = true;
+				}
+				if (!closeLEA){
+											
+					// jets kinematic selection
+					if(jetPt->at(iJetPos) > 30. && TMath::Abs(jetEta->at(iJetPos)) < 2.5 ){
+
+						// jets pile-up ID correction							
+						if ( pow(jetRMS->at(iJetPos),2) <  0.06 || (1-jetBeta->at(iJetPos)) < 0.2 * TMath::Log(nVtx-0.64) ) {
+									
+							SelectedJets_Pt_D8.push_back(jetPt->at(iJetPos));
+							SelectedJets_N_D8+= 1;
+						}	// jets pile-up ID correction
+					} // end jets kinematic selection
+				} // end selection of cleaned jets vs. LEADING SelectedPhotons_D8
+			}
+		} // jetVeto: jets vs. SelectedPhotons_D8
+
+
+		// jetVeto: jets vs. SelectedPhotons_D32
+		if(SelectedPhotons_N_D32 > 0 && (nJets > 0 && (nJets == (int)jetPt->size())) ){
+
+			SelectedJets_N_D32 = 0;
+
+			for (unsigned int iJetPos = 0; (int)iJetPos < nJets; iJetPos++) {
+
+				// selection of cleaned jets vs. LEADING SelectedPhotons_D32
+				bool closeLEA = false;
+				if ( deltaR(SelectedPhotons_Eta_D32.at(0), SelectedPhotons_Phi_D32.at(0), jetEta->at(iJetPos), jetPhi->at(iJetPos)) < 0.5) {
+					closeLEA = true;
+				}
+				if (!closeLEA){
+											
+					// jets kinematic selection
+					if(jetPt->at(iJetPos) > 30. && TMath::Abs(jetEta->at(iJetPos)) < 2.5 ){
+
+						// jets pile-up ID correction							
+						if ( pow(jetRMS->at(iJetPos),2) <  0.06 || (1-jetBeta->at(iJetPos)) < 0.2 * TMath::Log(nVtx-0.64) ) {
+									
+							SelectedJets_Pt_D32.push_back(jetPt->at(iJetPos));
+							SelectedJets_N_D32+= 1;
+						}	// jets pile-up ID correction
+					} // end jets kinematic selection
+				} // end selection of cleaned jets vs. LEADING SelectedPhotons_D32
+			}
+		} // jetVeto: jets vs. SelectedPhotons_D32
+
+
+		// jetVeto: jets vs. SelectedPhotons_D128
+		if(SelectedPhotons_N_D128 > 0 && (nJets > 0 && (nJets == (int)jetPt->size())) ){
+
+			SelectedJets_N_D128 = 0;
+
+			for (unsigned int iJetPos = 0; (int)iJetPos < nJets; iJetPos++) {
+
+				// selection of cleaned jets vs. LEADING SelectedPhotons_D128
+				bool closeLEA = false;
+				if ( deltaR(SelectedPhotons_Eta_D128.at(0), SelectedPhotons_Phi_D128.at(0), jetEta->at(iJetPos), jetPhi->at(iJetPos)) < 0.5) {
+					closeLEA = true;
+				}
+				if (!closeLEA){
+											
+					// jets kinematic selection
+					if(jetPt->at(iJetPos) > 30. && TMath::Abs(jetEta->at(iJetPos)) < 2.5 ){
+
+						// jets pile-up ID correction							
+						if ( pow(jetRMS->at(iJetPos),2) <  0.06 || (1-jetBeta->at(iJetPos)) < 0.2 * TMath::Log(nVtx-0.64) ) {
+									
+							SelectedJets_Pt_D128.push_back(jetPt->at(iJetPos));
+							SelectedJets_N_D128+= 1;
+						}	// jets pile-up ID correction
+					} // end jets kinematic selection
+				} // end selection of cleaned jets vs. LEADING SelectedPhotons_D128
+			}
+		} // jetVeto: jets vs. SelectedPhotons_D128
+
+
+		// jetVeto: jets vs. SelectedPhotons_D512
+		if(SelectedPhotons_N_D512 > 0 && (nJets > 0 && (nJets == (int)jetPt->size())) ){
+
+			SelectedJets_N_D512 = 0;
+
+			for (unsigned int iJetPos = 0; (int)iJetPos < nJets; iJetPos++) {
+
+				// selection of cleaned jets vs. LEADING SelectedPhotons_D512
+				bool closeLEA = false;
+				if ( deltaR(SelectedPhotons_Eta_D512.at(0), SelectedPhotons_Phi_D512.at(0), jetEta->at(iJetPos), jetPhi->at(iJetPos)) < 0.5) {
+					closeLEA = true;
+				}
+				if (!closeLEA){
+											
+					// jets kinematic selection
+					if(jetPt->at(iJetPos) > 30. && TMath::Abs(jetEta->at(iJetPos)) < 2.5 ){
+
+						// jets pile-up ID correction							
+						if ( pow(jetRMS->at(iJetPos),2) <  0.06 || (1-jetBeta->at(iJetPos)) < 0.2 * TMath::Log(nVtx-0.64) ) {
+									
+							SelectedJets_Pt_D512.push_back(jetPt->at(iJetPos));
+							SelectedJets_N_D512+= 1;
+						}	// jets pile-up ID correction
+					} // end jets kinematic selection
+				} // end selection of cleaned jets vs. LEADING SelectedPhotons_D512
+			}
+		} // jetVeto: jets vs. SelectedPhotons_D512
+
+		
+		// jetVeto: jets vs. SelectedPhotons_D2048
+		if(SelectedPhotons_N_D2048 > 0 && (nJets > 0 && (nJets == (int)jetPt->size())) ){
+
+			SelectedJets_N_D2048 = 0;
+
+			for (unsigned int iJetPos = 0; (int)iJetPos < nJets; iJetPos++) {
+
+				// selection of cleaned jets vs. LEADING SelectedPhotons_D2048
+				bool closeLEA = false;
+				if ( deltaR(SelectedPhotons_Eta_D2048.at(0), SelectedPhotons_Phi_D2048.at(0), jetEta->at(iJetPos), jetPhi->at(iJetPos)) < 0.5) {
+					closeLEA = true;
+				}
+				if (!closeLEA){
+											
+					// jets kinematic selection
+					if(jetPt->at(iJetPos) > 30. && TMath::Abs(jetEta->at(iJetPos)) < 2.5 ){
+
+						// jets pile-up ID correction							
+						if ( pow(jetRMS->at(iJetPos),2) <  0.06 || (1-jetBeta->at(iJetPos)) < 0.2 * TMath::Log(nVtx-0.64) ) {
+									
+							SelectedJets_Pt_D2048.push_back(jetPt->at(iJetPos));
+							SelectedJets_N_D2048+= 1;
+						}	// jets pile-up ID correction
+					} // end jets kinematic selection
+				} // end selection of cleaned jets vs. LEADING SelectedPhotons_D2048
+			}
+		} // jetVeto: jets vs. SelectedPhotons_D2048
 
 
 		// jetVeto: jets vs. SelectedPhotons_sel_1
@@ -1554,10 +1748,36 @@ void TurnOn::Loop(){
 
 
 		// collectives jets properties
-		SelectedJets_HT = 0;
-		for(unsigned int zJetPos = 0; zJetPos < SelectedJets_Pt.size(); zJetPos++) {
-			SelectedJets_HT += SelectedJets_Pt.at(zJetPos);
+		SelectedJets_HT_D1 = 0;
+		for(unsigned int zJetPos = 0; zJetPos < SelectedJets_Pt_D1.size(); zJetPos++) {
+			SelectedJets_HT_D1 += SelectedJets_Pt_D1.at(zJetPos);
 		}
+
+		SelectedJets_HT_D8 = 0;
+		for(unsigned int zJetPos = 0; zJetPos < SelectedJets_Pt_D8.size(); zJetPos++) {
+			SelectedJets_HT_D8 += SelectedJets_Pt_D8.at(zJetPos);
+		}
+		
+		SelectedJets_HT_D32 = 0;
+		for(unsigned int zJetPos = 0; zJetPos < SelectedJets_Pt_D32.size(); zJetPos++) {
+			SelectedJets_HT_D32 += SelectedJets_Pt_D32.at(zJetPos);
+		}		
+
+		SelectedJets_HT_D128 = 0;
+		for(unsigned int zJetPos = 0; zJetPos < SelectedJets_Pt_D128.size(); zJetPos++) {
+			SelectedJets_HT_D128 += SelectedJets_Pt_D128.at(zJetPos);
+		}
+
+		SelectedJets_HT_D512 = 0;
+		for(unsigned int zJetPos = 0; zJetPos < SelectedJets_Pt_D512.size(); zJetPos++) {
+			SelectedJets_HT_D512 += SelectedJets_Pt_D512.at(zJetPos);
+		}
+
+		SelectedJets_HT_D2048 = 0;
+		for(unsigned int zJetPos = 0; zJetPos < SelectedJets_Pt_D2048.size(); zJetPos++) {
+			SelectedJets_HT_D2048 += SelectedJets_Pt_D2048.at(zJetPos);
+		}
+
 
 		SelectedJets_HT_sel_1 = 0;
 		for(unsigned int zJetPos = 0; zJetPos < SelectedJets_Pt_sel_1.size(); zJetPos++) {
@@ -1627,9 +1847,25 @@ void TurnOn::Loop(){
 
 
 		// scaling factors definitions
-		if(SelectedPhotons_N > 0) {
-			weight_final = weight_withPU;
+		if(SelectedPhotons_N_D1 > 0) {
+			weight_final_D1 = weight_withPU;
 		} 
+		if(SelectedPhotons_N_D8 > 0) {
+			weight_final_D8 = weight_withPU;
+		} 
+		if(SelectedPhotons_N_D32 > 0) {
+			weight_final_D32 = weight_withPU;
+		} 		
+		if(SelectedPhotons_N_D128 > 0) {
+			weight_final_D128 = weight_withPU;
+		} 
+		if(SelectedPhotons_N_D512 > 0) {
+			weight_final_D512 = weight_withPU;
+		} 
+		if(SelectedPhotons_N_D2048 > 0) {
+			weight_final_D2048 = weight_withPU;
+		} 
+
 		if(SelectedPhotons_N_sel_1 > 0) {
 			weight_final_sel_1 = weight_withPU;
 		} 		
@@ -1675,26 +1911,118 @@ void TurnOn::Loop(){
 		// =========== Analysis selection
 		
 		// trigger family selection
-		if (17 & isTriggered) { // OR di DoubleMu (1) and SingleMu (16) HLT paths families
+//		if (17 & isTriggered) { // OR di DoubleMu (1) and SingleMu (16) HLT paths families		
 
+
+			// D1
 			// Isolation at GEN level
 			if (isoGEN) {
 				// TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
-				if (SelectedPhotons_N > 0){
+				if (SelectedPhotons_N_D1 > 0){
 					// kin Jets (cleaned vs. Photons) selection
-					if (SelectedJets_N > 0) {
+					if (SelectedJets_N_D1 > 0) {
 						// HT selection
-						if (SelectedJets_HT > 0){
-							iSelected0++;
+						if (SelectedJets_HT_D1 > 0){
+							iSelected_D1++;
 
-							SelectedPhotons_Pt_1_->Fill(SelectedPhotons_Pt.at(0), weight_final);
+							SelectedPhotons_Pt_1_D1_->Fill(SelectedPhotons_Pt_D1.at(0), weight_final_D1);
 							
 						} // end HT selection
 					} // end kin Jets (cleaned vs. Photons) selection 
 				} // end TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
 			} // end Isolation at GEN level
 
-			
+			// D8
+			// Isolation at GEN level
+			if (isoGEN) {
+				// TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
+				if (SelectedPhotons_N_D8 > 0){
+					// kin Jets (cleaned vs. Photons) selection
+					if (SelectedJets_N_D8 > 0) {
+						// HT selection
+						if (SelectedJets_HT_D8 > 0){
+							iSelected_D8++;
+
+							SelectedPhotons_Pt_1_D8_->Fill(SelectedPhotons_Pt_D8.at(0), weight_final_D8);
+							
+						} // end HT selection
+					} // end kin Jets (cleaned vs. Photons) selection 
+				} // end TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
+			} // end Isolation at GEN level
+
+			// D32
+			// Isolation at GEN level
+			if (isoGEN) {
+				// TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
+				if (SelectedPhotons_N_D32 > 0){
+					// kin Jets (cleaned vs. Photons) selection
+					if (SelectedJets_N_D32 > 0) {
+						// HT selection
+						if (SelectedJets_HT_D32 > 0){
+							iSelected_D32++;
+
+							SelectedPhotons_Pt_1_D32_->Fill(SelectedPhotons_Pt_D32.at(0), weight_final_D32);
+							
+						} // end HT selection
+					} // end kin Jets (cleaned vs. Photons) selection 
+				} // end TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
+			} // end Isolation at GEN level
+
+			// D128
+			// Isolation at GEN level
+			if (isoGEN) {
+				// TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
+				if (SelectedPhotons_N_D128 > 0){
+					// kin Jets (cleaned vs. Photons) selection
+					if (SelectedJets_N_D128 > 0) {
+						// HT selection
+						if (SelectedJets_HT_D128 > 0){
+							iSelected_D128++;
+
+							SelectedPhotons_Pt_1_D128_->Fill(SelectedPhotons_Pt_D128.at(0), weight_final_D128);
+							
+						} // end HT selection
+					} // end kin Jets (cleaned vs. Photons) selection 
+				} // end TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
+			} // end Isolation at GEN level
+
+			// D512
+			// Isolation at GEN level
+			if (isoGEN) {
+				// TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
+				if (SelectedPhotons_N_D512 > 0){
+					// kin Jets (cleaned vs. Photons) selection
+					if (SelectedJets_N_D512 > 0) {
+						// HT selection
+						if (SelectedJets_HT_D512 > 0){
+							iSelected_D512++;
+
+							SelectedPhotons_Pt_1_D512_->Fill(SelectedPhotons_Pt_D512.at(0), weight_final_D512);
+							
+						} // end HT selection
+					} // end kin Jets (cleaned vs. Photons) selection 
+				} // end TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
+			} // end Isolation at GEN level
+
+			// D2048
+			// Isolation at GEN level
+			if (isoGEN) {
+				// TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
+				if (SelectedPhotons_N_D2048 > 0){
+					// kin Jets (cleaned vs. Photons) selection
+					if (SelectedJets_N_D2048 > 0) {
+						// HT selection
+						if (SelectedJets_HT_D2048 > 0){
+							iSelected_D2048++;
+
+							SelectedPhotons_Pt_1_D2048_->Fill(SelectedPhotons_Pt_D2048.at(0), weight_final_D2048);
+							
+						} // end HT selection
+					} // end kin Jets (cleaned vs. Photons) selection 
+				} // end TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
+			} // end Isolation at GEN level
+
+
 			// sel_1
 			// Isolation at GEN level
 			if (isoGEN) {
@@ -1704,7 +2032,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_1 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_1 > 0){
-							iSelected1++;
+							iSelected_sel1++;
 
 							SelectedPhotons_Pt_1_sel_1_->Fill(SelectedPhotons_Pt_sel_1.at(0), weight_final_sel_1);
 						
@@ -1723,7 +2051,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_2 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_2 > 0){
-							iSelected2++;
+							iSelected_sel2++;
 
 							SelectedPhotons_Pt_1_sel_2_->Fill(SelectedPhotons_Pt_sel_2.at(0), weight_final_sel_2);
 
@@ -1742,7 +2070,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_4 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_4 > 0){
-							iSelected3++;
+							iSelected_sel8++;
 
 							SelectedPhotons_Pt_1_sel_4_->Fill(SelectedPhotons_Pt_sel_4.at(0), weight_final_sel_4);
 
@@ -1761,7 +2089,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_8 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_8 > 0){
-							iSelected4++;
+							iSelected_sel16++;
 
 							SelectedPhotons_Pt_1_sel_8_->Fill(SelectedPhotons_Pt_sel_8.at(0), weight_final_sel_8);
 
@@ -1780,7 +2108,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_16 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_16 > 0){
-							iSelected5++;
+							iSelected_sel16++;
 
 							SelectedPhotons_Pt_1_sel_16_->Fill(SelectedPhotons_Pt_sel_16.at(0), weight_final_sel_16);
 
@@ -1799,7 +2127,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_32 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_32 > 0){
-							iSelected6++;
+							iSelected_sel32++;
 
 							SelectedPhotons_Pt_1_sel_32_->Fill(SelectedPhotons_Pt_sel_32.at(0), weight_final_sel_32);
 
@@ -1818,7 +2146,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_64 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_64 > 0){
-							iSelected7++;
+							iSelected_sel64++;
 
 							SelectedPhotons_Pt_1_sel_64_->Fill(SelectedPhotons_Pt_sel_64.at(0), weight_final_sel_64);
 
@@ -1837,7 +2165,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_128 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_128 > 0){
-							iSelected8++;
+							iSelected_sel128++;
 
 							SelectedPhotons_Pt_1_sel_128_->Fill(SelectedPhotons_Pt_sel_128.at(0), weight_final_sel_128);
 
@@ -1856,7 +2184,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_256 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_256 > 0){
-							iSelected9++;
+							iSelected_sel256++;
 
 							SelectedPhotons_Pt_1_sel_256_->Fill(SelectedPhotons_Pt_sel_256.at(0), weight_final_sel_256);
 
@@ -1875,7 +2203,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_512 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_512 > 0){
-							iSelected10++;
+							iSelected_sel512++;
 
 							SelectedPhotons_Pt_1_sel_512_->Fill(SelectedPhotons_Pt_sel_512.at(0), weight_final_sel_512);
 
@@ -1894,7 +2222,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_1024 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_1024 > 0){
-							iSelected11++;
+							iSelected_sel1024++;
 
 							SelectedPhotons_Pt_1_sel_1024_->Fill(SelectedPhotons_Pt_sel_1024.at(0), weight_final_sel_1024);
 
@@ -1913,7 +2241,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_2048 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_2048 > 0){
-							iSelected12++;
+							iSelected_sel2048++;
 
 							SelectedPhotons_Pt_1_sel_2048_->Fill(SelectedPhotons_Pt_sel_2048.at(0), weight_final_sel_2048);
 
@@ -1932,7 +2260,7 @@ void TurnOn::Loop(){
 					if (SelectedJets_N_sel_4096 > 0) {
 						// HT selection
 						if (SelectedJets_HT_sel_4096 > 0){
-							iSelected13++;
+							iSelected_sel4096++;
 
 							SelectedPhotons_Pt_1_sel_4096_->Fill(SelectedPhotons_Pt_sel_4096.at(0), weight_final_sel_4096);
 
@@ -1942,10 +2270,16 @@ void TurnOn::Loop(){
 			} // end Isolation at GEN level
 			// end sel_4096			
 			
-		}// end trigger family selection
+//		}// end trigger family selection
 		
 		// clean jets
-		SelectedJets_N = 0;
+		SelectedJets_N_D1 = 0;
+		SelectedJets_N_D8 = 0;
+		SelectedJets_N_D32 = 0;
+		SelectedJets_N_D128 = 0;
+		SelectedJets_N_D512 = 0;
+		SelectedJets_N_D2048 = 0;
+
 		SelectedJets_N_sel_1 = 0;
 		SelectedJets_N_sel_2 = 0;
 		SelectedJets_N_sel_4 = 0;
@@ -1960,7 +2294,14 @@ void TurnOn::Loop(){
 		SelectedJets_N_sel_2048 = 0;
 		SelectedJets_N_sel_4096 = 0;	
 
-		SelectedJets_HT = 0;
+
+		SelectedJets_HT_D1 = 0;
+		SelectedJets_HT_D8 = 0;
+		SelectedJets_HT_D32 = 0;
+		SelectedJets_HT_D128 = 0;
+		SelectedJets_HT_D512 = 0;
+		SelectedJets_HT_D2048 = 0;
+
 		SelectedJets_HT_sel_1 = 0;
 		SelectedJets_HT_sel_2 = 0;
 		SelectedJets_HT_sel_4 = 0;
@@ -1975,7 +2316,13 @@ void TurnOn::Loop(){
 		SelectedJets_HT_sel_2048 = 0;
 		SelectedJets_HT_sel_4096 = 0;
 				
-		SelectedJets_Pt.clear();
+		SelectedJets_Pt_D1.clear();
+		SelectedJets_Pt_D8.clear();
+		SelectedJets_Pt_D32.clear();
+		SelectedJets_Pt_D128.clear();
+		SelectedJets_Pt_D512.clear();
+		SelectedJets_Pt_D2048.clear();
+
 		SelectedJets_Pt_sel_1.clear();
 		SelectedJets_Pt_sel_2.clear();
 		SelectedJets_Pt_sel_4.clear();
@@ -1992,7 +2339,13 @@ void TurnOn::Loop(){
 		// end clean jets
 
 		// clean photons
-		SelectedPhotons_N = 0;
+		SelectedPhotons_N_D1 = 0;
+		SelectedPhotons_N_D8 = 0;
+		SelectedPhotons_N_D32 = 0;
+		SelectedPhotons_N_D128 = 0;
+		SelectedPhotons_N_D512 = 0;
+		SelectedPhotons_N_D2048 = 0;
+		
 		SelectedPhotons_N_sel_1 = 0;
 		SelectedPhotons_N_sel_2 = 0;
 		SelectedPhotons_N_sel_4 = 0;
@@ -2022,7 +2375,13 @@ void TurnOn::Loop(){
 		photonTriMatchF4Path_sel_4096.clear();
 						
 
-		SelectedPhotons_Pt.clear();
+		SelectedPhotons_Pt_D1.clear();
+		SelectedPhotons_Pt_D8.clear();
+		SelectedPhotons_Pt_D32.clear();
+		SelectedPhotons_Pt_D128.clear();
+		SelectedPhotons_Pt_D512.clear();
+		SelectedPhotons_Pt_D2048.clear();
+		
 		SelectedPhotons_Pt_sel_1.clear();
 		SelectedPhotons_Pt_sel_2.clear();
 		SelectedPhotons_Pt_sel_4.clear();
@@ -2037,7 +2396,13 @@ void TurnOn::Loop(){
 		SelectedPhotons_Pt_sel_2048.clear();
 		SelectedPhotons_Pt_sel_4096.clear();
 
-		SelectedPhotons_Eta.clear();
+		SelectedPhotons_Eta_D1.clear();
+		SelectedPhotons_Eta_D8.clear();
+		SelectedPhotons_Eta_D32.clear();		
+		SelectedPhotons_Eta_D128.clear();
+		SelectedPhotons_Eta_D512.clear();		
+		SelectedPhotons_Eta_D2048.clear();		
+
 		SelectedPhotons_Eta_sel_1.clear();
 		SelectedPhotons_Eta_sel_2.clear();
 		SelectedPhotons_Eta_sel_4.clear();
@@ -2052,7 +2417,13 @@ void TurnOn::Loop(){
 		SelectedPhotons_Eta_sel_2048.clear();
 		SelectedPhotons_Eta_sel_4096.clear();
 
-		SelectedPhotons_Phi.clear();
+		SelectedPhotons_Phi_D1.clear();
+		SelectedPhotons_Phi_D8.clear();
+		SelectedPhotons_Phi_D32.clear();
+		SelectedPhotons_Phi_D128.clear();
+		SelectedPhotons_Phi_D512.clear();
+		SelectedPhotons_Phi_D2048.clear();
+				
 		SelectedPhotons_Phi_sel_1.clear();
 		SelectedPhotons_Phi_sel_2.clear();
 		SelectedPhotons_Phi_sel_4.clear();
@@ -2066,7 +2437,6 @@ void TurnOn::Loop(){
 		SelectedPhotons_Phi_sel_1024.clear();
 		SelectedPhotons_Phi_sel_2048.clear();
 		SelectedPhotons_Phi_sel_4096.clear();
-
 		// end clean photons
 			 
 		// if (Cut(ientry) < 0) continue;
@@ -2076,20 +2446,26 @@ void TurnOn::Loop(){
 
 	cout << "Analysis selection:" << endl;
 	cout << "nentries (with preselection in the PATZJetsExpress analyzer) = " << nentries_r << endl;
-	cout << "Number of selected events 0 no Trigger Matching, unweighted = " << iSelected0 << endl;
-	cout << "Number of selected events 1: Trigger Matching 1, unweighted = " << iSelected1 << endl;
-	cout << "Number of selected events 2: Trigger Matching 2, unweighted = " << iSelected2 << endl;
-	cout << "Number of selected events 3: Trigger Matching 4, unweighted = " << iSelected3 << endl;
-	cout << "Number of selected events 4: Trigger Matching 8, unweighted = " << iSelected4 << endl;			
-	cout << "Number of selected events 5: Trigger Matching 16, unweighted = " << iSelected5 << endl;
-	cout << "Number of selected events 6: Trigger Matching 32, unweighted = " << iSelected6 << endl;
-	cout << "Number of selected events 7: Trigger Matching 64, unweighted = " << iSelected7 << endl;
-	cout << "Number of selected events 8: Trigger Matching 128, unweighted = " << iSelected8 << endl;
-	cout << "Number of selected events 9: Trigger Matching 256, unweighted = " << iSelected9 << endl;
-	cout << "Number of selected events 10: Trigger Matching 512, unweighted = " << iSelected10 << endl;
-	cout << "Number of selected events 11: Trigger Matching 1024, unweighted = " << iSelected11 << endl;
-	cout << "Number of selected events 12: Trigger Matching 2048, unweighted = " << iSelected12 << endl;
-	cout << "Number of selected events 13: Trigger Matching 4096, unweighted = " << iSelected13 << endl;
+	cout << "Number of selected events: no Trigger Matching, D1 unweighted = " << iSelected_D1 << endl;
+	cout << "Number of selected events: no Trigger Matching, D8 unweighted = " << iSelected_D8 << endl;
+	cout << "Number of selected events: no Trigger Matching, D32 unweighted = " << iSelected_D32 << endl;
+	cout << "Number of selected events: no Trigger Matching, D128 unweighted = " << iSelected_D128 << endl;
+	cout << "Number of selected events: no Trigger Matching, D512 unweighted = " << iSelected_D512 << endl;
+	cout << "Number of selected events: no Trigger Matching, D2048 unweighted = " << iSelected_D2048 << endl;
+	cout << endl;
+	cout << "Number of selected events 1: Trigger Matching 1, unweighted = " << iSelected_sel1 << endl;
+	cout << "Number of selected events 2: Trigger Matching 2, unweighted = " << iSelected_sel2 << endl;
+	cout << "Number of selected events 4: Trigger Matching 4, unweighted = " << iSelected_sel4 << endl;
+	cout << "Number of selected events 8: Trigger Matching 8, unweighted = " << iSelected_sel8 << endl;			
+	cout << "Number of selected events 16: Trigger Matching 16, unweighted = " << iSelected_sel16 << endl;
+	cout << "Number of selected events 32: Trigger Matching 32, unweighted = " << iSelected_sel32 << endl;
+	cout << "Number of selected events 64: Trigger Matching 64, unweighted = " << iSelected_sel64 << endl;
+	cout << "Number of selected events 128: Trigger Matching 128, unweighted = " << iSelected_sel128 << endl;
+	cout << "Number of selected events 256: Trigger Matching 256, unweighted = " << iSelected_sel256 << endl;
+	cout << "Number of selected events 512: Trigger Matching 512, unweighted = " << iSelected_sel512 << endl;
+	cout << "Number of selected events 1024: Trigger Matching 1024, unweighted = " << iSelected_sel1024 << endl;
+	cout << "Number of selected events 2048: Trigger Matching 2048, unweighted = " << iSelected_sel2048 << endl;
+	cout << "Number of selected events 4096: Trigger Matching 4096, unweighted = " << iSelected_sel4096 << endl;
 
 	fhistos->Write();
 
@@ -2110,21 +2486,26 @@ void TurnOn::Book_Histos(){
 	// book the histograms
 
 	//plotsCompare_01
-	SelectedPhotons_Pt_1_ = new TH1F("SelectedPhotons_Pt_1_","Photon p_{T} ", 800, 0., 4000.);
+	SelectedPhotons_Pt_1_D1_ = new TH1F("SelectedPhotons_Pt_1_D1_","Photon p_{T} ", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_D8_ = new TH1F("SelectedPhotons_Pt_1_D8_","Photon p_{T} ", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_D32_ = new TH1F("SelectedPhotons_Pt_1_D32_","Photon p_{T} ", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_D128_ = new TH1F("SelectedPhotons_Pt_1_D128_","Photon p_{T} ", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_D512_ = new TH1F("SelectedPhotons_Pt_1_D512_","Photon p_{T} ", 2000, 0., 2000.);	
+	SelectedPhotons_Pt_1_D2048_ = new TH1F("SelectedPhotons_Pt_1_D2048_","Photon p_{T} ", 2000, 0., 2000.);	
 	
-	SelectedPhotons_Pt_1_sel_1_ = new TH1F("SelectedPhotons_Pt_1_sel_1_","Photon p_{T}: Trigger Matching path 1", 800, 0., 4000.);
-	SelectedPhotons_Pt_1_sel_2_ = new TH1F("SelectedPhotons_Pt_1_sel_2_","Photon p_{T}: Trigger Matching path 2", 800, 0., 4000.);
-	SelectedPhotons_Pt_1_sel_4_ = new TH1F("SelectedPhotons_Pt_1_sel_4_","Photon p_{T}: Trigger Matching path 4", 800, 0., 4000.);
-	SelectedPhotons_Pt_1_sel_8_ = new TH1F("SelectedPhotons_Pt_1_sel_8_","Photon p_{T}: Trigger Matching path 8", 800, 0., 4000.);
-	SelectedPhotons_Pt_1_sel_16_ = new TH1F("SelectedPhotons_Pt_1_sel_16_","Photon p_{T}: Trigger Matching path 16", 800, 0., 4000.);
-	SelectedPhotons_Pt_1_sel_32_ = new TH1F("SelectedPhotons_Pt_1_sel_32_","Photon p_{T}: Trigger Matching path 32", 800, 0., 4000.);
-	SelectedPhotons_Pt_1_sel_64_ = new TH1F("SelectedPhotons_Pt_1_sel_64_","Photon p_{T}: Trigger Matching path 64", 800, 0., 4000.);
-	SelectedPhotons_Pt_1_sel_128_ = new TH1F("SelectedPhotons_Pt_1_sel_128_","Photon p_{T}: Trigger Matching path 128", 800, 0., 4000.);
-	SelectedPhotons_Pt_1_sel_256_ = new TH1F("SelectedPhotons_Pt_1_sel_256_","Photon p_{T}: Trigger Matching path 256", 800, 0., 4000.);
-	SelectedPhotons_Pt_1_sel_512_ = new TH1F("SelectedPhotons_Pt_1_sel_512_","Photon p_{T}: Trigger Matching path 512", 800, 0., 4000.);
-	SelectedPhotons_Pt_1_sel_1024_ = new TH1F("SelectedPhotons_Pt_1_sel_1024_","Photon p_{T}: Trigger Matching path 1024", 800, 0., 4000.);
-	SelectedPhotons_Pt_1_sel_2048_ = new TH1F("SelectedPhotons_Pt_1_sel_2048_","Photon p_{T}: Trigger Matching path 2048", 800, 0., 4000.);
-	SelectedPhotons_Pt_1_sel_4096_ = new TH1F("SelectedPhotons_Pt_1_sel_4096_","Photon p_{T}: Trigger Matching path 4096", 800, 0., 4000.);
+	SelectedPhotons_Pt_1_sel_1_ = new TH1F("SelectedPhotons_Pt_1_sel_1_","Photon p_{T}: Trigger Matching path 1 and path 1", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_sel_2_ = new TH1F("SelectedPhotons_Pt_1_sel_2_","Photon p_{T}: Trigger Matching path 1 and path 2", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_sel_4_ = new TH1F("SelectedPhotons_Pt_1_sel_4_","Photon p_{T}: Trigger Matching path 8 and path 4", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_sel_8_ = new TH1F("SelectedPhotons_Pt_1_sel_8_","Photon p_{T}: Trigger Matching path 8 and path 8", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_sel_16_ = new TH1F("SelectedPhotons_Pt_1_sel_16_","Photon p_{T}: Trigger Matching path 8 and path 16", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_sel_32_ = new TH1F("SelectedPhotons_Pt_1_sel_32_","Photon p_{T}: Trigger Matching path 8 and path 32", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_sel_64_ = new TH1F("SelectedPhotons_Pt_1_sel_64_","Photon p_{T}: Trigger Matching path 8 and path 64", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_sel_128_ = new TH1F("SelectedPhotons_Pt_1_sel_128_","Photon p_{T}: Trigger Matching path 32 and path 128", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_sel_256_ = new TH1F("SelectedPhotons_Pt_1_sel_256_","Photon p_{T}: Trigger Matching path 32 and path 256", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_sel_512_ = new TH1F("SelectedPhotons_Pt_1_sel_512_","Photon p_{T}: Trigger Matching path 128 and 512", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_sel_1024_ = new TH1F("SelectedPhotons_Pt_1_sel_1024_","Photon p_{T}: Trigger Matching path 128 and path 1024", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_sel_2048_ = new TH1F("SelectedPhotons_Pt_1_sel_2048_","Photon p_{T}: Trigger Matching path 512 and path 2048", 2000, 0., 2000.);
+	SelectedPhotons_Pt_1_sel_4096_ = new TH1F("SelectedPhotons_Pt_1_sel_4096_","Photon p_{T}: Trigger Matching path 2048 and path 4096", 2000, 0., 2000.);
 
 	cout << "...booking histograms finished." << endl;
 }
@@ -2135,42 +2516,60 @@ void TurnOn::Plot_Histos(){
 	// plot few histograms at the end, for check
 	cout << "Plots: quick check... " << endl;
 
-
 	bool plot_01 = true; // photon p_T
+	bool plot_02 = true; // photon p_T
 
 	gStyle->SetOptStat(1111111);
 
+
 	if(plot_01){
-		TCanvas *c01 = new TCanvas("c01", "photon kinematics", 10, 10, 700, 700);
+		TCanvas *c01 = new TCanvas("c01", "photon kinematics DEN", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c01->Divide(5,3);
 		c01->cd(1);
-		SelectedPhotons_Pt_1_->Draw();
+		SelectedPhotons_Pt_1_D1_->Draw();
 		c01->cd(2);
-		SelectedPhotons_Pt_1_sel_1_->Draw();
+		SelectedPhotons_Pt_1_D8_->Draw();
 		c01->cd(3);
-		SelectedPhotons_Pt_1_sel_2_->Draw();
+		SelectedPhotons_Pt_1_D32_->Draw();
 		c01->cd(4);
-		SelectedPhotons_Pt_1_sel_4_->Draw();
+		SelectedPhotons_Pt_1_D128_->Draw();
 		c01->cd(5);
-		SelectedPhotons_Pt_1_sel_8_->Draw();
+		SelectedPhotons_Pt_1_D512_->Draw();
 		c01->cd(6);		
+		SelectedPhotons_Pt_1_D2048_->Draw();
+	}
+
+
+	if(plot_02){
+		TCanvas *c02 = new TCanvas("c02", "photon kinematics NUM", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c02->Divide(5,3);
+		c02->cd(1);
+		SelectedPhotons_Pt_1_sel_1_->Draw();
+		c02->cd(2);
+		SelectedPhotons_Pt_1_sel_2_->Draw();
+		c02->cd(3);
+		SelectedPhotons_Pt_1_sel_4_->Draw();
+		c02->cd(4);
+		SelectedPhotons_Pt_1_sel_8_->Draw();
+		c02->cd(5);		
 		SelectedPhotons_Pt_1_sel_16_->Draw();
-		c01->cd(7);
+		c02->cd(6);
 		SelectedPhotons_Pt_1_sel_32_->Draw();
-		c01->cd(8);
+		c02->cd(7);
 		SelectedPhotons_Pt_1_sel_64_->Draw();
-		c01->cd(9);
+		c02->cd(8);
 		SelectedPhotons_Pt_1_sel_128_->Draw();
-		c01->cd(10);
+		c02->cd(9);
 		SelectedPhotons_Pt_1_sel_256_->Draw();
-		c01->cd(11);
+		c02->cd(10);
 		SelectedPhotons_Pt_1_sel_512_->Draw();
-		c01->cd(12);
+		c02->cd(11);
 		SelectedPhotons_Pt_1_sel_1024_->Draw();	
-		c01->cd(13);
+		c02->cd(12);
 		SelectedPhotons_Pt_1_sel_2048_->Draw();	
-		c01->cd(14);
+		c02->cd(13);
 		SelectedPhotons_Pt_1_sel_4096_->Draw();	
 	}
 
@@ -2192,20 +2591,27 @@ void TurnOn::Text_File(){
 	text << "Running on " << sample_r << endl;
 	text << "Weight is " << weight_r << endl;
 	text << "Analysis selection:" << endl;
-	text << "Number of selected events 0 no Trigger Matching, unweighted = " << iSelected0 << endl;
-	text << "Number of selected events 1: Trigger Matching 1, unweighted = " << iSelected1 << endl;
-	text << "Number of selected events 2: Trigger Matching 2, unweighted = " << iSelected2 << endl;
-	text << "Number of selected events 3: Trigger Matching 4, unweighted = " << iSelected3 << endl;
-	text << "Number of selected events 4: Trigger Matching 8, unweighted = " << iSelected4 << endl;			
-	text << "Number of selected events 5: Trigger Matching 16, unweighted = " << iSelected5 << endl;
-	text << "Number of selected events 6: Trigger Matching 32, unweighted = " << iSelected6 << endl;
-	text << "Number of selected events 7: Trigger Matching 64, unweighted = " << iSelected7 << endl;
-	text << "Number of selected events 8: Trigger Matching 128, unweighted = " << iSelected8 << endl;
-	text << "Number of selected events 9: Trigger Matching 256, unweighted = " << iSelected9 << endl;
-	text << "Number of selected events 10: Trigger Matching 512, unweighted = " << iSelected10 << endl;
-	text << "Number of selected events 11: Trigger Matching 1024, unweighted = " << iSelected11 << endl;
-	text << "Number of selected events 12: Trigger Matching 2048, unweighted = " << iSelected12 << endl;
-	text << "Number of selected events 13: Trigger Matching 4096, unweighted = " << iSelected13 << endl;
+	text << "Number of selected events: no Trigger Matching, D1 unweighted = " << iSelected_D1 << endl;
+	text << "Number of selected events: no Trigger Matching, D8 unweighted = " << iSelected_D8 << endl;
+	text << "Number of selected events: no Trigger Matching, D32 unweighted = " << iSelected_D32 << endl;
+	text << "Number of selected events: no Trigger Matching, D128 unweighted = " << iSelected_D128 << endl;
+	text << "Number of selected events: no Trigger Matching, D512 unweighted = " << iSelected_D512 << endl;
+	text << "Number of selected events: no Trigger Matching, D2048 unweighted = " << iSelected_D2048 << endl;
+	text << endl;
+	text << "Number of selected events 1: Trigger Matching 1, unweighted = " << iSelected_sel1 << endl;
+	text << "Number of selected events 2: Trigger Matching 2, unweighted = " << iSelected_sel2 << endl;
+	text << "Number of selected events 4: Trigger Matching 4, unweighted = " << iSelected_sel4 << endl;
+	text << "Number of selected events 8: Trigger Matching 8, unweighted = " << iSelected_sel8 << endl;			
+	text << "Number of selected events 16: Trigger Matching 16, unweighted = " << iSelected_sel16 << endl;
+	text << "Number of selected events 32: Trigger Matching 32, unweighted = " << iSelected_sel32 << endl;
+	text << "Number of selected events 64: Trigger Matching 64, unweighted = " << iSelected_sel64 << endl;
+	text << "Number of selected events 128: Trigger Matching 128, unweighted = " << iSelected_sel128 << endl;
+	text << "Number of selected events 256: Trigger Matching 256, unweighted = " << iSelected_sel256 << endl;
+	text << "Number of selected events 512: Trigger Matching 512, unweighted = " << iSelected_sel512 << endl;
+	text << "Number of selected events 1024: Trigger Matching 1024, unweighted = " << iSelected_sel1024 << endl;
+	text << "Number of selected events 2048: Trigger Matching 2048, unweighted = " << iSelected_sel2048 << endl;
+	text << "Number of selected events 4096: Trigger Matching 4096, unweighted = " << iSelected_sel4096 << endl;
+
 	text.close();
 	text << "...writing text file finished. " << endl;
 	}

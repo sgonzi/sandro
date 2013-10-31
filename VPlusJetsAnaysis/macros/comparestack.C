@@ -18,6 +18,8 @@
 #include <sstream>
 #include <fstream>
 
+using namespace std;
+
 #if !defined(__CINT__) && !defined(__MAKECINT__)
 #include "FWCore/Utilities/interface/Exception.h"
 #endif
@@ -139,21 +141,22 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 
 	// ==================================== choose the tools
 
-	string folder = "01_results_2013_10_25"; // analysis folder
+	string folder = "05_results_2013_10_25"; // analysis folder
 
 	char geo[100] = "barrel";                // "barrel", "endcaps" or "total"
 
-	bool data_ReReco = true;                // true: data = ReReco
-	                                         // false: data = PromptReco
-
-	bool inv_sigmaietaieta = false;          // inverted sigmaietaieta cut
+	bool data_ReReco = true;                	// true: data = ReReco
+	                                        	// false: data = PromptReco
+	                                         
+	bool logX = false;												// log X scale for p_T plot	
+	bool inv_sigmaietaieta = true;          // inverted sigmaietaieta cut
 	bool inv_isolation = false;              // inverted isolation set cut
 
 	bool signal_MAD = true;                  // true: signal = MADGRAPH; false: signal = PYTHIA
 	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 
-	Int_t itype = 1;                        // it identifies histos with different analysis 
+	Int_t itype = 5;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names
@@ -196,9 +199,9 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	else {
 		root_string = root_string;
 	}	
-	
+
 	stringstream ss_r;
-	char root_char[100];
+	char root_char[200];
 	ss_r << root_string;
 	ss_r >> root_char;
 
@@ -513,6 +516,11 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	Char_t titlehisto[100];
 
 	strcpy(titlehisto,titleh);
+
+	Char_t namevariable1[200];
+	
+	strcpy(namevariable1,namevariable);
+
 
 	cout << "========================" <<endl;	
 	cout << endl;	
@@ -966,6 +974,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 		DATA_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
 	}
 
+	DATA_total_histo->SetMarkerSize(0.7);
 	DATA_total_histo->SetMarkerStyle(20);
 	DATA_total_histo->SetMinimum(0.1);
 	DATA_total_histo->Draw("E");
@@ -984,50 +993,60 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	MC_stack->Draw("SAME");
 	DATA_total_histo->Draw("ESAME");
 	gPad->SetLogy();
-	gPad->SetLogx(); // for p_T plot	
+	if (logX){
+		gPad->SetLogx(); // for p_T plot	
+	}
 	DATA_total_histo->Draw("AXIS X+ Y+ SAME");
 	DATA_total_histo->Draw("AXIS SAME");
-	DATA_total_histo->GetXaxis()->SetTitle(namevariable);
+	DATA_total_histo->GetXaxis()->SetTitle(namevariable1);
 	DATA_total_histo->GetXaxis()->SetTitleSize(0.05);
 	DATA_total_histo->GetYaxis()->SetTitle("Events");
 
-	TLegend *leg =new TLegend(0.6068,0.5478,0.8188,0.7480);
+	TLegend *leg =new TLegend(0.5475,0.6124,0.8322,0.8753);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
  	if (data_ReReco) leg->AddEntry(DATA_total_histo,"Data","pL");
 	else leg->AddEntry(DATA_total_histo,"Data PromptReco","pL");
 		if(signal_MAD){
-		leg->AddEntry(GJets_HT_xToy_total_histo,"#gamma + jets - #font[32]{MAD}","f");
+		leg->AddEntry(GJets_HT_xToy_total_histo,"#gamma + jets","f");
 	}
 	else{
-		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets - #font[32]{PYT}","f");
+		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets","f");
 	}
-	leg->AddEntry(DiPhotonJets_total_histo,"2#gamma + jets - #font[32]{MAD}","f");
+	leg->AddEntry(DiPhotonJets_total_histo,"2#gamma + jets","f");
 	if (!background_QCD){
-		leg->AddEntry(QCD_Pt_x_y_EMEnriched_total_histo,"QCD EM Enriched - #font[32]{PYT}","f");
-		leg->AddEntry(QCD_Pt_x_y_BCtoE_total_histo,"QCD b,c #rightarrow e - #font[32]{PYT}","f");
+		leg->AddEntry(QCD_Pt_x_y_EMEnriched_total_histo,"QCD EM Enriched","f");
+		leg->AddEntry(QCD_Pt_x_y_BCtoE_total_histo,"QCD b,c #rightarrow e","f");
 	}
 	else {
-		leg->AddEntry(QCD_HT_xToy_total_histo,"QCD - #font[32]{MAD}","f");
+		leg->AddEntry(QCD_HT_xToy_total_histo,"QCD","f");
 	}
 	leg->Draw();
 
-  TPaveText* text = new TPaveText(0.6068,0.7722,0.8188,0.8571,"NDC");
-  text->SetFillColor(0);
-  text->SetFillStyle(0);
-  text->SetBorderSize(0);
-  text->AddText("CMS Preliminary");
-  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
-  else text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
-  text->SetTextAlign(11);
-  text->Draw();
+  TPaveText* text_1 = new TPaveText(0.1194,0.9310,0.3313,0.9780,"NDC");
+  text_1->SetFillColor(0);
+  text_1->SetFillStyle(0);
+  text_1->SetBorderSize(0);
+  text_1->AddText("CMS Preliminary");
+  text_1->SetTextAlign(11);
+  text_1->Draw();
+
+  TPaveText* text_2 = new TPaveText(0.5627,0.9310,0.8678,0.9780,"NDC");
+  text_2->SetFillColor(0);
+  text_2->SetFillStyle(0);
+  text_2->SetBorderSize(0);
+  if (data_ReReco) text_2->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
+  else text_2->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
+  text_2->SetTextAlign(11);
+  text_2->Draw();
 
 	
 	// lower Pad
 	lowerPad-> cd();
-	gPad->SetLogx(); // for p_T plot
-	
+	if (logX){
+		gPad->SetLogx(); // for p_T plot
+	}
 	float xbox_min,xbox_max;
 	if (x_min == -999 && x_max == -999){
 		xbox_min = ratio_histo->GetXaxis()->GetXmin();
@@ -1088,7 +1107,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	ofstream report;
 	
 	stringstream ss_t;
-	char txt_char[100];
+	char txt_char[200];
 	ss_t << folder_s + geo_s + SB_folder + txt_folder + titleh + txt_string;
 	ss_t >> txt_char;
 	
@@ -1268,7 +1287,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 		DATA_PR_Run2012C_PromptReco_file->Close();
 		DATA_PR_Run2012D_PromptReco_file->Close();
 	}
-	
+
 	if(signal_MAD){	
 		GJets_HT_40To100_file->Close();	
 		GJets_HT_100To200_file->Close();	
@@ -1312,5 +1331,5 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 		QCD_HT_500To1000_file->Close();
 		QCD_HT_1000ToInf_file->Close(); 
 	}
-	
+
 }

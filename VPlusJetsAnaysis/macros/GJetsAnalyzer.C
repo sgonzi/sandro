@@ -22,6 +22,7 @@
 #include "FWCore/Utilities/interface/Exception.h"
 #endif
 
+using namespace std;
 
 //#ifdef __MAKECINT__
 //#pragma link C++ class vector<float>+;
@@ -63,15 +64,15 @@ void GJetsAnalyzer::Loop(){
 	string geo = "barrel";						// barrel or endcaps
 	bool SigBack = true;							// to avoid double counting for SIGNAL and BACKGROUND
 	bool TeP_corr = true;							// T&P correction
-	bool BackDataDriven_corr = false;	// background data-driven correction
+	bool BackDataDriven_corr = true;	// background data-driven correction
 
-	bool RandomCone = true;					// Random Cone data-driven or MC signal template
+	bool RandomCone = true;					  // Random Cone data-driven or MC signal template
 	bool inv_sigmaietaieta = false;		// inverted sigmaietaieta cut
 	bool inv_isolation = false;				// inverted isolation set cut
 		
 	bool plothistos = false;					// please select which plots to show
 	bool textfile = true;							// if you want a text report for each sample
-	Int_t itype = 4;									// it identifies histos with different analysis 
+	Int_t itype = 6;									// it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -1101,22 +1102,22 @@ void GJetsAnalyzer::Loop(){
 				else if (range_Pt02 && TriMatchF4Path_sel_32){ 
 					TriMatchF4Path_AND_pTrange = true;
 					if (isMC) Tri_PF = 1.;	
-					Tri_PF = 885.49;
+					else Tri_PF = 885.49;
 				}
 				else if (range_Pt03 && TriMatchF4Path_sel_128){ 
 					TriMatchF4Path_AND_pTrange = true;
 					if (isMC) Tri_PF = 1.;	
-					Tri_PF = 147.59;
+					else Tri_PF = 147.59;
 				}
 				else if (range_Pt04 && TriMatchF4Path_sel_512){ 
 					TriMatchF4Path_AND_pTrange = true;
 					if (isMC) Tri_PF = 1.;	
-					Tri_PF = 70.53;
+					else Tri_PF = 70.53;
 				}
 				else if (range_Pt05 && TriMatchF4Path_sel_4096){ 
 					TriMatchF4Path_AND_pTrange = true;
 					if (isMC) Tri_PF = 1.;	
-					Tri_PF = 1.0;
+					else Tri_PF = 1.0;
 				}
 				else {
 					TriMatchF4Path_AND_pTrange = false;
@@ -1351,13 +1352,13 @@ void GJetsAnalyzer::Loop(){
 						bin_Pt18 = false;
 						bin_Pt19 = false;
 
-						if (bin_Pt01) BackDataDriven_F = 0.;
-						else if (bin_Pt02) BackDataDriven_F = 0.; 
-						else if (bin_Pt03) BackDataDriven_F = 0.; 
-						else if (bin_Pt04) BackDataDriven_F = 0.; 
-						else if (bin_Pt05) BackDataDriven_F = 0.; 
-						else if (bin_Pt06) BackDataDriven_F = 0.; 
-						else if (bin_Pt07) BackDataDriven_F = 0.; 
+						if (bin_Pt01) BackDataDriven_F = 0.761785;
+						else if (bin_Pt02) BackDataDriven_F = 0.846568;    
+						else if (bin_Pt03) BackDataDriven_F = 0.860856; 
+						else if (bin_Pt04) BackDataDriven_F = 0.896051; 
+						else if (bin_Pt05) BackDataDriven_F = 0.991391;
+						else if (bin_Pt06) BackDataDriven_F = 1.;
+						else if (bin_Pt07) BackDataDriven_F = 0.;
 						else if (bin_Pt08) BackDataDriven_F = 0.; 
 						else if (bin_Pt09) BackDataDriven_F = 0.; 
 						else if (bin_Pt10) BackDataDriven_F = 0.; 
@@ -3075,8 +3076,8 @@ void GJetsAnalyzer::Book_Histos(){
 	cout << "Booking histograms... " << endl;
 	// book the histograms
 
-	const Int_t NBINS = 21;
-	Float_t edges[NBINS + 1] = {100.0, 111.0, 123.1, 136.6, 151.6, 168.2, 186.6, 207.1, 229.7, 254.9, 282.8, 313.8, 348.2, 386.4, 428.7, 475.7, 527.8, 585.6, 649.8, 721.0, 800.0, 2000};
+	const Int_t NBINS = 22;
+	Float_t edges[NBINS + 1] = {90.0, 100.0, 111.0, 123.1, 136.6, 151.6, 168.2, 186.6, 207.1, 229.7, 254.9, 282.8, 313.8, 348.2, 386.4, 428.7, 475.7, 527.8, 585.6, 649.8, 721.0, 800.0, 2000};
 
 	if(isMC){
 	
@@ -3866,8 +3867,8 @@ void GJetsAnalyzer::Book_Histos(){
 
 	gamma_Pt_1_postcut3_ = new TH1F("gamma_Pt_1_postcut3_","Photon p_{T} post cut 3", 800, 0., 4000.);
 	jets_deltaR_1_predeltaR_ = new TH1F("jets_deltaR_1_predeltaR_","#DeltaR #gamma1-jet1 - N^{jets} #geq 1 pre #DeltaR cut", 600, 0, 6);
-	jets_Pt_1_preAcc_ = new TH1F("jets_Pt_1_preAcc","Jet 1 p_{T} pre Acc cut", 800, 0., 4000.);
-	jets_Eta_1_preAcc_ = new TH1F("jets_Eta_1_preAcc","Jet 1 #eta pre Acc cut", 3000, -3, 3);
+	jets_Pt_1_preAcc_ = new TH1F("jets_Pt_1_preAcc_","Jet 1 p_{T} pre Acc cut", 800, 0., 4000.);
+	jets_Eta_1_preAcc_ = new TH1F("jets_Eta_1_preAcc_","Jet 1 #eta pre Acc cut", 3000, -3, 3);
 
 	gamma_Pt_1_postcut4_ = new TH1F("gamma_Pt_1_postcut4_","Photon p_{T} post cut 4", 800, 0., 4000.);
 	jets_HT_preHT_ = new TH1F("jets_HT_preHT_","Selected Jets H_{T} pre H_{T} cut", 400, 0, 4000);

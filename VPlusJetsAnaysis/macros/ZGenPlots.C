@@ -167,7 +167,7 @@ void ZGenPlots(const char* titleh, const char* namevariable, const int rebin, co
 	string txt_string = ".txt";
 	
 	stringstream ss_r;
-	char root_char[100];
+	char root_char[200];
 	ss_r << root_string;
 	ss_r >> root_char;
 
@@ -266,15 +266,23 @@ void ZGenPlots(const char* titleh, const char* namevariable, const int rebin, co
 	leg->AddEntry(DYJetsToLL_M_50_total_histo,"Z + jets - MAD","l");
 	leg->Draw();
 
-  TPaveText* text = new TPaveText(0.6068,0.7722,0.8188,0.8571,"NDC");
-  text->SetFillColor(0);
-  text->SetFillStyle(0);
-  text->SetBorderSize(0);
-  text->AddText("CMS Simulation");
-  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
-  else text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
-  text->SetTextAlign(11);
-  text->Draw();
+  TPaveText* text_1 = new TPaveText(0.1194,0.9310,0.3313,0.9780,"NDC");
+  text_1->SetFillColor(0);
+  text_1->SetFillStyle(0);
+  text_1->SetBorderSize(0);
+  text_1->AddText("CMS Simulation");
+  text_1->SetTextAlign(11);
+  text_1->Draw();
+
+  TPaveText* text_2 = new TPaveText(0.5627,0.9310,0.8678,0.9780,"NDC");
+  text_2->SetFillColor(0);
+  text_2->SetFillStyle(0);
+  text_2->SetBorderSize(0);
+  if (data_ReReco) text_2->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
+  else text_2->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
+  text_2->SetTextAlign(11);
+  text_2->Draw();
+
 
 	
 	root_string = ".root";
@@ -289,7 +297,7 @@ void ZGenPlots(const char* titleh, const char* namevariable, const int rebin, co
 	ofstream report;
 	
 	stringstream ss_t;
-	char txt_char[100];
+	char txt_char[200];
 	ss_t << folder_s + geo_s + GEN_folder + txt_folder + titleh + txt_string;
 	ss_t >> txt_char;
 	

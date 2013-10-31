@@ -2,6 +2,8 @@
 #include "comparestack.C"
 #include <string>
 
+using namespace std;
+
 // ==================================== definitions
 
 string geo_string(string out) {
@@ -26,7 +28,7 @@ void plotsCompare_01(){
 	comparestack("Nvtx_", "N^{vtx} ", 1, -999, -999);
 		
 	comparestack("SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 4, 0, 2000);
-	comparestack("SelectedPhotons_Pt_LogBin_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, -999, -999);
+	comparestack("SelectedPhotons_Pt_LogBin_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 90, 2000);
 
 	comparestack("SelectedPhotons_E_1_", "E^{#gamma_{1}} [GeV]", 4, 0, 2000);
 
@@ -66,7 +68,7 @@ void plotsCompare_03(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}]", 1, -2, 2);
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}]", 4, -10, 20);
 }
 
@@ -97,11 +99,11 @@ void plotsCompare_05(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -2, 2);
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma} < 151.6", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 100 < p_{T}^{#gamma} < 151.6", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma} < 151.6", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 100 < p_{T}^{#gamma} < 151.6", 1, -10, 10);
 }
 
 
@@ -131,11 +133,11 @@ void plotsCompare_07(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, -2, 2);
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 207.1", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 151.6 < p_{T}^{#gamma_{1}} < 207.1", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 207.1", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 151.6 < p_{T}^{#gamma_{1}} < 207.1", 1, -10, 10);
 }
 
 
@@ -165,11 +167,11 @@ void plotsCompare_09(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 207.1 < p_{T}^{#gamma_{1}} < 313.8", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 207.1 < p_{T}^{#gamma_{1}} < 313.8", 1, -10, 10);
 }
 
 
@@ -199,11 +201,11 @@ void plotsCompare_11(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 313.8 < p_{T}^{#gamma_{1}} < 649.8", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 313.8 < p_{T}^{#gamma_{1}} < 649.8", 1, -10, 10);
 }
 
 
@@ -233,11 +235,11 @@ void plotsCompare_13(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 649.8 < p_{T}^{#gamma_{1}} < 800", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 649.8 < p_{T}^{#gamma_{1}} < 800", 1, -10, 10);
 }
 
 
@@ -267,11 +269,11 @@ void plotsCompare_15(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, p_{T}^{#gamma_{1}} > 800", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, p_{T}^{#gamma_{1}} > 800", 1, -10, 10);
 }
 
 
@@ -301,11 +303,11 @@ void plotsCompare_17(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, p_{T}^{#gamma_{1}} > 313.8", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, p_{T}^{#gamma_{1}} > 313.8", 1, -10, 10);
 }
 
 
@@ -335,11 +337,11 @@ void plotsCompare_19(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -370,11 +372,11 @@ void plotsCompare_21(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -404,11 +406,11 @@ void plotsCompare_23(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -439,11 +441,11 @@ void plotsCompare_25(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -474,11 +476,11 @@ void plotsCompare_27(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -509,11 +511,11 @@ void plotsCompare_29(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -544,11 +546,11 @@ void plotsCompare_31(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -579,11 +581,11 @@ void plotsCompare_33(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -615,11 +617,11 @@ void plotsCompare_35(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -650,11 +652,11 @@ void plotsCompare_37(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -685,11 +687,11 @@ void plotsCompare_39(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -720,11 +722,11 @@ void plotsCompare_41(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -755,11 +757,11 @@ void plotsCompare_43(){
 
 	comparestack("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -2, 2); 
 	comparestack("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
-	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 	comparestack("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 4, -10, 20);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);
 }
 
 
@@ -834,8 +836,8 @@ void plotsCompare_48(){
 	comparestack("SelectedPhotons_IsoFPRRandomConeNeutral_1_", "Iso^{#gamma_{1}}_{NeHad-FPR} [GeV/#font[12]{c}] - template", 20, 0, 200);
 	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_1_", "Iso^{#gamma_{1}}_{Pho-FPR} [GeV/#font[12]{c}] - template", 20, 0, 200);
 
-	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 1, -10, 6);
-	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", 1, -10, 6);
+	comparestack("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", 1, -10, 10);
+	comparestack("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template", 1, -10, 10);
 }
 
 
@@ -858,9 +860,9 @@ void plotsCompare_51(){
 
 
 void plotsCompare_52(){
-	comparestack("DeltaR_photon1_jet_{1}_N0_", "#Delta R^{{{#gamma}_1}-{{jet}_1}} #geq 1", 20, 0, 6);
-	comparestack("DeltaEta_photon1_jet_{1}_N0_","#Delta #eta^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 1", 10, 0, 5);
-	comparestack("DeltaPhi_photon1_jet_{1}_N0_","#Delta #varphi^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 1", 10, 0, 3.1416);
+	comparestack("DeltaR_photon1_jet1_N0_", "#Delta R^{{{#gamma}_1}-{{jet}_1}} #geq 1", 20, 0, 6);
+	comparestack("DeltaEta_photon1_jet1_N0_","#Delta #eta^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 1", 10, 0, 5);
+	comparestack("DeltaPhi_photon1_jet1_N0_","#Delta #varphi^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 1", 10, 0, 3.1416);
 }
 
 
@@ -944,11 +946,11 @@ void plotsCompare_59(){
 }
 
 void plotsCompare_60(){
-	comparestack("DeltaPhi_photon1_jet_{1}_N1_","#Delta #varphi^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 2", 10, 0, 3.1416);
-	comparestack("DeltaR_photon1_jet_{2}_N1_", "#Delta R^{{{#gamma}_1}-{{jet}_2}} - N^{jets} #geq 2", 20, 0, 6);
-	comparestack("DeltaR_jet_{1}_jet_{2}_N1_","#Delta R^{{{jet}_1}}-{{jet}_2}} - N^{jets} #geq 2", 20, 0, 6);
-	comparestack("DeltaEta_jet_{1}_jet_{2}_N1_","#Delta #eta^{{{jet}_1}}-{{jet}_2}} - N^{jets} #geq 2", 10, 0, 5);
-	comparestack("DeltaPhi_jet_{1}_jet_{2}_N1_","#Delta #varphi^{{{jet}_1}}-{{jet}_2}} - N^{jets} #geq 2", 10, 0, 3.1416);
+	comparestack("DeltaPhi_photon1_jet1_N1_","#Delta #varphi^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 2", 10, 0, 3.1416);
+	comparestack("DeltaR_photon1_jet2_N1_", "#Delta R^{{{#gamma}_1}-{{jet}_2}} - N^{jets} #geq 2", 20, 0, 6);
+	comparestack("DeltaR_jet1_jet2_N1_","#Delta R^{{{jet}_1}}-{{jet}_2}} - N^{jets} #geq 2", 20, 0, 6);
+	comparestack("DeltaEta_jet1_jet2_N1_","#Delta #eta^{{{jet}_1}}-{{jet}_2}} - N^{jets} #geq 2", 10, 0, 5);
+	comparestack("DeltaPhi_jet1_jet2_N1_","#Delta #varphi^{{{jet}_1}}-{{jet}_2}} - N^{jets} #geq 2", 10, 0, 3.1416);
 }
 
 
@@ -961,13 +963,13 @@ void plotsCompare_61(){
 
 
 void plotsCompare_62(){
-	comparestack("DeltaPhi_photon1_jet_{1}_N2_","#Delta #varphi^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 3", 10, 0, 3.1416);
-	comparestack("DeltaPhi_photon1_jet_{2}_N2_","#Delta #varphi^{{{#gamma}_1}-{{jet}_2}} - N^{jets} #geq 3", 10, 0, 3.1416);
-	comparestack("DeltaPhi_photon1_jet_{3}_N2_","#Delta #varphi^{{{#gamma}_1}-{{jet}_3}} - N^{jets} #geq 3", 10, 0, 3.1416);
-	comparestack("DeltaR_photon1_jet_{3}_N2_"  ,"#Delta R^{{{#gamma}_1}-{{jet}_3}} - N^{jets} #geq 3", 20, 0, 6);
-	comparestack("DeltaPhi_jet_{1}_jet_{2}_N2_","#Delta #varphi^{{{jet}_1}}-{{jet}_2}} - N^{jets} #geq 3", 10, 0, 3.1416);
-	comparestack("DeltaPhi_jet_{1}_jet_{3}_N2_","#Delta #varphi^{{{jet}_1}}-{{jet}_3}} - N^{jets} #geq 3", 10, 0, 3.1416);
-	comparestack("DeltaPhi_jet_{2}_jet_{3}_N2_","#Delta #varphi^{{{jet}_2}}-{{jet}_3}} - N^{jets} #geq 3", 10, 0, 3.1416);
+	comparestack("DeltaPhi_photon1_jet1_N2_","#Delta #varphi^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 3", 10, 0, 3.1416);
+	comparestack("DeltaPhi_photon1_jet2_N2_","#Delta #varphi^{{{#gamma}_1}-{{jet}_2}} - N^{jets} #geq 3", 10, 0, 3.1416);
+	comparestack("DeltaPhi_photon1_jet3_N2_","#Delta #varphi^{{{#gamma}_1}-{{jet}_3}} - N^{jets} #geq 3", 10, 0, 3.1416);
+	comparestack("DeltaR_photon1_jet3_N2_"  ,"#Delta R^{{{#gamma}_1}-{{jet}_3}} - N^{jets} #geq 3", 20, 0, 6);
+	comparestack("DeltaPhi_jet1_jet2_N2_","#Delta #varphi^{{{jet}_1}}-{{jet}_2}} - N^{jets} #geq 3", 10, 0, 3.1416);
+	comparestack("DeltaPhi_jet1_jet3_N2_","#Delta #varphi^{{{jet}_1}}-{{jet}_3}} - N^{jets} #geq 3", 10, 0, 3.1416);
+	comparestack("DeltaPhi_jet2_jet3_N2_","#Delta #varphi^{{{jet}_2}}-{{jet}_3}} - N^{jets} #geq 3", 10, 0, 3.1416);
 }
 
 
@@ -1077,3 +1079,4 @@ void plotsCompare_TOT(){
 	plotsCompare_PrePostCuts_02();
 	plotsCompare_PrePostCuts_03();																							
 }
+

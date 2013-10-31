@@ -22,6 +22,7 @@
 #include "FWCore/Utilities/interface/Exception.h"
 #endif
 
+using namespace std;
 
 //#ifdef __MAKECINT__
 //#pragma link C++ class vector<float>+;

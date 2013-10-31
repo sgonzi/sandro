@@ -22,6 +22,7 @@
 #include "FWCore/Utilities/interface/Exception.h"
 #endif
 
+using namespace std;
 
 void setMYStyle() {
 
@@ -185,7 +186,7 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 	root_string = TurnOn_s + root_string;
 			
 	stringstream ss_r;
-	char root_char[100];
+	char root_char[200];
 	ss_r << root_string;
 	ss_r >> root_char;
 
@@ -1227,7 +1228,20 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 
 	// upper Pad
   upperPad->cd();
-/**/
+  
+  TLine *line_99e9 = new TLine(xbox_min,0.999,xbox_max,0.999);
+  line_99e9->SetLineColor(kBlack);
+  line_99e9->Draw();
+
+  TLine *line_99 = new TLine(xbox_min,0.99,xbox_max,0.99);
+  line_99->SetLineColor(kRed);
+  line_99->Draw();
+  
+  TLine *line_95 = new TLine(xbox_min,0.95,xbox_max,0.95);
+  line_95->SetLineColor(kBlue);
+  line_95->Draw();
+  
+/*
 	if (x_min != -999 && x_max != -999){
 		if (x_max == MC_total_histo->GetMaximum()) X_max = x_max;
 		else X_max = x_max - (x_max-x_min)/Nbins;
@@ -1239,7 +1253,7 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 	}
 	
 	MC_total_histo->Draw("histo");
-/**/
+*/
 
 
 	if (x_min != -999 && x_max != -999){
@@ -1253,9 +1267,9 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 
 	DATA_total_histo->SetMarkerSize(0.7);
 	DATA_total_histo->SetMarkerStyle(20);
-	DATA_total_histo->Draw("E same");
+	DATA_total_histo->Draw("E");
 
-/*
+
 	if (x_min != -999 && x_max != -999){
 		if (x_max == MC_total_histo->GetMaximum()) X_max = x_max;
 		else X_max = x_max - (x_max-x_min)/Nbins;
@@ -1267,7 +1281,7 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 	}
 	
 	MC_total_histo->Draw("histo SAME");
-*/
+
 	DATA_total_histo->Draw("ESAME");
 //	gPad->SetLogy();
 	DATA_total_histo->Draw("AXIS X+ Y+ SAME");
@@ -1285,15 +1299,23 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 	leg->AddEntry(MC_total_histo,"MC","l");
 	leg->Draw();
 
-  TPaveText* text = new TPaveText(0.6068,0.7722,0.8188,0.8571,"NDC");
-  text->SetFillColor(0);
-  text->SetFillStyle(0);
-  text->SetBorderSize(0);
-  text->AddText("CMS Preliminary");
-  if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
-  else text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
-  text->SetTextAlign(11);
-  text->Draw();
+  TPaveText* text_1 = new TPaveText(0.1194,0.9310,0.3313,0.9780,"NDC");
+  text_1->SetFillColor(0);
+  text_1->SetFillStyle(0);
+  text_1->SetBorderSize(0);
+  text_1->AddText("CMS Preliminary");
+  text_1->SetTextAlign(11);
+  text_1->Draw();
+
+  TPaveText* text_2 = new TPaveText(0.5627,0.9310,0.8678,0.9780,"NDC");
+  text_2->SetFillColor(0);
+  text_2->SetFillStyle(0);
+  text_2->SetBorderSize(0);
+  if (data_ReReco) text_2->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
+  else text_2->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
+  text_2->SetTextAlign(11);
+  text_2->Draw();
+
 
 	
 	// lower Pad
@@ -1421,19 +1443,19 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 
 void TurnOn_plots(){
 
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_8_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_16_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_32_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_64_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_128_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_256_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_512_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1024_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2048_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4096_", "SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 0, 500);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1_", "SelectedPhotons_Pt_1_D1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2_", "SelectedPhotons_Pt_1_D1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4_", "SelectedPhotons_Pt_1_D8_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_8_", "SelectedPhotons_Pt_1_D8_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_16_", "SelectedPhotons_Pt_1_D8_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_32_", "SelectedPhotons_Pt_1_D8_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_64_", "SelectedPhotons_Pt_1_D8_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_128_", "SelectedPhotons_Pt_1_D32_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_256_", "SelectedPhotons_Pt_1_D32_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_512_", "SelectedPhotons_Pt_1_D128_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1024_", "SelectedPhotons_Pt_1_D128_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2048_", "SelectedPhotons_Pt_1_D512_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4096_", "SelectedPhotons_Pt_1_D2048_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
 	
 }	
 

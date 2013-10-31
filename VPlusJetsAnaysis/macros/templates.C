@@ -26,6 +26,8 @@
 #include "FWCore/Utilities/interface/Exception.h"
 #endif
 
+using namespace std;
+
 void setMYStyle() {
 
   TStyle *myStyle = new TStyle("MYStyle","My Style");
@@ -142,7 +144,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	
 	// ==================================== choose the tools
 	
-	string folder = "02_results_2013_10_25"; // analysis folder
+	string folder = "05_results_2013_10_25"; // analysis folder
 	
 	char geo[100] = "barrel";               // "barrel", "endcaps" or "total"
 
@@ -155,7 +157,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	bool signal_MAD = true;                 // true: signal = MADGRAPH; false: signal = PYTHIA
 	bool background_QCD = false;            // true: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 	                                        // false: background = MADGRAPH not filtered (QCD HT)
-	Int_t itype = 2;                        // it identifies histos with different analysis 
+	Int_t itype = 5;                        // it identifies histos with different analysis 
 
 	std::vector <string> sample_NORMAL;
 	sample_NORMAL.push_back("MC_SIG");
@@ -224,7 +226,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 		}
 
 		stringstream ss_r;
-		char root_char[100];
+		char root_char[200];
 		ss_r << root_string;
 		ss_r >> root_char;
 
@@ -997,6 +999,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 				MC_SIG_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
 			}
 
+			MC_SIG_total_histo->SetMarkerSize(0.7);
 			MC_SIG_total_histo->SetMarkerStyle(20);
 			MC_SIG_total_histo->SetMinimum(0.1);
 
@@ -1027,6 +1030,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 				MC_BACK_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
 			}
 
+			MC_BACK_total_histo->SetMarkerSize(0.7);
 			MC_BACK_total_histo->SetMarkerStyle(20);
 			MC_BACK_total_histo->SetMinimum(0.1);
 
@@ -1057,6 +1061,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 				MC_BACK_INV_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
 			}
 
+			MC_BACK_INV_total_histo->SetMarkerSize(0.7);
 			MC_BACK_INV_total_histo->SetMarkerStyle(20);
 			MC_BACK_INV_total_histo->SetMinimum(0.1);
 
@@ -1087,6 +1092,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 				DATA_INV_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
 			}
 
+			DATA_INV_total_histo->SetMarkerSize(0.7);
 			DATA_INV_total_histo->SetMarkerStyle(20);
 			DATA_INV_total_histo->SetMinimum(0.1);
 
@@ -1117,6 +1123,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 				DATA_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
 			}
 
+			DATA_total_histo->SetMarkerSize(0.7);
 			DATA_total_histo->SetMarkerStyle(20);
 			DATA_total_histo->SetMinimum(0.1);
 
@@ -1189,15 +1196,23 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 		leg->Draw();
 
 
-		TPaveText* text = new TPaveText(0.6068,0.7722,0.8188,0.8571,"NDC");
-		text->SetFillColor(0);
-		text->SetFillStyle(0);
-		text->SetBorderSize(0);
-		text->AddText("CMS Preliminary");
-		if (data_ReReco) text->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
-		else text->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
-		text->SetTextAlign(11);
-		text->Draw();
+  TPaveText* text_1 = new TPaveText(0.1194,0.9310,0.3313,0.9780,"NDC");
+  text_1->SetFillColor(0);
+  text_1->SetFillStyle(0);
+  text_1->SetBorderSize(0);
+  text_1->AddText("CMS Preliminary");
+  text_1->SetTextAlign(11);
+  text_1->Draw();
+
+  TPaveText* text_2 = new TPaveText(0.5627,0.9310,0.8678,0.9780,"NDC");
+  text_2->SetFillColor(0);
+  text_2->SetFillStyle(0);
+  text_2->SetBorderSize(0);
+  if (data_ReReco) text_2->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
+  else text_2->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
+  text_2->SetTextAlign(11);
+  text_2->Draw();
+
 
 		Canva->SaveAs((folder_s + geo_s + SB_folder + fit_pdf_folder + sample_mod + titleh + pdf_string).c_str());
 		Canva->SaveAs((folder_s + geo_s + SB_folder + fit_root_folder + sample_mod + titleh + root_string).c_str());
@@ -1322,27 +1337,27 @@ void templates_PfIsoNeutralHad_RhoCorrected_20binPt() {
 
 
 void templates_PfIsoPhoton_RhoCorrected_20binPt() {
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin05_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, 0, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin06_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin07_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, 0, 6);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, 0, 10);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, 0, 10);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, 0, 10);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, 0, 10);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin05_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, 0, 10);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin06_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin07_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, 0, 10);
 /*		
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin08_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin09_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin10_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin11_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin12_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin13_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin14_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin15_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin16_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin17_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin18_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin19_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin20_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 6);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin08_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin09_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin10_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin11_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin12_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin13_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin14_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin15_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin16_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin17_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin18_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin19_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin20_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, 0, 10);	
 */
 }
 
@@ -1451,28 +1466,27 @@ void templates_PfIsoNeutralHad_RhoCorrected_forFit_20binPt() {
 
 
 void templates_PfIsoPhoton_RhoCorrected_forFit_20binPt() {
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -10, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, -10, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -10, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -10, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -10, 6);
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, -10, 6);	
-
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, -10, 6);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, -10, 10);	
 /*
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);	
-	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 6);		
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);		
 */
 }
 
@@ -1502,15 +1516,67 @@ void templates_PfIso_RhoCorrected_forFit_20binPt() {
 */
 }
 
+void templates_IsoFPRPhoton_RhoCorrected_forFit_20binPt() {
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+/*
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);		
+*/
+}
+
+void templates_IsoFPRRandomConePhoton_RhoCorrected_forFit_20binPt() {
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 151.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -10, 10);
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -10, 9.5);
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+/*
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);	
+	templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 10000 < p_{T}^{#gamma_{1}} < 100000 [GeV/#font[12]{c}]", 1, -10, 10);		
+*/
+}
+
 
 void templates_Total() {
 	templates_PfIsoChargedHad_RhoCorrected_20binPt();
 	templates_PfIsoNeutralHad_RhoCorrected_20binPt();
 	templates_PfIsoPhoton_RhoCorrected_20binPt();
 	templates_PfIso_RhoCorrected_20binPt();
+	templates_id_sieie_20binPt();
 	templates_PfIsoChargedHad_RhoCorrected_forFit_20binPt();
 	templates_PfIsoNeutralHad_RhoCorrected_forFit_20binPt();
 	templates_PfIsoPhoton_RhoCorrected_forFit_20binPt();
 	templates_PfIso_RhoCorrected_forFit_20binPt();
-	templates_id_sieie_20binPt();
-}	
+	templates_IsoFPRPhoton_RhoCorrected_forFit_20binPt();
+	templates_IsoFPRRandomConePhoton_RhoCorrected_forFit_20binPt();
+}
