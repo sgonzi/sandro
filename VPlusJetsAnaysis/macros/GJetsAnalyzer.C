@@ -58,7 +58,7 @@ void GJetsAnalyzer::Loop(){
 
 	// ==================================== choose the tools
 	
-	bool RedAn = true;								// analysis with a reduced entries number for tests
+	bool RedAn = false;								// analysis with a reduced entries number for tests
 
 	bool data_ReReco = true;					// analysis with data ReReco or data PromptReco
 	string geo = "barrel";						// barrel or endcaps
@@ -67,12 +67,12 @@ void GJetsAnalyzer::Loop(){
 	bool BackDataDriven_corr = false;	// background data-driven correction
 
 	bool RandomCone = true;					  // Random Cone data-driven or MC signal template
-	bool inv_sigmaietaieta = false;		// inverted sigmaietaieta cut
+	bool inv_sigmaietaieta = true;		// inverted sigmaietaieta cut
 	bool inv_isolation = false;				// inverted isolation set cut
 		
 	bool plothistos = false;					// please select which plots to show
 	bool textfile = true;							// if you want a text report for each sample
-	Int_t itype = 8;									// it identifies histos with different analysis 
+	Int_t itype = 9;									// it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
