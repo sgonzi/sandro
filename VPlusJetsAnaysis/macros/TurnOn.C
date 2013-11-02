@@ -1056,6 +1056,14 @@ void TurnOn::Loop(){
 						bool TriMatchF4Path_sel_2048 = photonTriMatchF4Path_sel_2048.at(iPhoPos);
 						bool TriMatchF4Path_sel_4096 = photonTriMatchF4Path_sel_4096.at(iPhoPos);
 
+						// DEN
+						if (TriMatchF4Path_sel_1){ 
+							SelectedPhotons_Pt_D1.push_back(photonPt->at(iPhoPos));
+							SelectedPhotons_Eta_D1.push_back(photonEta->at(iPhoPos)); 
+							SelectedPhotons_Phi_D1.push_back(photonPhi->at(iPhoPos));
+							SelectedPhotons_N_D1+=1;
+						}
+
 						if (TriMatchF4Path_sel_8){ 
 							SelectedPhotons_Pt_D8.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_D8.push_back(photonEta->at(iPhoPos)); 
@@ -1092,7 +1100,7 @@ void TurnOn::Loop(){
 						}
 
 
-
+						// NUM
 						if (TriMatchF4Path_sel_1 && TriMatchF4Path_sel_1) {
 							SelectedPhotons_Pt_sel_1.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_Eta_sel_1.push_back(photonEta->at(iPhoPos)); 

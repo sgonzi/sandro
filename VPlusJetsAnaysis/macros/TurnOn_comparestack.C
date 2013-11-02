@@ -131,7 +131,7 @@ void setMYStyle() {
 }
 
 
-void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const char* namevariable, const int rebin, const double x_min, const double x_max){
+void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const float prescaleNU, const float prescaleDE, const char* namevariable, const int rebin, const double x_min, const double x_max){
 
   // Usage is: .L comparestack.C++
   //       ie: comparestack("SelectedPhotons_Pt_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}]", 1);
@@ -192,6 +192,11 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 
 	string address = folder_s + geo_s + out_files;
 
+	float prescaleNUM;
+	prescaleNUM = prescaleNU;
+
+	float prescaleDEN;
+	prescaleDEN = prescaleDE;
 
 	// ==================================== exception controls
 
@@ -546,6 +551,7 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 	TH1F *DATA_PromptReco_total_histo_NUM;
 	TH1F *DATA_PromptReco_total_histo_DEN;
 
+
 	TH1F *DATA_total_histo_NUM;
 	TH1F *DATA_total_histo_DEN;
 	TH1F *DATA_total_histo;
@@ -661,23 +667,31 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 		//--- data ReReco ----------------------------------------------------------
 		DATA_RR_Run2012A_22Jan2013_histo_NUM=(TH1F*)DATA_RR_Run2012A_22Jan2013_file->Get(titlehisto_NUM);
 		DATA_RR_Run2012A_22Jan2013_histo_NUM->Rebin(rebin);
+		DATA_RR_Run2012A_22Jan2013_histo_NUM->Scale(prescaleNUM);		
 		DATA_RR_Run2012A_22Jan2013_histo_DEN=(TH1F*)DATA_RR_Run2012A_22Jan2013_file->Get(titlehisto_DEN);
 		DATA_RR_Run2012A_22Jan2013_histo_DEN->Rebin(rebin);
+		DATA_RR_Run2012A_22Jan2013_histo_DEN->Scale(prescaleDEN);
 
 		DATA_RR_Run2012B_22Jan2013_histo_NUM=(TH1F*)DATA_RR_Run2012B_22Jan2013_file->Get(titlehisto_NUM);
 		DATA_RR_Run2012B_22Jan2013_histo_NUM->Rebin(rebin);
+		DATA_RR_Run2012B_22Jan2013_histo_NUM->Scale(prescaleNUM);		
 		DATA_RR_Run2012B_22Jan2013_histo_DEN=(TH1F*)DATA_RR_Run2012B_22Jan2013_file->Get(titlehisto_DEN);
 		DATA_RR_Run2012B_22Jan2013_histo_DEN->Rebin(rebin);
-
+		DATA_RR_Run2012B_22Jan2013_histo_DEN->Scale(prescaleDEN);		
+		
 		DATA_RR_Run2012C_22Jan2013_histo_NUM=(TH1F*)DATA_RR_Run2012C_22Jan2013_file->Get(titlehisto_NUM);
 		DATA_RR_Run2012C_22Jan2013_histo_NUM->Rebin(rebin);
+		DATA_RR_Run2012C_22Jan2013_histo_NUM->Scale(prescaleNUM);		
 		DATA_RR_Run2012C_22Jan2013_histo_DEN=(TH1F*)DATA_RR_Run2012C_22Jan2013_file->Get(titlehisto_DEN);
 		DATA_RR_Run2012C_22Jan2013_histo_DEN->Rebin(rebin);
-
+		DATA_RR_Run2012C_22Jan2013_histo_DEN->Scale(prescaleDEN);		
+		
 		DATA_RR_Run2012D_22Jan2013_histo_NUM=(TH1F*)DATA_RR_Run2012D_22Jan2013_file->Get(titlehisto_NUM);
 		DATA_RR_Run2012D_22Jan2013_histo_NUM->Rebin(rebin);
+		DATA_RR_Run2012D_22Jan2013_histo_NUM->Scale(prescaleNUM);		
 		DATA_RR_Run2012D_22Jan2013_histo_DEN=(TH1F*)DATA_RR_Run2012D_22Jan2013_file->Get(titlehisto_DEN);
 		DATA_RR_Run2012D_22Jan2013_histo_DEN->Rebin(rebin);
+		DATA_RR_Run2012D_22Jan2013_histo_DEN->Scale(prescaleDEN);		
 
 		cout << "DATA_RR_Run2012A_22Jan2013_NUM entries = " << DATA_RR_Run2012A_22Jan2013_histo_NUM->Integral() << endl;  
 		cout << "DATA_RR_Run2012B_22Jan2013_NUM entries = " << DATA_RR_Run2012B_22Jan2013_histo_NUM->Integral() << endl;  
@@ -705,38 +719,52 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 		//--- data PromptReco-------------------------------------------------------
 		DATA_PR_Run2012A_13Jul2012_histo_NUM=(TH1F*)DATA_PR_Run2012A_13Jul2012_file->Get(titlehisto_NUM);
 		DATA_PR_Run2012A_13Jul2012_histo_NUM->Rebin(rebin);
+		DATA_PR_Run2012A_13Jul2012_histo_NUM->Scale(prescaleNUM);
 		DATA_PR_Run2012A_13Jul2012_histo_DEN=(TH1F*)DATA_PR_Run2012A_13Jul2012_file->Get(titlehisto_DEN);
 		DATA_PR_Run2012A_13Jul2012_histo_DEN->Rebin(rebin);
+		DATA_PR_Run2012A_13Jul2012_histo_DEN->Scale(prescaleDEN);
 		
 		DATA_PR_Run2012A_recover_06Aug2012_histo_NUM=(TH1F*)DATA_PR_Run2012A_recover_06Aug2012_file->Get(titlehisto_NUM);
 		DATA_PR_Run2012A_recover_06Aug2012_histo_NUM->Rebin(rebin);
+		DATA_PR_Run2012A_recover_06Aug2012_histo_NUM->Scale(prescaleNUM);
 		DATA_PR_Run2012A_recover_06Aug2012_histo_DEN=(TH1F*)DATA_PR_Run2012A_recover_06Aug2012_file->Get(titlehisto_DEN);
 		DATA_PR_Run2012A_recover_06Aug2012_histo_DEN->Rebin(rebin);
+		DATA_PR_Run2012A_recover_06Aug2012_histo_DEN->Scale(prescaleDEN);
 
 		DATA_PR_Run2012B_13Jul2012_histo_NUM=(TH1F*)DATA_PR_Run2012B_13Jul2012_file->Get(titlehisto_NUM);
 		DATA_PR_Run2012B_13Jul2012_histo_NUM->Rebin(rebin);
+		DATA_PR_Run2012B_13Jul2012_histo_NUM->Scale(prescaleNUM);
 		DATA_PR_Run2012B_13Jul2012_histo_DEN=(TH1F*)DATA_PR_Run2012B_13Jul2012_file->Get(titlehisto_DEN);
 		DATA_PR_Run2012B_13Jul2012_histo_DEN->Rebin(rebin);
+		DATA_PR_Run2012B_13Jul2012_histo_DEN->Scale(prescaleDEN);
 
 		DATA_PR_Run2012C_24Aug2012_histo_NUM=(TH1F*)DATA_PR_Run2012C_24Aug2012_file->Get(titlehisto_NUM);
 		DATA_PR_Run2012C_24Aug2012_histo_NUM->Rebin(rebin);
+		DATA_PR_Run2012C_24Aug2012_histo_NUM->Scale(prescaleNUM);
 		DATA_PR_Run2012C_24Aug2012_histo_DEN=(TH1F*)DATA_PR_Run2012C_24Aug2012_file->Get(titlehisto_DEN);
 		DATA_PR_Run2012C_24Aug2012_histo_DEN->Rebin(rebin);
+		DATA_PR_Run2012C_24Aug2012_histo_DEN->Scale(prescaleDEN);
 
 		DATA_PR_Run2012C_EcalRecover_11Dec2012_histo_NUM=(TH1F*)DATA_PR_Run2012C_EcalRecover_11Dec2012_file->Get(titlehisto_NUM);
 		DATA_PR_Run2012C_EcalRecover_11Dec2012_histo_NUM->Rebin(rebin);
+		DATA_PR_Run2012C_EcalRecover_11Dec2012_histo_NUM->Scale(prescaleNUM);
 		DATA_PR_Run2012C_EcalRecover_11Dec2012_histo_DEN=(TH1F*)DATA_PR_Run2012C_EcalRecover_11Dec2012_file->Get(titlehisto_DEN);
 		DATA_PR_Run2012C_EcalRecover_11Dec2012_histo_DEN->Rebin(rebin);
+		DATA_PR_Run2012C_EcalRecover_11Dec2012_histo_DEN->Scale(prescaleDEN);
 
 		DATA_PR_Run2012C_PromptReco_histo_NUM=(TH1F*)DATA_PR_Run2012C_PromptReco_file->Get(titlehisto_NUM);
 		DATA_PR_Run2012C_PromptReco_histo_NUM->Rebin(rebin);
+		DATA_PR_Run2012C_PromptReco_histo_NUM->Scale(prescaleNUM);
 		DATA_PR_Run2012C_PromptReco_histo_DEN=(TH1F*)DATA_PR_Run2012C_PromptReco_file->Get(titlehisto_DEN);
 		DATA_PR_Run2012C_PromptReco_histo_DEN->Rebin(rebin);
+		DATA_PR_Run2012C_PromptReco_histo_NUM->Scale(prescaleDEN);
 
 		DATA_PR_Run2012D_PromptReco_histo_NUM=(TH1F*)DATA_PR_Run2012D_PromptReco_file->Get(titlehisto_NUM);
 		DATA_PR_Run2012D_PromptReco_histo_NUM->Rebin(rebin);
+		DATA_PR_Run2012D_PromptReco_histo_NUM->Scale(prescaleNUM);
 		DATA_PR_Run2012D_PromptReco_histo_DEN=(TH1F*)DATA_PR_Run2012D_PromptReco_file->Get(titlehisto_DEN);
 		DATA_PR_Run2012D_PromptReco_histo_DEN->Rebin(rebin);
+		DATA_PR_Run2012D_PromptReco_histo_DEN->Scale(prescaleDEN);
 		
 		cout << "DATA_PR_Run2012A_13Jul2012_NUM entries = " << DATA_PR_Run2012A_13Jul2012_histo_NUM->Integral() << endl;  
 		cout << "DATA_PR_Run2012A_recover_06Aug2012_NUM entries = " << DATA_PR_Run2012A_recover_06Aug2012_histo_NUM->Integral() << endl;  
@@ -789,29 +817,37 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 		DATA_total_histo->Divide(DATA_total_histo_DEN);	
 	
 	
-	if(signal_MAD){				
+	if(signal_MAD){
 		//--- MC signal GJets_HT-xToy ----------------------------------------------
 
 		GJets_HT_40To100_histo_NUM=(TH1F*)GJets_HT_40To100_file->Get(titlehisto_NUM);
 		GJets_HT_40To100_histo_NUM->Rebin(rebin);
+//		GJets_HT_40To100_histo_NUM->Scale(prescaleRatio);
 		GJets_HT_40To100_histo_DEN=(TH1F*)GJets_HT_40To100_file->Get(titlehisto_DEN);
 		GJets_HT_40To100_histo_DEN->Rebin(rebin);
+//		GJets_HT_40To100_histo_DEN->Scale(prescaleRatio);
 		
 		GJets_HT_100To200_histo_NUM=(TH1F*)GJets_HT_100To200_file->Get(titlehisto_NUM);
 		GJets_HT_100To200_histo_NUM->Rebin(rebin);
+//		GJets_HT_100To200_histo_NUM->Scale(prescaleRatio);
 		GJets_HT_100To200_histo_DEN=(TH1F*)GJets_HT_100To200_file->Get(titlehisto_DEN);
 		GJets_HT_100To200_histo_DEN->Rebin(rebin);
-
+//		GJets_HT_100To200_histo_DEN->Scale(prescaleRatio);
+		
 		GJets_HT_200To400_histo_NUM=(TH1F*)GJets_HT_200To400_file->Get(titlehisto_NUM);
 		GJets_HT_200To400_histo_NUM->Rebin(rebin);
+//		GJets_HT_200To400_histo_NUM->Scale(prescaleRatio);
 		GJets_HT_200To400_histo_DEN=(TH1F*)GJets_HT_200To400_file->Get(titlehisto_DEN);
 		GJets_HT_200To400_histo_DEN->Rebin(rebin);
-
+//		GJets_HT_200To400_histo_DEN->Scale(prescaleRatio);
+		
 		GJets_HT_400ToInf_histo_NUM=(TH1F*)GJets_HT_400ToInf_file->Get(titlehisto_NUM);
 		GJets_HT_400ToInf_histo_NUM->Rebin(rebin);
+		//GJets_HT_400ToInf_histo_NUM->Scale(prescaleRatio);
 		GJets_HT_400ToInf_histo_DEN=(TH1F*)GJets_HT_400ToInf_file->Get(titlehisto_DEN);
 		GJets_HT_400ToInf_histo_DEN->Rebin(rebin);
-
+//		GJets_HT_400ToInf_histo_DEN->Scale(prescaleRatio);
+		
 		cout << "GJets_HT_40To100_NUM entries = " << GJets_HT_40To100_histo_NUM->Integral() << endl;
 		cout << "GJets_HT_100To200_NUM entries = " << GJets_HT_100To200_histo_NUM->Integral() << endl;	
 		cout << "GJets_HT_200To400_NUM entries = " << GJets_HT_200To400_histo_NUM->Integral() << endl;
@@ -845,59 +881,81 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 		// MC signal G_Pt-XtoY --------------------------------------------------	
 		G_Pt_15to30_histo_NUM=(TH1F*)G_Pt_15to30_file->Get(titlehisto_NUM);
 		G_Pt_15to30_histo_NUM->Rebin(rebin);
+//		G_Pt_15to30_histo_NUM->Scale(prescaleRatio);
 		G_Pt_15to30_histo_DEN=(TH1F*)G_Pt_15to30_file->Get(titlehisto_DEN);
 		G_Pt_15to30_histo_DEN->Rebin(rebin);
+//		G_Pt_15to30_histo_DEN->Scale(prescaleRatio);
 
 		G_Pt_30to50_histo_NUM=(TH1F*)G_Pt_30to50_file->Get(titlehisto_NUM);
 		G_Pt_30to50_histo_NUM->Rebin(rebin);
+//		G_Pt_30to50_histo_NUM->Scale(prescaleRatio);
 		G_Pt_30to50_histo_DEN=(TH1F*)G_Pt_30to50_file->Get(titlehisto_DEN);
 		G_Pt_30to50_histo_DEN->Rebin(rebin);
+//		G_Pt_30to50_histo_DEN->Scale(prescaleRatio);
 
 		G_Pt_50to80_histo_NUM=(TH1F*)G_Pt_50to80_file->Get(titlehisto_NUM);
 		G_Pt_50to80_histo_NUM->Rebin(rebin);
+//		G_Pt_50to80_histo_NUM->Scale(prescaleRatio);
 		G_Pt_50to80_histo_DEN=(TH1F*)G_Pt_50to80_file->Get(titlehisto_DEN);
 		G_Pt_50to80_histo_DEN->Rebin(rebin);
-
+//		G_Pt_50to80_histo_DEN->Scale(prescaleRatio);
+		
 		G_Pt_80to120_histo_NUM=(TH1F*)G_Pt_80to120_file->Get(titlehisto_NUM);
 		G_Pt_80to120_histo_NUM->Rebin(rebin);
+//		G_Pt_80to120_histo_NUM->Scale(prescaleRatio);
 		G_Pt_80to120_histo_DEN=(TH1F*)G_Pt_80to120_file->Get(titlehisto_DEN);
 		G_Pt_80to120_histo_DEN->Rebin(rebin);
-
+//		G_Pt_80to120_histo_DEN->Scale(prescaleRatio);
+		
 		G_Pt_120to170_histo_NUM=(TH1F*)G_Pt_120to170_file->Get(titlehisto_NUM);
 		G_Pt_120to170_histo_NUM->Rebin(rebin);
+//		G_Pt_120to170_histo_NUM->Scale(prescaleRatio);
 		G_Pt_120to170_histo_DEN=(TH1F*)G_Pt_120to170_file->Get(titlehisto_DEN);
 		G_Pt_120to170_histo_DEN->Rebin(rebin);
+//		G_Pt_120to170_histo_DEN->Scale(prescaleRatio);	
 	
 		G_Pt_170to300_histo_NUM=(TH1F*)G_Pt_170to300_file->Get(titlehisto_NUM);
 		G_Pt_170to300_histo_NUM->Rebin(rebin);
+//		G_Pt_170to300_histo_NUM->Scale(prescaleRatio);
 		G_Pt_170to300_histo_DEN=(TH1F*)G_Pt_170to300_file->Get(titlehisto_DEN);
 		G_Pt_170to300_histo_DEN->Rebin(rebin);
+//		G_Pt_170to300_histo_DEN->Scale(prescaleRatio);
 
 		G_Pt_300to470_histo_NUM=(TH1F*)G_Pt_300to470_file->Get(titlehisto_NUM);
 		G_Pt_300to470_histo_NUM->Rebin(rebin);
+//		G_Pt_300to470_histo_NUM->Scale(prescaleRatio);
 		G_Pt_300to470_histo_DEN=(TH1F*)G_Pt_300to470_file->Get(titlehisto_DEN);
 		G_Pt_300to470_histo_DEN->Rebin(rebin);
+//		G_Pt_300to470_histo_DEN->Scale(prescaleRatio);
 
 		G_Pt_470to800_histo_NUM=(TH1F*)G_Pt_470to800_file->Get(titlehisto_NUM);
 		G_Pt_470to800_histo_NUM->Rebin(rebin);
+//		G_Pt_470to800_histo_NUM->Scale(prescaleRatio);
 		G_Pt_470to800_histo_DEN=(TH1F*)G_Pt_470to800_file->Get(titlehisto_DEN);
 		G_Pt_470to800_histo_DEN->Rebin(rebin);
-
+//		G_Pt_470to800_histo_DEN->Scale(prescaleRatio);
+		
 		G_Pt_800to1400_histo_NUM=(TH1F*)G_Pt_800to1400_file->Get(titlehisto_NUM);
 		G_Pt_800to1400_histo_NUM->Rebin(rebin);
+//		G_Pt_800to1400_histo_NUM->Scale(prescaleRatio);
 		G_Pt_800to1400_histo_DEN=(TH1F*)G_Pt_800to1400_file->Get(titlehisto_DEN);
 		G_Pt_800to1400_histo_DEN->Rebin(rebin);
+//		G_Pt_800to1400_histo_DEN->Scale(prescaleRatio);
 
 		G_Pt_1400to1800_histo_NUM=(TH1F*)G_Pt_1400to1800_file->Get(titlehisto_NUM);
 		G_Pt_1400to1800_histo_NUM->Rebin(rebin);
+//		G_Pt_1400to1800_histo_NUM->Scale(prescaleRatio);		
 		G_Pt_1400to1800_histo_DEN=(TH1F*)G_Pt_1400to1800_file->Get(titlehisto_DEN);
 		G_Pt_1400to1800_histo_DEN->Rebin(rebin);
-
+//		G_Pt_1400to1800_histo_DEN->Scale(prescaleRatio);
+		
 		G_Pt_1800_histo_NUM=(TH1F*)G_Pt_1800_file->Get(titlehisto_NUM);
 		G_Pt_1800_histo_NUM->Rebin(rebin);
+//		G_Pt_1800_histo_NUM->Scale(prescaleRatio);
 		G_Pt_1800_histo_DEN=(TH1F*)G_Pt_1800_file->Get(titlehisto_DEN);
 		G_Pt_1800_histo_DEN->Rebin(rebin);
-
+//		G_Pt_1800_histo_DEN->Scale(prescaleRatio);
+		
 		cout << "G_Pt_15to30_NUM entries = " << G_Pt_15to30_histo_NUM->Integral() << endl;
 		cout << "G_Pt_30to50_NUM entries = " << G_Pt_30to50_histo_NUM->Integral() << endl;
 		cout << "G_Pt_50to80_NUM entries = " << G_Pt_50to80_histo_NUM->Integral() << endl;
@@ -959,8 +1017,10 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 	// MC signal DiPhotonJets --------------------------------------------------
 	DiPhotonJets_histo_NUM=(TH1F*)DiPhotonJets_file->Get(titlehisto_NUM);
 	DiPhotonJets_histo_NUM->Rebin(rebin);
+//	DiPhotonJets_histo_NUM->Scale(prescaleRatio);
 	DiPhotonJets_histo_DEN=(TH1F*)DiPhotonJets_file->Get(titlehisto_DEN);
 	DiPhotonJets_histo_DEN->Rebin(rebin);
+//	DiPhotonJets_histo_DEN->Scale(prescaleRatio);
 	
 	cout << "DiPhotonJets_NUM entries = " << DiPhotonJets_histo_NUM->Integral() << endl;
 	cout << endl;
@@ -982,34 +1042,46 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 		//--- MC background QCD_Pt_x_y EMEnriched ----------------------------------	
 		QCD_Pt_20_30_EMEnriched_histo_NUM=(TH1F*)QCD_Pt_20_30_EMEnriched_file->Get(titlehisto_NUM);
 		QCD_Pt_20_30_EMEnriched_histo_NUM->Rebin(rebin);
+//		QCD_Pt_20_30_EMEnriched_histo_NUM->Scale(prescaleRatio);
 		QCD_Pt_20_30_EMEnriched_histo_DEN=(TH1F*)QCD_Pt_20_30_EMEnriched_file->Get(titlehisto_DEN);
 		QCD_Pt_20_30_EMEnriched_histo_DEN->Rebin(rebin);
+//		QCD_Pt_20_30_EMEnriched_histo_DEN->Scale(prescaleRatio);
 
 		QCD_Pt_30_80_EMEnriched_histo_NUM=(TH1F*)QCD_Pt_30_80_EMEnriched_file->Get(titlehisto_NUM);
 		QCD_Pt_30_80_EMEnriched_histo_NUM->Rebin(rebin);
+//		QCD_Pt_30_80_EMEnriched_histo_NUM->Scale(prescaleRatio);
 		QCD_Pt_30_80_EMEnriched_histo_DEN=(TH1F*)QCD_Pt_30_80_EMEnriched_file->Get(titlehisto_DEN);
 		QCD_Pt_30_80_EMEnriched_histo_DEN->Rebin(rebin);
-
+//		QCD_Pt_30_80_EMEnriched_histo_DEN->Scale(prescaleRatio);
+		
 		QCD_Pt_80_170_EMEnriched_histo_NUM=(TH1F*)QCD_Pt_80_170_EMEnriched_file->Get(titlehisto_NUM);
 		QCD_Pt_80_170_EMEnriched_histo_NUM->Rebin(rebin);
+//		QCD_Pt_80_170_EMEnriched_histo_NUM->Scale(prescaleRatio);
 		QCD_Pt_80_170_EMEnriched_histo_DEN=(TH1F*)QCD_Pt_80_170_EMEnriched_file->Get(titlehisto_DEN);
 		QCD_Pt_80_170_EMEnriched_histo_DEN->Rebin(rebin);
+//		QCD_Pt_80_170_EMEnriched_histo_DEN->Scale(prescaleRatio);
 
 		QCD_Pt_170_250_EMEnriched_histo_NUM=(TH1F*)QCD_Pt_170_250_EMEnriched_file->Get(titlehisto_NUM);
 		QCD_Pt_170_250_EMEnriched_histo_NUM->Rebin(rebin);
+//		QCD_Pt_170_250_EMEnriched_histo_NUM->Scale(prescaleRatio);
 		QCD_Pt_170_250_EMEnriched_histo_DEN=(TH1F*)QCD_Pt_170_250_EMEnriched_file->Get(titlehisto_DEN);
 		QCD_Pt_170_250_EMEnriched_histo_DEN->Rebin(rebin);
+//		QCD_Pt_170_250_EMEnriched_histo_DEN->Scale(prescaleRatio);
 
 		QCD_Pt_250_350_EMEnriched_histo_NUM=(TH1F*)QCD_Pt_250_350_EMEnriched_file->Get(titlehisto_NUM);
 		QCD_Pt_250_350_EMEnriched_histo_NUM->Rebin(rebin);
+//		QCD_Pt_250_350_EMEnriched_histo_NUM->Scale(prescaleRatio);
 		QCD_Pt_250_350_EMEnriched_histo_DEN=(TH1F*)QCD_Pt_250_350_EMEnriched_file->Get(titlehisto_DEN);
 		QCD_Pt_250_350_EMEnriched_histo_DEN->Rebin(rebin);
-
+//		QCD_Pt_250_350_EMEnriched_histo_DEN->Scale(prescaleRatio);
+		
 		QCD_Pt_350_EMEnriched_histo_NUM=(TH1F*)QCD_Pt_350_EMEnriched_file->Get(titlehisto_NUM);
 		QCD_Pt_350_EMEnriched_histo_NUM->Rebin(rebin);
+//		QCD_Pt_350_EMEnriched_histo_NUM->Scale(prescaleRatio);
 		QCD_Pt_350_EMEnriched_histo_DEN=(TH1F*)QCD_Pt_350_EMEnriched_file->Get(titlehisto_DEN);
 		QCD_Pt_350_EMEnriched_histo_DEN->Rebin(rebin);
-
+//		QCD_Pt_350_EMEnriched_histo_DEN->Scale(prescaleRatio);
+		
 		cout << "QCD_Pt_20_30_EMEnriched_NUM entries = " << QCD_Pt_20_30_EMEnriched_histo_NUM->Integral() << endl;
 		cout << "QCD_Pt_30_80_EMEnriched_NUM entries = " << QCD_Pt_30_80_EMEnriched_histo_NUM->Integral() << endl;
 		cout << "QCD_Pt_80_170_EMEnriched_NUM entries = " << QCD_Pt_80_170_EMEnriched_histo_NUM->Integral() << endl;
@@ -1051,33 +1123,45 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 		//--- MC background QCD_Pt_x_y BCtoE ----------------------------------
 		QCD_Pt_20_30_BCtoE_histo_NUM=(TH1F*)QCD_Pt_20_30_BCtoE_file->Get(titlehisto_NUM);
 		QCD_Pt_20_30_BCtoE_histo_NUM->Rebin(rebin);
+//		QCD_Pt_20_30_BCtoE_histo_NUM->Scale(prescaleRatio);
 		QCD_Pt_20_30_BCtoE_histo_DEN=(TH1F*)QCD_Pt_20_30_BCtoE_file->Get(titlehisto_DEN);
 		QCD_Pt_20_30_BCtoE_histo_DEN->Rebin(rebin);
+//		QCD_Pt_20_30_BCtoE_histo_DEN->Scale(prescaleRatio);
 
 		QCD_Pt_30_80_BCtoE_histo_NUM=(TH1F*)QCD_Pt_30_80_BCtoE_file->Get(titlehisto_NUM);
 		QCD_Pt_30_80_BCtoE_histo_NUM->Rebin(rebin);
+//		QCD_Pt_30_80_BCtoE_histo_NUM->Scale(prescaleRatio);
 		QCD_Pt_30_80_BCtoE_histo_DEN=(TH1F*)QCD_Pt_30_80_BCtoE_file->Get(titlehisto_DEN);
 		QCD_Pt_30_80_BCtoE_histo_DEN->Rebin(rebin);
-
+//		QCD_Pt_30_80_BCtoE_histo_DEN->Scale(prescaleRatio);
+		
 		QCD_Pt_80_170_BCtoE_histo_NUM=(TH1F*)QCD_Pt_80_170_BCtoE_file->Get(titlehisto_NUM);
 		QCD_Pt_80_170_BCtoE_histo_NUM->Rebin(rebin);
+		//QCD_Pt_80_170_BCtoE_histo_NUM->Scale(prescaleRatio);
 		QCD_Pt_80_170_BCtoE_histo_DEN=(TH1F*)QCD_Pt_80_170_BCtoE_file->Get(titlehisto_DEN);
 		QCD_Pt_80_170_BCtoE_histo_DEN->Rebin(rebin);
+		//QCD_Pt_80_170_BCtoE_histo_DEN->Scale(prescaleRatio);
 
 		QCD_Pt_170_250_BCtoE_histo_NUM=(TH1F*)QCD_Pt_170_250_BCtoE_file->Get(titlehisto_NUM);
 		QCD_Pt_170_250_BCtoE_histo_NUM->Rebin(rebin);
+//		QCD_Pt_170_250_BCtoE_histo_NUM->Scale(prescaleRatio);
 		QCD_Pt_170_250_BCtoE_histo_DEN=(TH1F*)QCD_Pt_170_250_BCtoE_file->Get(titlehisto_DEN);
 		QCD_Pt_170_250_BCtoE_histo_DEN->Rebin(rebin);
-
+//		QCD_Pt_170_250_BCtoE_histo_DEN->Scale(prescaleRatio);
+		
 		QCD_Pt_250_350_BCtoE_histo_NUM=(TH1F*)QCD_Pt_250_350_BCtoE_file->Get(titlehisto_NUM);
 		QCD_Pt_250_350_BCtoE_histo_NUM->Rebin(rebin);
+//		QCD_Pt_250_350_BCtoE_histo_NUM->Scale(prescaleRatio);
 		QCD_Pt_250_350_BCtoE_histo_DEN=(TH1F*)QCD_Pt_250_350_BCtoE_file->Get(titlehisto_DEN);
 		QCD_Pt_250_350_BCtoE_histo_DEN->Rebin(rebin);
+//		QCD_Pt_250_350_BCtoE_histo_DEN->Scale(prescaleRatio);
 
 		QCD_Pt_350_BCtoE_histo_NUM=(TH1F*)QCD_Pt_350_BCtoE_file->Get(titlehisto_NUM);
 		QCD_Pt_350_BCtoE_histo_NUM->Rebin(rebin);
+//		QCD_Pt_350_BCtoE_histo_NUM->Scale(prescaleRatio);
 		QCD_Pt_350_BCtoE_histo_DEN=(TH1F*)QCD_Pt_350_BCtoE_file->Get(titlehisto_DEN);
 		QCD_Pt_350_BCtoE_histo_DEN->Rebin(rebin);
+//		QCD_Pt_350_BCtoE_histo_DEN->Scale(prescaleRatio);
 
 		cout << "QCD_Pt_20_30_BCtoE_NUM entries = " << QCD_Pt_20_30_BCtoE_histo_NUM->Integral() << endl;
 		cout << "QCD_Pt_30_80_BCtoE_NUM entries = " << QCD_Pt_30_80_BCtoE_histo_NUM->Integral() << endl;
@@ -1119,23 +1203,31 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 		// MC background QCD HT-xToy --------------------------------------------
 		QCD_HT_100To250_histo_NUM=(TH1F*)QCD_HT_100To250_file->Get(titlehisto_NUM);
 		QCD_HT_100To250_histo_NUM->Rebin(rebin);
+//		QCD_HT_100To250_histo_NUM->Scale(prescaleRatio);
 		QCD_HT_100To250_histo_DEN=(TH1F*)QCD_HT_100To250_file->Get(titlehisto_DEN);
 		QCD_HT_100To250_histo_DEN->Rebin(rebin);
+//		QCD_HT_100To250_histo_DEN->Scale(prescaleRatio);
 
 		QCD_HT_250To500_histo_NUM=(TH1F*)QCD_HT_250To500_file->Get(titlehisto_NUM);
 		QCD_HT_250To500_histo_NUM->Rebin(rebin);
+//		QCD_HT_250To500_histo_NUM->Scale(prescaleRatio);
 		QCD_HT_250To500_histo_DEN=(TH1F*)QCD_HT_250To500_file->Get(titlehisto_DEN);
 		QCD_HT_250To500_histo_DEN->Rebin(rebin);
-
+//		QCD_HT_250To500_histo_DEN->Scale(prescaleRatio);
+		
 		QCD_HT_500To1000_histo_NUM=(TH1F*)QCD_HT_500To1000_file->Get(titlehisto_NUM);
 		QCD_HT_500To1000_histo_NUM->Rebin(rebin);
+//		QCD_HT_500To1000_histo_NUM->Scale(prescaleRatio);
 		QCD_HT_500To1000_histo_DEN=(TH1F*)QCD_HT_500To1000_file->Get(titlehisto_DEN);
 		QCD_HT_500To1000_histo_DEN->Rebin(rebin);
+//		QCD_HT_500To1000_histo_DEN->Scale(prescaleRatio);
 
 		QCD_HT_1000ToInf_histo_NUM=(TH1F*)QCD_HT_1000ToInf_file->Get(titlehisto_NUM);
 		QCD_HT_1000ToInf_histo_NUM->Rebin(rebin);
+//		QCD_HT_1000ToInf_histo_NUM->Scale(prescaleRatio);
 		QCD_HT_1000ToInf_histo_DEN=(TH1F*)QCD_HT_1000ToInf_file->Get(titlehisto_DEN);
 		QCD_HT_1000ToInf_histo_DEN->Rebin(rebin);
+//		QCD_HT_1000ToInf_histo_DEN->Scale(prescaleRatio);
 
 		cout << "QCD_HT_100To250_NUM entries " << QCD_HT_100To250_histo_NUM->Integral() << endl;  
 		cout << "QCD_HT_250To500_NUM entries " << QCD_HT_250To500_histo_NUM->Integral() << endl;  
@@ -1228,19 +1320,20 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 
 	// upper Pad
   upperPad->cd();
-  
-  TLine *line_99e9 = new TLine(xbox_min,0.999,xbox_max,0.999);
-  line_99e9->SetLineColor(kBlack);
-  line_99e9->Draw();
 
-  TLine *line_99 = new TLine(xbox_min,0.99,xbox_max,0.99);
-  line_99->SetLineColor(kRed);
-  line_99->Draw();
-  
-  TLine *line_95 = new TLine(xbox_min,0.95,xbox_max,0.95);
-  line_95->SetLineColor(kBlue);
-  line_95->Draw();
-  
+	float xbox_min,xbox_max;
+	if (x_min == -999 && x_max == -999){
+		xbox_min = ratio_histo->GetXaxis()->GetXmin();
+		xbox_max = ratio_histo->GetXaxis()->GetXmax();
+	}
+	else {
+		xbox_min = x_min;
+		xbox_max = x_max;
+	}	
+
+	ratio_histo->Draw("");
+
+    
 /*
 	if (x_min != -999 && x_max != -999){
 		if (x_max == MC_total_histo->GetMaximum()) X_max = x_max;
@@ -1265,6 +1358,7 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 		DATA_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
 	}
 
+	
 	DATA_total_histo->SetMarkerSize(0.7);
 	DATA_total_histo->SetMarkerStyle(20);
 	DATA_total_histo->Draw("E");
@@ -1290,7 +1384,7 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 	DATA_total_histo->GetXaxis()->SetTitleSize(0.05);
 	DATA_total_histo->GetYaxis()->SetTitle("Turn-On Ratio");
 
-	TLegend *leg =new TLegend(0.6068,0.5478,0.8188,0.7480);
+	TLegend *leg =new TLegend(0.6525,0.7134,0.8119,0.8589);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
@@ -1316,11 +1410,23 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
   text_2->SetTextAlign(11);
   text_2->Draw();
 
+	TLine *line_99e9 = new TLine(xbox_min,0.999,xbox_max,0.999);
+  line_99e9->SetLineColor(kBlue);
+  line_99e9->Draw();
+
+  TLine *line_99 = new TLine(xbox_min,0.99,xbox_max,0.99);
+  line_99->SetLineColor(kGreen);
+  line_99->Draw();
+  
+  TLine *line_95 = new TLine(xbox_min,0.95,xbox_max,0.95);
+  line_95->SetLineColor(kViolet);
+  line_95->Draw();
 
 	
 	// lower Pad
 	lowerPad-> cd();
-	
+
+/*	
 	float xbox_min,xbox_max;
 	if (x_min == -999 && x_max == -999){
 		xbox_min = ratio_histo->GetXaxis()->GetXmin();
@@ -1330,7 +1436,7 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 		xbox_min = x_min;
 		xbox_max = x_max;
 	}	
-
+*/
 	ratio_histo->Draw("");
 	TBox *box_1 = new TBox(xbox_min,0.9,xbox_max,1.1);
 	box_1->SetFillColor(22);
@@ -1441,24 +1547,76 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const c
 
 
 
-void TurnOn_plots(){
+void TurnOn_plots_prescaled(){
 
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1_", "SelectedPhotons_Pt_1_D1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2_", "SelectedPhotons_Pt_1_D1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4_", "SelectedPhotons_Pt_1_D8_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_8_", "SelectedPhotons_Pt_1_D8_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_16_", "SelectedPhotons_Pt_1_D8_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_32_", "SelectedPhotons_Pt_1_D8_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_64_", "SelectedPhotons_Pt_1_D8_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_128_", "SelectedPhotons_Pt_1_D32_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_256_", "SelectedPhotons_Pt_1_D32_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_512_", "SelectedPhotons_Pt_1_D128_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1024_", "SelectedPhotons_Pt_1_D128_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2048_", "SelectedPhotons_Pt_1_D512_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4096_", "SelectedPhotons_Pt_1_D2048_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1_", "SelectedPhotons_Pt_1_D1_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2_", "SelectedPhotons_Pt_1_D1_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4_", "SelectedPhotons_Pt_1_D8_", 0, 6886.55, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_8_", "SelectedPhotons_Pt_1_D8_", 6886.55 ,6886.55, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_16_", "SelectedPhotons_Pt_1_D8_", 0, 6886.55, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_32_", "SelectedPhotons_Pt_1_D8_", 885.49, 6886.55, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_64_", "SelectedPhotons_Pt_1_D8_", 0, 6886.55, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_128_", "SelectedPhotons_Pt_1_D32_", 147.59, 885.49, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_256_", "SelectedPhotons_Pt_1_D32_", 0,  885.49, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_512_", "SelectedPhotons_Pt_1_D128_",70.53, 147.59, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1024_", "SelectedPhotons_Pt_1_D128_",52.84, 147.59, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2048_", "SelectedPhotons_Pt_1_D512_", 1.43, 70.53,"p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4096_", "SelectedPhotons_Pt_1_D2048_", 1.0, 1.43, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);	
 }	
 
 
+void TurnOn_plots(){
+
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1_", "SelectedPhotons_Pt_1_D1_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2_", "SelectedPhotons_Pt_1_D1_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_8_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_16_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_32_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_64_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_128_", "SelectedPhotons_Pt_1_D32_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_256_", "SelectedPhotons_Pt_1_D32_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_512_", "SelectedPhotons_Pt_1_D128_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1024_", "SelectedPhotons_Pt_1_D128_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2048_", "SelectedPhotons_Pt_1_D512_", 1, 1,"p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4096_", "SelectedPhotons_Pt_1_D2048_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);	
+}	
 
 
+void TurnOn_plots_prova(){
+
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1_", "SelectedPhotons_Pt_1_D1_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2_", "SelectedPhotons_Pt_1_D1_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4_", "SelectedPhotons_Pt_1_D8_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_8_", "SelectedPhotons_Pt_1_D8_", 6886.55, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_16_", "SelectedPhotons_Pt_1_D8_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_32_", "SelectedPhotons_Pt_1_D8_", 885.49, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_64_", "SelectedPhotons_Pt_1_D8_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_128_", "SelectedPhotons_Pt_1_D32_", 147.59, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_256_", "SelectedPhotons_Pt_1_D32_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_512_", "SelectedPhotons_Pt_1_D128_", 70.53, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1024_", "SelectedPhotons_Pt_1_D128_", 52.84, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2048_", "SelectedPhotons_Pt_1_D512_", 1.43, 1,"p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4096_", "SelectedPhotons_Pt_1_D2048_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);	
+}	
+
+
+void TurnOn_plots_prova2(){
+
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1_", "SelectedPhotons_Pt_1_D1_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2_", "SelectedPhotons_Pt_1_D1_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4_", "SelectedPhotons_Pt_1_D8_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_8_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_16_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_32_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_64_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_128_", "SelectedPhotons_Pt_1_D32_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+//	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_256_", "SelectedPhotons_Pt_1_D32_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_512_", "SelectedPhotons_Pt_1_D128_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1024_", "SelectedPhotons_Pt_1_D128_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2048_", "SelectedPhotons_Pt_1_D512_", 1.43, 1,"p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4096_", "SelectedPhotons_Pt_1_D2048_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);	
+}	
+
+//TH1* h1 = new TH1F("h1", "h1", 9, -0.5, +8.5);
+//TGraphAsymmErrors* eff = new TGraphAsymmErrors(h1, h2);

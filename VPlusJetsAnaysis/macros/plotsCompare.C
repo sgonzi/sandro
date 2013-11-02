@@ -766,6 +766,38 @@ void plotsCompare_43(){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void plotsCompare_44(){		
 	comparestack("SelectedPhotons_PfIsoPhotons03ForCic_1_", "PfIsoPhotons03ForCic^{#gamma_{1}}", 8, 0, 80);
 	comparestack("SelectedPhotons_PfIsoNeutrals03ForCic_1_", "PfIsoNeutrals03ForCic^{#gamma_{1}}", 4, 0, 40);

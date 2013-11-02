@@ -58,13 +58,13 @@ void GJetsAnalyzer::Loop(){
 
 	// ==================================== choose the tools
 	
-	bool RedAn = false;								// analysis with a reduced entries number for tests
+	bool RedAn = true;								// analysis with a reduced entries number for tests
 
 	bool data_ReReco = true;					// analysis with data ReReco or data PromptReco
 	string geo = "barrel";						// barrel or endcaps
 	bool SigBack = true;							// to avoid double counting for SIGNAL and BACKGROUND
 	bool TeP_corr = true;							// T&P correction
-	bool BackDataDriven_corr = true;	// background data-driven correction
+	bool BackDataDriven_corr = false;	// background data-driven correction
 
 	bool RandomCone = true;					  // Random Cone data-driven or MC signal template
 	bool inv_sigmaietaieta = false;		// inverted sigmaietaieta cut
@@ -72,7 +72,7 @@ void GJetsAnalyzer::Loop(){
 		
 	bool plothistos = false;					// please select which plots to show
 	bool textfile = true;							// if you want a text report for each sample
-	Int_t itype = 6;									// it identifies histos with different analysis 
+	Int_t itype = 8;									// it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -949,7 +949,8 @@ void GJetsAnalyzer::Loop(){
 					} // end eta - definition
 
 					// photonGEN kinematic selection
-					if (photonPtGEN > 100. && geo_selGEN) {
+					if (photonPtGEN > 207.1 && geo_selGEN) {
+					//if (photonPtGEN > 100. && geo_selGEN) {
 					// if (photonPtGEN > 0. && geo_selGEN) {          // for Z/gamma GEN ratio  
 					
 						// kin JetsGEN (cleaned vs. photonGEN) selection
@@ -1331,33 +1332,37 @@ void GJetsAnalyzer::Loop(){
 						bool bin_Pt17 = false;
 						bool bin_Pt18 = false;
 						bool bin_Pt19 = false;
+						bool bin_Pt20 = false;
+						bool bin_Pt21 = false;
 
-						bin_Pt01 = (photonPt->at(iPhoPos) > 100.0 && photonPt->at(iPhoPos) < 151.6);
-						bin_Pt02 = (photonPt->at(iPhoPos) > 151.6 && photonPt->at(iPhoPos) < 207.1);
-						bin_Pt03 = (photonPt->at(iPhoPos) > 207.1 && photonPt->at(iPhoPos) < 313.8);
-						bin_Pt04 = (photonPt->at(iPhoPos) > 313.8 && photonPt->at(iPhoPos) < 649.8);
-						bin_Pt05 = (photonPt->at(iPhoPos) > 649.8 && photonPt->at(iPhoPos) < 800.0);
-						bin_Pt06 = (photonPt->at(iPhoPos) > 800.0);
-						bin_Pt07 = false;
-						bin_Pt08 = false;
-						bin_Pt09 = false;
-						bin_Pt10 = false;
-						bin_Pt11 = false;
-						bin_Pt12 = false;
-						bin_Pt13 = false;
-						bin_Pt14 = false;
-						bin_Pt15 = false;
-						bin_Pt16 = false;
-						bin_Pt17 = false;								
-						bin_Pt18 = false;
-						bin_Pt19 = false;
-
-						if (bin_Pt01) BackDataDriven_F = 0.761785;
-						else if (bin_Pt02) BackDataDriven_F = 0.846568;    
-						else if (bin_Pt03) BackDataDriven_F = 0.860856; 
-						else if (bin_Pt04) BackDataDriven_F = 0.896051; 
-						else if (bin_Pt05) BackDataDriven_F = 0.991391;
-						else if (bin_Pt06) BackDataDriven_F = 1.;
+						bin_Pt01 = (photonPt->at(iPhoPos) > 100.0 && photonPt->at(iPhoPos) < 111.0);
+						bin_Pt02 = (photonPt->at(iPhoPos) > 111.0 && photonPt->at(iPhoPos) < 123.1);
+						bin_Pt03 = (photonPt->at(iPhoPos) > 123.1 && photonPt->at(iPhoPos) < 136.6);
+						bin_Pt04 = (photonPt->at(iPhoPos) > 136.6 && photonPt->at(iPhoPos) < 151.6);
+						bin_Pt05 = (photonPt->at(iPhoPos) > 151.6 && photonPt->at(iPhoPos) < 168.2);
+						bin_Pt06 = (photonPt->at(iPhoPos) > 168.2 && photonPt->at(iPhoPos) < 186.6);
+						bin_Pt07 = (photonPt->at(iPhoPos) > 186.6 && photonPt->at(iPhoPos) < 207.1);
+						bin_Pt08 = (photonPt->at(iPhoPos) > 207.1 && photonPt->at(iPhoPos) < 229.7);
+						bin_Pt09 = (photonPt->at(iPhoPos) > 229.7 && photonPt->at(iPhoPos) < 254.9);
+						bin_Pt10 = (photonPt->at(iPhoPos) > 254.9 && photonPt->at(iPhoPos) < 282.8);
+						bin_Pt11 = (photonPt->at(iPhoPos) > 282.8 && photonPt->at(iPhoPos) < 313.8);
+						bin_Pt12 = (photonPt->at(iPhoPos) > 313.8 && photonPt->at(iPhoPos) < 348.2);
+						bin_Pt13 = (photonPt->at(iPhoPos) > 348.2 && photonPt->at(iPhoPos) < 386.4);
+						bin_Pt14 = (photonPt->at(iPhoPos) > 386.4 && photonPt->at(iPhoPos) < 428.7);
+						bin_Pt15 = (photonPt->at(iPhoPos) > 428.7 && photonPt->at(iPhoPos) < 475.7);
+						bin_Pt16 = (photonPt->at(iPhoPos) > 475.7 && photonPt->at(iPhoPos) < 527.8);
+						bin_Pt17 = (photonPt->at(iPhoPos) > 527.8 && photonPt->at(iPhoPos) < 585.6);								
+						bin_Pt18 = (photonPt->at(iPhoPos) > 585.6 && photonPt->at(iPhoPos) < 649.8);
+						bin_Pt19 = (photonPt->at(iPhoPos) > 649.8 && photonPt->at(iPhoPos) < 721.0);
+						bin_Pt20 = (photonPt->at(iPhoPos) > 721.0 && photonPt->at(iPhoPos) < 800.0);
+						bin_Pt21 = (photonPt->at(iPhoPos) > 800.0);
+																							
+						if (bin_Pt01) BackDataDriven_F = 0.;
+						else if (bin_Pt02) BackDataDriven_F = 0.;    
+						else if (bin_Pt03) BackDataDriven_F = 0.; 
+						else if (bin_Pt04) BackDataDriven_F = 0.; 
+						else if (bin_Pt05) BackDataDriven_F = 0.;
+						else if (bin_Pt06) BackDataDriven_F = 0.;
 						else if (bin_Pt07) BackDataDriven_F = 0.;
 						else if (bin_Pt08) BackDataDriven_F = 0.; 
 						else if (bin_Pt09) BackDataDriven_F = 0.; 
@@ -1371,6 +1376,8 @@ void GJetsAnalyzer::Loop(){
 						else if (bin_Pt17) BackDataDriven_F = 0.; 
 						else if (bin_Pt18) BackDataDriven_F = 0.; 
 						else if (bin_Pt19) BackDataDriven_F = 0.; 
+						else if (bin_Pt20) BackDataDriven_F = 0.; 
+						else if (bin_Pt21) BackDataDriven_F = 0.; 
 						else BackDataDriven_F = 0.;
 					}
 				}
@@ -1693,7 +1700,7 @@ void GJetsAnalyzer::Loop(){
 						BackDataDriven_F_preAcc.push_back(photonBackDataDriven_F.at(iPhoPos));
 
 						// photon kinematic selection
-						if (photonPt->at(iPhoPos) > 100. && geo_sel) {
+						if (photonPt->at(iPhoPos) > 207.1 && geo_sel) {
 
 							SelectedPhotons_Pt.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_E.push_back(photonE->at(iPhoPos));
@@ -2022,7 +2029,7 @@ void GJetsAnalyzer::Loop(){
 							SelectedPhotons_PfIso_RhoCorr_forFit_1_->Fill(SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
 							TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
 
-							if (SelectedPhotons_Pt.at(0) > 100 && SelectedPhotons_Pt.at(0) < 151.6){
+							if (SelectedPhotons_Pt.at(0) > 100 && SelectedPhotons_Pt.at(0) < 111.0){
 								SelectedPhotons_id_sieie_1_bin01_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);
 
 								SelectedPhotons_PfIsoChargedHad_1_bin01_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2050,7 +2057,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin01_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 151.6 && SelectedPhotons_Pt.at(0) < 207.1){
+							if (SelectedPhotons_Pt.at(0) > 111.0 && SelectedPhotons_Pt.at(0) < 123.1){
 								SelectedPhotons_id_sieie_1_bin02_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);
 
 								SelectedPhotons_PfIsoChargedHad_1_bin02_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2078,7 +2085,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin02_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 							
-							if (SelectedPhotons_Pt.at(0) > 207.1 && SelectedPhotons_Pt.at(0) < 313.8){
+							if (SelectedPhotons_Pt.at(0) > 123.1 && SelectedPhotons_Pt.at(0) < 136.6){
 								SelectedPhotons_id_sieie_1_bin03_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin03_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2106,7 +2113,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin03_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 313.8 && SelectedPhotons_Pt.at(0) < 649.8){
+							if (SelectedPhotons_Pt.at(0) > 136.6 && SelectedPhotons_Pt.at(0) < 151.6){
 								SelectedPhotons_id_sieie_1_bin04_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin04_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2134,7 +2141,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin04_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 649.8 && SelectedPhotons_Pt.at(0) < 800.0){
+							if (SelectedPhotons_Pt.at(0) > 151.6 && SelectedPhotons_Pt.at(0) < 168.2){
 								SelectedPhotons_id_sieie_1_bin05_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin05_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2162,7 +2169,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin05_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 800.0){
+							if (SelectedPhotons_Pt.at(0) > 168.2 && SelectedPhotons_Pt.at(0) < 186.6){
 								SelectedPhotons_id_sieie_1_bin06_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin06_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2190,7 +2197,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin06_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 313.8){
+							if (SelectedPhotons_Pt.at(0) > 186.6 && SelectedPhotons_Pt.at(0) < 207.1){
 								SelectedPhotons_id_sieie_1_bin07_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin07_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2218,7 +2225,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin07_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 207.1 && SelectedPhotons_Pt.at(0) < 229.7){
 								SelectedPhotons_id_sieie_1_bin08_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin08_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2246,7 +2253,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin08_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 229.7 && SelectedPhotons_Pt.at(0) < 254.9){
 								SelectedPhotons_id_sieie_1_bin09_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin09_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2274,7 +2281,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin09_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 254.9 && SelectedPhotons_Pt.at(0) < 282.8){
 								SelectedPhotons_id_sieie_1_bin10_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin10_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2302,7 +2309,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin10_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 282.8 && SelectedPhotons_Pt.at(0) < 313.8){
 								SelectedPhotons_id_sieie_1_bin11_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin11_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2330,7 +2337,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin11_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 313.8 && SelectedPhotons_Pt.at(0) < 348.2){
 								SelectedPhotons_id_sieie_1_bin12_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin12_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2358,7 +2365,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin12_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 348.2 && SelectedPhotons_Pt.at(0) < 386.4){
 								SelectedPhotons_id_sieie_1_bin13_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin13_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2386,7 +2393,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin13_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 386.4 && SelectedPhotons_Pt.at(0) < 428.7){
 								SelectedPhotons_id_sieie_1_bin14_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin14_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2414,7 +2421,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin14_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 428.7 && SelectedPhotons_Pt.at(0) < 475.7){
 								SelectedPhotons_id_sieie_1_bin15_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin15_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2442,7 +2449,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin15_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 475.7 && SelectedPhotons_Pt.at(0) < 527.8){
 								SelectedPhotons_id_sieie_1_bin16_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin16_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2470,7 +2477,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin16_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 527.8 && SelectedPhotons_Pt.at(0) < 585.6){
 								SelectedPhotons_id_sieie_1_bin17_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin17_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2498,7 +2505,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin17_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 585.6 && SelectedPhotons_Pt.at(0) < 649.8){
 								SelectedPhotons_id_sieie_1_bin18_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin18_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2526,7 +2533,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin18_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 649.8 && SelectedPhotons_Pt.at(0) < 721.0){
 								SelectedPhotons_id_sieie_1_bin19_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin19_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2554,7 +2561,7 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin19_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
 
-							if (SelectedPhotons_Pt.at(0) > 10000 && SelectedPhotons_Pt.at(0) < 100000){
+							if (SelectedPhotons_Pt.at(0) > 721.0 && SelectedPhotons_Pt.at(0) < 800.0){
 								SelectedPhotons_id_sieie_1_bin20_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
 
 								SelectedPhotons_PfIsoChargedHad_1_bin20_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
@@ -2581,6 +2588,203 @@ void GJetsAnalyzer::Loop(){
 								TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin20_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
 								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin20_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
 							}
+
+							if (SelectedPhotons_Pt.at(0) > 800.0){
+								SelectedPhotons_id_sieie_1_bin21_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
+
+								SelectedPhotons_PfIsoChargedHad_1_bin21_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_1_bin21_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_1_bin21_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
+								SelectedPhotons_PfIso_1_bin21_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin21_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin21_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin21_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIso_RhoCorr_1_bin21_->Fill(SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin21_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin21_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin21_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin21_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin21_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								
+								SelectedPhotons_PfIso_RhoCorr_forFit_1_bin21_->Fill(SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin21_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+
+								SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin21_->Fill(SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin21_->Fill(SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin21_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin21_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+							}
+
+							if (SelectedPhotons_Pt.at(0) > 100.0 && SelectedPhotons_Pt.at(0) < 151.6){
+								SelectedPhotons_id_sieie_1_bin22_big_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
+
+								SelectedPhotons_PfIsoChargedHad_1_bin22_big_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_1_bin22_big_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_1_bin22_big_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
+								SelectedPhotons_PfIso_1_bin22_big_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin22_big_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin22_big_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin22_big_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIso_RhoCorr_1_bin22_big_->Fill(SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin22_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin22_big_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin22_big_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin22_big_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin22_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								
+								SelectedPhotons_PfIso_RhoCorr_forFit_1_bin22_big_->Fill(SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin22_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+
+								SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin22_big_->Fill(SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin22_big_->Fill(SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin22_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin22_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+							}
+
+							if (SelectedPhotons_Pt.at(0) > 151.6 && SelectedPhotons_Pt.at(0) < 207.1){
+								SelectedPhotons_id_sieie_1_bin23_big_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
+
+								SelectedPhotons_PfIsoChargedHad_1_bin23_big_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_1_bin23_big_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_1_bin23_big_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
+								SelectedPhotons_PfIso_1_bin23_big_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin23_big_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin23_big_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin23_big_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIso_RhoCorr_1_bin23_big_->Fill(SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin23_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin23_big_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin23_big_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin23_big_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin23_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								
+								SelectedPhotons_PfIso_RhoCorr_forFit_1_bin23_big_->Fill(SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin23_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+
+								SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin23_big_->Fill(SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin23_big_->Fill(SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin23_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin23_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+							}
+
+							if (SelectedPhotons_Pt.at(0) > 207.1 && SelectedPhotons_Pt.at(0) < 313.8){
+								SelectedPhotons_id_sieie_1_bin24_big_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
+
+								SelectedPhotons_PfIsoChargedHad_1_bin24_big_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_1_bin24_big_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_1_bin24_big_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
+								SelectedPhotons_PfIso_1_bin24_big_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin24_big_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin24_big_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin24_big_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIso_RhoCorr_1_bin24_big_->Fill(SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin24_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin24_big_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin24_big_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin24_big_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin24_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								
+								SelectedPhotons_PfIso_RhoCorr_forFit_1_bin24_big_->Fill(SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin24_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+
+								SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin24_big_->Fill(SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin24_big_->Fill(SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin24_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin24_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+							}
+
+							if (SelectedPhotons_Pt.at(0) > 313.8 && SelectedPhotons_Pt.at(0) < 649.8){
+								SelectedPhotons_id_sieie_1_bin25_big_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
+
+								SelectedPhotons_PfIsoChargedHad_1_bin25_big_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_1_bin25_big_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_1_bin25_big_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
+								SelectedPhotons_PfIso_1_bin25_big_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin25_big_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin25_big_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin25_big_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIso_RhoCorr_1_bin25_big_->Fill(SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin25_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin25_big_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin25_big_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin25_big_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin25_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								
+								SelectedPhotons_PfIso_RhoCorr_forFit_1_bin25_big_->Fill(SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin25_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+
+								SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin25_big_->Fill(SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin25_big_->Fill(SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin25_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin25_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+							}
+
+							if (SelectedPhotons_Pt.at(0) > 649.8 && SelectedPhotons_Pt.at(0) < 800.0){
+								SelectedPhotons_id_sieie_1_bin26_big_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
+
+								SelectedPhotons_PfIsoChargedHad_1_bin26_big_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_1_bin26_big_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_1_bin26_big_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
+								SelectedPhotons_PfIso_1_bin26_big_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin26_big_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin26_big_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin26_big_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIso_RhoCorr_1_bin26_big_->Fill(SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin26_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin26_big_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin26_big_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin26_big_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin26_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								
+								SelectedPhotons_PfIso_RhoCorr_forFit_1_bin26_big_->Fill(SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin26_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+
+								SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin26_big_->Fill(SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin26_big_->Fill(SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin26_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin26_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+							}
+
+							if (SelectedPhotons_Pt.at(0) > 313.8){
+								SelectedPhotons_id_sieie_1_bin27_big_->Fill(SelectedPhotons_id_sieie.at(0), weight_final);							
+
+								SelectedPhotons_PfIsoChargedHad_1_bin27_big_->Fill(SelectedPhotons_PfIsoChargedHad.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_1_bin27_big_->Fill(SelectedPhotons_PfIsoNeutralHad.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_1_bin27_big_->Fill(SelectedPhotons_PfIsoPhoton.at(0), weight_final);
+								SelectedPhotons_PfIso_1_bin27_big_->Fill(SelectedPhotons_PfIso.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin27_big_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin27_big_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin27_big_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr.at(0), weight_final);
+								SelectedPhotons_PfIso_RhoCorr_1_bin27_big_->Fill(SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin27_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr.at(0), weight_final);
+
+								SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin27_big_->Fill(SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin27_big_->Fill(SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin27_big_->Fill(SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin27_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIsoPhoton_RhoCorr_forFit.at(0), weight_final);
+								
+								SelectedPhotons_PfIso_RhoCorr_forFit_1_bin27_big_->Fill(SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin27_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_PfIso_RhoCorr_forFit.at(0), weight_final);
+
+								SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin27_big_->Fill(SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin27_big_->Fill(SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin27_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit.at(0), weight_final);
+								TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin27_big_->Fill(SelectedPhotons_id_sieie.at(0), SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit.at(0), weight_final);
+							}
+
 
 							SelectedPhotons_PfIsoPhotons03ForCic_1_->Fill(SelectedPhotons_PfIsoPhotons03ForCic.at(0), weight_final);
 							SelectedPhotons_PfIsoNeutrals03ForCic_1_->Fill(SelectedPhotons_PfIsoNeutrals03ForCic.at(0), weight_final);
@@ -3151,558 +3355,747 @@ void GJetsAnalyzer::Book_Histos(){
 	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_04
-	SelectedPhotons_id_sieie_1_bin01_ = new TH1F("SelectedPhotons_id_sieie_1_bin01_", "photon ID: #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin01_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin01_", "photon PfIsoChargedHad, 100 < p_{T}^{#gamma} < 151.6", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin01_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin01_", "photon PfIsoNeutralHad, 100 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin01_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin01_", "photon PfIsoPhoton, 100 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin01_ = new TH1F("SelectedPhotons_PfIso_1_bin01_", "photon PfIso, 100 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin01_ = new TH1F("SelectedPhotons_id_sieie_1_bin01_", "photon ID: #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 111", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin01_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin01_", "photon PfIsoChargedHad, 100 < p_{T}^{#gamma} < 111", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin01_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin01_", "photon PfIsoNeutralHad, 100 < p_{T}^{#gamma} < 111", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin01_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin01_", "photon PfIsoPhoton, 100 < p_{T}^{#gamma} < 111", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin01_ = new TH1F("SelectedPhotons_PfIso_1_bin01_", "photon PfIso, 100 < p_{T}^{#gamma} < 111", 2000, 0, 200);
 
 	//plotsCompare_05
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin01_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin01_", "photon PfIsoChargedHad #rho corrected, 100 < p_{T}^{#gamma} < 151.6", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin01_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin01_", "photon PfIsoNeutralHad #rho corrected, 100 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_", "photon PfIsoPhoton #rho corrected, 100 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin01_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin01_", "photon PfIso #rho corrected, 100 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin01_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin01_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin01_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin01_", "photon PfIsoChargedHad #rho corrected, 100 < p_{T}^{#gamma} < 111", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin01_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin01_", "photon PfIsoNeutralHad #rho corrected, 100 < p_{T}^{#gamma} < 111", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_", "photon PfIsoPhoton #rho corrected, 100 < p_{T}^{#gamma} < 111", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin01_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin01_", "photon PfIso #rho corrected, 100 < p_{T}^{#gamma} < 111", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin01_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin01_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 111", 500, 0., 0.050, 2000, 0, 200);
 	
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin01_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin01_", "photon PfIsoChargedHad #rho corrected for Fit, 100 < p_{T}^{#gamma} < 151.6", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin01_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin01_", "photon PfIsoNeutralHad #rho corrected for Fit, 100 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_", "photon PfIsoPhoton #rho corrected for Fit, 100 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin01_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin01_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin01_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin01_", "photon PfIsoChargedHad #rho corrected for Fit, 100 < p_{T}^{#gamma} < 111", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin01_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin01_", "photon PfIsoNeutralHad #rho corrected for Fit, 100 < p_{T}^{#gamma} < 111", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_", "photon PfIsoPhoton #rho corrected for Fit, 100 < p_{T}^{#gamma} < 111", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin01_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin01_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 111", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", "photon PfIso #rho corrected for Fit, 100 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin01_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin01_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", "photon PfIso #rho corrected for Fit, 100 < p_{T}^{#gamma} < 111", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin01_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin01_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 111", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin01_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin01_", "photon IsoFPRPhoton #rho corrected for Fit, 100 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin01_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin01_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 100 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin01_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin01_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin01_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin01_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin01_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin01_", "photon IsoFPRPhoton #rho corrected for Fit, 100 < p_{T}^{#gamma} < 111", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin01_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin01_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 100 < p_{T}^{#gamma} < 111", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin01_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin01_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 111", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin01_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin01_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 111", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_06
-	SelectedPhotons_id_sieie_1_bin02_ = new TH1F("SelectedPhotons_id_sieie_1_bin02_", "photon ID: #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin02_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin02_", "photon PfIsoChargedHad, 151.6 < p_{T}^{#gamma} < 207.1", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin02_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin02_", "photon PfIsoNeutralHad, 151.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin02_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin02_", "photon PfIsoPhoton, 151.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin02_ = new TH1F("SelectedPhotons_PfIso_1_bin02_", "photon PfIso, 151.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin02_ = new TH1F("SelectedPhotons_id_sieie_1_bin02_", "photon ID: #sigma_{i#etai#eta}, 111 < p_{T}^{#gamma} < 123.1", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin02_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin02_", "photon PfIsoChargedHad, 111 < p_{T}^{#gamma} < 123.1", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin02_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin02_", "photon PfIsoNeutralHad, 111 < p_{T}^{#gamma} < 123.1", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin02_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin02_", "photon PfIsoPhoton, 111 < p_{T}^{#gamma} < 123.1", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin02_ = new TH1F("SelectedPhotons_PfIso_1_bin02_", "photon PfIso, 111 < p_{T}^{#gamma} < 123.1", 2000, 0, 200);
 
 	//plotsCompare_07
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin02_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin02_", "photon PfIsoChargedHad #rho corrected, 151.6 < p_{T}^{#gamma} < 207.1", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin02_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin02_", "photon PfIsoNeutralHad #rho corrected, 151.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_", "photon PfIsoPhoton #rho corrected, 151.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin02_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin02_", "photon PfIso #rho corrected, 151.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin02_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin02_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin02_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin02_", "photon PfIsoChargedHad #rho corrected, 111 < p_{T}^{#gamma} < 123.1", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin02_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin02_", "photon PfIsoNeutralHad #rho corrected, 111 < p_{T}^{#gamma} < 123.1", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_", "photon PfIsoPhoton #rho corrected, 111 < p_{T}^{#gamma} < 123.1", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin02_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin02_", "photon PfIso #rho corrected, 111 < p_{T}^{#gamma} < 123.1", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin02_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin02_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 111 < p_{T}^{#gamma} < 123.1", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin02_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin02_", "photon PfIsoChargedHad #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 207.1", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin02_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin02_", "photon PfIsoNeutralHad #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_", "photon PfIsoPhoton #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin02_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin02_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 4000, -200, 200);	
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin02_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin02_", "photon PfIsoChargedHad #rho corrected for Fit, 111 < p_{T}^{#gamma} < 123.1", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin02_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin02_", "photon PfIsoNeutralHad #rho corrected for Fit, 111 < p_{T}^{#gamma} < 123.1", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_", "photon PfIsoPhoton #rho corrected for Fit, 111 < p_{T}^{#gamma} < 123.1", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin02_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin02_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 111 < p_{T}^{#gamma} < 123.1", 500, 0., 0.050, 4000, -200, 200);	
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", "photon PfIso #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin02_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin02_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", "photon PfIso #rho corrected for Fit, 111 < p_{T}^{#gamma} < 123.1", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin02_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin02_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 111 < p_{T}^{#gamma} < 123.1", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin02_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin02_", "photon IsoFPRPhoton #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin02_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin02_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin02_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin02_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin02_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin02_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin02_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin02_", "photon IsoFPRPhoton #rho corrected for Fit, 111 < p_{T}^{#gamma} < 123.1", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin02_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin02_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 111 < p_{T}^{#gamma} < 123.1", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin02_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin02_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 111 < p_{T}^{#gamma} < 123.1", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin02_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin02_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 111 < p_{T}^{#gamma} < 123.1", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_08
-	SelectedPhotons_id_sieie_1_bin03_ = new TH1F("SelectedPhotons_id_sieie_1_bin03_", "photon ID: #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin03_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin03_", "photon PfIsoChargedHad, 207.1 < p_{T}^{#gamma} < 313.8", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin03_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin03_", "photon PfIsoNeutralHad, 207.1 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin03_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin03_", "photon PfIsoPhoton, 207.1 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin03_ = new TH1F("SelectedPhotons_PfIso_1_bin03_", "photon PfIso, 207.1 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin03_ = new TH1F("SelectedPhotons_id_sieie_1_bin03_", "photon ID: #sigma_{i#etai#eta}, 123.1 < p_{T}^{#gamma} < 136.6", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin03_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin03_", "photon PfIsoChargedHad, 123.1 < p_{T}^{#gamma} < 136.6", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin03_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin03_", "photon PfIsoNeutralHad, 123.1 < p_{T}^{#gamma} < 136.6", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin03_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin03_", "photon PfIsoPhoton, 123.1 < p_{T}^{#gamma} < 136.6", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin03_ = new TH1F("SelectedPhotons_PfIso_1_bin03_", "photon PfIso, 123.1 < p_{T}^{#gamma} < 136.6", 2000, 0, 200);
 
 	//plotsCompare_09
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin03_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin03_", "photon PfIsoChargedHad #rho corrected, 207.1 < p_{T}^{#gamma} < 313.8", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin03_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin03_", "photon PfIsoNeutralHad #rho corrected, 207.1 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_", "photon PfIsoPhoton #rho corrected, 207.1 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin03_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin03_", "photon PfIso #rho corrected, 207.1 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin03_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin03_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin03_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin03_", "photon PfIsoChargedHad #rho corrected, 123.1 < p_{T}^{#gamma} < 136.6", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin03_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin03_", "photon PfIsoNeutralHad #rho corrected, 123.1 < p_{T}^{#gamma} < 136.6", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_", "photon PfIsoPhoton #rho corrected, 123.1 < p_{T}^{#gamma} < 136.6", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin03_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin03_", "photon PfIso #rho corrected, 123.1 < p_{T}^{#gamma} < 136.6", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin03_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin03_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 123.1 < p_{T}^{#gamma} < 136.6", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin03_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin03_", "photon PfIsoChargedHad #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 313.8", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin03_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin03_", "photon PfIsoNeutralHad #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_", "photon PfIsoPhoton #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin03_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin03_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 4000, -200, 200);	
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin03_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin03_", "photon PfIsoChargedHad #rho corrected for Fit, 123.1 < p_{T}^{#gamma} < 136.6", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin03_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin03_", "photon PfIsoNeutralHad #rho corrected for Fit, 123.1 < p_{T}^{#gamma} < 136.6", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_", "photon PfIsoPhoton #rho corrected for Fit, 123.1 < p_{T}^{#gamma} < 136.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin03_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin03_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 123.1 < p_{T}^{#gamma} < 136.6", 500, 0., 0.050, 4000, -200, 200);	
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", "photon PfIso #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin03_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin03_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", "photon PfIso #rho corrected for Fit, 123.1 < p_{T}^{#gamma} < 136.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin03_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin03_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 123.1 < p_{T}^{#gamma} < 136.6", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin03_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin03_", "photon IsoFPRPhoton #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin03_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin03_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin03_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin03_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin03_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin03_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin03_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin03_", "photon IsoFPRPhoton #rho corrected for Fit, 123.1 < p_{T}^{#gamma} < 136.6", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin03_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin03_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 123.1 < p_{T}^{#gamma} < 136.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin03_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin03_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 123.1 < p_{T}^{#gamma} < 136.6", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin03_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin03_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 123.1 < p_{T}^{#gamma} < 136.6", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_10
-	SelectedPhotons_id_sieie_1_bin04_ = new TH1F("SelectedPhotons_id_sieie_1_bin04_", "photon ID: #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin04_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin04_", "photon PfIsoChargedHad, 313.8 < p_{T}^{#gamma} < 649.8", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin04_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin04_", "photon PfIsoNeutralHad, 313.8 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin04_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin04_", "photon PfIsoPhoton, 313.8 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin04_ = new TH1F("SelectedPhotons_PfIso_1_bin04_", "photon PfIso, 313.8 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin04_ = new TH1F("SelectedPhotons_id_sieie_1_bin04_", "photon ID: #sigma_{i#etai#eta}, 136.6 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin04_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin04_", "photon PfIsoChargedHad, 136.6 < p_{T}^{#gamma} < 151.6", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin04_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin04_", "photon PfIsoNeutralHad, 136.6 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin04_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin04_", "photon PfIsoPhoton, 136.6 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin04_ = new TH1F("SelectedPhotons_PfIso_1_bin04_", "photon PfIso, 136.6 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
 
 	//plotsCompare_11
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_", "photon PfIsoChargedHad #rho corrected, 313.8 < p_{T}^{#gamma} < 649.8", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin04_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin04_", "photon PfIsoNeutralHad #rho corrected, 313.8 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_", "photon PfIsoPhoton #rho corrected, 313.8 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin04_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin04_", "photon PfIso #rho corrected, 313.8 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin04_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin04_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_", "photon PfIsoChargedHad #rho corrected, 136.6 < p_{T}^{#gamma} < 151.6", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin04_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin04_", "photon PfIsoNeutralHad #rho corrected, 136.6 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_", "photon PfIsoPhoton #rho corrected, 136.6 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin04_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin04_", "photon PfIso #rho corrected, 136.6 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin04_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin04_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 136.6 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin04_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin04_", "photon PfIsoChargedHad #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 649.8", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin04_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin04_", "photon PfIsoNeutralHad #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_", "photon PfIsoPhoton #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin04_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin04_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin04_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin04_", "photon PfIsoChargedHad #rho corrected for Fit, 136.6 < p_{T}^{#gamma} < 151.6", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin04_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin04_", "photon PfIsoNeutralHad #rho corrected for Fit, 136.6 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_", "photon PfIsoPhoton #rho corrected for Fit, 136.6 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin04_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin04_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 136.6 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", "photon PfIso #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin04_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin04_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", "photon PfIso #rho corrected for Fit, 136.6 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin04_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin04_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 136.6 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin04_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin04_", "photon IsoFPRPhoton #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin04_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin04_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin04_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin04_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin04_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin04_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin04_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin04_", "photon IsoFPRPhoton #rho corrected for Fit, 136.6 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin04_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin04_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 136.6 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin04_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin04_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 136.6 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin04_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin04_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 136.6 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 4000, -200, 200);
 	
 	//plotsCompare_12
-	SelectedPhotons_id_sieie_1_bin05_ = new TH1F("SelectedPhotons_id_sieie_1_bin05_", "photon ID: #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 800", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin05_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin05_", "photon PfIsoChargedHad, 649.8 < p_{T}^{#gamma} < 800", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin05_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin05_", "photon PfIsoNeutralHad, 649.8 < p_{T}^{#gamma} < 800", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin05_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin05_", "photon PfIsoPhoton, 649.8 < p_{T}^{#gamma} < 800", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin05_ = new TH1F("SelectedPhotons_PfIso_1_bin05_", "photon PfIso, 649.8 < p_{T}^{#gamma} < 800", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin05_ = new TH1F("SelectedPhotons_id_sieie_1_bin05_", "photon ID: #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 168.2", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin05_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin05_", "photon PfIsoChargedHad, 151.6 < p_{T}^{#gamma} < 168.2", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin05_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin05_", "photon PfIsoNeutralHad, 151.6 < p_{T}^{#gamma} < 168.2", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin05_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin05_", "photon PfIsoPhoton, 151.6 < p_{T}^{#gamma} < 168.2", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin05_ = new TH1F("SelectedPhotons_PfIso_1_bin05_", "photon PfIso, 151.6 < p_{T}^{#gamma} < 168.2", 2000, 0, 200);
 
 	//plotsCompare_13
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin05_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin05_", "photon PfIsoChargedHad #rho corrected, 649.8 < p_{T}^{#gamma} < 800", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin05_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin05_", "photon PfIsoNeutralHad #rho corrected, 649.8 < p_{T}^{#gamma} < 800", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin05_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin05_", "photon PfIsoPhoton #rho corrected, 649.8 < p_{T}^{#gamma} < 800", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin05_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin05_", "photon PfIso #rho corrected, 649.8 < p_{T}^{#gamma} < 800", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin05_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin05_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin05_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin05_", "photon PfIsoChargedHad #rho corrected, 151.6 < p_{T}^{#gamma} < 168.2", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin05_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin05_", "photon PfIsoNeutralHad #rho corrected, 151.6 < p_{T}^{#gamma} < 168.2", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin05_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin05_", "photon PfIsoPhoton #rho corrected, 151.6 < p_{T}^{#gamma} < 168.2", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin05_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin05_", "photon PfIso #rho corrected, 151.6 < p_{T}^{#gamma} < 168.2", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin05_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin05_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 168.2", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin05_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin05_", "photon PfIsoChargedHad #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 800", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin05_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin05_", "photon PfIsoNeutralHad #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 800", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_", "photon PfIsoPhoton #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 800", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin05_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin05_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin05_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin05_", "photon PfIsoChargedHad #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 168.2", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin05_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin05_", "photon PfIsoNeutralHad #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 168.2", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_", "photon PfIsoPhoton #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 168.2", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin05_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin05_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 168.2", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", "photon PfIso #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 800", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin05_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin05_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", "photon PfIso #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 168.2", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin05_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin05_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 168.2", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin05_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin05_", "photon IsoFPRPhoton #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 800", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin05_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin05_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 800", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin05_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin05_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin05_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin05_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin05_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin05_", "photon IsoFPRPhoton #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 168.2", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin05_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin05_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 168.2", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin05_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin05_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 168.2", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin05_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin05_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 168.2", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_14
-	SelectedPhotons_id_sieie_1_bin06_ = new TH1F("SelectedPhotons_id_sieie_1_bin06_", "photon ID: #sigma_{i#etai#eta}, p_{T}^{#gamma} > 800", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin06_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin06_", "photon PfIsoChargedHad, p_{T}^{#gamma} > 800", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin06_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin06_", "photon PfIsoNeutralHad, p_{T}^{#gamma} > 800", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin06_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin06_", "photon PfIsoPhoton, p_{T}^{#gamma} > 800", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin06_ = new TH1F("SelectedPhotons_PfIso_1_bin06_", "photon PfIso, p_{T}^{#gamma} > 800", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin06_ = new TH1F("SelectedPhotons_id_sieie_1_bin06_", "photon ID: #sigma_{i#etai#eta}, 168.2 < p_{T}^{#gamma} < 186.6", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin06_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin06_", "photon PfIsoChargedHad, 168.2 < p_{T}^{#gamma} < 186.6", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin06_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin06_", "photon PfIsoNeutralHad, 168.2 < p_{T}^{#gamma} < 186.6", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin06_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin06_", "photon PfIsoPhoton, 168.2 < p_{T}^{#gamma} < 186.6", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin06_ = new TH1F("SelectedPhotons_PfIso_1_bin06_", "photon PfIso, 168.2 < p_{T}^{#gamma} < 186.6", 2000, 0, 200);
 
 	//plotsCompare_15
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin06_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin06_", "photon PfIsoChargedHad #rho corrected, p_{T}^{#gamma} > 800", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin06_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin06_", "photon PfIsoNeutralHad #rho corrected, p_{T}^{#gamma} > 800", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin06_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin06_", "photon PfIsoPhoton #rho corrected, p_{T}^{#gamma} > 800", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin06_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin06_", "photon PfIso #rho corrected, p_{T}^{#gamma} > 800", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin06_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin06_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 800", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin06_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin06_", "photon PfIsoChargedHad #rho corrected, 168.2 < p_{T}^{#gamma} < 186.6", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin06_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin06_", "photon PfIsoNeutralHad #rho corrected, 168.2 < p_{T}^{#gamma} < 186.6", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin06_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin06_", "photon PfIsoPhoton #rho corrected, 168.2 < p_{T}^{#gamma} < 186.6", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin06_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin06_", "photon PfIso #rho corrected, 168.2 < p_{T}^{#gamma} < 186.6", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin06_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin06_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 168.2 < p_{T}^{#gamma} < 186.6", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin06_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin06_", "photon PfIsoChargedHad #rho corrected for Fit, p_{T}^{#gamma} > 800", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin06_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin06_", "photon PfIsoNeutralHad #rho corrected for Fit, p_{T}^{#gamma} > 800", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_", "photon PfIsoPhoton #rho corrected for Fit, p_{T}^{#gamma} > 800", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin06_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin06_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 800", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin06_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin06_", "photon PfIsoChargedHad #rho corrected for Fit, 168.2 < p_{T}^{#gamma} < 186.6", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin06_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin06_", "photon PfIsoNeutralHad #rho corrected for Fit, 168.2 < p_{T}^{#gamma} < 186.6", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_", "photon PfIsoPhoton #rho corrected for Fit, 168.2 < p_{T}^{#gamma} < 186.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin06_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin06_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 168.2 < p_{T}^{#gamma} < 186.6", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", "photon PfIso #rho corrected for Fit, p_{T}^{#gamma} > 800", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin06_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin06_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 800", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", "photon PfIso #rho corrected for Fit, 168.2 < p_{T}^{#gamma} < 186.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin06_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin06_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 168.2 < p_{T}^{#gamma} < 186.6", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin06_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin06_", "photon IsoFPRPhoton #rho corrected for Fit, p_{T}^{#gamma} > 800", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin06_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin06_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, p_{T}^{#gamma} > 800", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin06_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin06_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 800", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin06_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin06_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 800", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin06_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin06_", "photon IsoFPRPhoton #rho corrected for Fit, 168.2 < p_{T}^{#gamma} < 186.6", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin06_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin06_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 168.2 < p_{T}^{#gamma} < 186.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin06_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin06_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 168.2 < p_{T}^{#gamma} < 186.6", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin06_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin06_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 168.2 < p_{T}^{#gamma} < 186.6", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_16
-	SelectedPhotons_id_sieie_1_bin07_ = new TH1F("SelectedPhotons_id_sieie_1_bin07_", "photon ID: #sigma_{i#etai#eta}, p_{T}^{#gamma} > 313.8", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin07_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin07_", "photon PfIsoChargedHad, p_{T}^{#gamma} > 313.8", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin07_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin07_", "photon PfIsoNeutralHad, p_{T}^{#gamma} > 313.8", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin07_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin07_", "photon PfIsoPhoton, p_{T}^{#gamma} > 313.8", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin07_ = new TH1F("SelectedPhotons_PfIso_1_bin07_", "photon PfIso, p_{T}^{#gamma} > 313.8", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin07_ = new TH1F("SelectedPhotons_id_sieie_1_bin07_", "photon ID: #sigma_{i#etai#eta}, 186.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin07_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin07_", "photon PfIsoChargedHad, 186.6 < p_{T}^{#gamma} < 207.1", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin07_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin07_", "photon PfIsoNeutralHad, 186.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin07_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin07_", "photon PfIsoPhoton, 186.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin07_ = new TH1F("SelectedPhotons_PfIso_1_bin07_", "photon PfIso, 186.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
 
 	//plotsCompare_17
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin07_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin07_", "photon PfIsoChargedHad #rho corrected, p_{T}^{#gamma} > 313.8", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin07_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin07_", "photon PfIsoNeutralHad #rho corrected, p_{T}^{#gamma} > 313.8", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin07_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin07_", "photon PfIsoPhoton #rho corrected, p_{T}^{#gamma} > 313.8", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin07_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin07_", "photon PfIso #rho corrected, p_{T}^{#gamma} > 313.8", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin07_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin07_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 313.8", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin07_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin07_", "photon PfIsoChargedHad #rho corrected, 186.6 < p_{T}^{#gamma} < 207.1", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin07_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin07_", "photon PfIsoNeutralHad #rho corrected, 186.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin07_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin07_", "photon PfIsoPhoton #rho corrected, 186.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin07_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin07_", "photon PfIso #rho corrected, 186.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin07_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin07_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 186.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin07_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin07_", "photon PfIsoChargedHad #rho corrected for Fit, p_{T}^{#gamma} > 313.8", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin07_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin07_", "photon PfIsoNeutralHad #rho corrected for Fit, p_{T}^{#gamma} > 313.8", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin07_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin07_", "photon PfIsoPhoton #rho corrected for Fit, p_{T}^{#gamma} > 313.8", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin07_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin07_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 313.8", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin07_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin07_", "photon PfIsoChargedHad #rho corrected for Fit, 186.6 < p_{T}^{#gamma} < 207.1", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin07_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin07_", "photon PfIsoNeutralHad #rho corrected for Fit, 186.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin07_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin07_", "photon PfIsoPhoton #rho corrected for Fit, 186.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin07_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin07_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 186.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin07_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin07_", "photon PfIso #rho corrected for Fit, p_{T}^{#gamma} > 313.8", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin07_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin07_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 313.8", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin07_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin07_", "photon PfIso #rho corrected for Fit, 186.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin07_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin07_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 186.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin07_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin07_", "photon IsoFPRPhoton #rho corrected for Fit, p_{T}^{#gamma} > 313.8", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin07_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin07_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, p_{T}^{#gamma} > 313.8", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin07_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin07_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 313.8", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin07_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin07_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 313.8", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin07_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin07_", "photon IsoFPRPhoton #rho corrected for Fit, 186.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin07_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin07_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 186.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin07_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin07_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 186.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin07_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin07_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 186.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_18
-	SelectedPhotons_id_sieie_1_bin08_ = new TH1F("SelectedPhotons_id_sieie_1_bin08_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin08_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin08_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin08_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin08_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin08_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin08_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin08_ = new TH1F("SelectedPhotons_PfIso_1_bin08_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin08_ = new TH1F("SelectedPhotons_id_sieie_1_bin08_", "photon ID: #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 229.7", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin08_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin08_", "photon PfIsoChargedHad, 207.1 < p_{T}^{#gamma} < 229.7", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin08_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin08_", "photon PfIsoNeutralHad, 207.1 < p_{T}^{#gamma} < 229.7", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin08_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin08_", "photon PfIsoPhoton, 207.1 < p_{T}^{#gamma} < 229.7", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin08_ = new TH1F("SelectedPhotons_PfIso_1_bin08_", "photon PfIso, 207.1 < p_{T}^{#gamma} < 229.7", 2000, 0, 200);
 
 	//plotsCompare_19
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin08_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin08_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin08_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin08_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin08_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin08_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin08_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin08_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin08_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin08_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin08_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin08_", "photon PfIsoChargedHad #rho corrected, 207.1 < p_{T}^{#gamma} < 229.7", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin08_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin08_", "photon PfIsoNeutralHad #rho corrected, 207.1 < p_{T}^{#gamma} < 229.7", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin08_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin08_", "photon PfIsoPhoton #rho corrected, 207.1 < p_{T}^{#gamma} < 229.7", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin08_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin08_", "photon PfIso #rho corrected, 207.1 < p_{T}^{#gamma} < 229.7", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin08_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin08_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 229.7", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin08_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin08_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin08_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin08_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin08_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin08_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin08_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin08_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin08_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin08_", "photon PfIsoChargedHad #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 229.7", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin08_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin08_", "photon PfIsoNeutralHad #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 229.7", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin08_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin08_", "photon PfIsoPhoton #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 229.7", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin08_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin08_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 229.7", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin08_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin08_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin08_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin08_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin08_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin08_", "photon PfIso #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 229.7", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin08_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin08_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 229.7", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin08_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin08_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin08_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin08_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin08_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin08_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin08_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin08_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin08_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin08_", "photon IsoFPRPhoton #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 229.7", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin08_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin08_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 229.7", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin08_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin08_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 229.7", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin08_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin08_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 229.7", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_20
-	SelectedPhotons_id_sieie_1_bin09_ = new TH1F("SelectedPhotons_id_sieie_1_bin09_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin09_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin09_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin09_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin09_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin09_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin09_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin09_ = new TH1F("SelectedPhotons_PfIso_1_bin09_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin09_ = new TH1F("SelectedPhotons_id_sieie_1_bin09_", "photon ID: #sigma_{i#etai#eta}, 229.7 < p_{T}^{#gamma} < 254.9", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin09_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin09_", "photon PfIsoChargedHad, 229.7 < p_{T}^{#gamma} < 254.9", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin09_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin09_", "photon PfIsoNeutralHad, 229.7 < p_{T}^{#gamma} < 254.9", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin09_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin09_", "photon PfIsoPhoton, 229.7 < p_{T}^{#gamma} < 254.9", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin09_ = new TH1F("SelectedPhotons_PfIso_1_bin09_", "photon PfIso, 229.7 < p_{T}^{#gamma} < 254.9", 2000, 0, 200);
 
 	//plotsCompare_21
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin09_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin09_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin09_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin09_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin09_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin09_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin09_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin09_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin09_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin09_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin09_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin09_", "photon PfIsoChargedHad #rho corrected, 229.7 < p_{T}^{#gamma} < 254.9", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin09_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin09_", "photon PfIsoNeutralHad #rho corrected, 229.7 < p_{T}^{#gamma} < 254.9", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin09_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin09_", "photon PfIsoPhoton #rho corrected, 229.7 < p_{T}^{#gamma} < 254.9", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin09_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin09_", "photon PfIso #rho corrected, 229.7 < p_{T}^{#gamma} < 254.9", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin09_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin09_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 229.7 < p_{T}^{#gamma} < 254.9", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin09_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin09_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin09_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin09_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin09_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin09_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin09_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin09_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin09_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin09_", "photon PfIsoChargedHad #rho corrected for Fit, 229.7 < p_{T}^{#gamma} < 254.9", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin09_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin09_", "photon PfIsoNeutralHad #rho corrected for Fit, 229.7 < p_{T}^{#gamma} < 254.9", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin09_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin09_", "photon PfIsoPhoton #rho corrected for Fit, 229.7 < p_{T}^{#gamma} < 254.9", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin09_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin09_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 229.7 < p_{T}^{#gamma} < 254.9", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin09_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin09_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin09_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin09_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin09_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin09_", "photon PfIso #rho corrected for Fit, 229.7 < p_{T}^{#gamma} < 254.9", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin09_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin09_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 229.7 < p_{T}^{#gamma} < 254.9", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin09_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin09_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin09_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin09_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin09_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin09_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin09_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin09_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin09_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin09_", "photon IsoFPRPhoton #rho corrected for Fit, 229.7 < p_{T}^{#gamma} < 254.9", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin09_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin09_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 229.7 < p_{T}^{#gamma} < 254.9", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin09_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin09_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 229.7 < p_{T}^{#gamma} < 254.9", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin09_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin09_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 229.7 < p_{T}^{#gamma} < 254.9", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_22
-	SelectedPhotons_id_sieie_1_bin10_ = new TH1F("SelectedPhotons_id_sieie_1_bin10_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin10_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin10_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin10_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin10_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin10_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin10_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin10_ = new TH1F("SelectedPhotons_PfIso_1_bin10_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin10_ = new TH1F("SelectedPhotons_id_sieie_1_bin10_", "photon ID: #sigma_{i#etai#eta}, 254.9 < p_{T}^{#gamma} < 282.8", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin10_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin10_", "photon PfIsoChargedHad, 254.9 < p_{T}^{#gamma} < 282.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin10_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin10_", "photon PfIsoNeutralHad, 254.9 < p_{T}^{#gamma} < 282.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin10_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin10_", "photon PfIsoPhoton, 254.9 < p_{T}^{#gamma} < 282.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin10_ = new TH1F("SelectedPhotons_PfIso_1_bin10_", "photon PfIso, 254.9 < p_{T}^{#gamma} < 282.8", 2000, 0, 200);
 
 	//plotsCompare_23
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin10_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin10_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin10_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin10_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin10_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin10_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin10_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin10_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin10_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin10_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin10_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin10_", "photon PfIsoChargedHad #rho corrected, 254.9 < p_{T}^{#gamma} < 282.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin10_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin10_", "photon PfIsoNeutralHad #rho corrected, 254.9 < p_{T}^{#gamma} < 282.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin10_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin10_", "photon PfIsoPhoton #rho corrected, 254.9 < p_{T}^{#gamma} < 282.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin10_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin10_", "photon PfIso #rho corrected, 254.9 < p_{T}^{#gamma} < 282.8", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin10_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin10_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 254.9 < p_{T}^{#gamma} < 282.8", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin10_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin10_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin10_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin10_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin10_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin10_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin10_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin10_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin10_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin10_", "photon PfIsoChargedHad #rho corrected for Fit, 254.9 < p_{T}^{#gamma} < 282.8", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin10_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin10_", "photon PfIsoNeutralHad #rho corrected for Fit, 254.9 < p_{T}^{#gamma} < 282.8", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin10_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin10_", "photon PfIsoPhoton #rho corrected for Fit, 254.9 < p_{T}^{#gamma} < 282.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin10_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin10_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 254.9 < p_{T}^{#gamma} < 282.8", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin10_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin10_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin10_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin10_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin10_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin10_", "photon PfIso #rho corrected for Fit, 254.9 < p_{T}^{#gamma} < 282.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin10_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin10_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 254.9 < p_{T}^{#gamma} < 282.8", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin10_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin10_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin10_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin10_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin10_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin10_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin10_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin10_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin10_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin10_", "photon IsoFPRPhoton #rho corrected for Fit, 254.9 < p_{T}^{#gamma} < 282.8", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin10_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin10_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 254.9 < p_{T}^{#gamma} < 282.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin10_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin10_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 254.9 < p_{T}^{#gamma} < 282.8", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin10_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin10_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 254.9 < p_{T}^{#gamma} < 282.8", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_24
-	SelectedPhotons_id_sieie_1_bin11_ = new TH1F("SelectedPhotons_id_sieie_1_bin11_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin11_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin11_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin11_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin11_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin11_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin11_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin11_ = new TH1F("SelectedPhotons_PfIso_1_bin11_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin11_ = new TH1F("SelectedPhotons_id_sieie_1_bin11_", "photon ID: #sigma_{i#etai#eta}, 282.8 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin11_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin11_", "photon PfIsoChargedHad, 282.8 < p_{T}^{#gamma} < 313.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin11_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin11_", "photon PfIsoNeutralHad, 282.8 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin11_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin11_", "photon PfIsoPhoton, 282.8 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin11_ = new TH1F("SelectedPhotons_PfIso_1_bin11_", "photon PfIso, 282.8 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
 
 	//plotsCompare_25
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin11_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin11_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin11_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin11_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin11_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin11_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin11_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin11_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin11_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin11_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin11_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin11_", "photon PfIsoChargedHad #rho corrected, 282.8 < p_{T}^{#gamma} < 313.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin11_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin11_", "photon PfIsoNeutralHad #rho corrected, 282.8 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin11_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin11_", "photon PfIsoPhoton #rho corrected, 282.8 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin11_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin11_", "photon PfIso #rho corrected, 282.8 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin11_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin11_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 282.8 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin11_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin11_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin11_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin11_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin11_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin11_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin11_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin11_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin11_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin11_", "photon PfIsoChargedHad #rho corrected for Fit, 282.8 < p_{T}^{#gamma} < 313.8", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin11_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin11_", "photon PfIsoNeutralHad #rho corrected for Fit, 282.8 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin11_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin11_", "photon PfIsoPhoton #rho corrected for Fit, 282.8 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin11_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin11_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 282.8 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin11_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin11_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin11_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin11_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin11_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin11_", "photon PfIso #rho corrected for Fit, 282.8 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin11_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin11_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 282.8 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin11_= new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin11_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin11_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin11_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin11_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin11_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin11_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin11_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin11_= new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin11_", "photon IsoFPRPhoton #rho corrected for Fit, 282.8 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin11_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin11_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 282.8 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin11_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin11_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 282.8 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin11_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin11_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 282.8 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_26
-	SelectedPhotons_id_sieie_1_bin12_ = new TH1F("SelectedPhotons_id_sieie_1_bin12_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin12_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin12_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin12_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin12_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin12_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin12_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin12_ = new TH1F("SelectedPhotons_PfIso_1_bin12_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin12_ = new TH1F("SelectedPhotons_id_sieie_1_bin12_", "photon ID: #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 348.2", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin12_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin12_", "photon PfIsoChargedHad, 313.8 < p_{T}^{#gamma} < 348.2", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin12_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin12_", "photon PfIsoNeutralHad, 313.8 < p_{T}^{#gamma} < 348.2", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin12_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin12_", "photon PfIsoPhoton, 313.8 < p_{T}^{#gamma} < 348.2", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin12_ = new TH1F("SelectedPhotons_PfIso_1_bin12_", "photon PfIso, 313.8 < p_{T}^{#gamma} < 348.2", 2000, 0, 200);
 
 	//plotsCompare_27
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin12_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin12_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin12_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin12_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin12_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin12_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin12_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin12_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin12_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin12_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin12_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin12_", "photon PfIsoChargedHad #rho corrected, 313.8 < p_{T}^{#gamma} < 348.2", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin12_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin12_", "photon PfIsoNeutralHad #rho corrected, 313.8 < p_{T}^{#gamma} < 348.2", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin12_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin12_", "photon PfIsoPhoton #rho corrected, 313.8 < p_{T}^{#gamma} < 348.2", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin12_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin12_", "photon PfIso #rho corrected, 313.8 < p_{T}^{#gamma} < 348.2", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin12_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin12_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 348.2", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin12_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin12_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin12_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin12_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin12_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin12_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin12_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin12_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin12_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin12_", "photon PfIsoChargedHad #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 348.2", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin12_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin12_", "photon PfIsoNeutralHad #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 348.2", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin12_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin12_", "photon PfIsoPhoton #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 348.2", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin12_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin12_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 348.2", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin12_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin12_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin12_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin12_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin12_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin12_", "photon PfIso #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 348.2", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin12_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin12_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 348.2", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin12_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin12_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin12_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin12_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin12_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin12_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin12_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin12_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin12_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin12_", "photon IsoFPRPhoton #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 348.2", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin12_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin12_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 348.2", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin12_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin12_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 348.2", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin12_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin12_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 348.2", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_28
-	SelectedPhotons_id_sieie_1_bin13_ = new TH1F("SelectedPhotons_id_sieie_1_bin13_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin13_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin13_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin13_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin13_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin13_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin13_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin13_ = new TH1F("SelectedPhotons_PfIso_1_bin13_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin13_ = new TH1F("SelectedPhotons_id_sieie_1_bin13_", "photon ID: #sigma_{i#etai#eta}, 348.2 < p_{T}^{#gamma} < 386.4", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin13_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin13_", "photon PfIsoChargedHad, 348.2 < p_{T}^{#gamma} < 386.4", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin13_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin13_", "photon PfIsoNeutralHad, 348.2 < p_{T}^{#gamma} < 386.4", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin13_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin13_", "photon PfIsoPhoton, 348.2 < p_{T}^{#gamma} < 386.4", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin13_ = new TH1F("SelectedPhotons_PfIso_1_bin13_", "photon PfIso, 348.2 < p_{T}^{#gamma} < 386.4", 2000, 0, 200);
 
 	//plotsCompare_29
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin13_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin13_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin13_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin13_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin13_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin13_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin13_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin13_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin13_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin13_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin13_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin13_", "photon PfIsoChargedHad #rho corrected, 348.2 < p_{T}^{#gamma} < 386.4", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin13_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin13_", "photon PfIsoNeutralHad #rho corrected, 348.2 < p_{T}^{#gamma} < 386.4", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin13_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin13_", "photon PfIsoPhoton #rho corrected, 348.2 < p_{T}^{#gamma} < 386.4", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin13_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin13_", "photon PfIso #rho corrected, 348.2 < p_{T}^{#gamma} < 386.4", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin13_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin13_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 348.2 < p_{T}^{#gamma} < 386.4", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin13_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin13_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin13_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin13_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin13_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin13_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin13_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin13_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin13_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin13_", "photon PfIsoChargedHad #rho corrected for Fit, 348.2 < p_{T}^{#gamma} < 386.4", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin13_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin13_", "photon PfIsoNeutralHad #rho corrected for Fit, 348.2 < p_{T}^{#gamma} < 386.4", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin13_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin13_", "photon PfIsoPhoton #rho corrected for Fit, 348.2 < p_{T}^{#gamma} < 386.4", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin13_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin13_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 348.2 < p_{T}^{#gamma} < 386.4", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin13_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin13_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin13_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin13_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin13_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin13_", "photon PfIso #rho corrected for Fit, 348.2 < p_{T}^{#gamma} < 386.4", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin13_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin13_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 348.2 < p_{T}^{#gamma} < 386.4", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin13_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin13_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin13_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin13_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin13_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin13_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin13_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin13_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin13_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin13_", "photon IsoFPRPhoton #rho corrected for Fit, 348.2 < p_{T}^{#gamma} < 386.4", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin13_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin13_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 348.2 < p_{T}^{#gamma} < 386.4", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin13_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin13_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 348.2 < p_{T}^{#gamma} < 386.4", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin13_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin13_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 348.2 < p_{T}^{#gamma} < 386.4", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_30
-	SelectedPhotons_id_sieie_1_bin14_ = new TH1F("SelectedPhotons_id_sieie_1_bin14_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin14_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin14_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin14_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin14_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin14_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin14_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin14_ = new TH1F("SelectedPhotons_PfIso_1_bin14_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin14_ = new TH1F("SelectedPhotons_id_sieie_1_bin14_", "photon ID: #sigma_{i#etai#eta}, 386.4 < p_{T}^{#gamma} < 428.7", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin14_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin14_", "photon PfIsoChargedHad, 386.4 < p_{T}^{#gamma} < 428.7", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin14_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin14_", "photon PfIsoNeutralHad, 386.4 < p_{T}^{#gamma} < 428.7", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin14_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin14_", "photon PfIsoPhoton, 386.4 < p_{T}^{#gamma} < 428.7", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin14_ = new TH1F("SelectedPhotons_PfIso_1_bin14_", "photon PfIso, 386.4 < p_{T}^{#gamma} < 428.7", 2000, 0, 200);
 
 	//plotsCompare_31
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin14_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin14_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin14_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin14_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin14_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin14_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin14_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin14_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin14_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin14_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin14_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin14_", "photon PfIsoChargedHad #rho corrected, 386.4 < p_{T}^{#gamma} < 428.7", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin14_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin14_", "photon PfIsoNeutralHad #rho corrected, 386.4 < p_{T}^{#gamma} < 428.7", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin14_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin14_", "photon PfIsoPhoton #rho corrected, 386.4 < p_{T}^{#gamma} < 428.7", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin14_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin14_", "photon PfIso #rho corrected, 386.4 < p_{T}^{#gamma} < 428.7", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin14_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin14_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 386.4 < p_{T}^{#gamma} < 428.7", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin14_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin14_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin14_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin14_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin14_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin14_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin14_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin14_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin14_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin14_", "photon PfIsoChargedHad #rho corrected for Fit, 386.4 < p_{T}^{#gamma} < 428.7", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin14_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin14_", "photon PfIsoNeutralHad #rho corrected for Fit, 386.4 < p_{T}^{#gamma} < 428.7", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin14_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin14_", "photon PfIsoPhoton #rho corrected for Fit, 386.4 < p_{T}^{#gamma} < 428.7", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin14_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin14_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 386.4 < p_{T}^{#gamma} < 428.7", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin14_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin14_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin14_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin14_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin14_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin14_", "photon PfIso #rho corrected for Fit, 386.4 < p_{T}^{#gamma} < 428.7", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin14_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin14_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 386.4 < p_{T}^{#gamma} < 428.7", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin14_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin14_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin14_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin14_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin14_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin14_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin14_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin14_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin14_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin14_", "photon IsoFPRPhoton #rho corrected for Fit, 386.4 < p_{T}^{#gamma} < 428.7", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin14_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin14_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 386.4 < p_{T}^{#gamma} < 428.7", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin14_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin14_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 386.4 < p_{T}^{#gamma} < 428.7", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin14_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin14_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 386.4 < p_{T}^{#gamma} < 428.7", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_32
-	SelectedPhotons_id_sieie_1_bin15_ = new TH1F("SelectedPhotons_id_sieie_1_bin15_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin15_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin15_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin15_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin15_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin15_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin15_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin15_ = new TH1F("SelectedPhotons_PfIso_1_bin15_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin15_ = new TH1F("SelectedPhotons_id_sieie_1_bin15_", "photon ID: #sigma_{i#etai#eta}, 428.7 < p_{T}^{#gamma} < 475.7", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin15_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin15_", "photon PfIsoChargedHad, 428.7 < p_{T}^{#gamma} < 475.7", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin15_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin15_", "photon PfIsoNeutralHad, 428.7 < p_{T}^{#gamma} < 475.7", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin15_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin15_", "photon PfIsoPhoton, 428.7 < p_{T}^{#gamma} < 475.7", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin15_ = new TH1F("SelectedPhotons_PfIso_1_bin15_", "photon PfIso, 428.7 < p_{T}^{#gamma} < 475.7", 2000, 0, 200);
 
 	//plotsCompare_33
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin15_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin15_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin15_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin15_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin15_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin15_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin15_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin15_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin15_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin15_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin15_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin15_", "photon PfIsoChargedHad #rho corrected, 428.7 < p_{T}^{#gamma} < 475.7", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin15_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin15_", "photon PfIsoNeutralHad #rho corrected, 428.7 < p_{T}^{#gamma} < 475.7", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin15_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin15_", "photon PfIsoPhoton #rho corrected, 428.7 < p_{T}^{#gamma} < 475.7", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin15_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin15_", "photon PfIso #rho corrected, 428.7 < p_{T}^{#gamma} < 475.7", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin15_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin15_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 428.7 < p_{T}^{#gamma} < 475.7", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin15_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin15_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin15_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin15_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin15_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin15_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin15_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin15_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin15_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin15_", "photon PfIsoChargedHad #rho corrected for Fit, 428.7 < p_{T}^{#gamma} < 475.7", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin15_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin15_", "photon PfIsoNeutralHad #rho corrected for Fit, 428.7 < p_{T}^{#gamma} < 475.7", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin15_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin15_", "photon PfIsoPhoton #rho corrected for Fit, 428.7 < p_{T}^{#gamma} < 475.7", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin15_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin15_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 428.7 < p_{T}^{#gamma} < 475.7", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin15_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin15_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin15_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin15_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin15_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin15_", "photon PfIso #rho corrected for Fit, 428.7 < p_{T}^{#gamma} < 475.7", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin15_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin15_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 428.7 < p_{T}^{#gamma} < 475.7", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin15_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin15_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin15_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin15_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin15_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin15_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin15_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin15_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin15_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin15_", "photon IsoFPRPhoton #rho corrected for Fit, 428.7 < p_{T}^{#gamma} < 475.7", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin15_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin15_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 428.7 < p_{T}^{#gamma} < 475.7", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin15_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin15_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 428.7 < p_{T}^{#gamma} < 475.7", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin15_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin15_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 428.7 < p_{T}^{#gamma} < 475.7", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_34
-	SelectedPhotons_id_sieie_1_bin16_ = new TH1F("SelectedPhotons_id_sieie_1_bin16_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin16_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin16_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin16_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin16_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin16_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin16_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin16_ = new TH1F("SelectedPhotons_PfIso_1_bin16_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin16_ = new TH1F("SelectedPhotons_id_sieie_1_bin16_", "photon ID: #sigma_{i#etai#eta}, 475.7 < p_{T}^{#gamma} < 527.8", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin16_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin16_", "photon PfIsoChargedHad, 475.7 < p_{T}^{#gamma} < 527.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin16_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin16_", "photon PfIsoNeutralHad, 475.7 < p_{T}^{#gamma} < 527.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin16_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin16_", "photon PfIsoPhoton, 475.7 < p_{T}^{#gamma} < 527.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin16_ = new TH1F("SelectedPhotons_PfIso_1_bin16_", "photon PfIso, 475.7 < p_{T}^{#gamma} < 527.8", 2000, 0, 200);
 
 	//plotsCompare_35
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin16_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin16_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin16_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin16_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin16_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin16_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin16_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin16_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin16_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin16_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin16_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin16_", "photon PfIsoChargedHad #rho corrected, 475.7 < p_{T}^{#gamma} < 527.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin16_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin16_", "photon PfIsoNeutralHad #rho corrected, 475.7 < p_{T}^{#gamma} < 527.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin16_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin16_", "photon PfIsoPhoton #rho corrected, 475.7 < p_{T}^{#gamma} < 527.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin16_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin16_", "photon PfIso #rho corrected, 475.7 < p_{T}^{#gamma} < 527.8", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin16_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin16_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 475.7 < p_{T}^{#gamma} < 527.8", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin16_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin16_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin16_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin16_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin16_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin16_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin16_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin16_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin16_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin16_", "photon PfIsoChargedHad #rho corrected for Fit, 475.7 < p_{T}^{#gamma} < 527.8", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin16_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin16_", "photon PfIsoNeutralHad #rho corrected for Fit, 475.7 < p_{T}^{#gamma} < 527.8", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin16_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin16_", "photon PfIsoPhoton #rho corrected for Fit, 475.7 < p_{T}^{#gamma} < 527.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin16_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin16_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 475.7 < p_{T}^{#gamma} < 527.8", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin16_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin16_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin16_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin16_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin16_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin16_", "photon PfIso #rho corrected for Fit, 475.7 < p_{T}^{#gamma} < 527.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin16_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin16_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 475.7 < p_{T}^{#gamma} < 527.8", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin16_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin16_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin16_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin16_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin16_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin16_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin16_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin16_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin16_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin16_", "photon IsoFPRPhoton #rho corrected for Fit, 475.7 < p_{T}^{#gamma} < 527.8", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin16_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin16_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 475.7 < p_{T}^{#gamma} < 527.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin16_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin16_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 475.7 < p_{T}^{#gamma} < 527.8", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin16_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin16_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 475.7 < p_{T}^{#gamma} < 527.8", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_36
-	SelectedPhotons_id_sieie_1_bin17_ = new TH1F("SelectedPhotons_id_sieie_1_bin17_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin17_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin17_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin17_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin17_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin17_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin17_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin17_ = new TH1F("SelectedPhotons_PfIso_1_bin17_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin17_ = new TH1F("SelectedPhotons_id_sieie_1_bin17_", "photon ID: #sigma_{i#etai#eta}, 527.8 < p_{T}^{#gamma} < 585.6", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin17_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin17_", "photon PfIsoChargedHad, 527.8 < p_{T}^{#gamma} < 585.6", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin17_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin17_", "photon PfIsoNeutralHad, 527.8 < p_{T}^{#gamma} < 585.6", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin17_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin17_", "photon PfIsoPhoton, 527.8 < p_{T}^{#gamma} < 585.6", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin17_ = new TH1F("SelectedPhotons_PfIso_1_bin17_", "photon PfIso, 527.8 < p_{T}^{#gamma} < 585.6", 2000, 0, 200);
 
 	//plotsCompare_37
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin17_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin17_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin17_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin17_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin17_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin17_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin17_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin17_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin17_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin17_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin17_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin17_", "photon PfIsoChargedHad #rho corrected, 527.8 < p_{T}^{#gamma} < 585.6", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin17_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin17_", "photon PfIsoNeutralHad #rho corrected, 527.8 < p_{T}^{#gamma} < 585.6", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin17_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin17_", "photon PfIsoPhoton #rho corrected, 527.8 < p_{T}^{#gamma} < 585.6", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin17_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin17_", "photon PfIso #rho corrected, 527.8 < p_{T}^{#gamma} < 585.6", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin17_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin17_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 527.8 < p_{T}^{#gamma} < 585.6", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin17_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin17_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin17_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin17_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin17_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin17_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin17_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin17_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin17_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin17_", "photon PfIsoChargedHad #rho corrected for Fit, 527.8 < p_{T}^{#gamma} < 585.6", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin17_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin17_", "photon PfIsoNeutralHad #rho corrected for Fit, 527.8 < p_{T}^{#gamma} < 585.6", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin17_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin17_", "photon PfIsoPhoton #rho corrected for Fit, 527.8 < p_{T}^{#gamma} < 585.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin17_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin17_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 527.8 < p_{T}^{#gamma} < 585.6", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin17_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin17_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin17_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin17_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin17_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin17_", "photon PfIso #rho corrected for Fit, 527.8 < p_{T}^{#gamma} < 585.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin17_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin17_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 527.8 < p_{T}^{#gamma} < 585.6", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin17_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin17_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin17_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin17_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin17_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin17_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin17_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin17_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin17_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin17_", "photon IsoFPRPhoton #rho corrected for Fit, 527.8 < p_{T}^{#gamma} < 585.6", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin17_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin17_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 527.8 < p_{T}^{#gamma} < 585.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin17_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin17_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 527.8 < p_{T}^{#gamma} < 585.6", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin17_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin17_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 527.8 < p_{T}^{#gamma} < 585.6", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_38
-	SelectedPhotons_id_sieie_1_bin18_ = new TH1F("SelectedPhotons_id_sieie_1_bin18_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin18_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin18_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin18_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin18_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin18_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin18_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin18_ = new TH1F("SelectedPhotons_PfIso_1_bin18_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin18_ = new TH1F("SelectedPhotons_id_sieie_1_bin18_", "photon ID: #sigma_{i#etai#eta}, 585.6 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin18_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin18_", "photon PfIsoChargedHad, 585.6 < p_{T}^{#gamma} < 649.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin18_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin18_", "photon PfIsoNeutralHad, 585.6 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin18_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin18_", "photon PfIsoPhoton, 585.6 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin18_ = new TH1F("SelectedPhotons_PfIso_1_bin18_", "photon PfIso, 585.6 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
 
 	//plotsCompare_39
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin18_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin18_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin18_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin18_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin18_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin18_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin18_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin18_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin18_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin18_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin18_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin18_", "photon PfIsoChargedHad #rho corrected, 585.6 < p_{T}^{#gamma} < 649.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin18_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin18_", "photon PfIsoNeutralHad #rho corrected, 585.6 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin18_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin18_", "photon PfIsoPhoton #rho corrected, 585.6 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin18_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin18_", "photon PfIso #rho corrected, 585.6 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin18_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin18_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 585.6 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin18_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin18_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin18_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin18_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin18_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin18_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin18_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin18_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin18_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin18_", "photon PfIsoChargedHad #rho corrected for Fit, 585.6 < p_{T}^{#gamma} < 649.8", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin18_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin18_", "photon PfIsoNeutralHad #rho corrected for Fit, 585.6 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin18_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin18_", "photon PfIsoPhoton #rho corrected for Fit, 585.6 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin18_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin18_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 585.6 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin18_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin18_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin18_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin18_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin18_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin18_", "photon PfIso #rho corrected for Fit, 585.6 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin18_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin18_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 585.6 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin18_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin18_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin18_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin18_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin18_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin18_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin18_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin18_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin18_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin18_", "photon IsoFPRPhoton #rho corrected for Fit, 585.6 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin18_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin18_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 585.6 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin18_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin18_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 585.6 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin18_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin18_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 585.6 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_40
-	SelectedPhotons_id_sieie_1_bin19_ = new TH1F("SelectedPhotons_id_sieie_1_bin19_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin19_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin19_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin19_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin19_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin19_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin19_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin19_ = new TH1F("SelectedPhotons_PfIso_1_bin19_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin19_ = new TH1F("SelectedPhotons_id_sieie_1_bin19_", "photon ID: #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 721", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin19_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin19_", "photon PfIsoChargedHad, 649.8 < p_{T}^{#gamma} < 721", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin19_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin19_", "photon PfIsoNeutralHad, 649.8 < p_{T}^{#gamma} < 721", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin19_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin19_", "photon PfIsoPhoton, 649.8 < p_{T}^{#gamma} < 721", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin19_ = new TH1F("SelectedPhotons_PfIso_1_bin19_", "photon PfIso, 649.8 < p_{T}^{#gamma} < 721", 2000, 0, 200);
 
 	//plotsCompare_41
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin19_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin19_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin19_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin19_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin19_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin19_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin19_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin19_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin19_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin19_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin19_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin19_", "photon PfIsoChargedHad #rho corrected, 649.8 < p_{T}^{#gamma} < 721", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin19_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin19_", "photon PfIsoNeutralHad #rho corrected, 649.8 < p_{T}^{#gamma} < 721", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin19_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin19_", "photon PfIsoPhoton #rho corrected, 649.8 < p_{T}^{#gamma} < 721", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin19_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin19_", "photon PfIso #rho corrected, 649.8 < p_{T}^{#gamma} < 721", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin19_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin19_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 721", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin19_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin19_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin19_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin19_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin19_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin19_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin19_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin19_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin19_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin19_", "photon PfIsoChargedHad #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 721", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin19_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin19_", "photon PfIsoNeutralHad #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 721", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin19_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin19_", "photon PfIsoPhoton #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 721", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin19_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin19_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 721", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin19_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin19_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin19_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin19_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin19_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin19_", "photon PfIso #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 721", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin19_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin19_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 721", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin19_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin19_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin19_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin19_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin19_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin19_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin19_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin19_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin19_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin19_", "photon IsoFPRPhoton #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 721", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin19_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin19_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 721", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin19_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin19_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 721", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin19_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin19_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 721", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_42
-	SelectedPhotons_id_sieie_1_bin20_ = new TH1F("SelectedPhotons_id_sieie_1_bin20_", "photon ID: #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050);
-	SelectedPhotons_PfIsoChargedHad_1_bin20_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin20_", "photon PfIsoChargedHad, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_1_bin20_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin20_", "photon PfIsoNeutralHad, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_1_bin20_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin20_", "photon PfIsoPhoton, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_1_bin20_ = new TH1F("SelectedPhotons_PfIso_1_bin20_", "photon PfIso, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
+	SelectedPhotons_id_sieie_1_bin20_ = new TH1F("SelectedPhotons_id_sieie_1_bin20_", "photon ID: #sigma_{i#etai#eta}, 721 < p_{T}^{#gamma} < 800", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin20_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin20_", "photon PfIsoChargedHad, 721 < p_{T}^{#gamma} < 800", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin20_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin20_", "photon PfIsoNeutralHad, 721 < p_{T}^{#gamma} < 800", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin20_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin20_", "photon PfIsoPhoton, 721 < p_{T}^{#gamma} < 800", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin20_ = new TH1F("SelectedPhotons_PfIso_1_bin20_", "photon PfIso, 721 < p_{T}^{#gamma} < 800", 2000, 0, 200);
 
 	//plotsCompare_43
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin20_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin20_", "photon PfIsoChargedHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 4000, 0, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin20_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin20_", "photon PfIsoNeutralHad #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin20_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin20_", "photon PfIsoPhoton #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	SelectedPhotons_PfIso_RhoCorr_1_bin20_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin20_", "photon PfIso #rho corrected, 10000 < p_{T}^{#gamma} < 100000", 2000, 0, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin20_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin20_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 2000, 0, 200);
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin20_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin20_", "photon PfIsoChargedHad #rho corrected, 721 < p_{T}^{#gamma} < 800", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin20_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin20_", "photon PfIsoNeutralHad #rho corrected, 721 < p_{T}^{#gamma} < 800", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin20_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin20_", "photon PfIsoPhoton #rho corrected, 721 < p_{T}^{#gamma} < 800", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin20_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin20_", "photon PfIso #rho corrected, 721 < p_{T}^{#gamma} < 800", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin20_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin20_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 721 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 2000, 0, 200);
 
-	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin20_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin20_", "photon PfIsoChargedHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 8000, -100, 100);
-	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin20_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin20_", "photon PfIsoNeutralHad #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin20_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin20_", "photon PfIsoPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin20_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin20_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);		
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin20_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin20_", "photon PfIsoChargedHad #rho corrected for Fit, 721 < p_{T}^{#gamma} < 800", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin20_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin20_", "photon PfIsoNeutralHad #rho corrected for Fit, 721 < p_{T}^{#gamma} < 800", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin20_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin20_", "photon PfIsoPhoton #rho corrected for Fit, 721 < p_{T}^{#gamma} < 800", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin20_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin20_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 721 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 4000, -200, 200);		
 	
-	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin20_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin20_", "photon PfIso #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin20_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin20_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin20_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin20_", "photon PfIso #rho corrected for Fit, 721 < p_{T}^{#gamma} < 800", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin20_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin20_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 721 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 4000, -200, 200);
 
-	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin20_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin20_", "photon IsoFPRPhoton #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin20_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin20_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 10000 < p_{T}^{#gamma} < 100000", 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin20_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin20_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin20_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin20_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 10000 < p_{T}^{#gamma} < 100000", 500, 0., 0.050, 4000, -200, 200);
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin20_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin20_", "photon IsoFPRPhoton #rho corrected for Fit, 721 < p_{T}^{#gamma} < 800", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin20_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin20_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 721 < p_{T}^{#gamma} < 800", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin20_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin20_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 721 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin20_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin20_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 721 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 4000, -200, 200);
 
 	//plotsCompare_44
+	SelectedPhotons_id_sieie_1_bin21_ = new TH1F("SelectedPhotons_id_sieie_1_bin21_", "photon ID: #sigma_{i#etai#eta}, p_{T}^{#gamma} > 800", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin21_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin21_", "photon PfIsoChargedHad, p_{T}^{#gamma} > 800", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin21_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin21_", "photon PfIsoNeutralHad, p_{T}^{#gamma} > 800", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin21_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin21_", "photon PfIsoPhoton, p_{T}^{#gamma} > 800", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin21_ = new TH1F("SelectedPhotons_PfIso_1_bin21_", "photon PfIso, p_{T}^{#gamma} > 800", 2000, 0, 200);
+
+	//plotsCompare_45
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin21_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin21_", "photon PfIsoChargedHad #rho corrected, p_{T}^{#gamma} > 800", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin21_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin21_", "photon PfIsoNeutralHad #rho corrected, p_{T}^{#gamma} > 800", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin21_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin21_", "photon PfIsoPhoton #rho corrected, p_{T}^{#gamma} > 800", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin21_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin21_", "photon PfIso #rho corrected, p_{T}^{#gamma} > 800", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin21_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin21_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 800", 500, 0., 0.050, 2000, 0, 200);
+
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin21_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin21_", "photon PfIsoChargedHad #rho corrected for Fit, p_{T}^{#gamma} > 800", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin21_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin21_", "photon PfIsoNeutralHad #rho corrected for Fit, p_{T}^{#gamma} > 800", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin21_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin21_", "photon PfIsoPhoton #rho corrected for Fit, p_{T}^{#gamma} > 800", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin21_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin21_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 800", 500, 0., 0.050, 4000, -200, 200);		
+	
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin21_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin21_", "photon PfIso #rho corrected for Fit, p_{T}^{#gamma} > 800", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin21_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin21_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 800", 500, 0., 0.050, 4000, -200, 200);
+
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin21_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin21_", "photon IsoFPRPhoton #rho corrected for Fit, p_{T}^{#gamma} > 800", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin21_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin21_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, p_{T}^{#gamma} > 800", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin21_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin21_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 800", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin21_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin21_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 800", 500, 0., 0.050, 4000, -200, 200);
+
+	//plotsCompare_46
+	SelectedPhotons_id_sieie_1_bin22_big_ = new TH1F("SelectedPhotons_id_sieie_1_bin22_big_", "photon ID: #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin22_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin22_big_", "photon PfIsoChargedHad, 100 < p_{T}^{#gamma} < 151.6", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin22_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin22_big_", "photon PfIsoNeutralHad, 100 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin22_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin22_big_", "photon PfIsoPhoton, 100 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin22_big_ = new TH1F("SelectedPhotons_PfIso_1_bin22_big_", "photon PfIso, 100 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
+
+	//plotsCompare_47
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin22_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin22_big_", "photon PfIsoChargedHad #rho corrected, 100 < p_{T}^{#gamma} < 151.6", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin22_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin22_big_", "photon PfIsoNeutralHad #rho corrected, 100 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin22_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin22_big_", "photon PfIsoPhoton #rho corrected, 100 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin22_big_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin22_big_", "photon PfIso #rho corrected, 100 < p_{T}^{#gamma} < 151.6", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin22_big_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin22_big_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 2000, 0, 200);
+
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin22_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin22_big_", "photon PfIsoChargedHad #rho corrected for Fit, 100 < p_{T}^{#gamma} < 151.6", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin22_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin22_big_", "photon PfIsoNeutralHad #rho corrected for Fit, 100 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin22_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin22_big_", "photon PfIsoPhoton #rho corrected for Fit, 100 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin22_big_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin22_big_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 4000, -200, 200);		
+	
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin22_big_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin22_big_", "photon PfIso #rho corrected for Fit, 100 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin22_big_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin22_big_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 4000, -200, 200);
+
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin22_big_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin22_big_", "photon IsoFPRPhoton #rho corrected for Fit, 100 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin22_big_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin22_big_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 100 < p_{T}^{#gamma} < 151.6", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin22_big_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin22_big_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin22_big_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin22_big_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 100 < p_{T}^{#gamma} < 151.6", 500, 0., 0.050, 4000, -200, 200);
+
+	//plotsCompare_48
+	SelectedPhotons_id_sieie_1_bin23_big_ = new TH1F("SelectedPhotons_id_sieie_1_bin23_big_", "photon ID: #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin23_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin23_big_", "photon PfIsoChargedHad, 151.6 < p_{T}^{#gamma} < 207.1", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin23_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin23_big_", "photon PfIsoNeutralHad, 151.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin23_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin23_big_", "photon PfIsoPhoton, 151.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin23_big_ = new TH1F("SelectedPhotons_PfIso_1_bin23_big_", "photon PfIso, 151.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
+
+	//plotsCompare_49
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin23_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin23_big_", "photon PfIsoChargedHad #rho corrected, 151.6 < p_{T}^{#gamma} < 207.1", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin23_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin23_big_", "photon PfIsoNeutralHad #rho corrected, 151.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin23_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin23_big_", "photon PfIsoPhoton #rho corrected, 151.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin23_big_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin23_big_", "photon PfIso #rho corrected, 151.6 < p_{T}^{#gamma} < 207.1", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin23_big_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin23_big_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 2000, 0, 200);
+
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin23_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin23_big_", "photon PfIsoChargedHad #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 207.1", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin23_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin23_big_", "photon PfIsoNeutralHad #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin23_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin23_big_", "photon PfIsoPhoton #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin23_big_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin23_big_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 4000, -200, 200);		
+	
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin23_big_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin23_big_", "photon PfIso #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin23_big_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin23_big_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 4000, -200, 200);
+
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin23_big_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin23_big_", "photon IsoFPRPhoton #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin23_big_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin23_big_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 151.6 < p_{T}^{#gamma} < 207.1", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin23_big_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin23_big_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin23_big_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin23_big_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 151.6 < p_{T}^{#gamma} < 207.1", 500, 0., 0.050, 4000, -200, 200);
+
+	//plotsCompare_50
+	SelectedPhotons_id_sieie_1_bin24_big_ = new TH1F("SelectedPhotons_id_sieie_1_bin24_big_", "photon ID: #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin24_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin24_big_", "photon PfIsoChargedHad, 207.1 < p_{T}^{#gamma} < 313.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin24_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin24_big_", "photon PfIsoNeutralHad, 207.1 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin24_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin24_big_", "photon PfIsoPhoton, 207.1 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin24_big_ = new TH1F("SelectedPhotons_PfIso_1_bin24_big_", "photon PfIso, 207.1 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
+
+	//plotsCompare_51
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin24_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin24_big_", "photon PfIsoChargedHad #rho corrected, 207.1 < p_{T}^{#gamma} < 313.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin24_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin24_big_", "photon PfIsoNeutralHad #rho corrected, 207.1 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin24_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin24_big_", "photon PfIsoPhoton #rho corrected, 207.1 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin24_big_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin24_big_", "photon PfIso #rho corrected, 207.1 < p_{T}^{#gamma} < 313.8", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin24_big_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin24_big_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 2000, 0, 200);
+
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin24_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin24_big_", "photon PfIsoChargedHad #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 313.8", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin24_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin24_big_", "photon PfIsoNeutralHad #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin24_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin24_big_", "photon PfIsoPhoton #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin24_big_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin24_big_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 4000, -200, 200);		
+	
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin24_big_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin24_big_", "photon PfIso #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin24_big_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin24_big_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 4000, -200, 200);
+
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin24_big_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin24_big_", "photon IsoFPRPhoton #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin24_big_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin24_big_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 207.1 < p_{T}^{#gamma} < 313.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin24_big_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin24_big_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin24_big_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin24_big_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 207.1 < p_{T}^{#gamma} < 313.8", 500, 0., 0.050, 4000, -200, 200);
+
+	//plotsCompare_52
+	SelectedPhotons_id_sieie_1_bin25_big_ = new TH1F("SelectedPhotons_id_sieie_1_bin25_big_", "photon ID: #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin25_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin25_big_", "photon PfIsoChargedHad, 313.8 < p_{T}^{#gamma} < 649.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin25_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin25_big_", "photon PfIsoNeutralHad, 313.8 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin25_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin25_big_", "photon PfIsoPhoton, 313.8 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin25_big_ = new TH1F("SelectedPhotons_PfIso_1_bin25_big_", "photon PfIso, 313.8 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
+
+	//plotsCompare_53
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin25_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin25_big_", "photon PfIsoChargedHad #rho corrected, 313.8 < p_{T}^{#gamma} < 649.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin25_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin25_big_", "photon PfIsoNeutralHad #rho corrected, 313.8 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin25_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin25_big_", "photon PfIsoPhoton #rho corrected, 313.8 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin25_big_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin25_big_", "photon PfIso #rho corrected, 313.8 < p_{T}^{#gamma} < 649.8", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin25_big_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin25_big_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 2000, 0, 200);
+
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin25_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin25_big_", "photon PfIsoChargedHad #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 649.8", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin25_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin25_big_", "photon PfIsoNeutralHad #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin25_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin25_big_", "photon PfIsoPhoton #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin25_big_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin25_big_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 4000, -200, 200);		
+	
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin25_big_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin25_big_", "photon PfIso #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin25_big_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin25_big_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 4000, -200, 200);
+
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin25_big_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin25_big_", "photon IsoFPRPhoton #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin25_big_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin25_big_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 313.8 < p_{T}^{#gamma} < 649.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin25_big_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin25_big_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin25_big_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin25_big_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 313.8 < p_{T}^{#gamma} < 649.8", 500, 0., 0.050, 4000, -200, 200);
+
+	//plotsCompare_54
+	SelectedPhotons_id_sieie_1_bin26_big_ = new TH1F("SelectedPhotons_id_sieie_1_bin26_big_", "photon ID: #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 800", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin26_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin26_big_", "photon PfIsoChargedHad, 649.8 < p_{T}^{#gamma} < 800", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin26_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin26_big_", "photon PfIsoNeutralHad, 649.8 < p_{T}^{#gamma} < 800", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin26_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin26_big_", "photon PfIsoPhoton, 649.8 < p_{T}^{#gamma} < 800", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin26_big_ = new TH1F("SelectedPhotons_PfIso_1_bin26_big_", "photon PfIso, 649.8 < p_{T}^{#gamma} < 800", 2000, 0, 200);
+
+	//plotsCompare_55
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin26_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin26_big_", "photon PfIsoChargedHad #rho corrected, 649.8 < p_{T}^{#gamma} < 800", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin26_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin26_big_", "photon PfIsoNeutralHad #rho corrected, 649.8 < p_{T}^{#gamma} < 800", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin26_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin26_big_", "photon PfIsoPhoton #rho corrected, 649.8 < p_{T}^{#gamma} < 800", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin26_big_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin26_big_", "photon PfIso #rho corrected, 649.8 < p_{T}^{#gamma} < 800", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin26_big_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin26_big_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 2000, 0, 200);
+
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin26_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin26_big_", "photon PfIsoChargedHad #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 800", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin26_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin26_big_", "photon PfIsoNeutralHad #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 800", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin26_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin26_big_", "photon PfIsoPhoton #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 800", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin26_big_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin26_big_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 4000, -200, 200);		
+	
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin26_big_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin26_big_", "photon PfIso #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 800", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin26_big_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin26_big_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 4000, -200, 200);
+
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin26_big_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin26_big_", "photon IsoFPRPhoton #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 800", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin26_big_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin26_big_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, 649.8 < p_{T}^{#gamma} < 800", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin26_big_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin26_big_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin26_big_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin26_big_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, 649.8 < p_{T}^{#gamma} < 800", 500, 0., 0.050, 4000, -200, 200);
+
+	//plotsCompare_56
+	SelectedPhotons_id_sieie_1_bin27_big_ = new TH1F("SelectedPhotons_id_sieie_1_bin27_big_", "photon ID: #sigma_{i#etai#eta}, p_{T}^{#gamma} > 313.8", 500, 0., 0.050);
+	SelectedPhotons_PfIsoChargedHad_1_bin27_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_1_bin27_big_", "photon PfIsoChargedHad, p_{T}^{#gamma} > 313.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_1_bin27_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_1_bin27_big_", "photon PfIsoNeutralHad, p_{T}^{#gamma} > 313.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_1_bin27_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_1_bin27_big_", "photon PfIsoPhoton, p_{T}^{#gamma} > 313.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_1_bin27_big_ = new TH1F("SelectedPhotons_PfIso_1_bin27_big_", "photon PfIso, p_{T}^{#gamma} > 313.8", 2000, 0, 200);
+
+	//plotsCompare_57
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin27_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin27_big_", "photon PfIsoChargedHad #rho corrected, p_{T}^{#gamma} > 313.8", 4000, 0, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin27_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin27_big_", "photon PfIsoNeutralHad #rho corrected, p_{T}^{#gamma} > 313.8", 2000, 0, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin27_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin27_big_", "photon PfIsoPhoton #rho corrected, p_{T}^{#gamma} > 313.8", 2000, 0, 200);
+	SelectedPhotons_PfIso_RhoCorr_1_bin27_big_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_1_bin27_big_", "photon PfIso #rho corrected, p_{T}^{#gamma} > 313.8", 2000, 0, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin27_big_ = new TH2F("TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin27_big_",  "photon PfIso #rho corrected vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 313.8", 500, 0., 0.050, 2000, 0, 200);
+
+	SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin27_big_ = new TH1F("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin27_big_", "photon PfIsoChargedHad #rho corrected for Fit, p_{T}^{#gamma} > 313.8", 8000, -100, 100);
+	SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin27_big_ = new TH1F("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin27_big_", "photon PfIsoNeutralHad #rho corrected for Fit, p_{T}^{#gamma} > 313.8", 4000, -200, 200);
+	SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin27_big_ = new TH1F("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin27_big_", "photon PfIsoPhoton #rho corrected for Fit, p_{T}^{#gamma} > 313.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin27_big_ = new TH2F("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin27_big_",  "photon PfIsoPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 313.8", 500, 0., 0.050, 4000, -200, 200);		
+	
+	SelectedPhotons_PfIso_RhoCorr_forFit_1_bin27_big_ = new TH1F("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin27_big_", "photon PfIso #rho corrected for Fit, p_{T}^{#gamma} > 313.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin27_big_ = new TH2F ("TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin27_big_",  "photon PfIso #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 313.8", 500, 0., 0.050, 4000, -200, 200);
+
+	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin27_big_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin27_big_", "photon IsoFPRPhoton #rho corrected for Fit, p_{T}^{#gamma} > 313.8", 4000, -200, 200);
+	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin27_big_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin27_big_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit, p_{T}^{#gamma} > 313.8", 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin27_big_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin27_big_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 313.8", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin27_big_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin27_big_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}, p_{T}^{#gamma} > 313.8", 500, 0., 0.050, 4000, -200, 200);
+
+	//plotsCompare_58
 	SelectedPhotons_PfIsoPhotons03ForCic_1_ = new TH1F("SelectedPhotons_PfIsoPhotons03ForCic_1_", "photon PfIsoPhotons03ForCic", 2000, 0, 200);
 	SelectedPhotons_PfIsoNeutrals03ForCic_1_ = new TH1F("SelectedPhotons_PfIsoNeutrals03ForCic_1_","photon PfIsoNeutrals03ForCic", 2000, 0, 200);
 	SelectedPhotons_PfIsoCharged03ForCicVtx0_1_ = new TH1F("SelectedPhotons_PfIsoCharged03ForCicVtx0_1_", "photon PfIsoCharged03ForCicVtx0", 2000, 0, 200);
 	SelectedPhotons_PfIsoCharged03BadForCic_1_ = new TH1F("SelectedPhotons_PfIsoCharged03BadForCic_1_", "photon PfIsoCharged03BadForCic", 2000, 0, 200);
 	
-	//plotsCompare_45
+	//plotsCompare_59
 	SelectedPhotons_PfIsoPhotons04ForCic_1_ = new TH1F("SelectedPhotons_PfIsoPhotons04ForCic_1_", "photon PfIsoPhotons04ForCic", 2000, 0, 200);
 	SelectedPhotons_PfIsoNeutrals04ForCic_1_ = new TH1F("SelectedPhotons_PfIsoNeutrals04ForCic_1_", "photon PfIsoNeutrals04ForCic", 2000, 0, 200);
 	SelectedPhotons_PfIsoCharged04ForCicVtx0_1_ = new TH1F("SelectedPhotons_PfIsoCharged04ForCicVtx0_1_", "photon PfIsoCharged04ForCicVtx0", 2000, 0, 200);
 	SelectedPhotons_PfIsoCharged04BadForCic_1_ = new TH1F("SelectedPhotons_PfIsoCharged04BadForCic_1_", "photonPfIsoCharged04BadForCic", 2000, 0, 200);
 	
-	//plotsCompare_46	
+	//plotsCompare_60	
 	SelectedPhotons_id_sieie_1_ = new TH1F("SelectedPhotons_id_sieie_1_", "photon ID: #sigma_{i#etai#eta}", 500, 0., 0.050);
 	SelectedPhotons_id_sieip_1_ = new TH1F("SelectedPhotons_id_sieip_1_", "photon ID: #sigma_{i#etai#varphi}", 400, 0, 0.04);
 	SelectedPhotons_id_etawidth_1_ = new TH1F("SelectedPhotons_id_etawidth_1_", "photon ID: #eta width", 400, 0, 0.04);
@@ -3716,7 +4109,7 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_id_hadronicOverEm_1_ = new TH1F("SelectedPhotons_id_hadronicOverEm_1_", "photon ID: hadronicOverEm", 4000, 0, 0.4);
 	SelectedPhotons_id_hadronicOverEm2012_1_ = new TH1F("SelectedPhotons_id_hadronicOverEm2012_1_", "photon ID: hadronicOverEm2012", 4000, 0, 0.4);
 	
-	//plotsCompare_47	
+	//plotsCompare_61
 	SelectedPhotons_hcalTowerSumEtConeDR04_1_ = new TH1F("SelectedPhotons_hcalTowerSumEtConeDR04_1_","photon hcalTowerSumEtConeDR04", 1000, 0, 1000);
 	SelectedPhotons_ecalRecHitSumEtConeDR04_1_ = new TH1F("SelectedPhotons_ecalRecHitSumEtConeDR04_1_", "photon ecalRecHitSumEtConeDR04", 1000, 0, 1000);
 	SelectedPhotons_nTrkSolidConeDR04_1_ = new TH1F("SelectedPhotons_nTrkSolidConeDR04_1_", "photon nTrkSolidConeDR04", 2000, 0, 1000);
@@ -3724,7 +4117,7 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_nTrkHollowConeDR04_1_ = new TH1F("SelectedPhotons_nTrkHollowConeDR04_1_", "photon nTrkHollowConeDR04", 200, 0, 100) ;
 	SelectedPhotons_trkSumPtHollowConeDR04_1_ = new TH1F("SelectedPhotons_trkSumPtHollowConeDR04_1_", "photon trkSumPtHollowConeDR04", 1000, 0, 1000);
 	
-	//plotsCompare_48	
+	//plotsCompare_62	
 	SelectedPhotons_IsoFPRCharged_1_ = new TH1F("SelectedPhotons_IsoFPRCharged_1_", "photon IsoFPRCharged", 2000, 0, 200); 
 	SelectedPhotons_IsoFPRNeutral_1_ = new TH1F("SelectedPhotons_IsoFPRNeutral_1_", "photon IsoFPRNeutral", 2000, 0, 200);
 	SelectedPhotons_IsoFPRPhoton_1_ = new TH1F("SelectedPhotons_IsoFPRPhoton_1_", "photon IsoFPRPhoton", 2000, 0, 200);
@@ -3737,27 +4130,27 @@ void GJetsAnalyzer::Book_Histos(){
 	SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_ = new TH1F("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_", "photon IsoFPRPhoton #rho corrected for Fit", 4000, -200, 200);
 	SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_ = new TH1F("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_", "photon IsoFPRPhoton Random Cone #rho corrected for Fit", 4000, -200, 200);
 	TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_ = new TH2F("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_",  "photon IsoFPRPhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}", 500, 0., 0.050, 4000, -200, 200);
-	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_",  "photon IsoFPRRAndomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}", 500, 0., 0.050, 4000, -200, 200);
+	TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_ = new TH2F("TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_",  "photon IsoFPRRandomConePhoton #rho corrected for Fit vs. photon #sigma_{i#etai#eta}", 500, 0., 0.050, 4000, -200, 200);
 
-	//plotsCompare_49
+	//plotsCompare_63
 	SelectedJetsALL_N_ = new TH1F("SelectedJetsALL_N_","Selected Jets vs. ALL Photons N", 10, 0, 10);
 	SelectedJets_N_ = new TH1F("SelectedJets_N_","Selected Jets N", 10, 0, 10);
 
-	//plotsCompare_50
+	//plotsCompare_64
 	SelectedJets_Pt_1_ = new TH1F("SelectedJets_Pt_1_","Jet 1 p_{T} ", 800, 0., 4000.);
 	SelectedJets_E_1_ = new TH1F("SelectedJets_E_1_", "Jet 1 E", 800, 0., 4000.);
 	SelectedJets_Eta_1_ = new TH1F("SelectedJets_Eta_1_","Jet 1 #eta ", 3000, -3, 3);
 	SelectedJets_Phi_1_ = new TH1F("SelectedJets_Phi_1_","Jet 1 #varphi ", 1000, -3.1416, 3.1416);
 
-	//plotsCompare_51
+	//plotsCompare_65
 	SelectedJets_HT_ = new TH1F("SelectedJets_HT_","Selected Jets H_{T}", 400, 0, 4000);
 
-	//plotsCompare_52
+	//plotsCompare_66
 	DeltaR_photon1_jet1_N0_ = new TH1F("DeltaR_photon1_jet1_N0_","#DeltaR #gamma1-jet1 - N^{jets} #geq 1", 600, 0, 6);
 	DeltaEta_photon1_jet1_N0_ = new TH1F("DeltaEta_photon1_jet1_N0_","#Delta#eta #gamma1-jet1 - N^{jets} #geq 1", 500, 0, 5);
 	DeltaPhi_photon1_jet1_N0_ = new TH1F("DeltaPhi_photon1_jet1_N0_","#Delta#varphi #gamma1-jet1 - N^{jets} #geq 1", 500, 0, 3.1416);
 
-	//plotsCompare_53
+	//plotsCompare_67
 	thrust_N0_ = new TH1F("thrust_N0_","#tau_{T} - N^{jets} #geq 1", 100, 0, 0.5);
 	broad_N0_ = new TH1F("broad_N0_","broad - N^{jets} #geq 1", 100, 0, 1);
 	S3_N0_ = new TH1F("S3_N0_","S3 - N^{jets} #geq 1", 300, -2, 4);
@@ -3768,25 +4161,25 @@ void GJetsAnalyzer::Book_Histos(){
 	ln_S3_N0_ = new TH1F("ln_S3_N0_","ln S3 - N^{jets} #geq 1", 400, -5, 3);
 	ln_S4_N0_ = new TH1F("ln_S4_N0_","ln S4 - N^{jets} #geq 1", 200, -1000, 1000);
 
-	//plotsCompare_54
+	//plotsCompare_68
 	SelectedPhotons_Pt_excl1_1_ = new TH1F("SelectedPhotons_Pt_excl1_1_","Photon p_{T}, 1 jet exclusive", 800, 0., 4000.);
 	SelectedPhotons_E_excl1_1_ = new TH1F("SelectedPhotons_E_excl1_1_","Photon E, 1 jet exclusive", 800, 0., 4000.);
 	SelectedPhotons_Eta_excl1_1_ = new TH1F("SelectedPhotons_Eta_excl1_1_","Photon #eta, 1 jet exclusive", 3000, -3, 3);
 	SelectedPhotons_Phi_excl1_1_ = new TH1F("SelectedPhotons_Phi_excl1_1_","Photon #varphi, 1 jet exclusive", 1000, -3.1416, 3.1416);
 
-	//plotsCompare_55
+	//plotsCompare_69
 	SelectedJets_Pt_excl1_1_ = new TH1F("SelectedJets_Pt_excl1_1_","Jet 1 p_{T}, 1 jet exclusive", 800, 0., 4000.);
 	SelectedJets_E_excl1_1_ = new TH1F("SelectedJets_E_excl1_1_", "Jet 1 E, 1 jet exclusive", 800, 0., 4000.);
 	SelectedJets_Eta_excl1_1_ = new TH1F("SelectedJets_Eta_excl1_1_","Jet 1 #eta, 1 jet exclusive", 3000, -3, 3);
 	SelectedJets_Phi_excl1_1_ = new TH1F("SelectedJets_Phi_excl1_1_","Jet 1 #varphi, 1 jet exclusive", 1000, -3.1416, 3.1416);
 
-	//plotsCompare_56
+	//plotsCompare_70
 	SelectedPhotons_Pt_excl2_1_ = new TH1F("SelectedPhotons_Pt_excl2_1_","Photon p_{T}, 2 jet exclusive", 800, 0., 4000.);
 	SelectedPhotons_E_excl2_1_ = new TH1F("SelectedPhotons_E_excl2_1_","Photon E, 2 jet exclusive", 800, 0., 4000.);
 	SelectedPhotons_Eta_excl2_1_ = new TH1F("SelectedPhotons_Eta_excl2_1_","Photon #eta, 2 jet exclusive", 3000, -3, 3);
 	SelectedPhotons_Phi_excl2_1_ = new TH1F("SelectedPhotons_Phi_excl2_1_","Photon #varphi, 2 jet exclusive", 1000, -3.1416, 3.1416);
 
-	//plotsCompare_57
+	//plotsCompare_71
 	SelectedJets_Pt_excl2_1_ = new TH1F("SelectedJets_Pt_excl2_1_","Jet 1 p_{T}, 2 jet exclusive", 800, 0., 4000.);
 	SelectedJets_E_excl2_1_ = new TH1F("SelectedJets_E_excl2_1_", "Jet 1 E, 2 jet exclusive", 800, 0., 4000.);
 	SelectedJets_Eta_excl2_1_ = new TH1F("SelectedJets_Eta_excl2_1_","Jet 1 #eta, 2 jet exclusive", 3000, -3, 3);
@@ -3794,7 +4187,7 @@ void GJetsAnalyzer::Book_Histos(){
 
 	SelectedJets_HT_excl1_ = new TH1F("SelectedJets_HT_excl1_","Selected Jets H_{T}, 1 jet exclusive", 400, 0, 4000);
 
-	//plotsCompare_58
+	//plotsCompare_72
 	SelectedJets_Pt_excl2_2_ = new TH1F("SelectedJets_Pt_excl2_2_","Jet 2 p_{T}, 2 jet exclusive", 800, 0., 4000.);
 	SelectedJets_E_excl2_2_ = new TH1F("SelectedJets_E_excl2_2_", "Jet 2 E, 2 jet exclusive", 800, 0., 4000.);
 	SelectedJets_Eta_excl2_2_ = new TH1F("SelectedJets_Eta_excl2_2_","Jet 2 #eta, 2 jet exclusive", 3000, -3, 3);
@@ -3802,26 +4195,26 @@ void GJetsAnalyzer::Book_Histos(){
 
 	SelectedJets_HT_excl2_ = new TH1F("SelectedJets_HT_excl2_","Selected Jets H_{T}, 2 jet exclusive", 400, 0, 4000);
 
-	//plotsCompare_59
+	//plotsCompare_73
 	SelectedJets_Pt_2_ = new TH1F("SelectedJets_Pt_2_","Jet 2 p_{T} ", 800, 0., 4000.);
 	SelectedJets_E_2_ = new TH1F("SelectedJets_E_2_", "Jet 2 E", 800, 0., 4000.);
 	SelectedJets_Eta_2_ = new TH1F("SelectedJets_Eta_2_","Jet 2 #eta ", 3000, -3, 3);
 	SelectedJets_Phi_2_ = new TH1F("SelectedJets_Phi_2_","Jet 2 #varphi ", 1000, -3.1416, 3.1416);
 
-	//plotsCompare_60
+	//plotsCompare_74
 	DeltaPhi_photon1_jet1_N1_ = new TH1F("DeltaPhi_photon1_jet1_N1_","#Delta#varphi #gamma1-jet1 - N^{jets} #geq 2", 500, 0, 3.1416);
 	DeltaR_photon1_jet2_N1_ = new TH1F("DeltaR_photon1_jet2_N1_","#DeltaR #gamma1-jet2 - N^{jets} #geq 2", 600, 0, 6);
 	DeltaR_jet1_jet2_N1_ = new TH1F("DeltaR_jet1_jet2_N1_","#DeltaR jet1-jet2 - N^{jets} #geq 2", 600, 0, 6);
 	DeltaEta_jet1_jet2_N1_ = new TH1F("DeltaEta_jet1_jet2_N1_","#Delta#eta jet1-jet2 - N^{jets} #geq 2", 500, 0, 5);
 	DeltaPhi_jet1_jet2_N1_ = new TH1F("DeltaPhi_jet1_jet2_N1_","#Delta#varphi jet1-jet2 - N^{jets} #geq 2", 500, 0, 3.1416);
 
-	//plotsCompare_61
+	//plotsCompare_75
 	SelectedJets_Pt_3_ = new TH1F("SelectedJets_Pt_3_","Jet 3 p_{T} ", 800, 0., 4000.);
 	SelectedJets_E_3_ = new TH1F("SelectedJets_E_3_", "Jet 3 E", 800, 0., 4000.);
 	SelectedJets_Eta_3_ = new TH1F("SelectedJets_Eta_3_","Jet 3 #eta ", 3000, -3, 3);
 	SelectedJets_Phi_3_ = new TH1F("SelectedJets_Phi_3_","Jet 3 #varphi ", 1000, -3.1416, 3.1416);
 
-	//plotsCompare_62
+	//plotsCompare_76
 	DeltaPhi_photon1_jet1_N2_ = new TH1F("DeltaPhi_photon1_jet1_N2_","#Delta#varphi #gamma1-jet1 - N^{jets} #geq 3", 500, 0, 3.1416);
 	DeltaPhi_photon1_jet2_N2_ = new TH1F("DeltaPhi_photon1_jet2_N2_","#Delta#varphi #gamma1-jet2 - N^{jets} #geq 3", 500, 0, 3.1416);
 	DeltaPhi_photon1_jet3_N2_ = new TH1F("DeltaPhi_photon1_jet3_N2_","#Delta#varphi #gamma1-jet3 - N^{jets} #geq 3", 500, 0, 3.1416);
@@ -3952,65 +4345,79 @@ void GJetsAnalyzer::Plot_Histos(){
 	bool plot_01 = true; // photon kinematics
 	bool plot_02 = false; // photon Isolation
 	bool plot_03 = false; // photon Isolation rho corrected
-	bool plot_04 = false; // photon Isolation, 100 < p_T gamma < 151.6
-	bool plot_05 = false; // photon Isolation rho corrected, 100 < p_T gamma < 151.6
-	bool plot_06 = false; // photon Isolation, 151.6 < p_T gamma < 207.1
-	bool plot_07 = false; // photon Isolation rho corrected, 151.6 < p_T gamma < 207.1
-	bool plot_08 = false; // photon Isolation, 207.1 < p_T gamma < 313.8
-	bool plot_09 = false; // photon Isolation rho corrected, 207.1 < p_T gamma < 313.8
-	bool plot_10 = false; // photon Isolation, 313.8 < p_T gamma < 649.8
-	bool plot_11 = false; // photon Isolation rho corrected, 313.8 < p_T gamma < 649.8
-	bool plot_12 = false; // photon Isolation, 649.8 < p_T gamma < 800
-	bool plot_13 = false; // photon Isolation rho corrected, 649.8 < p_T gamma < 800
-	bool plot_14 = false; // photon Isolation, p_T gamma > 800
-	bool plot_15 = false; // photon Isolation rho corrected, p_T gamma > 800
-	bool plot_16 = false; // photon Isolation, p_T gamma > 313.8
-	bool plot_17 = false; // photon Isolation rho corrected, p_T gamma > 313.8	
-	bool plot_18 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_19 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000
-	bool plot_20 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_21 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000
-	bool plot_22 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_23 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000
-	bool plot_24 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_25 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000
-	bool plot_26 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_27 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000
-	bool plot_28 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_29 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000
-	bool plot_30 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_31 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000
-	bool plot_32 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_33 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000
-	bool plot_34 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_35 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000
-	bool plot_36 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_37 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000
-	bool plot_38 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_39 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000		
-	bool plot_40 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_41 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000		
-	bool plot_42 = false; // photon Isolation, 10000 < p_T gamma < 100000
-	bool plot_43 = false; // photon Isolation rho corrected, 10000 < p_T gamma < 100000		
-	bool plot_44 = false; // photon Isolation cone 03 for Cic
-	bool plot_45 = false; // photon Isolation cone 04 for Cic
-	bool plot_46 = false; // photon ID
-	bool plot_47 = false; // photon E_T-p_T cone 04
-	bool plot_48 = false; // photon Isolation FPR
-	bool plot_49 = false; // jets counting
-	bool plot_50 = false; // Jet 1 kinematics
-	bool plot_51 = false; // H_T
-	bool plot_52 = false; // Angular variables (>= 1 jet)
-	bool plot_53 = false; // Event shape variables
-	bool plot_54 = false; // photon kinematics, 1 jet exclusive 
-	bool plot_55 = false; // Jet 1 kinematics, 1 jet exclusive
-	bool plot_56 = false; // photon kinematics, 2 jet exclusive 
-	bool plot_57 = false; // Jet 1 kinematics, 2 jet exclusive
-	bool plot_58 = false; // Jet 2 kinematics, 2 jet exclusive
-	bool plot_59 = false; // Jet 2 kinematics
-	bool plot_60 = false; // Angular variables (>=2 jets)
-	bool plot_61 = false; // Jet 3 kinematics
-	bool plot_62 = false; // Angular variables (>=3 jets)
+	bool plot_04 = false; // photon Isolation, 100 < p_T gamma < 111
+	bool plot_05 = false; // photon Isolation rho corrected, 100 < p_T gamma < 111
+	bool plot_06 = false; // photon Isolation, 111 < p_T gamma < 123.1
+	bool plot_07 = false; // photon Isolation rho corrected, 111 < p_T gamma < 123.1
+	bool plot_08 = false; // photon Isolation, 123.1 < p_T gamma < 136.6
+	bool plot_09 = false; // photon Isolation rho corrected, 123.1 < p_T gamma < 136.6
+	bool plot_10 = false; // photon Isolation, 136.6 < p_T gamma < 151.6
+	bool plot_11 = false; // photon Isolation rho corrected, 136.6 < p_T gamma < 151.6
+	bool plot_12 = false; // photon Isolation, 151.6 < p_T gamma < 168.2
+	bool plot_13 = false; // photon Isolation rho corrected, 151.6 < p_T gamma < 168.2
+	bool plot_14 = false; // photon Isolation, 168.2 < p_T gamma < 186.6
+	bool plot_15 = false; // photon Isolation rho corrected, 168.2 < p_T gamma < 186.6
+	bool plot_16 = false; // photon Isolation, 186.6 < p_T gamma < 207.1
+	bool plot_17 = false; // photon Isolation rho corrected, 186.6 < p_T gamma < 207.1	
+	bool plot_18 = false; // photon Isolation, 207.1 < p_T gamma < 229.7
+	bool plot_19 = false; // photon Isolation rho corrected, 207.1 < p_T gamma < 229.7
+	bool plot_20 = false; // photon Isolation, 229.7 < p_T gamma < 254.9
+	bool plot_21 = false; // photon Isolation rho corrected, 229.7 < p_T gamma < 254.9
+	bool plot_22 = false; // photon Isolation, 254.9 < p_T gamma < 282.8
+	bool plot_23 = false; // photon Isolation rho corrected, 254.9 < p_T gamma < 282.8
+	bool plot_24 = false; // photon Isolation, 282.8 < p_T gamma < 313.8
+	bool plot_25 = false; // photon Isolation rho corrected, 282.8 < p_T gamma < 313.8
+	bool plot_26 = false; // photon Isolation, 313.8 < p_T gamma < 348.2
+	bool plot_27 = false; // photon Isolation rho corrected, 313.8 < p_T gamma < 348.2
+	bool plot_28 = false; // photon Isolation, 348.2 < p_T gamma < 386.4
+	bool plot_29 = false; // photon Isolation rho corrected, 348.2 < p_T gamma < 386.4
+	bool plot_30 = false; // photon Isolation, 386.4 < p_T gamma < 428.7
+	bool plot_31 = false; // photon Isolation rho corrected, 386.4 < p_T gamma < 428.7
+	bool plot_32 = false; // photon Isolation, 428.7 < p_T gamma < 475.7
+	bool plot_33 = false; // photon Isolation rho corrected, 428.7 < p_T gamma < 475.7
+	bool plot_34 = false; // photon Isolation, 475.7 < p_T gamma < 527.8
+	bool plot_35 = false; // photon Isolation rho corrected, 475.7 < p_T gamma < 527.8
+	bool plot_36 = false; // photon Isolation, 527.8 < p_T gamma < 585.6
+	bool plot_37 = false; // photon Isolation rho corrected, 527.8 < p_T gamma < 585.6
+	bool plot_38 = false; // photon Isolation, 585.6 < p_T gamma < 649.8
+	bool plot_39 = false; // photon Isolation rho corrected, 585.6 < p_T gamma < 649.8		
+	bool plot_40 = false; // photon Isolation, 649.8 < p_T gamma < 721
+	bool plot_41 = false; // photon Isolation rho corrected, 649.8 < p_T gamma < 721		
+	bool plot_42 = false; // photon Isolation, 721 < p_T gamma < 800
+	bool plot_43 = false; // photon Isolation rho corrected, 721 < p_T gamma < 800		
+	bool plot_44 = false; // photon Isolation, p_T gamma > 800
+	bool plot_45 = false; // photon Isolation rho corrected, p_T gamma > 800	
+	bool plot_46 = false; // photon Isolation, 100 < p_T gamma < 151.6
+	bool plot_47 = false; // photon Isolation rho corrected, 100 < p_T gamma < 151.6
+	bool plot_48 = false; // photon Isolation, 151.6 < p_T gamma < 207.1
+	bool plot_49 = false; // photon Isolation rho corrected, 151.6 < p_T gamma < 207.1	
+	bool plot_50 = false; // photon Isolation, 207.1 < p_T gamma < 313.8
+	bool plot_51 = false; // photon Isolation rho corrected, 207.1 < p_T gamma < 313.8	
+	bool plot_52 = false; // photon Isolation, 313.8 < p_T gamma < 649.8
+	bool plot_53 = false; // photon Isolation rho corrected, 313.8 < p_T gamma < 649.8	
+	bool plot_54 = false; // photon Isolation, 649.8 < p_T gamma < 800
+	bool plot_55 = false; // photon Isolation rho corrected, 649.8 < p_T gamma < 800		
+	bool plot_56 = false; // photon Isolation, p_T gamma > 313.8
+	bool plot_57 = false; // photon Isolation rho corrected, p_T gamma > 313.8		
+	bool plot_58 = false; // photon Isolation cone 03 for Cic
+	bool plot_59 = false; // photon Isolation cone 04 for Cic
+	bool plot_60 = false; // photon ID
+	bool plot_61 = false; // photon E_T-p_T cone 04
+	bool plot_62 = false; // photon Isolation FPR
+	bool plot_63 = false; // jets counting
+	bool plot_64 = false; // Jet 1 kinematics
+	bool plot_65 = false; // H_T
+	bool plot_66 = false; // Angular variables (>= 1 jet)
+	bool plot_67 = false; // Event shape variables
+	bool plot_68 = false; // photon kinematics, 1 jet exclusive 
+	bool plot_69 = false; // Jet 1 kinematics, 1 jet exclusive
+	bool plot_70 = false; // photon kinematics, 2 jet exclusive 
+	bool plot_71 = false; // Jet 1 kinematics, 2 jet exclusive
+	bool plot_72 = false; // Jet 2 kinematics, 2 jet exclusive
+	bool plot_73 = false; // Jet 2 kinematics
+	bool plot_74 = false; // Angular variables (>=2 jets)
+	bool plot_75 = false; // Jet 3 kinematics
+	bool plot_76 = false; // Angular variables (>=3 jets)
 
 	bool plot_PrePost_01 = false; // Pre-Post cuts plots 1
 	bool plot_PrePost_02 = false; // Pre-Post cuts plots 2
@@ -4167,7 +4574,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_04){ 
-		TCanvas *c04 = new TCanvas("c04", "photon Isolation, 100 < pT gamma < 151.6", 10, 10, 700, 700);
+		TCanvas *c04 = new TCanvas("c04", "photon Isolation, 100 < pT gamma < 111", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c04->Divide(3,2);
 		c04->cd(1);
@@ -4183,7 +4590,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_05){ 
-		TCanvas *c05 = new TCanvas("c05", "photon Isolation rho corrected, 100 < pT gamma < 151.6", 10, 10, 700, 700);
+		TCanvas *c05 = new TCanvas("c05", "photon Isolation rho corrected, 100 < pT gamma < 111", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c05->Divide(5,3);
 		c05->cd(1);
@@ -4219,7 +4626,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_06){ 
-		TCanvas *c06 = new TCanvas("c06", "photon Isolation, 151.6 < pT gamma < 207.1", 10, 10, 700, 700);
+		TCanvas *c06 = new TCanvas("c06", "photon Isolation, 111 < pT gamma < 123.1", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c06->Divide(3,2);
 		c06->cd(1);
@@ -4235,7 +4642,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_07){ 
-		TCanvas *c07 = new TCanvas("c07", "photon Isolation rho corrected, 151.6 < pT gamma < 207.1", 10, 10, 700, 700);
+		TCanvas *c07 = new TCanvas("c07", "photon Isolation rho corrected, 111 < pT gamma < 123.1", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c07->Divide(5,3);
 		c07->cd(1);
@@ -4271,7 +4678,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_08){ 
-		TCanvas *c08 = new TCanvas("c08", "photon Isolation, 207.1 < pT gamma < 313.8", 10, 10, 700, 700);
+		TCanvas *c08 = new TCanvas("c08", "photon Isolation, 123.1 < pT gamma < 136.6", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c08->Divide(3,2);
 		c08->cd(1);
@@ -4287,7 +4694,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_09){ 
-		TCanvas *c09 = new TCanvas("c09", "photon Isolation rho corrected, 207.1 < pT gamma < 313.8", 10, 10, 700, 700);
+		TCanvas *c09 = new TCanvas("c09", "photon Isolation rho corrected, 123.1 < pT gamma < 136.6", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c09->Divide(5,3);
 		c09->cd(1);
@@ -4323,7 +4730,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_10){ 
-		TCanvas *c10 = new TCanvas("c10", "photon Isolation, 313.8 < pT gamma < 649.8", 10, 10, 700, 700);
+		TCanvas *c10 = new TCanvas("c10", "photon Isolation, 136.6 < pT gamma < 151.6", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c10->Divide(3,2);
 		c10->cd(1);
@@ -4339,7 +4746,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_11){ 
-		TCanvas *c11 = new TCanvas("c11", "photon Isolation rho corrected, 313.8 < pT gamma < 649.8", 10, 10, 700, 700);
+		TCanvas *c11 = new TCanvas("c11", "photon Isolation rho corrected, 136.6 < pT gamma < 151.6", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c11->Divide(5,3);
 		c11->cd(1);
@@ -4375,7 +4782,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_12){ 
-		TCanvas *c12 = new TCanvas("c12", "photon Isolation, 649.8 < pT gamma < 800", 10, 10, 700, 700);
+		TCanvas *c12 = new TCanvas("c12", "photon Isolation, 151.6 < pT gamma < 168.2", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c12->Divide(3,2);
 		c12->cd(1);
@@ -4391,7 +4798,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_13){ 
-		TCanvas *c13 = new TCanvas("c13", "photon Isolation rho corrected, 649.8 < pT gamma < 800", 10, 10, 700, 700);
+		TCanvas *c13 = new TCanvas("c13", "photon Isolation rho corrected, 151.6 < pT gamma < 168.2", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c13->Divide(5,3);
 		c13->cd(1);
@@ -4427,7 +4834,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_14){ 
-		TCanvas *c14 = new TCanvas("c14", "photon Isolation, pT gamma > 800", 10, 10, 700, 700);
+		TCanvas *c14 = new TCanvas("c14", "photon Isolation, 168.2 < pT gamma < 186.6", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c14->Divide(3,2);
 		c14->cd(1);
@@ -4443,7 +4850,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_15){ 
-		TCanvas *c15 = new TCanvas("c15", "photon Isolation rho corrected, pT gamma > 800", 10, 10, 700, 700);
+		TCanvas *c15 = new TCanvas("c15", "photon Isolation rho corrected, 168.2 < pT gamma < 186.6", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c15->Divide(5,3);
 		c15->cd(1);
@@ -4479,7 +4886,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_16){ 
-		TCanvas *c16 = new TCanvas("c16", "photon Isolation, pT gamma > 313.8", 10, 10, 700, 700);
+		TCanvas *c16 = new TCanvas("c16", "photon Isolation, 186.6 < pT gamma < 207.1", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c16->Divide(3,2);
 		c16->cd(1);
@@ -4495,7 +4902,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_17){ 
-		TCanvas *c17 = new TCanvas("c17", "photon Isolation rho corrected, pT gamma > 313.8", 10, 10, 700, 700);
+		TCanvas *c17 = new TCanvas("c17", "photon Isolation rho corrected, 186.6 < pT gamma < 207.1", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c17->Divide(5,3);
 		c17->cd(1);
@@ -4531,7 +4938,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_18){ 
-		TCanvas *c18 = new TCanvas("c18", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c18 = new TCanvas("c18", "photon Isolation, 207.1 < pT gamma < 229.7", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c18->Divide(3,2);
 		c18->cd(1);
@@ -4547,7 +4954,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_19){ 
-		TCanvas *c19 = new TCanvas("c19", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c19 = new TCanvas("c19", "photon Isolation rho corrected, 207.1 < pT gamma < 229.7", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c19->Divide(5,3);
 		c19->cd(1);
@@ -4583,7 +4990,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_20){ 
-		TCanvas *c20 = new TCanvas("c20", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c20 = new TCanvas("c20", "photon Isolation, 229.7 < pT gamma < 254.9", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c20->Divide(3,2);
 		c20->cd(1);
@@ -4599,7 +5006,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_21){ 
-		TCanvas *c21 = new TCanvas("c21", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c21 = new TCanvas("c21", "photon Isolation rho corrected, 229.7 < pT gamma < 254.9", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c21->Divide(5,3);
 		c21->cd(1);
@@ -4635,7 +5042,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_22){ 
-		TCanvas *c22 = new TCanvas("c22", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c22 = new TCanvas("c22", "photon Isolation, 254.9 < pT gamma < 282.8", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c22->Divide(3,2);
 		c22->cd(1);
@@ -4651,7 +5058,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_23){ 
-		TCanvas *c23 = new TCanvas("c23", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c23 = new TCanvas("c23", "photon Isolation rho corrected, 254.9 < pT gamma < 282.8", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c23->Divide(5,3);
 		c23->cd(1);
@@ -4687,7 +5094,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_24){ 
-		TCanvas *c24 = new TCanvas("c24", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c24 = new TCanvas("c24", "photon Isolation, 282.8 < pT gamma < 313.8", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c24->Divide(3,2);
 		c24->cd(1);
@@ -4703,7 +5110,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_25){ 
-		TCanvas *c25 = new TCanvas("c25", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c25 = new TCanvas("c25", "photon Isolation rho corrected, 282.8 < pT gamma < 313.8", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c25->Divide(5,3);
 		c25->cd(1);
@@ -4739,7 +5146,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_26){ 
-		TCanvas *c26 = new TCanvas("c26", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c26 = new TCanvas("c26", "photon Isolation, 313.8 < pT gamma < 348.2", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c26->Divide(3,2);
 		c26->cd(1);
@@ -4755,7 +5162,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_27){ 
-		TCanvas *c27 = new TCanvas("c27", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c27 = new TCanvas("c27", "photon Isolation rho corrected, 313.8 < pT gamma < 348.2", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c27->Divide(5,3);
 		c27->cd(1);
@@ -4791,7 +5198,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_28){ 
-		TCanvas *c28 = new TCanvas("c28", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c28 = new TCanvas("c28", "photon Isolation, 348.2 < pT gamma < 386.4", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c28->Divide(3,2);
 		c28->cd(1);
@@ -4807,7 +5214,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_29){ 
-		TCanvas *c29 = new TCanvas("c29", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c29 = new TCanvas("c29", "photon Isolation rho corrected, 348.2 < pT gamma < 386.4", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c29->Divide(5,3);
 		c29->cd(1);
@@ -4843,7 +5250,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_30){ 
-		TCanvas *c30 = new TCanvas("c30", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c30 = new TCanvas("c30", "photon Isolation, 386.4 < pT gamma < 428.7", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c30->Divide(3,2);
 		c30->cd(1);
@@ -4859,7 +5266,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_31){ 
-		TCanvas *c31 = new TCanvas("c31", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c31 = new TCanvas("c31", "photon Isolation rho corrected, 386.4 < pT gamma < 428.7", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c31->Divide(5,3);
 		c31->cd(1);
@@ -4895,7 +5302,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_32){ 
-		TCanvas *c32 = new TCanvas("c32", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c32 = new TCanvas("c32", "photon Isolation, 428.7 < pT gamma < 475.7", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c32->Divide(3,2);
 		c32->cd(1);
@@ -4911,7 +5318,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_33){ 
-		TCanvas *c33 = new TCanvas("c33", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c33 = new TCanvas("c33", "photon Isolation rho corrected, 428.7 < pT gamma < 475.7", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c33->Divide(5,3);
 		c33->cd(1);
@@ -4947,7 +5354,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_34){ 
-		TCanvas *c34 = new TCanvas("c34", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c34 = new TCanvas("c34", "photon Isolation, 475.7 < pT gamma < 527.8", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c34->Divide(3,2);
 		c34->cd(1);
@@ -4963,7 +5370,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_35){ 
-		TCanvas *c35 = new TCanvas("c35", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c35 = new TCanvas("c35", "photon Isolation rho corrected, 475.7 < pT gamma < 527.8", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c35->Divide(5,3);
 		c35->cd(1);
@@ -4999,7 +5406,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_36){ 
-		TCanvas *c36 = new TCanvas("c36", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c36 = new TCanvas("c36", "photon Isolation, 527.8 < pT gamma < 585.6", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c36->Divide(3,2);
 		c36->cd(1);
@@ -5015,7 +5422,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_37){ 
-		TCanvas *c37 = new TCanvas("c37", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c37 = new TCanvas("c37", "photon Isolation rho corrected, 527.8 < pT gamma < 585.6", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c37->Divide(5,3);
 		c37->cd(1);
@@ -5051,7 +5458,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_38){ 
-		TCanvas *c38 = new TCanvas("c38", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c38 = new TCanvas("c38", "photon Isolation, 585.6 < pT gamma < 649.8", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c38->Divide(3,2);
 		c38->cd(1);
@@ -5067,7 +5474,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_39){ 
-		TCanvas *c39 = new TCanvas("c39", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c39 = new TCanvas("c39", "photon Isolation rho corrected, 585.6 < pT gamma < 649.8", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c39->Divide(5,3);
 		c39->cd(1);
@@ -5103,7 +5510,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_40){ 
-		TCanvas *c40 = new TCanvas("c40", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c40 = new TCanvas("c40", "photon Isolation, 649.8 < pT gamma < 721", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c40->Divide(3,2);
 		c40->cd(1);
@@ -5119,7 +5526,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_41){ 
-		TCanvas *c41 = new TCanvas("c41", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c41 = new TCanvas("c41", "photon Isolation rho corrected, 649.8 < pT gamma < 721", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c41->Divide(5,3);
 		c41->cd(1);
@@ -5155,7 +5562,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_42){ 
-		TCanvas *c42 = new TCanvas("c42", "photon Isolation, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c42 = new TCanvas("c42", "photon Isolation, 721 < pT gamma < 800", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c42->Divide(3,2);
 		c42->cd(1);
@@ -5171,7 +5578,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	}
 
 	if(plot_43){ 
-		TCanvas *c43 = new TCanvas("c43", "photon Isolation rho corrected, 10000 < pT gamma < 100000", 10, 10, 700, 700);
+		TCanvas *c43 = new TCanvas("c43", "photon Isolation rho corrected, 721 < pT gamma < 800", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c43->Divide(5,3);
 		c43->cd(1);
@@ -5206,310 +5613,674 @@ void GJetsAnalyzer::Plot_Histos(){
 		TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin20_->Draw();	
 	}
 
-	if(plot_44){
-		TCanvas *c44 = new TCanvas("c44", "photon Isolation cone 03 for Cic", 10, 10, 700, 700);
+	if(plot_44){ 
+		TCanvas *c44 = new TCanvas("c44", "photon Isolation, pT gamma > 800", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c44->Divide(2,2);
+		c44->Divide(3,2);
 		c44->cd(1);
-		SelectedPhotons_PfIsoPhotons03ForCic_1_->Draw();
+		SelectedPhotons_id_sieie_1_bin21_->Draw();		
 		c44->cd(2);
-		SelectedPhotons_PfIsoNeutrals03ForCic_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_1_bin21_->Draw();
 		c44->cd(3);
-		SelectedPhotons_PfIsoCharged03ForCicVtx0_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_1_bin21_->Draw();
 		c44->cd(4);
-		SelectedPhotons_PfIsoCharged03BadForCic_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_1_bin21_->Draw();
+		c44->cd(5);
+		SelectedPhotons_PfIso_1_bin21_->Draw();
 	}
 
-	if(plot_45){
-		TCanvas *c45 = new TCanvas("c45", "photon Isolation cone 04 for Cic", 10, 10, 700, 700);
+	if(plot_45){ 
+		TCanvas *c45 = new TCanvas("c45", "photon Isolation rho corrected, pT gamma > 800", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c45->Divide(2,2);
+		c45->Divide(5,3);
 		c45->cd(1);
-		SelectedPhotons_PfIsoPhotons04ForCic_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin21_->Draw();
 		c45->cd(2);
-		SelectedPhotons_PfIsoNeutrals04ForCic_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin21_->Draw();
 		c45->cd(3);
-		SelectedPhotons_PfIsoCharged04ForCicVtx0_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin21_->Draw();
 		c45->cd(4);
-		SelectedPhotons_PfIsoCharged04BadForCic_1_->Draw();
+		SelectedPhotons_PfIso_RhoCorr_1_bin21_->Draw();
+		c45->cd(5);
+		TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin21_->Draw();		
+		c45->cd(6);
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin21_->Draw();
+		c45->cd(7);
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin21_->Draw();
+		c45->cd(8);
+		SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin21_->Draw();
+		c45->cd(9);
+		TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin21_->Draw();		
+		c45->cd(10);
+		SelectedPhotons_PfIso_RhoCorr_forFit_1_bin21_->Draw();
+		c45->cd(11);
+		TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin21_->Draw();		
+		c45->cd(12);
+		SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin21_->Draw();
+		c45->cd(13);
+		SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin21_->Draw();		
+		c45->cd(14);
+		TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin21_->Draw();
+		c45->cd(15);
+		TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin21_->Draw();	
 	}
 
-	if(plot_46){
-		TCanvas *c46 = new TCanvas("c46", "photon ID", 10, 10, 700, 700);
+	if(plot_46){ 
+		TCanvas *c46 = new TCanvas("c46", "photon Isolation, 100 < pT gamma < 151.6", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c46->Divide(4,3);
+		c46->Divide(3,2);
 		c46->cd(1);
-		SelectedPhotons_id_sieie_1_->Draw();
+		SelectedPhotons_id_sieie_1_bin22_big_->Draw();		
 		c46->cd(2);
-		SelectedPhotons_id_sieip_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_1_bin22_big_->Draw();
 		c46->cd(3);
-		SelectedPhotons_id_etawidth_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_1_bin22_big_->Draw();
 		c46->cd(4);
-		SelectedPhotons_id_phiwidth_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_1_bin22_big_->Draw();
 		c46->cd(5);
-		SelectedPhotons_id_r9_1_->Draw();
-		c46->cd(6);
-		SelectedPhotons_id_lambdaRatio_1_->Draw();
-		c46->cd(7);
-		SelectedPhotons_id_s4Ratio_1_->Draw();
-		c46->cd(8);
-		SelectedPhotons_id_e25_1_->Draw();
-		c46->cd(9);
-		SelectedPhotons_id_sceta_1_->Draw();
-		c46->cd(10);
-		SelectedPhotons_id_ESEffSigmaRR_1_->Draw();
-		c46->cd(11);
-		SelectedPhotons_id_hadronicOverEm_1_->Draw();
-		c46->cd(12);
-		SelectedPhotons_id_hadronicOverEm2012_1_->Draw();
+		SelectedPhotons_PfIso_1_bin22_big_->Draw();
 	}
 
-	if(plot_47){
-		TCanvas *c47 = new TCanvas("c47", "photon E_T-p_T cone 04", 10, 10, 700, 700);
+	if(plot_47){ 
+		TCanvas *c47 = new TCanvas("c47", "photon Isolation rho corrected, 100 < pT gamma < 151.6", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c47->Divide(3,2);
+		c47->Divide(5,3);
 		c47->cd(1);
-		SelectedPhotons_hcalTowerSumEtConeDR04_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin22_big_->Draw();
 		c47->cd(2);
-		SelectedPhotons_ecalRecHitSumEtConeDR04_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin22_big_->Draw();
 		c47->cd(3);
-		SelectedPhotons_nTrkSolidConeDR04_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin22_big_->Draw();
 		c47->cd(4);
-		SelectedPhotons_trkSumPtSolidConeDR04_1_->Draw();
+		SelectedPhotons_PfIso_RhoCorr_1_bin22_big_->Draw();
 		c47->cd(5);
-		SelectedPhotons_nTrkHollowConeDR04_1_->Draw();
+		TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin22_big_->Draw();		
 		c47->cd(6);
-		SelectedPhotons_trkSumPtHollowConeDR04_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin22_big_->Draw();
+		c47->cd(7);
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin22_big_->Draw();
+		c47->cd(8);
+		SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin22_big_->Draw();
+		c47->cd(9);
+		TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin22_big_->Draw();		
+		c47->cd(10);
+		SelectedPhotons_PfIso_RhoCorr_forFit_1_bin22_big_->Draw();
+		c47->cd(11);
+		TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin22_big_->Draw();		
+		c47->cd(12);
+		SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin22_big_->Draw();
+		c47->cd(13);
+		SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin22_big_->Draw();		
+		c47->cd(14);
+		TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin22_big_->Draw();
+		c47->cd(15);
+		TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin22_big_->Draw();	
 	}
 
-	if(plot_48){
-		TCanvas *c48 = new TCanvas("c48", "photon Isolation FPR", 10, 10, 700, 700);
+	if(plot_48){ 
+		TCanvas *c48 = new TCanvas("c48", "photon Isolation, 151.6 < pT gamma < 207.1", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c48->Divide(4,3);
+		c48->Divide(3,2);
 		c48->cd(1);
-		SelectedPhotons_IsoFPRCharged_1_->Draw();
+		SelectedPhotons_id_sieie_1_bin23_big_->Draw();		
 		c48->cd(2);
-		SelectedPhotons_IsoFPRNeutral_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_1_bin23_big_->Draw();
 		c48->cd(3);
-		SelectedPhotons_IsoFPRPhoton_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_1_bin23_big_->Draw();
 		c48->cd(4);
-		SelectedPhotons_IsoFPR_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_1_bin23_big_->Draw();
 		c48->cd(5);
-		SelectedPhotons_IsoFPRRandomConeCharged_1_->Draw();
-		c48->cd(6);
-		SelectedPhotons_IsoFPRRandomConeNeutral_1_->Draw();
-		c48->cd(7);
-		SelectedPhotons_IsoFPRRandomConePhoton_1_->Draw();
-		c48->cd(8);
-		SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_->Draw();
-		c48->cd(9);
-		SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_->Draw();
-		c48->cd(10);
-		TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_->Draw();
-		c48->cd(11);
-		TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_->Draw();	
+		SelectedPhotons_PfIso_1_bin23_big_->Draw();
 	}
 
-	if(plot_49){
-		TCanvas *c49 = new TCanvas("c49", "jets counting", 10, 10, 700, 700);
+	if(plot_49){ 
+		TCanvas *c49 = new TCanvas("c49", "photon Isolation rho corrected, 151.6 < pT gamma < 207.1", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c49->Divide(2,1);
+		c49->Divide(5,3);
 		c49->cd(1);
-		SelectedJetsALL_N_->Draw();
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin23_big_->Draw();
 		c49->cd(2);
-		SelectedJets_N_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin23_big_->Draw();
+		c49->cd(3);
+		SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin23_big_->Draw();
+		c49->cd(4);
+		SelectedPhotons_PfIso_RhoCorr_1_bin23_big_->Draw();
+		c49->cd(5);
+		TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin23_big_->Draw();		
+		c49->cd(6);
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin23_big_->Draw();
+		c49->cd(7);
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin23_big_->Draw();
+		c49->cd(8);
+		SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin23_big_->Draw();
+		c49->cd(9);
+		TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin23_big_->Draw();		
+		c49->cd(10);
+		SelectedPhotons_PfIso_RhoCorr_forFit_1_bin23_big_->Draw();
+		c49->cd(11);
+		TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin23_big_->Draw();		
+		c49->cd(12);
+		SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin23_big_->Draw();
+		c49->cd(13);
+		SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin23_big_->Draw();		
+		c49->cd(14);
+		TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin23_big_->Draw();
+		c49->cd(15);
+		TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin23_big_->Draw();	
 	}
 
-	if(plot_50){
-		TCanvas *c50 = new TCanvas("c50", "Jet 1 kinematics", 10, 10, 700, 700);
+	if(plot_50){ 
+		TCanvas *c50 = new TCanvas("c50", "photon Isolation, 207.1 < pT gamma < 313.8", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c50->Divide(2,2);
+		c50->Divide(3,2);
 		c50->cd(1);
-		SelectedJets_Pt_1_->Draw();
+		SelectedPhotons_id_sieie_1_bin24_big_->Draw();		
 		c50->cd(2);
-		SelectedJets_E_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_1_bin24_big_->Draw();
 		c50->cd(3);
-		SelectedJets_Eta_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_1_bin24_big_->Draw();
 		c50->cd(4);
-		SelectedJets_Phi_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_1_bin24_big_->Draw();
+		c50->cd(5);
+		SelectedPhotons_PfIso_1_bin24_big_->Draw();
 	}
 
-	if(plot_51){
-		TCanvas *c51 = new TCanvas("c51", "H_T", 10, 10, 700, 700);
+	if(plot_51){ 
+		TCanvas *c51 = new TCanvas("c51", "photon Isolation rho corrected, 207.1 < pT gamma < 313.8", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c51->cd();
-		SelectedJets_HT_->Draw();
+		c51->Divide(5,3);
+		c51->cd(1);
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin24_big_->Draw();
+		c51->cd(2);
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin24_big_->Draw();
+		c51->cd(3);
+		SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin24_big_->Draw();
+		c51->cd(4);
+		SelectedPhotons_PfIso_RhoCorr_1_bin24_big_->Draw();
+		c51->cd(5);
+		TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin24_big_->Draw();		
+		c51->cd(6);
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin24_big_->Draw();
+		c51->cd(7);
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin24_big_->Draw();
+		c51->cd(8);
+		SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin24_big_->Draw();
+		c51->cd(9);
+		TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin24_big_->Draw();		
+		c51->cd(10);
+		SelectedPhotons_PfIso_RhoCorr_forFit_1_bin24_big_->Draw();
+		c51->cd(11);
+		TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin24_big_->Draw();		
+		c51->cd(12);
+		SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin24_big_->Draw();
+		c51->cd(13);
+		SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin24_big_->Draw();		
+		c51->cd(14);
+		TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin24_big_->Draw();
+		c51->cd(15);
+		TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin24_big_->Draw();	
 	}
 
-	if(plot_52){
-		TCanvas *c52 = new TCanvas("c52", "Angular variables (>= 1 jet)", 10, 10, 700, 700);
+	if(plot_52){ 
+		TCanvas *c52 = new TCanvas("c52", "photon Isolation, 313.8 < pT gamma < 649.8", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c52->Divide(3,1);
+		c52->Divide(3,2);
 		c52->cd(1);
-		DeltaR_photon1_jet1_N0_->Draw();
+		SelectedPhotons_id_sieie_1_bin25_big_->Draw();		
 		c52->cd(2);
-		DeltaEta_photon1_jet1_N0_->Draw();
+		SelectedPhotons_PfIsoChargedHad_1_bin25_big_->Draw();
 		c52->cd(3);
-		DeltaPhi_photon1_jet1_N0_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_1_bin25_big_->Draw();
+		c52->cd(4);
+		SelectedPhotons_PfIsoPhoton_1_bin25_big_->Draw();
+		c52->cd(5);
+		SelectedPhotons_PfIso_1_bin25_big_->Draw();
 	}
 
-	if(plot_53){
-		TCanvas *c53 = new TCanvas("c53", "Event shape variables", 10, 10, 700, 700);
+	if(plot_53){ 
+		TCanvas *c53 = new TCanvas("c53", "photon Isolation rho corrected, 313.8 < pT gamma < 649.8", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c53->Divide(4,2);
+		c53->Divide(5,3);
 		c53->cd(1);
-		thrust_N0_->Draw();
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin25_big_->Draw();
 		c53->cd(2);
-		broad_N0_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin25_big_->Draw();
 		c53->cd(3);
-		S3_N0_->Draw();
+		SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin25_big_->Draw();
 		c53->cd(4);
-		S4_N0_->Draw();
+		SelectedPhotons_PfIso_RhoCorr_1_bin25_big_->Draw();
 		c53->cd(5);
-		ln_thrust_N0_->Draw();
+		TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin25_big_->Draw();		
 		c53->cd(6);
-		ln_broad_N0_->Draw();
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin25_big_->Draw();
 		c53->cd(7);
-		ln_S3_N0_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin25_big_->Draw();
 		c53->cd(8);
-		ln_S4_N0_->Draw();
+		SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin25_big_->Draw();
+		c53->cd(9);
+		TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin25_big_->Draw();		
+		c53->cd(10);
+		SelectedPhotons_PfIso_RhoCorr_forFit_1_bin25_big_->Draw();
+		c53->cd(11);
+		TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin25_big_->Draw();		
+		c53->cd(12);
+		SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin25_big_->Draw();
+		c53->cd(13);
+		SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin25_big_->Draw();		
+		c53->cd(14);
+		TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin25_big_->Draw();
+		c53->cd(15);
+		TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin25_big_->Draw();	
 	}
 
-	if(plot_54){
-		TCanvas *c54 = new TCanvas("c54", "photon kinematics, 1 jet exclusive", 10, 10, 700, 700);
+	if(plot_54){ 
+		TCanvas *c54 = new TCanvas("c54", "photon Isolation, 649.8 < pT gamma < 800", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c54->Divide(2,2);
+		c54->Divide(3,2);
 		c54->cd(1);
-		SelectedPhotons_Pt_excl1_1_->Draw();
+		SelectedPhotons_id_sieie_1_bin26_big_->Draw();		
 		c54->cd(2);
-		SelectedPhotons_E_excl1_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_1_bin26_big_->Draw();
 		c54->cd(3);
-		SelectedPhotons_Eta_excl1_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_1_bin26_big_->Draw();
 		c54->cd(4);
-		SelectedPhotons_Phi_excl1_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_1_bin26_big_->Draw();
+		c54->cd(5);
+		SelectedPhotons_PfIso_1_bin26_big_->Draw();
 	}
 
-	if(plot_55){
-		TCanvas *c55 = new TCanvas("c55", "Jet 1 kinematics, 1 jet exclusive", 10, 10, 700, 700);
+	if(plot_55){ 
+		TCanvas *c55 = new TCanvas("c55", "photon Isolation rho corrected, 649.8 < pT gamma < 800", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c55->Divide(3,2);
+		c55->Divide(5,3);
 		c55->cd(1);
-		SelectedJets_Pt_excl1_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin26_big_->Draw();
 		c55->cd(2);
-		SelectedJets_E_excl1_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin26_big_->Draw();
 		c55->cd(3);
-		SelectedJets_Eta_excl1_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin26_big_->Draw();
 		c55->cd(4);
-		SelectedJets_Phi_excl1_1_->Draw();
+		SelectedPhotons_PfIso_RhoCorr_1_bin26_big_->Draw();
 		c55->cd(5);
-		SelectedJets_HT_excl1_->Draw();
+		TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin26_big_->Draw();		
+		c55->cd(6);
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin26_big_->Draw();
+		c55->cd(7);
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin26_big_->Draw();
+		c55->cd(8);
+		SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin26_big_->Draw();
+		c55->cd(9);
+		TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin26_big_->Draw();		
+		c55->cd(10);
+		SelectedPhotons_PfIso_RhoCorr_forFit_1_bin26_big_->Draw();
+		c55->cd(11);
+		TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin26_big_->Draw();		
+		c55->cd(12);
+		SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin26_big_->Draw();
+		c55->cd(13);
+		SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin26_big_->Draw();		
+		c55->cd(14);
+		TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin26_big_->Draw();
+		c55->cd(15);
+		TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin26_big_->Draw();	
 	}
 
-	if(plot_56){
-		TCanvas *c56 = new TCanvas("c56", "photon kinematics, 2 jet exclusive", 10, 10, 700, 700);
+	if(plot_56){ 
+		TCanvas *c56 = new TCanvas("c56", "photon Isolation, pT gamma > 313.8", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c56->Divide(2,2);
+		c56->Divide(3,2);
 		c56->cd(1);
-		SelectedPhotons_Pt_excl2_1_->Draw();
+		SelectedPhotons_id_sieie_1_bin27_big_->Draw();		
 		c56->cd(2);
-		SelectedPhotons_E_excl2_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_1_bin27_big_->Draw();
 		c56->cd(3);
-		SelectedPhotons_Eta_excl2_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_1_bin27_big_->Draw();
 		c56->cd(4);
-		SelectedPhotons_Phi_excl2_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_1_bin27_big_->Draw();
+		c56->cd(5);
+		SelectedPhotons_PfIso_1_bin27_big_->Draw();
 	}
 
-	if(plot_57){
-		TCanvas *c57 = new TCanvas("c57", "Jet 1 kinematics, 2 jet exclusive", 10, 10, 700, 700);
+	if(plot_57){ 
+		TCanvas *c57 = new TCanvas("c57", "photon Isolation rho corrected, pT gamma > 313.8", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c57->Divide(2,2);
+		c57->Divide(5,3);
 		c57->cd(1);
-		SelectedJets_Pt_excl2_1_->Draw();
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin27_big_->Draw();
 		c57->cd(2);
-		SelectedJets_E_excl2_1_->Draw();
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin27_big_->Draw();
 		c57->cd(3);
-		SelectedJets_Eta_excl2_1_->Draw();
+		SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin27_big_->Draw();
 		c57->cd(4);
-		SelectedJets_Phi_excl2_1_->Draw();
+		SelectedPhotons_PfIso_RhoCorr_1_bin27_big_->Draw();
+		c57->cd(5);
+		TH2F_SelectedPhotons_PfIso_RhoCorr_vs_sieie_1_bin27_big_->Draw();		
+		c57->cd(6);
+		SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin27_big_->Draw();
+		c57->cd(7);
+		SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin27_big_->Draw();
+		c57->cd(8);
+		SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin27_big_->Draw();
+		c57->cd(9);
+		TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_bin27_big_->Draw();		
+		c57->cd(10);
+		SelectedPhotons_PfIso_RhoCorr_forFit_1_bin27_big_->Draw();
+		c57->cd(11);
+		TH2F_SelectedPhotons_PfIso_RhoCorr_forFit_vs_sieie_1_bin27_big_->Draw();		
+		c57->cd(12);
+		SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin27_big_->Draw();
+		c57->cd(13);
+		SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin27_big_->Draw();		
+		c57->cd(14);
+		TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_bin27_big_->Draw();
+		c57->cd(15);
+		TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_bin27_big_->Draw();	
 	}
 
 	if(plot_58){
-		TCanvas *c58 = new TCanvas("c58", "Jet 2 kinematics, 2 jet exclusive", 10, 10, 700, 700);
+		TCanvas *c58 = new TCanvas("c58", "photon Isolation cone 03 for Cic", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c58->Divide(3,2);
+		c58->Divide(2,2);
 		c58->cd(1);
-		SelectedJets_Pt_excl2_2_->Draw();
+		SelectedPhotons_PfIsoPhotons03ForCic_1_->Draw();
 		c58->cd(2);
-		SelectedJets_E_excl2_2_->Draw();
+		SelectedPhotons_PfIsoNeutrals03ForCic_1_->Draw();
 		c58->cd(3);
-		SelectedJets_Eta_excl2_2_->Draw();
+		SelectedPhotons_PfIsoCharged03ForCicVtx0_1_->Draw();
 		c58->cd(4);
-		SelectedJets_Phi_excl2_2_->Draw();
-		c58->cd(5);
-		SelectedJets_HT_excl2_->Draw();
+		SelectedPhotons_PfIsoCharged03BadForCic_1_->Draw();
 	}
 
 	if(plot_59){
-		TCanvas *c59 = new TCanvas("c59", "Jet 2 kinematics", 10, 10, 700, 700);
+		TCanvas *c59 = new TCanvas("c59", "photon Isolation cone 04 for Cic", 10, 10, 700, 700);
 		gPad->SetLogy();
 		c59->Divide(2,2);
 		c59->cd(1);
-		SelectedJets_Pt_2_->Draw();
+		SelectedPhotons_PfIsoPhotons04ForCic_1_->Draw();
 		c59->cd(2);
-		SelectedJets_E_2_->Draw();
+		SelectedPhotons_PfIsoNeutrals04ForCic_1_->Draw();
 		c59->cd(3);
-		SelectedJets_Eta_2_->Draw();
+		SelectedPhotons_PfIsoCharged04ForCicVtx0_1_->Draw();
 		c59->cd(4);
-		SelectedJets_Phi_2_->Draw();
+		SelectedPhotons_PfIsoCharged04BadForCic_1_->Draw();
 	}
 
 	if(plot_60){
-		TCanvas *c60 = new TCanvas("c60", "Angular variables (>=2 jets)", 10, 10, 700, 700);
+		TCanvas *c60 = new TCanvas("c60", "photon ID", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c60->Divide(3,2);
+		c60->Divide(4,3);
 		c60->cd(1);
-		DeltaPhi_photon1_jet1_N1_->Draw();
+		SelectedPhotons_id_sieie_1_->Draw();
 		c60->cd(2);
-		DeltaR_photon1_jet2_N1_->Draw();
+		SelectedPhotons_id_sieip_1_->Draw();
 		c60->cd(3);
-		DeltaR_jet1_jet2_N1_->Draw();
+		SelectedPhotons_id_etawidth_1_->Draw();
 		c60->cd(4);
-		DeltaEta_jet1_jet2_N1_->Draw();
+		SelectedPhotons_id_phiwidth_1_->Draw();
 		c60->cd(5);
-		DeltaPhi_jet1_jet2_N1_->Draw();
+		SelectedPhotons_id_r9_1_->Draw();
+		c60->cd(6);
+		SelectedPhotons_id_lambdaRatio_1_->Draw();
+		c60->cd(7);
+		SelectedPhotons_id_s4Ratio_1_->Draw();
+		c60->cd(8);
+		SelectedPhotons_id_e25_1_->Draw();
+		c60->cd(9);
+		SelectedPhotons_id_sceta_1_->Draw();
+		c60->cd(10);
+		SelectedPhotons_id_ESEffSigmaRR_1_->Draw();
+		c60->cd(11);
+		SelectedPhotons_id_hadronicOverEm_1_->Draw();
+		c60->cd(12);
+		SelectedPhotons_id_hadronicOverEm2012_1_->Draw();
 	}
 
 	if(plot_61){
-		TCanvas *c61 = new TCanvas("c61", "Jet 3 kinematics", 10, 10, 700, 700);
+		TCanvas *c61 = new TCanvas("c61", "photon E_T-p_T cone 04", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c61->Divide(2,2);
+		c61->Divide(3,2);
 		c61->cd(1);
-		SelectedJets_Pt_3_->Draw();
+		SelectedPhotons_hcalTowerSumEtConeDR04_1_->Draw();
 		c61->cd(2);
-		SelectedJets_E_3_->Draw();
+		SelectedPhotons_ecalRecHitSumEtConeDR04_1_->Draw();
 		c61->cd(3);
-		SelectedJets_Eta_3_->Draw();
+		SelectedPhotons_nTrkSolidConeDR04_1_->Draw();
 		c61->cd(4);
-		SelectedJets_Phi_3_->Draw();
+		SelectedPhotons_trkSumPtSolidConeDR04_1_->Draw();
+		c61->cd(5);
+		SelectedPhotons_nTrkHollowConeDR04_1_->Draw();
+		c61->cd(6);
+		SelectedPhotons_trkSumPtHollowConeDR04_1_->Draw();
 	}
 
 	if(plot_62){
-		TCanvas *c62 = new TCanvas("c62", "Angular variables (>=3 jets)", 10, 10, 700, 700);
+		TCanvas *c62 = new TCanvas("c62", "photon Isolation FPR", 10, 10, 700, 700);
 		gPad->SetLogy();
-		c62->Divide(4,2);
+		c62->Divide(4,3);
 		c62->cd(1);
-		DeltaPhi_photon1_jet1_N2_->Draw();
+		SelectedPhotons_IsoFPRCharged_1_->Draw();
 		c62->cd(2);
-		DeltaPhi_photon1_jet2_N2_->Draw();
+		SelectedPhotons_IsoFPRNeutral_1_->Draw();
 		c62->cd(3);
-		DeltaPhi_photon1_jet3_N2_->Draw();
+		SelectedPhotons_IsoFPRPhoton_1_->Draw();
 		c62->cd(4);
-		DeltaR_photon1_jet3_N2_->Draw();
+		SelectedPhotons_IsoFPR_1_->Draw();
 		c62->cd(5);
-		DeltaPhi_jet1_jet2_N2_->Draw();
+		SelectedPhotons_IsoFPRRandomConeCharged_1_->Draw();
 		c62->cd(6);
-		DeltaPhi_jet1_jet3_N2_->Draw();
+		SelectedPhotons_IsoFPRRandomConeNeutral_1_->Draw();
 		c62->cd(7);
+		SelectedPhotons_IsoFPRRandomConePhoton_1_->Draw();
+		c62->cd(8);
+		SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_->Draw();
+		c62->cd(9);
+		SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_->Draw();
+		c62->cd(10);
+		TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_->Draw();
+		c62->cd(11);
+		TH2F_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_1_->Draw();	
+	}
+
+	if(plot_63){
+		TCanvas *c63 = new TCanvas("c63", "jets counting", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c63->Divide(2,1);
+		c63->cd(1);
+		SelectedJetsALL_N_->Draw();
+		c63->cd(2);
+		SelectedJets_N_->Draw();
+	}
+
+	if(plot_64){
+		TCanvas *c64 = new TCanvas("c64", "Jet 1 kinematics", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c64->Divide(2,2);
+		c64->cd(1);
+		SelectedJets_Pt_1_->Draw();
+		c64->cd(2);
+		SelectedJets_E_1_->Draw();
+		c64->cd(3);
+		SelectedJets_Eta_1_->Draw();
+		c64->cd(4);
+		SelectedJets_Phi_1_->Draw();
+	}
+
+	if(plot_65){
+		TCanvas *c65 = new TCanvas("c65", "H_T", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c65->cd();
+		SelectedJets_HT_->Draw();
+	}
+
+	if(plot_66){
+		TCanvas *c66 = new TCanvas("c66", "Angular variables (>= 1 jet)", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c66->Divide(3,1);
+		c66->cd(1);
+		DeltaR_photon1_jet1_N0_->Draw();
+		c66->cd(2);
+		DeltaEta_photon1_jet1_N0_->Draw();
+		c66->cd(3);
+		DeltaPhi_photon1_jet1_N0_->Draw();
+	}
+
+	if(plot_67){
+		TCanvas *c67 = new TCanvas("c67", "Event shape variables", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c67->Divide(4,2);
+		c67->cd(1);
+		thrust_N0_->Draw();
+		c67->cd(2);
+		broad_N0_->Draw();
+		c67->cd(3);
+		S3_N0_->Draw();
+		c67->cd(4);
+		S4_N0_->Draw();
+		c67->cd(5);
+		ln_thrust_N0_->Draw();
+		c67->cd(6);
+		ln_broad_N0_->Draw();
+		c67->cd(7);
+		ln_S3_N0_->Draw();
+		c67->cd(8);
+		ln_S4_N0_->Draw();
+	}
+
+	if(plot_68){
+		TCanvas *c68 = new TCanvas("c68", "photon kinematics, 1 jet exclusive", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c68->Divide(2,2);
+		c68->cd(1);
+		SelectedPhotons_Pt_excl1_1_->Draw();
+		c68->cd(2);
+		SelectedPhotons_E_excl1_1_->Draw();
+		c68->cd(3);
+		SelectedPhotons_Eta_excl1_1_->Draw();
+		c68->cd(4);
+		SelectedPhotons_Phi_excl1_1_->Draw();
+	}
+
+	if(plot_69){
+		TCanvas *c69 = new TCanvas("c69", "Jet 1 kinematics, 1 jet exclusive", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c69->Divide(3,2);
+		c69->cd(1);
+		SelectedJets_Pt_excl1_1_->Draw();
+		c69->cd(2);
+		SelectedJets_E_excl1_1_->Draw();
+		c69->cd(3);
+		SelectedJets_Eta_excl1_1_->Draw();
+		c69->cd(4);
+		SelectedJets_Phi_excl1_1_->Draw();
+		c69->cd(5);
+		SelectedJets_HT_excl1_->Draw();
+	}
+
+	if(plot_70){
+		TCanvas *c70 = new TCanvas("c70", "photon kinematics, 2 jet exclusive", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c70->Divide(2,2);
+		c70->cd(1);
+		SelectedPhotons_Pt_excl2_1_->Draw();
+		c70->cd(2);
+		SelectedPhotons_E_excl2_1_->Draw();
+		c70->cd(3);
+		SelectedPhotons_Eta_excl2_1_->Draw();
+		c70->cd(4);
+		SelectedPhotons_Phi_excl2_1_->Draw();
+	}
+
+	if(plot_71){
+		TCanvas *c71 = new TCanvas("c71", "Jet 1 kinematics, 2 jet exclusive", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c71->Divide(2,2);
+		c71->cd(1);
+		SelectedJets_Pt_excl2_1_->Draw();
+		c71->cd(2);
+		SelectedJets_E_excl2_1_->Draw();
+		c71->cd(3);
+		SelectedJets_Eta_excl2_1_->Draw();
+		c71->cd(4);
+		SelectedJets_Phi_excl2_1_->Draw();
+	}
+
+	if(plot_72){
+		TCanvas *c72 = new TCanvas("c72", "Jet 2 kinematics, 2 jet exclusive", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c72->Divide(3,2);
+		c72->cd(1);
+		SelectedJets_Pt_excl2_2_->Draw();
+		c72->cd(2);
+		SelectedJets_E_excl2_2_->Draw();
+		c72->cd(3);
+		SelectedJets_Eta_excl2_2_->Draw();
+		c72->cd(4);
+		SelectedJets_Phi_excl2_2_->Draw();
+		c72->cd(5);
+		SelectedJets_HT_excl2_->Draw();
+	}
+
+	if(plot_73){
+		TCanvas *c73 = new TCanvas("c73", "Jet 2 kinematics", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c73->Divide(2,2);
+		c73->cd(1);
+		SelectedJets_Pt_2_->Draw();
+		c73->cd(2);
+		SelectedJets_E_2_->Draw();
+		c73->cd(3);
+		SelectedJets_Eta_2_->Draw();
+		c73->cd(4);
+		SelectedJets_Phi_2_->Draw();
+	}
+
+	if(plot_74){
+		TCanvas *c74 = new TCanvas("c74", "Angular variables (>=2 jets)", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c74->Divide(3,2);
+		c74->cd(1);
+		DeltaPhi_photon1_jet1_N1_->Draw();
+		c74->cd(2);
+		DeltaR_photon1_jet2_N1_->Draw();
+		c74->cd(3);
+		DeltaR_jet1_jet2_N1_->Draw();
+		c74->cd(4);
+		DeltaEta_jet1_jet2_N1_->Draw();
+		c74->cd(5);
+		DeltaPhi_jet1_jet2_N1_->Draw();
+	}
+
+	if(plot_75){
+		TCanvas *c75 = new TCanvas("c75", "Jet 3 kinematics", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c75->Divide(2,2);
+		c75->cd(1);
+		SelectedJets_Pt_3_->Draw();
+		c75->cd(2);
+		SelectedJets_E_3_->Draw();
+		c75->cd(3);
+		SelectedJets_Eta_3_->Draw();
+		c75->cd(4);
+		SelectedJets_Phi_3_->Draw();
+	}
+
+	if(plot_76){
+		TCanvas *c76 = new TCanvas("c76", "Angular variables (>=3 jets)", 10, 10, 700, 700);
+		gPad->SetLogy();
+		c76->Divide(4,2);
+		c76->cd(1);
+		DeltaPhi_photon1_jet1_N2_->Draw();
+		c76->cd(2);
+		DeltaPhi_photon1_jet2_N2_->Draw();
+		c76->cd(3);
+		DeltaPhi_photon1_jet3_N2_->Draw();
+		c76->cd(4);
+		DeltaR_photon1_jet3_N2_->Draw();
+		c76->cd(5);
+		DeltaPhi_jet1_jet2_N2_->Draw();
+		c76->cd(6);
+		DeltaPhi_jet1_jet3_N2_->Draw();
+		c76->cd(7);
 		DeltaPhi_jet2_jet3_N2_->Draw();
 	}
 

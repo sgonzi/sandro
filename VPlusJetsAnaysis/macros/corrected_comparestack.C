@@ -140,7 +140,7 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 
 	// ==================================== choose the tools
 
-	string folder = "23_results_2013_09_07"; // analysis folder
+	string folder = "06_results_2013_10_25"; // analysis folder
 
 	char geo[100] = "barrel";                // "barrel", "endcaps" or "total"
 
@@ -148,13 +148,13 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 	                                         // false: data = PromptReco
 	                                         
 	bool logX = false;											// log X scale for p_T plot
-	bool inv_sigmaietaieta = true;          // inverted sigmaietaieta cut
+	bool inv_sigmaietaieta = false;          // inverted sigmaietaieta cut
 	bool inv_isolation = false;              // inverted isolation set cut
 
 	bool signal_MAD = true;                  // true: signal = MADGRAPH; false: signal = PYTHIA
 	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
-	Int_t itype = 23;                        // it identifies histos with different analysis 
+	Int_t itype = 6;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names
@@ -759,6 +759,7 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 		leg->AddEntry(G_Pt_XtoY_total_histo,"#gamma + jets","f");
 	}
 	leg->AddEntry(DiPhotonJets_total_histo,"2#gamma + jets","f");
+/*
 	if (!background_QCD){
 		leg->AddEntry(QCD_Pt_x_y_EMEnriched_total_histo,"QCD EM Enriched","f");
 		leg->AddEntry(QCD_Pt_x_y_BCtoE_total_histo,"QCD b,c #rightarrow e","f");
@@ -766,6 +767,7 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 	else {
 		leg->AddEntry(QCD_HT_xToy_total_histo,"QCD","f");
 	}
+*/
 	leg->Draw();
 
   TPaveText* text_1 = new TPaveText(0.1194,0.9310,0.3313,0.9780,"NDC");
