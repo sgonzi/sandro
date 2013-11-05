@@ -144,7 +144,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	
 	// ==================================== choose the tools
 	
-	string folder = "05_results_2013_10_25"; // analysis folder
+	string folder = "12_results_2013_11_02"; // analysis folder
 	
 	char geo[100] = "barrel";               // "barrel", "endcaps" or "total"
 
@@ -157,7 +157,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	bool signal_MAD = true;                 // true: signal = MADGRAPH; false: signal = PYTHIA
 	bool background_QCD = false;            // true: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 	                                        // false: background = MADGRAPH not filtered (QCD HT)
-	Int_t itype = 5;                        // it identifies histos with different analysis 
+	Int_t itype = 12;                        // it identifies histos with different analysis 
 
 	std::vector <string> sample_NORMAL;
 	sample_NORMAL.push_back("MC_SIG");

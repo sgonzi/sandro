@@ -140,21 +140,21 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 
 	// ==================================== choose the tools
 
-	string folder = "06_results_2013_10_25"; // analysis folder
+	string folder = "13_results_2013_11_02"; // analysis folder
 
 	char geo[100] = "barrel";                // "barrel", "endcaps" or "total"
 
 	bool data_ReReco = true;                // true: data = ReReco
 	                                         // false: data = PromptReco
 	                                         
-	bool logX = false;											// log X scale for p_T plot
+	bool logX = true;											// log X scale for p_T plot
 	bool inv_sigmaietaieta = false;          // inverted sigmaietaieta cut
 	bool inv_isolation = false;              // inverted isolation set cut
 
 	bool signal_MAD = true;                  // true: signal = MADGRAPH; false: signal = PYTHIA
 	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
-	Int_t itype = 6;                        // it identifies histos with different analysis 
+	Int_t itype = 13;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names
@@ -746,7 +746,7 @@ void corrected_comparestack(const char* titleh, const char* namevariable, const 
 	DATA_total_histo->GetXaxis()->SetTitleSize(0.05);
 	DATA_total_histo->GetYaxis()->SetTitle("Events");
 
-	TLegend *leg =new TLegend(0.5475,0.6124,0.8322,0.8753);
+	TLegend *leg =new TLegend(0.6525,0.6923,0.8322,0.8777);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);

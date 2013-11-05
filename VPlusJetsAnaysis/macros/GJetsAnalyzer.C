@@ -64,15 +64,15 @@ void GJetsAnalyzer::Loop(){
 	string geo = "barrel";						// barrel or endcaps
 	bool SigBack = true;							// to avoid double counting for SIGNAL and BACKGROUND
 	bool TeP_corr = true;							// T&P correction
-	bool BackDataDriven_corr = false;	// background data-driven correction
+	bool BackDataDriven_corr = true;	// background data-driven correction
 
 	bool RandomCone = true;					  // Random Cone data-driven or MC signal template
-	bool inv_sigmaietaieta = true;		// inverted sigmaietaieta cut
+	bool inv_sigmaietaieta = false;		// inverted sigmaietaieta cut
 	bool inv_isolation = false;				// inverted isolation set cut
 		
 	bool plothistos = false;					// please select which plots to show
 	bool textfile = true;							// if you want a text report for each sample
-	Int_t itype = 9;									// it identifies histos with different analysis 
+	Int_t itype = 10;									// it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -1356,28 +1356,28 @@ void GJetsAnalyzer::Loop(){
 						bin_Pt19 = (photonPt->at(iPhoPos) > 649.8 && photonPt->at(iPhoPos) < 721.0);
 						bin_Pt20 = (photonPt->at(iPhoPos) > 721.0 && photonPt->at(iPhoPos) < 800.0);
 						bin_Pt21 = (photonPt->at(iPhoPos) > 800.0);
-																							
-						if (bin_Pt01) BackDataDriven_F = 0.;
-						else if (bin_Pt02) BackDataDriven_F = 0.;    
-						else if (bin_Pt03) BackDataDriven_F = 0.; 
-						else if (bin_Pt04) BackDataDriven_F = 0.; 
-						else if (bin_Pt05) BackDataDriven_F = 0.;
-						else if (bin_Pt06) BackDataDriven_F = 0.;
-						else if (bin_Pt07) BackDataDriven_F = 0.;
-						else if (bin_Pt08) BackDataDriven_F = 0.; 
-						else if (bin_Pt09) BackDataDriven_F = 0.; 
-						else if (bin_Pt10) BackDataDriven_F = 0.; 
-						else if (bin_Pt11) BackDataDriven_F = 0.; 
-						else if (bin_Pt12) BackDataDriven_F = 0.; 
-						else if (bin_Pt13) BackDataDriven_F = 0.; 
-						else if (bin_Pt14) BackDataDriven_F = 0.; 
-						else if (bin_Pt15) BackDataDriven_F = 0.; 
-						else if (bin_Pt16) BackDataDriven_F = 0.; 
-						else if (bin_Pt17) BackDataDriven_F = 0.; 
-						else if (bin_Pt18) BackDataDriven_F = 0.; 
-						else if (bin_Pt19) BackDataDriven_F = 0.; 
-						else if (bin_Pt20) BackDataDriven_F = 0.; 
-						else if (bin_Pt21) BackDataDriven_F = 0.; 
+
+						if (bin_Pt01) BackDataDriven_F = 1.;
+						else if (bin_Pt02) BackDataDriven_F = 1.;    
+						else if (bin_Pt03) BackDataDriven_F = 1.; 
+						else if (bin_Pt04) BackDataDriven_F = 1.; 
+						else if (bin_Pt05) BackDataDriven_F = 1.;
+						else if (bin_Pt06) BackDataDriven_F = 1.;
+						else if (bin_Pt07) BackDataDriven_F = 1.;
+						else if (bin_Pt08) BackDataDriven_F = 0.853177; 
+						else if (bin_Pt09) BackDataDriven_F = 0.861116; 
+						else if (bin_Pt10) BackDataDriven_F = 0.873858; 
+						else if (bin_Pt11) BackDataDriven_F = 0.883626; 
+						else if (bin_Pt12) BackDataDriven_F = 0.89251; 
+						else if (bin_Pt13) BackDataDriven_F = 0.898514; 
+						else if (bin_Pt14) BackDataDriven_F = 0.903025; 
+						else if (bin_Pt15) BackDataDriven_F = 0.892355; 
+						else if (bin_Pt16) BackDataDriven_F = 0.891028; 
+						else if (bin_Pt17) BackDataDriven_F = 0.887229; 
+						else if (bin_Pt18) BackDataDriven_F = 0.864745; 
+						else if (bin_Pt19) BackDataDriven_F = 0.924556; 
+						else if (bin_Pt20) BackDataDriven_F = 0.827373; 
+						else if (bin_Pt21) BackDataDriven_F = 0.847375; 
 						else BackDataDriven_F = 0.;
 					}
 				}

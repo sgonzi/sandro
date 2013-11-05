@@ -22,8 +22,8 @@ bool inv_sigmaietaieta(bool out) {
 
 void plotsCompare_01(){
 
-	comparestack("IDIsoPhotons_N_", "ID-Iso #N^{#gamma}", 1, -999, -999);
-	comparestack("SelectedPhotons_N_", "#N^{#gamma}", 1, -999, -999);
+	comparestack("IDIsoPhotons_N_", "ID-Iso N^{#gamma}", 1, -999, -999);
+	comparestack("SelectedPhotons_N_", "N^{#gamma}", 1, -999, -999);
 
 	comparestack("Nvtx_", "N^{vtx} ", 1, -999, -999);
 		
@@ -1096,9 +1096,9 @@ void plotsCompare_65(){
 
 
 void plotsCompare_66(){
-	comparestack("DeltaR_photon1_jet1_N0_", "#Delta R^{{{#gamma}_1}-{{jet}_1}} #geq 1", 20, 0, 6);
-	comparestack("DeltaEta_photon1_jet1_N0_","#Delta #eta^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 1", 10, 0, 5);
-	comparestack("DeltaPhi_photon1_jet1_N0_","#Delta #varphi^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 1", 10, 0, 3.1416);
+	comparestack("DeltaR_photon1_jet1_N0_", "#Delta R^{#gamma_{1}-jet_{1}} #geq 1", 20, 0, 6);
+	comparestack("DeltaEta_photon1_jet1_N0_","#Delta #eta^{#gamma_{1}-jet_{1}} - N^{jets} #geq 1", 10, 0, 5);
+	comparestack("DeltaPhi_photon1_jet1_N0_","#Delta #varphi^{#gamma_{1}-jet_{1}} - N^{jets} #geq 1", 10, 0, 3.1416);
 }
 
 
@@ -1182,11 +1182,11 @@ void plotsCompare_73(){
 }
 
 void plotsCompare_74(){
-	comparestack("DeltaPhi_photon1_jet1_N1_","#Delta #varphi^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 2", 10, 0, 3.1416);
-	comparestack("DeltaR_photon1_jet2_N1_", "#Delta R^{{{#gamma}_1}-{{jet}_2}} - N^{jets} #geq 2", 20, 0, 6);
-	comparestack("DeltaR_jet1_jet2_N1_","#Delta R^{{{jet}_1}}-{{jet}_2}} - N^{jets} #geq 2", 20, 0, 6);
-	comparestack("DeltaEta_jet1_jet2_N1_","#Delta #eta^{{{jet}_1}}-{{jet}_2}} - N^{jets} #geq 2", 10, 0, 5);
-	comparestack("DeltaPhi_jet1_jet2_N1_","#Delta #varphi^{{{jet}_1}}-{{jet}_2}} - N^{jets} #geq 2", 10, 0, 3.1416);
+	comparestack("DeltaPhi_photon1_jet1_N1_","#Delta #varphi^{#gamma_{1}-jet_{1}} - N^{jets} #geq 2", 10, 0, 3.1416);
+	comparestack("DeltaR_photon1_jet2_N1_", "#Delta R^{#gamma_{1}-jet_{2}} - N^{jets} #geq 2", 20, 0, 6);
+	comparestack("DeltaR_jet1_jet2_N1_","#Delta R^{jet_{1}-jet_{2}} - N^{jets} #geq 2", 20, 0, 6);
+	comparestack("DeltaEta_jet1_jet2_N1_","#Delta #eta^{jet_{1}-jet_{2}} - N^{jets} #geq 2", 10, 0, 5);
+	comparestack("DeltaPhi_jet1_jet2_N1_","#Delta #varphi^{jet_{1}-jet_{2}} - N^{jets} #geq 2", 10, 0, 3.1416);
 }
 
 
@@ -1199,15 +1199,14 @@ void plotsCompare_75(){
 
 
 void plotsCompare_76(){
-	comparestack("DeltaPhi_photon1_jet1_N2_","#Delta #varphi^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 3", 10, 0, 3.1416);
-	comparestack("DeltaPhi_photon1_jet2_N2_","#Delta #varphi^{{{#gamma}_1}-{{jet}_2}} - N^{jets} #geq 3", 10, 0, 3.1416);
-	comparestack("DeltaPhi_photon1_jet3_N2_","#Delta #varphi^{{{#gamma}_1}-{{jet}_3}} - N^{jets} #geq 3", 10, 0, 3.1416);
-	comparestack("DeltaR_photon1_jet3_N2_"  ,"#Delta R^{{{#gamma}_1}-{{jet}_3}} - N^{jets} #geq 3", 20, 0, 6);
-	comparestack("DeltaPhi_jet1_jet2_N2_","#Delta #varphi^{{{jet}_1}}-{{jet}_2}} - N^{jets} #geq 3", 10, 0, 3.1416);
-	comparestack("DeltaPhi_jet1_jet3_N2_","#Delta #varphi^{{{jet}_1}}-{{jet}_3}} - N^{jets} #geq 3", 10, 0, 3.1416);
-	comparestack("DeltaPhi_jet2_jet3_N2_","#Delta #varphi^{{{jet}_2}}-{{jet}_3}} - N^{jets} #geq 3", 10, 0, 3.1416);
+	comparestack("DeltaPhi_photon1_jet1_N2_","#Delta #varphi^{#gamma_{1}-jet_{1}} - N^{jets} #geq 3", 10, 0, 3.1416);
+	comparestack("DeltaPhi_photon1_jet2_N2_","#Delta #varphi^{#gamma_{1}-jet_{2}} - N^{jets} #geq 3", 10, 0, 3.1416);
+	comparestack("DeltaPhi_photon1_jet3_N2_","#Delta #varphi^{#gamma_{1}-jet_{3}} - N^{jets} #geq 3", 10, 0, 3.1416);
+	comparestack("DeltaR_photon1_jet3_N2_"  ,"#Delta R^{#gamma_{1}-jet_{3}} - N^{jets} #geq 3", 20, 0, 6);
+	comparestack("DeltaPhi_jet1_jet2_N2_","#Delta #varphi^{jet_{1}-jet_{2}} - N^{jets} #geq 3", 10, 0, 3.1416);
+	comparestack("DeltaPhi_jet1_jet3_N2_","#Delta #varphi^{jet_{1}-jet_{3}} - N^{jets} #geq 3", 10, 0, 3.1416);
+	comparestack("DeltaPhi_jet2_jet3_N2_","#Delta #varphi^{jet_{2}-jet_{3}} - N^{jets} #geq 3", 10, 0, 3.1416);
 }
-
 
 void plotsCompare_PrePostCuts_01(){
 	comparestack("gamma_Pt_1_precut1_","p_{T}^{#gamma_{1}} [GeV/#font[12]{c}] - pre cut 1", 1, -999, -999);
@@ -1237,7 +1236,7 @@ void plotsCompare_PrePostCuts_03(){
 	comparestack("gamma_Pt_1_preAcc_","p_{T}^{#gamma_{1}} [GeV/#font[12]{c}] - pre Acc cut", 1, -999, -999);
 	comparestack("gamma_Eta_1_preAcc_","#eta^{#gamma_{1}} - pre Acc cut", 1, -999, -999);
 	comparestack("gamma_Pt_1_postcut3_","p_{T}^{#gamma_{1}} [GeV/#font[12]{c}] - post cut 3", 1, -999, -999);
-	comparestack("jets_deltaR_1_predeltaR_","#Delta R^{{{#gamma}_1}-{{jet}_1}} - N^{jets} #geq 1 - pre #DeltaR cut", 1, -999, -999);
+	comparestack("jets_deltaR_1_predeltaR_","#Delta R^{#gamma_{1}-jet_{1}} - N^{jets} #geq 1 - pre #DeltaR cut", 1, -999, -999);
 	comparestack("jets_Pt_1_preAcc_","p_{T}^{jet_{1}} [GeV/#font[12]{c}]- pre Acc cut", 1, -999, -999);
 	comparestack("jets_Eta_1_preAcc_","#eta^{jet_{1}} - pre Acc cut", 1, -999, -999);
 	comparestack("gamma_Pt_1_postcut4_","p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]- post cut 4", 1, -999, -999);
@@ -1316,3 +1315,17 @@ void plotsCompare_TOT(){
 	plotsCompare_PrePostCuts_03();																							
 }
 
+
+void plotsCompare_Thesis(){
+	plotsCompare_01();
+	plotsCompare_03();	
+	plotsCompare_60();
+	plotsCompare_61();
+	plotsCompare_62();
+	plotsCompare_63();	
+	plotsCompare_64();
+	plotsCompare_65();
+	plotsCompare_66();		
+	plotsCompare_73();
+	plotsCompare_74();					
+}
