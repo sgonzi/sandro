@@ -64,7 +64,7 @@ void ZJetsAnalyzer::Loop(){
 		
 	bool plothistos = false;					// please select which plots to show
 	bool textfile = true;							// if you want a text report for each sample
-	Int_t itype = 16;									// it identifies histos with different analysis 
+	Int_t itype = 14;									// it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -90,7 +90,11 @@ void ZJetsAnalyzer::Loop(){
 	double FiltEff = 1.;
 	double kFac = 1.;
 	double nEvents = 1.;
+	double BRatio_mu = 1/(3.3658/100);
+	double BRatio_e = 1/(3.3658/100);
+	double BRatio_l = 1/(2*3.3658/100);
 
+	Float_t weight_old = 1; 
 	Float_t weight = 1; 
 
 	string geo_s = geo + "/";
@@ -110,9 +114,9 @@ void ZJetsAnalyzer::Loop(){
 		sample = "TEST";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		weight = 1.;
+		weight_old = 1.;
 		cout << "Running on " << sample << endl;
-		cout << "Weight is " << weight << endl;
+		cout << "Weight is " << weight_old << endl;
 	}
 
 	// MC signal DYJetsToLL_M-50 --------------------------------------------
@@ -124,13 +128,13 @@ void ZJetsAnalyzer::Loop(){
 		xsec = 3503.71; 
 		FiltEff = 1.;
 		kFac = 1.;
-		// weight = 1.; // temporary weight=1 for eff. calculation
-		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		// weight_old = 1.; // temporary weight=1 for eff. calculation
+		weight_old = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
 		cout << "Running on " << sample << endl;
-		cout << "Weight is " << weight << endl;
+		cout << "Weight is " << weight_old << endl;
 	}
 	
-	weight_r = weight;
+	weight_r = weight_old;
 	sample_r = sample;
 	// end numeric and definition side of the code
 
@@ -239,7 +243,7 @@ void ZJetsAnalyzer::Loop(){
 					if ((lepPtGEN->at(0) > 20. && TMath::Abs(lepEtaGEN->at(0)) < 2.4) && (lepPtGEN->at(1) > 20. && TMath::Abs(lepEtaGEN->at(1)) < 2.4)) {
 
 						// llM kinematic selection
-						if (TMath::Abs(llMGEN-91) < 20 && TMath::Abs(llEtaGEN) < 1.479) {
+						if (TMath::Abs(llMGEN-91) < 20 && llPtGEN > 30. && TMath::Abs(llEtaGEN) < 1.479) {
 
 							// kin JetsGEN (cleaned vs. 2 leptonGEN) selection
 							if (SelectedJetsGEN_N > 0){
@@ -248,7 +252,8 @@ void ZJetsAnalyzer::Loop(){
 								if (SelectedJetsGEN_HT > 0){
 
 									if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -169){
-									
+									  weight = BRatio_mu * weight_old;
+									  
 										nLeptonsGEN_mumu_N0_->Fill(nLeptonsGEN, weight);
 										
 										lepPtGEN_mumu_N0_1_->Fill(lepPtGEN->at(0), weight);
@@ -277,7 +282,8 @@ void ZJetsAnalyzer::Loop(){
 									}
 
 									if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -121){
-
+										weight = BRatio_e * weight_old;
+										
 										nLeptonsGEN_ee_N0_->Fill(nLeptonsGEN, weight);
 										
 										lepPtGEN_ee_N0_1_->Fill(lepPtGEN->at(0), weight);
@@ -304,6 +310,8 @@ void ZJetsAnalyzer::Loop(){
 								
 										SelectedJetsGEN_HT_ee_N0_->Fill(SelectedJetsGEN_HT, weight);
 									}
+
+								 	weight = BRatio_l * weight_old;
 
 									nLeptonsGEN_ll_N0_->Fill(nLeptonsGEN, weight);
 
@@ -333,41 +341,53 @@ void ZJetsAnalyzer::Loop(){
 
 									if (SelectedJetsGEN_N == 1){
 										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -169){
+											weight = BRatio_mu * weight_old;
 											llPtGEN_mumu_excl1_->Fill(llPtGEN, weight);
 										}		
 										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -121){
+											weight = BRatio_e * weight_old;									
 											llPtGEN_ee_excl1_->Fill(llPtGEN, weight);
-										}		
+										}
+									 	weight = BRatio_l * weight_old;												
 										llPtGEN_ll_excl1_->Fill(llPtGEN, weight);
 									}
 
 									if (SelectedJetsGEN_N == 2){
 										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -169){
+										  weight = BRatio_mu * weight_old;									
 											llPtGEN_mumu_excl2_->Fill(llPtGEN, weight);
 										}		
 										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -121){
+											weight = BRatio_e * weight_old;									
 											llPtGEN_ee_excl2_->Fill(llPtGEN, weight);
-										}		
+										}	
+									 	weight = BRatio_l * weight_old;																							
 										llPtGEN_ll_excl2_->Fill(llPtGEN, weight);
 									}
 
 									if (SelectedJetsGEN_N > 1){
 										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -169){
+										  weight = BRatio_mu * weight_old;									
 											llPtGEN_mumu_N1_->Fill(llPtGEN, weight);
 										}		
 										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -121){
+											weight = BRatio_e * weight_old;									
 											llPtGEN_ee_N1_->Fill(llPtGEN, weight);
 										}		
+									 	weight = BRatio_l * weight_old;												
 										llPtGEN_ll_N1_->Fill(llPtGEN, weight);
 									}
 
 									if (SelectedJetsGEN_N > 2){
 										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -169){
+										  weight = BRatio_mu * weight_old;									
 											llPtGEN_mumu_N2_->Fill(llPtGEN, weight);
 										}		
 										if (lepChIdGEN->at(0)*lepChIdGEN->at(1) == -121){
+											weight = BRatio_e * weight_old;									
 											llPtGEN_ee_N2_->Fill(llPtGEN, weight);
 										}		
+									 	weight = BRatio_l * weight_old;												
 										llPtGEN_ll_N2_->Fill(llPtGEN, weight);
 									}
 								} // end HTGEN selection

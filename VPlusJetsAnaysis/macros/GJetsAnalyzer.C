@@ -64,15 +64,15 @@ void GJetsAnalyzer::Loop(){
 	string geo = "barrel";						// barrel or endcaps
 	bool SigBack = true;							// to avoid double counting for SIGNAL and BACKGROUND
 	bool TeP_corr = true;							// T&P correction
-	bool BackDataDriven_corr = true;	// background data-driven correction
+	bool BackDataDriven_corr = false;	// background data-driven correction
 
 	bool RandomCone = true;					  // Random Cone data-driven or MC signal template
 	bool inv_sigmaietaieta = false;		// inverted sigmaietaieta cut
 	bool inv_isolation = false;				// inverted isolation set cut
 		
-	bool plothistos = false;					// please select which plots to show
+	bool plothistos = false;						// please select which plots to show
 	bool textfile = true;							// if you want a text report for each sample
-	Int_t itype = 10;									// it identifies histos with different analysis 
+	Int_t itype = 15;									// it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -951,7 +951,7 @@ void GJetsAnalyzer::Loop(){
 					// photonGEN kinematic selection
 					if (photonPtGEN > 207.1 && geo_selGEN) {
 					//if (photonPtGEN > 100. && geo_selGEN) {
-					// if (photonPtGEN > 0. && geo_selGEN) {          // for Z/gamma GEN ratio  
+					//if (photonPtGEN > 0. && geo_selGEN) {          // for Z/gamma GEN ratio  
 					
 						// kin JetsGEN (cleaned vs. photonGEN) selection
 						if (SelectedJetsGEN_N > 0){
@@ -963,6 +963,7 @@ void GJetsAnalyzer::Loop(){
 								nPhotonsGEN_N0_->Fill(nPhotonsGEN, weight_withPU);
 								
 								photonPtGEN_N0_->Fill(photonPtGEN, weight_withPU);
+								photonPtGEN_N0_LogBin_->Fill(photonPtGEN, weight_withPU);								
 								photonEGEN_N0_->Fill(photonEGEN, weight_withPU);
 								photonEtaGEN_N0_->Fill(photonEtaGEN, weight_withPU);
 								photonPhiGEN_N0_->Fill(photonPhiGEN, weight_withPU);
@@ -3280,14 +3281,18 @@ void GJetsAnalyzer::Book_Histos(){
 	cout << "Booking histograms... " << endl;
 	// book the histograms
 
-	const Int_t NBINS = 22;
-	Float_t edges[NBINS + 1] = {90.0, 100.0, 111.0, 123.1, 136.6, 151.6, 168.2, 186.6, 207.1, 229.7, 254.9, 282.8, 313.8, 348.2, 386.4, 428.7, 475.7, 527.8, 585.6, 649.8, 721.0, 800.0, 2000};
+//	const Int_t NBINS = 22;
+//	Float_t edges[NBINS + 1] = {90.0, 100.0, 111.0, 123.1, 136.6, 151.6, 168.2, 186.6, 207.1, 229.7, 254.9, 282.8, 313.8, 348.2, 386.4, 428.7, 475.7, 527.8, 585.6, 649.8, 721.0, 800.0, 2000};
+	const Int_t NBINS = 17;
+	Float_t edges[NBINS + 1] = {151.6, 168.2, 186.6, 207.1, 229.7, 254.9, 282.8, 313.8, 348.2, 386.4, 428.7, 475.7, 527.8, 585.6, 649.8, 721.0, 800.0, 2000};
+
 
 	if(isMC){
 	
 		//plotsCompare_gen_01
 		nPhotonsGEN_N0_ = new TH1F("nPhotonsGEN_N0_","Photons GEN N", 50, 0, 50);
 		photonPtGEN_N0_ = new TH1F("photonPtGEN_N0_","Photon GEN p_{T}", 800, 0., 4000.);
+		photonPtGEN_N0_LogBin_ = new TH1F("photonPtGEN_N0_LogBin_","Photon GEN p_{T}", NBINS, edges);		
 		photonEGEN_N0_ = new TH1F("photonEGEN_N0_","Photon GEN E", 800, 0., 4000.);
 		photonEtaGEN_N0_ = new TH1F("photonEtaGEN_N0_","Photon GEN #eta", 3000, -3, 3);
 		photonPhiGEN_N0_ = new TH1F("photonPhiGEN_N0_","Photon GEN #varphi", 1000, -3.1416, 3.1416);
@@ -4269,57 +4274,57 @@ void GJetsAnalyzer::Book_Histos(){
 	if(Sig) { 
 	
 		//plotsCompare_unf_01
-		unf_photonPtGEN_N0_ = new TH1F("unf_photonPtGEN_N0_","Photon GEN p_{T} - N^{jets} #geq 1", 800, 0., 4000.);
+		unf_photonPtGEN_N0_ = new TH1F("unf_photonPtGEN_N0_","Photon GEN p_{T} - N^{jets} #geq 1", NBINS, edges);	
 		unf_SelectedJetsGEN_N_N0_ = new TH1F("unf_SelectedJetsGEN_N_N0_","Selected Jets GEN N - N^{jets} #geq 1", 10, 0, 10);
 		unf_SelectedJetsGEN_HT_N0_ = new TH1F("unf_SelectedJetsGEN_HT_N0_","Selected Jets H_{T} GEN - N^{jets} #geq 1", 400, 0, 4000);
-		unf_SelectedPhotons_Pt_N0_1_ = new TH1F("unf_SelectedPhotons_Pt_N0_1_","Photon p_{T} - N^{jets} #geq 1", 800, 0., 4000.);
+		unf_SelectedPhotons_Pt_N0_1_ = new TH1F("unf_SelectedPhotons_Pt_N0_1_","Photon p_{T} - N^{jets} #geq 1", NBINS, edges);	
 		unf_SelectedJets_N_N0_ = new TH1F("unf_SelectedJets_N_N0_","Selected Jets N - N^{jets} #geq 1", 10, 0, 10);
 		unf_SelectedJets_HT_N0_ = new TH1F("unf_SelectedJets_HT_N0_","Selected Jets H_{T} - N^{jets} #geq 1", 400, 0, 4000);
-		TH2F_unf_GENREC_Photons_Pt_N0_ = new TH2F ("TH2F_unf_GENREC_Photons_Pt_N0_", "Photon p_{T} - N^{jets} #geq 1: REC vs GEN", 800, 0., 4000., 800, 0., 4000.);
+		TH2F_unf_GENREC_Photons_Pt_N0_ = new TH2F ("TH2F_unf_GENREC_Photons_Pt_N0_", "Photon p_{T} - N^{jets} #geq 1: REC vs GEN", NBINS, edges, NBINS, edges);	
 		TH2F_unf_GENREC_Jets_N_N0_ = new TH2F ("TH2F_unf_GENREC_Jets_N_N0_", "Selected Jets N - N^{jets} #geq 1: REC vs GEN", 10, 0, 10, 10, 0, 10);
 		TH2F_unf_GENREC_Jets_HT_N0_ = new TH2F ("TH2F_unf_GENREC_Jets_HT_N0_", "Selected Jets HT - N^{jets} #geq 1: REC vs GEN", 400, 0, 4000, 400, 0, 4000);
 
 		//plotsCompare_unf_02
-		unf_photonPtGEN_excl1_ = new TH1F("unf_photonPtGEN_excl1_","Photon GEN p_{T}, 1 jet exclusive", 800, 0., 4000.);
+		unf_photonPtGEN_excl1_ = new TH1F("unf_photonPtGEN_excl1_","Photon GEN p_{T}, 1 jet exclusive", NBINS, edges);	
 		unf_SelectedJetsGEN_N_excl1_ = new TH1F("unf_SelectedJetsGEN_N_excl1_","Selected Jets GEN N, 1 jet exclusive", 10, 0, 10);
 		unf_SelectedJetsGEN_HT_excl1_ = new TH1F("unf_SelectedJetsGEN_HT_excl1_","Selected Jets H_{T} GEN, 1 jet exclusive", 400, 0, 4000);
-		unf_SelectedPhotons_Pt_excl1_1_ = new TH1F("unf_SelectedPhotons_Pt_excl1_1_","Photon p_{T}, 1 jet exclusive", 800, 0., 4000.);
+		unf_SelectedPhotons_Pt_excl1_1_ = new TH1F("unf_SelectedPhotons_Pt_excl1_1_","Photon p_{T}, 1 jet exclusive", NBINS, edges);	
 		unf_SelectedJets_N_excl1_ = new TH1F("unf_SelectedJets_N_excl1_","Selected Jets N, 1 jet exclusive", 10, 0, 10);
 		unf_SelectedJets_HT_excl1_ = new TH1F("unf_SelectedJets_HT_excl1_","Selected Jets H_{T}, 1 jet exclusive", 400, 0, 4000);
-		TH2F_unf_GENREC_Photons_Pt_excl1_ = new TH2F ("TH2F_unf_GENREC_Photons_Pt_excl1_", "Photon p_{T} - 1 jet exclusive: REC vs GEN", 800, 0., 4000., 800, 0., 4000.);
+		TH2F_unf_GENREC_Photons_Pt_excl1_ = new TH2F ("TH2F_unf_GENREC_Photons_Pt_excl1_", "Photon p_{T} - 1 jet exclusive: REC vs GEN", NBINS, edges, NBINS, edges);	
 		TH2F_unf_GENREC_Jets_N_excl1_ = new TH2F ("TH2F_unf_GENREC_Jets_N_excl1_", "Selected Jets N - 1 jet exclusive: REC vs GEN", 10, 0, 10, 10, 0, 10);
 		TH2F_unf_GENREC_Jets_HT_excl1_ = new TH2F ("TH2F_unf_GENREC_Jets_HT_excl1_", "Selected Jets HT - 1 jet exclusive: REC vs GEN", 400, 0, 4000, 400, 0, 4000);
 
 		//plotsCompare_unf_03
-		unf_photonPtGEN_excl2_ = new TH1F("unf_photonPtGEN_excl2_","Photon GEN p_{T}, 2 jet exclusive", 800, 0., 4000.);
+		unf_photonPtGEN_excl2_ = new TH1F("unf_photonPtGEN_excl2_","Photon GEN p_{T}, 2 jet exclusive", NBINS, edges);	
 		unf_SelectedJetsGEN_N_excl2_ = new TH1F("unf_SelectedJetsGEN_N_excl2_","Selected Jets GEN N, 2 jet exclusive", 10, 0, 10);
 		unf_SelectedJetsGEN_HT_excl2_ = new TH1F("unf_SelectedJetsGEN_HT_excl2_","Selected Jets H_{T} GEN, 2 jet exclusive", 400, 0, 4000);
-		unf_SelectedPhotons_Pt_excl2_1_ = new TH1F("unf_SelectedPhotons_Pt_excl2_1_","Photon p_{T}, 2 jet exclusive", 800, 0., 4000.);
+		unf_SelectedPhotons_Pt_excl2_1_ = new TH1F("unf_SelectedPhotons_Pt_excl2_1_","Photon p_{T}, 2 jet exclusive", NBINS, edges);
 		unf_SelectedJets_N_excl2_ = new TH1F("unf_SelectedJets_N_excl2_","Selected Jets N, 2 jet exclusive", 10, 0, 10);
 		unf_SelectedJets_HT_excl2_ = new TH1F("unf_SelectedJets_HT_excl2_","Selected Jets H_{T}, 2 jet exclusive", 400, 0, 4000);
-		TH2F_unf_GENREC_Photons_Pt_excl2_ = new TH2F ("TH2F_unf_GENREC_Photons_Pt_excl2_", "Photon p_{T} - 2 jets exclusive: REC vs GEN", 800, 0., 4000., 800, 0., 4000.);
+		TH2F_unf_GENREC_Photons_Pt_excl2_ = new TH2F ("TH2F_unf_GENREC_Photons_Pt_excl2_", "Photon p_{T} - 2 jets exclusive: REC vs GEN", NBINS, edges, NBINS, edges);	
 		TH2F_unf_GENREC_Jets_N_excl2_ = new TH2F ("TH2F_unf_GENREC_Jets_N_excl2_", "Selected Jets N - 2 jets exclusive: REC vs GEN", 10, 0, 10, 10, 0, 10);
 		TH2F_unf_GENREC_Jets_HT_excl2_ = new TH2F ("TH2F_unf_GENREC_Jets_HT_excl2_", "Selected Jets HT - 2 jets exclusive: REC vs GEN", 400, 0, 4000, 400, 0, 4000);
 
 		//plotsCompare_unf_04
-		unf_photonPtGEN_N1_ = new TH1F("unf_photonPtGEN_N1_","Photon GEN p_{T} - N^{jets} #geq 2", 800, 0., 4000.);
+		unf_photonPtGEN_N1_ = new TH1F("unf_photonPtGEN_N1_","Photon GEN p_{T} - N^{jets} #geq 2", NBINS, edges);	
 		unf_SelectedJetsGEN_N_N1_ = new TH1F("unf_SelectedJetsGEN_N_N1_","Selected Jets GEN N - N^{jets} #geq 2", 10, 0, 10);
 		unf_SelectedJetsGEN_HT_N1_ = new TH1F("unf_SelectedJetsGEN_HT_N1_","Selected Jets H_{T} GEN - N^{jets} #geq 2", 400, 0, 4000);
-		unf_SelectedPhotons_Pt_N1_1_ = new TH1F("unf_SelectedPhotons_Pt_N1_1_","Photon p_{T} - N^{jets} #geq 2", 800, 0., 4000.);
+		unf_SelectedPhotons_Pt_N1_1_ = new TH1F("unf_SelectedPhotons_Pt_N1_1_","Photon p_{T} - N^{jets} #geq 2", NBINS, edges);	
 		unf_SelectedJets_N_N1_ = new TH1F("unf_SelectedJets_N_N1_","Selected Jets N - N^{jets} #geq 2", 10, 0, 10);
 		unf_SelectedJets_HT_N1_ = new TH1F("unf_SelectedJets_HT_N1_","Selected Jets H_{T} - N^{jets} #geq 2", 400, 0, 4000);
-		TH2F_unf_GENREC_Photons_Pt_N1_ = new TH2F ("TH2F_unf_GENREC_Photons_Pt_N1_", "Photon p_{T} - N^{jets} #geq 2: REC vs GEN", 800, 0., 4000., 800, 0., 4000.);
+		TH2F_unf_GENREC_Photons_Pt_N1_ = new TH2F ("TH2F_unf_GENREC_Photons_Pt_N1_", "Photon p_{T} - N^{jets} #geq 2: REC vs GEN", NBINS, edges, NBINS, edges);	
 		TH2F_unf_GENREC_Jets_N_N1_ = new TH2F ("TH2F_unf_GENREC_Jets_N_N1_", "Selected Jets N - N^{jets} #geq 2: REC vs GEN", 10, 0, 10, 10, 0, 10);
 		TH2F_unf_GENREC_Jets_HT_N1_ = new TH2F ("TH2F_unf_GENREC_Jets_HT_N1_", "Selected Jets HT - N^{jets} #geq 2: REC vs GEN", 400, 0, 4000, 400, 0, 4000);
 
 		//plotsCompare_unf_05
-		unf_photonPtGEN_N2_ = new TH1F("unf_photonPtGEN_N2_","Photon GEN p_{T} - N^{jets} #geq 3", 800, 0., 4000.);
+		unf_photonPtGEN_N2_ = new TH1F("unf_photonPtGEN_N2_","Photon GEN p_{T} - N^{jets} #geq 3", NBINS, edges);	
 		unf_SelectedJetsGEN_N_N2_ = new TH1F("unf_SelectedJetsGEN_N_N2_","Selected Jets GEN N - N^{jets} #geq 3", 10, 0, 10);
 		unf_SelectedJetsGEN_HT_N2_ = new TH1F("unf_SelectedJetsGEN_HT_N2_","Selected Jets H_{T} GEN - N^{jets} #geq 3", 400, 0, 4000);
-		unf_SelectedPhotons_Pt_N2_1_ = new TH1F("unf_SelectedPhotons_Pt_N2_1_","Photon p_{T} - N^{jets} #geq 3", 800, 0., 4000.);
+		unf_SelectedPhotons_Pt_N2_1_ = new TH1F("unf_SelectedPhotons_Pt_N2_1_","Photon p_{T} - N^{jets} #geq 3", NBINS, edges);	
 		unf_SelectedJets_N_N2_ = new TH1F("unf_SelectedJets_N_N2_","Selected Jets N - N^{jets} #geq 3", 10, 0, 10);
 		unf_SelectedJets_HT_N2_ = new TH1F("unf_SelectedJets_HT_N2_","Selected Jets H_{T} - N^{jets} #geq 3", 400, 0, 4000);
-		TH2F_unf_GENREC_Photons_Pt_N2_ = new TH2F ("TH2F_unf_GENREC_Photons_Pt_N2_", "Photon p_{T} - N^{jets} #geq 3: REC vs GEN", 800, 0., 4000., 800, 0., 4000.);
+		TH2F_unf_GENREC_Photons_Pt_N2_ = new TH2F ("TH2F_unf_GENREC_Photons_Pt_N2_", "Photon p_{T} - N^{jets} #geq 3: REC vs GEN", NBINS, edges, NBINS, edges);	
 		TH2F_unf_GENREC_Jets_N_N2_ = new TH2F ("TH2F_unf_GENREC_Jets_N_N2_", "Selected Jets N - N^{jets} #geq 3: REC vs GEN", 10, 0, 10, 10, 0, 10);
 		TH2F_unf_GENREC_Jets_HT_N2_ = new TH2F ("TH2F_unf_GENREC_Jets_HT_N2_", "Selected Jets HT - N^{jets} #geq 3: REC vs GEN", 400, 0, 4000, 400, 0, 4000);
 	}
@@ -4337,7 +4342,7 @@ void GJetsAnalyzer::Plot_Histos(){
 	// plot few histograms at the end, for check
 	cout << "Plots: quick check... " << endl;
 
-	bool plot_gen_01 = false; // GEN photon kinematics
+	bool plot_gen_01 = true; // GEN photon kinematics
 	bool plot_gen_02 = false; // GEN jets variables
 	bool plot_gen_03 = false; // GEN H_T
 	bool plot_gen_04 = false; // GEN photon kinematics vs. N GEN jets
@@ -4436,18 +4441,20 @@ void GJetsAnalyzer::Plot_Histos(){
 		if(plot_gen_01){
 			TCanvas *c_gen01 = new TCanvas("c_gen01", "GEN photon kinematics", 10, 10, 700, 700);
 			gPad->SetLogy();
-			c_gen01->Divide(3,2);
+			c_gen01->Divide(3,3);
 			c_gen01->cd(1);
 			nPhotonsGEN_N0_->Draw();
 			c_gen01->cd(2);
 			photonPtGEN_N0_->Draw();
 			c_gen01->cd(3);
-			photonEGEN_N0_->Draw();
+			photonPtGEN_N0_LogBin_->Draw();
 			c_gen01->cd(4);
-			photonEtaGEN_N0_->Draw();
+			photonEGEN_N0_->Draw();
 			c_gen01->cd(5);
-			photonPhiGEN_N0_->Draw();
+			photonEtaGEN_N0_->Draw();
 			c_gen01->cd(6);
+			photonPhiGEN_N0_->Draw();
+			c_gen01->cd(7);
 		}
 
 		if(plot_gen_02){

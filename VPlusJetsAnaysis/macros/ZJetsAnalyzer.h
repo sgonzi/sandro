@@ -507,7 +507,8 @@ ZJetsAnalyzer::ZJetsAnalyzer(TTree *tree, Int_t isample) {
 
 // MC signal DYJetsToLL_M-50 ----------------------------------------------  
 		else if (mysample == 91){
-			file_sample = "DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+//			file_sample = "DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball_Summer12_DR53X-PU_S10_START53_V7A-v1.root";
+			file_sample = "DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball_Summer12_DR53X-PU_RD1_START53_V7N-v1_AODSIM.root";
 			file_address_s = (folder_samples + file_sample).c_str();
 			const char * file_address = file_address_s.c_str();
 			TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject(file_address);
@@ -862,12 +863,12 @@ void ZJetsAnalyzer::Init(TTree *tree) {
   fChain->SetBranchAddress("lepChId", &lepChId, &b_lepChId);
   fChain->SetBranchAddress("lepR9orChi2ndof", &lepR9orChi2ndof, &b_lepR9orChi2ndof);
   fChain->SetBranchAddress("lepId", &lepId, &b_lepId);
-  fChain->SetBranchAddress("TriMatchF1Path_doubleMu", &TriMatchF1Path_doubleMu, b_TriMatchF1Path_doubleMu);
-  fChain->SetBranchAddress("TriMatchF2Path_doubleEle", &TriMatchF2Path_doubleEle, b_TriMatchF2Path_doubleEle);
-  fChain->SetBranchAddress("TriMatchF3Path_MuEle_muon", &TriMatchF3Path_MuEle_muon, b_TriMatchF3Path_MuEle_muon);
-  fChain->SetBranchAddress("TriMatchF3Path_MuEle_electron", &TriMatchF3Path_MuEle_electron, b_TriMatchF3Path_MuEle_electron);
-  fChain->SetBranchAddress("TriMatchF5Path_singleMu", &TriMatchF5Path_singleMu, b_TriMatchF5Path_singleMu);
-  fChain->SetBranchAddress("TriMatchF6Path_singleEle", &TriMatchF6Path_singleEle, b_TriMatchF6Path_singleEle);  
+  fChain->SetBranchAddress("TriMatchF1Path_doubleMu", &TriMatchF1Path_doubleMu, &b_TriMatchF1Path_doubleMu);
+  fChain->SetBranchAddress("TriMatchF2Path_doubleEle", &TriMatchF2Path_doubleEle, &b_TriMatchF2Path_doubleEle);
+  fChain->SetBranchAddress("TriMatchF3Path_MuEle_muon", &TriMatchF3Path_MuEle_muon, &b_TriMatchF3Path_MuEle_muon);
+  fChain->SetBranchAddress("TriMatchF3Path_MuEle_electron", &TriMatchF3Path_MuEle_electron, &b_TriMatchF3Path_MuEle_electron);
+  fChain->SetBranchAddress("TriMatchF5Path_singleMu", &TriMatchF5Path_singleMu, &b_TriMatchF5Path_singleMu);
+  fChain->SetBranchAddress("TriMatchF6Path_singleEle", &TriMatchF6Path_singleEle, &b_TriMatchF6Path_singleEle);  
   // ---- jet variables -------------------------------------------------
   fChain->SetBranchAddress("jetVeto", &jetVeto, &b_jetVeto);
   fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);

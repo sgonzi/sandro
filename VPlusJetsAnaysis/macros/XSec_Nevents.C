@@ -92,7 +92,7 @@ void XSec_Nevents(){
 	sprintf(QCD_HT_100To250_name,"samples/QCD_HT-100To250_TuneZ2star_8TeV-madgraph-pythia_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
 	sprintf(QCD_HT_250To500_name,"samples/QCD_HT-250To500_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
 	sprintf(QCD_HT_500To1000_name,"samples/QCD_HT-500To1000_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
-	sprintf(QCD_HT_1000ToInf_name,"samples/QCD_HT-1000ToInf_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_false.root");
+	sprintf(QCD_HT_1000ToInf_name,"samples/QCD_HT-1000ToInf_TuneZ2star_8TeV-madgraph-pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1.root");
 
 
 	TFile *GJets_HT_40To100_file = new TFile(GJets_HT_40To100_name);

@@ -194,6 +194,7 @@ Float_t phiTA,
 // histograms
 TH1F *nPhotonsGEN_N0_,
 		 *photonPtGEN_N0_,
+		 *photonPtGEN_N0_LogBin_,		 
 		 *photonEtaGEN_N0_,
 		 *photonPhiGEN_N0_,
 		 *photonEGEN_N0_,

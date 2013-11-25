@@ -156,7 +156,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 
 	// ==================================== choose the tools
 
-	string folder = "12_results_2013_11_02"; // analysis folder
+	string folder = "09_results_2013_11_02"; // analysis folder
 
 	char geo[100] = "barrel";                // "barrel", "endcaps" or "total"
 
@@ -170,7 +170,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 
-	Int_t itype = 12;                        // it identifies histos with different analysis 
+	Int_t itype = 9;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names
@@ -819,21 +819,23 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 
 	gPad->SetLogz();
 
-	TLegend *leg =new TLegend(0.1778,0.5478,0.5151,0.7480);
+	TLegend *leg; 
+	if (!inv_sigmaietaieta) leg = new TLegend(0.1778,0.5478,0.5151,0.7480);
+	else leg = new TLegend(0.4161,0.5478,0.7534,0.7480);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
 	if(signal_MAD){
-		leg->AddEntry(SIG_histo,"#splitline{SIGNAL:}{#gamma + jets and 2#gamma + jets (#font[32]{MAD})}","f");
+		leg->AddEntry(SIG_histo,"#splitline{SIGNAL:}{#gamma + jets and 2#gamma + jets}","f");
 	}
 	else{
-		leg->AddEntry(SIG_histo,"#splitline{SIGNAL:}{#gamma + jets (#font[32]{PYT}) and 2#gamma + jets (#font[32]{MAD})}","f");
+		leg->AddEntry(SIG_histo,"#splitline{SIGNAL:}{#gamma + jets and 2#gamma + jets}","f");
 	}
 	if (!background_QCD){
-		leg->AddEntry(BACK_histo, "#splitline{BACKGROUND:}{QCD EM Enriched and QCD b,c #rightarrow e (#font[32]{PYT})}","f");
+		leg->AddEntry(BACK_histo, "#splitline{BACKGROUND:}{QCD EM Enriched and QCD b,c #rightarrow e}","f");
 	}
 	else {
-		leg->AddEntry(BACK_histo, "#splitline{BACKGROUND:}{QCD (#font[32]{MAD})}","f");
+		leg->AddEntry(BACK_histo, "#splitline{BACKGROUND:}{QCD}","f");
 	}
 	leg->Draw();
 

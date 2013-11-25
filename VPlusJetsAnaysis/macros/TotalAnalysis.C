@@ -272,3 +272,11 @@ void BackgroundExtracted_Analysis(){
 
 	TotalAnalysis_DiPhotonJets();
 }
+
+
+void GENAnalysis(){
+
+	TotalAnalysis_GJets_HT_xToy();
+	TotalAnalysis_DiPhotonJets();
+}
+

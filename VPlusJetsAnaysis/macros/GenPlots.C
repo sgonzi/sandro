@@ -1000,6 +1000,7 @@ void GenPlots_01(){
 	GenPlots("nPhotonsGEN_N0_","Photons GEN N", 1, 0, 10);
 //	GenPlots("photonPtGEN_N0_","Photon GEN p_{T}", 2, 0, 2000);
 	GenPlots("photonPtGEN_N0_","Photon GEN p_{T}", 2, 0, 1000);
+	GenPlots("photonPtGEN_N0_LogBin_", "Photon GEN p_{T}", 1, -999, -999);	
 	GenPlots("photonEGEN_N0_","Photon GEN E", 4, 0, 2000);
 	GenPlots("photonEtaGEN_N0_","Photon GEN #eta", 30, -1.5, 1.5);
 	GenPlots("photonPhiGEN_N0_","Photon GEN #varphi", 20, -999, -999);
