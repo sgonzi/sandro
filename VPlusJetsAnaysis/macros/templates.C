@@ -144,7 +144,7 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	
 	// ==================================== choose the tools
 	
-	string folder = "12_results_2013_11_02"; // analysis folder
+	string folder = "SysSieie_02_results_2013_11_30"; // analysis folder
 	
 	char geo[100] = "barrel";               // "barrel", "endcaps" or "total"
 
@@ -157,7 +157,10 @@ void templates(const char* titleh, const char* namevariable, const int rebin, co
 	bool signal_MAD = true;                 // true: signal = MADGRAPH; false: signal = PYTHIA
 	bool background_QCD = false;            // true: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 	                                        // false: background = MADGRAPH not filtered (QCD HT)
-	Int_t itype = 12;                        // it identifies histos with different analysis 
+	Int_t itype = 2;                        // it identifies histos with different analysis 
+
+
+	// ==================================== definitions
 
 	std::vector <string> sample_NORMAL;
 	sample_NORMAL.push_back("MC_SIG");
@@ -1561,6 +1564,9 @@ void templates_PfIso_RhoCorrected_forFit_20binPt() {
 	templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin27_big_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 4, -10, 40);
 }
 
+
+// for Thesis
+
 void templates_IsoFPRPhoton_RhoCorrected_forFit_20binPt() {
 	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 111 [GeV/#font[12]{c}]", 1, -10, 10);
 	templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 111 < p_{T}^{#gamma_{1}} < 123.1 [GeV/#font[12]{c}]", 1, -10, 10);
@@ -1632,6 +1638,13 @@ void templates_Total() {
 	templates_PfIsoNeutralHad_RhoCorrected_forFit_20binPt();
 	templates_PfIsoPhoton_RhoCorrected_forFit_20binPt();
 	templates_PfIso_RhoCorrected_forFit_20binPt();
+	templates_IsoFPRPhoton_RhoCorrected_forFit_20binPt();
+	templates_IsoFPRRandomConePhoton_RhoCorrected_forFit_20binPt();
+}
+
+
+void templates_Thesis() {
+	templates_PfIsoPhoton_RhoCorrected_forFit_20binPt();
 	templates_IsoFPRPhoton_RhoCorrected_forFit_20binPt();
 	templates_IsoFPRRandomConePhoton_RhoCorrected_forFit_20binPt();
 }

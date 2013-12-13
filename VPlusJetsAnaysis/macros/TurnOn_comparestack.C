@@ -1347,7 +1347,7 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const f
 	
 	MC_total_histo->Draw("histo");
 */
-
+	DATA_total_histo->GetYaxis()->SetRangeUser(-0.1,1.2);
 
 	if (x_min != -999 && x_max != -999){
 		if (x_max == DATA_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
@@ -1384,7 +1384,7 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const f
 	DATA_total_histo->GetXaxis()->SetTitleSize(0.05);
 	DATA_total_histo->GetYaxis()->SetTitle("Turn-On Ratio");
 
-	TLegend *leg =new TLegend(0.6525,0.7134,0.8119,0.8589);
+	TLegend *leg =new TLegend(0.1610,0.7134,0.3204,0.8589);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
@@ -1410,6 +1410,7 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const f
   text_2->SetTextAlign(11);
   text_2->Draw();
 
+/*
 	TLine *line_99e9 = new TLine(xbox_min,0.999,xbox_max,0.999);
   line_99e9->SetLineColor(kBlue);
   line_99e9->Draw();
@@ -1421,7 +1422,7 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const f
   TLine *line_95 = new TLine(xbox_min,0.95,xbox_max,0.95);
   line_95->SetLineColor(kViolet);
   line_95->Draw();
-
+*/
 	
 	// lower Pad
 	lowerPad-> cd();
@@ -1468,7 +1469,7 @@ void TurnOn_comparestack(const char* titleh_NUM, const char* titleh_DEN, const f
 	ratio_histo->GetYaxis()->SetTitleOffset(0.6);
 	ratio_histo->GetYaxis()->SetLabelSize(0.1);
 	ratio_histo->GetXaxis()->SetLabelSize(0.1);
-	ratio_histo->GetYaxis()->SetRangeUser(0.75,1.25);
+	ratio_histo->GetYaxis()->SetRangeUser(0.,2.);
 	ratio_histo->GetYaxis()->SetNdivisions(505, "kTRUE");
 	ratio_histo->SetMarkerStyle(20);
 	ratio_histo->SetMarkerColor(kBlue);
@@ -1606,16 +1607,16 @@ void TurnOn_plots_prova2(){
 //	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1_", "SelectedPhotons_Pt_1_D1_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
 //	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2_", "SelectedPhotons_Pt_1_D1_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
 //	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4_", "SelectedPhotons_Pt_1_D8_", 0, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_8_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_8_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 120, 220);
 //	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_16_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_32_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_32_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 80);
 //	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_64_", "SelectedPhotons_Pt_1_D8_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_128_", "SelectedPhotons_Pt_1_D32_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_128_", "SelectedPhotons_Pt_1_D32_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 40, 120);
 //	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_256_", "SelectedPhotons_Pt_1_D32_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_512_", "SelectedPhotons_Pt_1_D128_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1024_", "SelectedPhotons_Pt_1_D128_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2048_", "SelectedPhotons_Pt_1_D512_", 1.43, 1,"p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);
-	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4096_", "SelectedPhotons_Pt_1_D2048_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 30, 200);	
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_512_", "SelectedPhotons_Pt_1_D128_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 60, 140);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_1024_", "SelectedPhotons_Pt_1_D128_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 60, 140);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_2048_", "SelectedPhotons_Pt_1_D512_", 1.43, 1,"p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 100, 180);
+	TurnOn_comparestack("SelectedPhotons_Pt_1_sel_4096_", "SelectedPhotons_Pt_1_D2048_", 1, 1, "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1, 120, 220);	
 }	
 
 //TH1* h1 = new TH1F("h1", "h1", 9, -0.5, +8.5);

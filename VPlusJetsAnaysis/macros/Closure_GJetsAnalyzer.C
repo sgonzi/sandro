@@ -1,6 +1,6 @@
-#define GJetsAnalyzer_cxx
-#include "GJetsAnalyzer.h"
-#include "GJetsDefs.h"
+#define Closure_GJetsAnalyzer_cxx
+#include "Closure_GJetsAnalyzer.h"
+#include "Closure_GJetsDefs.h"
 #include <algorithm>
 #include <vector>
 #include <string>
@@ -29,8 +29,8 @@ using namespace std;
 //#endif
 
 //		In a ROOT session, you can do:
-//			Root > .L GJetsAnalyzer.C++
-//			Root > GJetsAnalyzer t(0,4); // Load the analysis on the sample number 4 
+//			Root > .L Closure_GJetsAnalyzer.C++
+//			Root > Closure_GJetsAnalyzer t(0,4); // Load the analysis on the sample number 4 
 //			Root > t.GetEntry(12);	     // Fill t data members with entry number 12
 //			Root > t.Show();				     // Show values of entry 12
 //			Root > t.Show(16);			     // Read and show values of entry 16
@@ -53,18 +53,18 @@ using namespace std;
 //				by b_branchname->GetEntry(ientry);			// read only this branch
 
 
-void GJetsAnalyzer::Loop(){
+void Closure_GJetsAnalyzer::Loop(){
 
 
 	// ==================================== choose the tools
 	
 	bool RedAn = false;								// analysis with a reduced entries number for tests
 
-	bool data_ReReco = true;					// analysis with data ReReco or data PromptReco
+	bool data_ReReco = false;					// analysis with data ReReco or data PromptReco
 	string geo = "barrel";						// barrel or endcaps
 	bool SigBack = true;							// to avoid double counting for SIGNAL and BACKGROUND
 	bool TeP_corr = true;							// T&P correction
-	bool BackDataDriven_corr = false;	// background data-driven correction
+	bool BackDataDriven_corr = true;	// background data-driven correction
 
 	bool RandomCone = true;					  // Random Cone data-driven or MC signal template
 	bool inv_sigmaietaieta = false;		// inverted sigmaietaieta cut
@@ -72,8 +72,7 @@ void GJetsAnalyzer::Loop(){
 		
 	bool plothistos = false;						// please select which plots to show
 	bool textfile = false;							// if you want a text report for each sample
-	Int_t itype = 2;									// it identifies histos with different analysis 
-
+	Int_t itype = 22;									// it identifies histos with different analysis 
 
 	// choose the sample:
 	// -----------------------------------------------------
@@ -130,6 +129,27 @@ void GJetsAnalyzer::Loop(){
 	// mysample == 83  -> QCD 500<HT<1000
 	// mysample == 84  -> QCD 1000<HT<Inf
 	// -----------------------------------------------------
+	// mysample == 121  -> PSEUDODATA GJets 40<HT<100
+	// mysample == 122  -> PSEUDODATA Gjets 100<HT<200
+	// mysample == 123  -> PSEUDODATA GJets 200<HT<400
+	// mysample == 124  -> PSEUDODATA Gjets 400<HT<Inf
+	// -----------------------------------------------------
+	// mysample == 151  -> PSEUDODATA DiPhotonJets
+	// -----------------------------------------------------
+	// mysample == 161  -> PSEUDODATA QCD EMEnriched 20<Pt<30
+	// mysample == 162  -> PSEUDODATA QCD EMEnriched 30<Pt<80
+	// mysample == 163  -> PSEUDODATA QCD EMEnriched 80<Pt<170
+	// mysample == 164  -> PSEUDODATA QCD EMEnriched 170<Pt<250
+	// mysample == 165  -> PSEUDODATA QCD EMEnriched 250<Pt<350
+	// mysample == 166  -> PSEUDODATA QCD EMEnriched 350<Pt<Inf
+	// -----------------------------------------------------  
+	// mysample == 171  -> PSEUDODATA QCD BCtoE 20<Pt<30
+	// mysample == 172  -> PSEUDODATA QCD BCtoE 30<Pt<80
+	// mysample == 173  -> PSEUDODATA QCD BCtoE 80<Pt<170
+	// mysample == 174  -> PSEUDODATA QCD BCtoE 170<Pt<250
+	// mysample == 175  -> PSEUDODATA QCD BCtoE 250<Pt<350
+	// mysample == 176  -> PSEUDODATA QCD BCtoE 350<Pt<Inf
+	// -----------------------------------------------------
 
 
 	// ==================================== exception controls
@@ -148,7 +168,7 @@ void GJetsAnalyzer::Loop(){
 	
 	double Lumi_t;
 	if (data_ReReco) Lumi_t = 19712.; // /pb
-	else Lumi_t = 19027.853; // /pb
+	else Lumi_t = 19712.; // /pb
 	double xsec = 1.;
 	double FiltEff = 1.;
 	double kFac = 1.;
@@ -311,12 +331,13 @@ void GJetsAnalyzer::Loop(){
 		cout<<"Integrated luminosity is "<< Lumi_t << " /pb" << endl;
 	}
 
+
 	// MC signal GJets_HT-xToy ----------------------------------------------
 	else if (mysample == 21){ 
 		sample = "MC_GJets_HT-40To100";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 19857930.;
+		nEvents = 19857930./2;
 		xsec = 20930.;
 		FiltEff = 1.;
 		kFac = 1.;
@@ -330,7 +351,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_GJets_HT-100To200";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 9612703;
+		nEvents = 9612703/2;
 		xsec = 5325.77; 
 		FiltEff = 1.;
 		kFac = 1.;
@@ -344,7 +365,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_GJets_HT-200To400";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 58627147;
+		nEvents = 58627147/2;
 		xsec = 1008.03;
 		FiltEff = 1.;
 		kFac = 1.;
@@ -358,7 +379,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_GJets_HT-400ToInf";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 42391678;
+		nEvents = 42391678/2;
 		xsec = 105.418;
 		FiltEff = 1.;
 		kFac = 1.;
@@ -528,7 +549,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_DiPhotonJets";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 1156284;
+		nEvents = 1156284/2;
 		xsec = 75.39;
 		FiltEff = 1;
 		kFac = 1.;
@@ -543,7 +564,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_20_30_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 34940695;
+		nEvents = 34940695/2;
 		xsec = 2.88651E8; 
 		FiltEff = 0.0101;
 		kFac = 1.;
@@ -557,7 +578,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_30_80_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 33088888;
+		nEvents = 33088888/2;
 		xsec = 7.43031E7; 
 		FiltEff = 0.0621;
 		kFac = 1.;
@@ -571,7 +592,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_80_170_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 34542763;
+		nEvents = 34542763/2;
 		xsec = 1.19391E6; 
 		FiltEff = 0.1539;
 		kFac = 1.;
@@ -585,7 +606,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_170_250_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 31697066;
+		nEvents = 31697066/2;
 		xsec = 30980.0; 
 		FiltEff = 0.148;
 		kFac = 1.;
@@ -599,7 +620,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_250_350_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 34511322;
+		nEvents = 34511322/2;
 		xsec = 4245.29; 
 		FiltEff = 0.131;
 		kFac = 1.;
@@ -613,7 +634,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_350_EMEnriched";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 34030562;
+		nEvents = 34030562/2;
 		xsec = 810.454;
 		FiltEff = 0.11;
 		kFac = 1.;
@@ -628,7 +649,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_20_30_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 1740229;
+		nEvents = 1740229/2;
 		xsec = 2.886E8;
 		FiltEff = 5.8E-4;
 		kFac = 1.;
@@ -642,7 +663,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_30_80_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 2048152;
+		nEvents = 2048152/2;
 		xsec = 7.424E7;
 		FiltEff = 0.00225;
 		kFac = 1.;
@@ -656,7 +677,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_80_170_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 1945525;
+		nEvents = 1945525/2;
 		xsec = 1191000.0;
 		FiltEff = 0.0109;
 		kFac = 1.;
@@ -670,7 +691,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_170_250_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 1948112;
+		nEvents = 1948112/2;
 		xsec = 30980.0; 
 		FiltEff = 0.0204;
 		kFac = 1.;
@@ -684,7 +705,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_250_350_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 2026521;
+		nEvents = 2026521/2;
 		xsec = 4250.0;
 		FiltEff = 0.0243;
 		kFac = 1.;
@@ -698,7 +719,7 @@ void GJetsAnalyzer::Loop(){
 		sample = "MC_QCD_Pt_350_BCtoE";
 		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
 		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
-		nEvents = 1948532;
+		nEvents = 1948532/2;
 		xsec = 811.0;
 		FiltEff = 0.0295;
 		kFac = 1.;
@@ -765,6 +786,250 @@ void GJetsAnalyzer::Loop(){
 		cout << "Running on " << sample << endl;
 		cout << "Weight is " << weight << endl;
 	}
+
+
+//PSEUDODATA: MC signal GJets_HT-xToy ----------------------------------------------
+	else if (mysample == 121){ 
+		sample = "PSEUDODATA_MC_GJets_HT-40To100";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 19857930./2;
+		xsec = 20930.;
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 122){ 
+		sample = "PSEUDODATA_MC_GJets_HT-100To200";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 9612703/2;
+		xsec = 5325.77; 
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 123){ 
+		sample = "PSEUDODATA_MC_GJets_HT-200To400";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 58627147/2;
+		xsec = 1008.03;
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 124){
+		sample = "PSEUDODATA_MC_GJets_HT-400ToInf";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 42391678/2;
+		xsec = 105.418;
+		FiltEff = 1.;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+//PSEUDODATA: MC signal DiPhotonJets -----------------------------------------------
+	else if (mysample == 151){
+		sample = "PSEUDODATA_MC_DiPhotonJets";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype); 
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1156284/2;
+		xsec = 75.39;
+		FiltEff = 1;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+//PSEUDODATA: MC background QCD_Pt_x_y EMEnriched ----------------------------------
+	else if (mysample == 161){
+		sample = "PSEUDODATA_MC_QCD_Pt_20_30_EMEnriched";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 34940695/2;
+		xsec = 2.88651E8; 
+		FiltEff = 0.0101;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 162){
+		sample = "PSEUDODATA_MC_QCD_Pt_30_80_EMEnriched";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 33088888/2;
+		xsec = 7.43031E7; 
+		FiltEff = 0.0621;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 163){
+		sample = "PSEUDODATA_MC_QCD_Pt_80_170_EMEnriched";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 34542763/2;
+		xsec = 1.19391E6; 
+		FiltEff = 0.1539;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 164){
+		sample = "PSEUDODATA_MC_QCD_Pt_170_250_EMEnriched";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 31697066/2;
+		xsec = 30980.0; 
+		FiltEff = 0.148;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 165){
+		sample = "PSEUDODATA_MC_QCD_Pt_250_350_EMEnriched";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 34511322/2;
+		xsec = 4245.29; 
+		FiltEff = 0.131;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 166){
+		sample = "PSEUDODATA_MC_QCD_Pt_350_EMEnriched";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 34030562/2;
+		xsec = 810.454;
+		FiltEff = 0.11;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+//PSEUDODATA: MC background QCD_Pt_x_y BCtoE ---------------------------------------
+	else if (mysample == 171){
+		sample = "PSEUDODATA_MC_QCD_Pt_20_30_BCtoE";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1740229/2;
+		xsec = 2.886E8;
+		FiltEff = 5.8E-4;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 172){
+		sample = "PSEUDODATA_MC_QCD_Pt_30_80_BCtoE";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 2048152/2;
+		xsec = 7.424E7;
+		FiltEff = 0.00225;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 173){
+		sample = "PSEUDODATA_MC_QCD_Pt_80_170_BCtoE";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1945525/2;
+		xsec = 1191000.0;
+		FiltEff = 0.0109;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 174){
+		sample = "PSEUDODATA_MC_QCD_Pt_170_250_BCtoE";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1948112/2;
+		xsec = 30980.0; 
+		FiltEff = 0.0204;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 175){
+		sample = "PSEUDODATA_MC_QCD_Pt_250_350_BCtoE";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 2026521/2;
+		xsec = 4250.0;
+		FiltEff = 0.0243;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
+	else if (mysample == 176){
+		sample = "PSEUDODATA_MC_QCD_Pt_350_BCtoE";
+		sprintf(outputname, (geo_s+out_files+sample+histos+geo+root).c_str(), itype);
+		sprintf(textname, (geo_s+out_files+sample+report+geo+txt).c_str(), itype);
+		nEvents = 1948532/2;
+		xsec = 811.0;
+		FiltEff = 0.0295;
+		kFac = 1.;
+		// weight = 1.; // temporary weight=1 for eff. calculation
+		weight = Lumi_t /(nEvents/(xsec*FiltEff*kFac));
+		cout << "Running on " << sample << endl;
+		cout << "Weight is " << weight << endl;
+	}
+
 	
 	weight_r = weight;
 	sample_r = sample;
@@ -786,9 +1051,20 @@ void GJetsAnalyzer::Loop(){
 
 	// ==================================== loop on entries
 	
+	int k = 0;
+	if (mysample == 121 || mysample == 122 || mysample == 123 || mysample == 124 || 
+	    mysample == 151 || 
+	    mysample == 161 || mysample == 162 || mysample == 163 || mysample == 164 || mysample == 165 || mysample == 166 || 
+ 	    mysample == 171 || mysample == 172 || mysample == 173 || mysample == 174 || mysample == 175 || mysample == 176) k=1;
+	else if (mysample == 21 || mysample == 22 || mysample == 23 || mysample == 24 || 
+	         mysample == 51 || 
+	         mysample == 61 || mysample == 62 || mysample == 63 || mysample == 64 || mysample == 65 || mysample == 66 || 
+ 	         mysample == 71 || mysample == 72 || mysample == 73 || mysample == 74 || mysample == 75 || mysample == 76) k=2;
+	else k=3;	
+	
 	Long64_t nentries;
 	if(RedAn){
-		nentries = 1000000; // analysis with a reduced entries number
+		nentries = 10000; // analysis with a reduced entries number
 	}
 	else{
 		nentries = fChain->GetEntriesFast();
@@ -799,6 +1075,16 @@ void GJetsAnalyzer::Loop(){
 
 	Long64_t nbytes = 0, nb = 0;
 	for (Long64_t jentry = 0; jentry < nentries; jentry++) {
+
+//--
+		bool z=0;
+		if (jentry%2==0) z=1;
+		else z=0;
+
+		if ( (k==1 && z) || (k==2 && !z) || k==3 ){ 		
+
+//--
+
 		Long64_t ientry = LoadTree(jentry);
 		if (ientry < 0) break;
 		nb = fChain->GetEntry(jentry);
@@ -808,15 +1094,24 @@ void GJetsAnalyzer::Loop(){
 		if(jentry%100000 == 0) cout << jentry << endl;
 		Zero_Variables();
 
+//--
 
+//--
+				
 		// ==================================== weight
-		
-		if (isMC && !isTEST) {
-			weight_withPU = PUWeight*Lumi_t/1000.; // MC
+
+/*
+		if (k==1) {
+			weight_withPU = weight; // data & Test
+		}
+*/		
+		if (k==1 || k==2) {
+			weight_withPU = 2 * PUWeight*Lumi_t/1000.; // psudodata or MC
 		}
 		else {
-			weight_withPU = 1.; // data & Test
+			weight_withPU = PUWeight*Lumi_t/1000.; // MC
 		}
+		
 		weight_withPU_r = weight_withPU;
 
 		// ==================================== unfolding
@@ -1358,7 +1653,7 @@ void GJetsAnalyzer::Loop(){
 						bin_Pt19 = (photonPt->at(iPhoPos) > 649.8 && photonPt->at(iPhoPos) < 721.0);
 						bin_Pt20 = (photonPt->at(iPhoPos) > 721.0 && photonPt->at(iPhoPos) < 800.0);
 						bin_Pt21 = (photonPt->at(iPhoPos) > 800.0);
-/*
+
 						if (bin_Pt01) BackDataDriven_F = 1.;
 						else if (bin_Pt02) BackDataDriven_F = 1.;    
 						else if (bin_Pt03) BackDataDriven_F = 1.; 
@@ -1366,43 +1661,20 @@ void GJetsAnalyzer::Loop(){
 						else if (bin_Pt05) BackDataDriven_F = 1.;
 						else if (bin_Pt06) BackDataDriven_F = 1.;
 						else if (bin_Pt07) BackDataDriven_F = 1.;
-						else if (bin_Pt08) BackDataDriven_F = 0.853177; 
-						else if (bin_Pt09) BackDataDriven_F = 0.861116; 
-						else if (bin_Pt10) BackDataDriven_F = 0.873858; 
-						else if (bin_Pt11) BackDataDriven_F = 0.883626; 
-						else if (bin_Pt12) BackDataDriven_F = 0.89251; 
-						else if (bin_Pt13) BackDataDriven_F = 0.898514; 
-						else if (bin_Pt14) BackDataDriven_F = 0.903025; 
-						else if (bin_Pt15) BackDataDriven_F = 0.892355; 
-						else if (bin_Pt16) BackDataDriven_F = 0.891028; 
-						else if (bin_Pt17) BackDataDriven_F = 0.887229; 
-						else if (bin_Pt18) BackDataDriven_F = 0.864745; 
-						else if (bin_Pt19) BackDataDriven_F = 0.924556; 
-						else if (bin_Pt20) BackDataDriven_F = 0.827373; 
-						else if (bin_Pt21) BackDataDriven_F = 0.847375; 
-						else BackDataDriven_F = 0.;
-*/
-						if (bin_Pt01) BackDataDriven_F = 1.;
-						else if (bin_Pt02) BackDataDriven_F = 1.;    
-						else if (bin_Pt03) BackDataDriven_F = 1.; 
-						else if (bin_Pt04) BackDataDriven_F = 1.; 
-						else if (bin_Pt05) BackDataDriven_F = 1.;
-						else if (bin_Pt06) BackDataDriven_F = 1.;
-						else if (bin_Pt07) BackDataDriven_F = 1.;
-						else if (bin_Pt08) BackDataDriven_F = 0.865846; 
-						else if (bin_Pt09) BackDataDriven_F = 0.869041; 
-						else if (bin_Pt10) BackDataDriven_F = 0.88305; 
-						else if (bin_Pt11) BackDataDriven_F = 0.881185; 
-						else if (bin_Pt12) BackDataDriven_F = 0.901306; 
-						else if (bin_Pt13) BackDataDriven_F = 0.906964; 
-						else if (bin_Pt14) BackDataDriven_F = 0.908609; 
-						else if (bin_Pt15) BackDataDriven_F = 0.900396; 
-						else if (bin_Pt16) BackDataDriven_F = 0.864587; 
-						else if (bin_Pt17) BackDataDriven_F = 0.873658; 
-						else if (bin_Pt18) BackDataDriven_F = 0.835805; 
-						else if (bin_Pt19) BackDataDriven_F = 0.90243; 
-						else if (bin_Pt20) BackDataDriven_F = 0.905206; 
-						else if (bin_Pt21) BackDataDriven_F = 0.800232; 
+						else if (bin_Pt08) BackDataDriven_F = 0.859412; 
+						else if (bin_Pt09) BackDataDriven_F = 0.881956; 
+						else if (bin_Pt10) BackDataDriven_F = 0.886987; 
+						else if (bin_Pt11) BackDataDriven_F = 0.906119; 
+						else if (bin_Pt12) BackDataDriven_F = 0.915571; 
+						else if (bin_Pt13) BackDataDriven_F = 0.921857; 
+						else if (bin_Pt14) BackDataDriven_F = 0.927835; 
+						else if (bin_Pt15) BackDataDriven_F = 0.936643; 
+						else if (bin_Pt16) BackDataDriven_F = 0.943026; 
+						else if (bin_Pt17) BackDataDriven_F = 0.941375; 
+						else if (bin_Pt18) BackDataDriven_F = 0.942783; 
+						else if (bin_Pt19) BackDataDriven_F = 0.955375; 
+						else if (bin_Pt20) BackDataDriven_F = 0.947991; 
+						else if (bin_Pt21) BackDataDriven_F = 0.947742; 
 						else BackDataDriven_F = 0.;
 					}
 				}
@@ -1650,7 +1922,7 @@ void GJetsAnalyzer::Loop(){
 					BackDataDriven_F_prePassConversionVeto.push_back(photonBackDataDriven_F.at(iPhoPos));
 
 					if(PassConversionVeto){ 
-				
+//cout << "c" << endl;				
 						Photons_Pt_prehadronicOverEm2012.push_back(photonPt->at(iPhoPos));
 						Photons_hadronicOverEm2012_prehadronicOverEm2012.push_back(photonid_hadronicOverEm2012->at(iPhoPos));
 						Tri_PF_prehadronicOverEm2012.push_back(photonTri_PF.at(iPhoPos));
@@ -1658,7 +1930,7 @@ void GJetsAnalyzer::Loop(){
 						BackDataDriven_F_prehadronicOverEm2012.push_back(photonBackDataDriven_F.at(iPhoPos));
 				
 						if(hadronicOverEm2012){
-
+//cout << "d" << endl;
 							Photons_Pt_presigmaietaieta.push_back(photonPt->at(iPhoPos));
 							Photons_sigmaietaieta_presigmaietaieta.push_back(photonid_sieie->at(iPhoPos));
 							Tri_PF_presigmaietaieta.push_back(photonTri_PF.at(iPhoPos));
@@ -1666,7 +1938,7 @@ void GJetsAnalyzer::Loop(){
 							BackDataDriven_F_presigmaietaieta.push_back(photonBackDataDriven_F.at(iPhoPos));
 
 							if (sigmaietaieta) {
-
+//cout << "e" << endl;
 								Photons_Pt_preiso_CH.push_back(photonPt->at(iPhoPos));
 								Photons_iso_CH_preiso_CH.push_back(photonPfIsoChargedHad_RhoCorr);
 								Tri_PF_preiso_CH.push_back(photonTri_PF.at(iPhoPos));
@@ -1674,7 +1946,7 @@ void GJetsAnalyzer::Loop(){
 								BackDataDriven_F_preiso_CH.push_back(photonBackDataDriven_F.at(iPhoPos));
 
 								if (iso_CH) {
-
+//cout << "f" << endl;
 									Photons_Pt_preiso_NH.push_back(photonPt->at(iPhoPos));
 									Photons_iso_NH_preiso_NH.push_back(photonPfIsoNeutralHad_RhoCorr);
 									Tri_PF_preiso_NH.push_back(photonTri_PF.at(iPhoPos));								
@@ -1682,7 +1954,7 @@ void GJetsAnalyzer::Loop(){
 									BackDataDriven_F_preiso_NH.push_back(photonBackDataDriven_F.at(iPhoPos));
 
 									if (iso_NH) {
-
+//cout << "g" << endl;
 										Photons_Pt_preiso_Ph.push_back(photonPt->at(iPhoPos));
 										Photons_iso_Ph_preiso_Ph.push_back(photonPfIsoPhoton_RhoCorr);
 										Tri_PF_preiso_Ph.push_back(photonTri_PF.at(iPhoPos));								
@@ -1690,7 +1962,7 @@ void GJetsAnalyzer::Loop(){
 										BackDataDriven_F_preiso_Ph.push_back(photonBackDataDriven_F.at(iPhoPos));
 
 										if (iso_Ph) {
-
+//cout << "h" << endl;
 											geo_quality_sel = true;
 										}
 									}
@@ -1699,10 +1971,10 @@ void GJetsAnalyzer::Loop(){
 						}
 					}
 					// end Cut Based Photon 2012 - Medium (80%) from https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
-
+//cout << "a" << endl;
 					// photon quality selection
 					if(geo_quality_sel){ 
-
+//cout << "b" << endl;
 						IDIsoPhotons_N += 1;
 
 						// eta - definition
@@ -1724,9 +1996,11 @@ void GJetsAnalyzer::Loop(){
 						TeP_SF_preAcc.push_back(photonTeP_SF.at(iPhoPos));
 						BackDataDriven_F_preAcc.push_back(photonBackDataDriven_F.at(iPhoPos));
 
+//cout << "photonPt->at(iPhoPos)" << photonPt->at(iPhoPos) << endl;
+//cout << "geo_sel" << geo_sel << endl;
 						// photon kinematic selection
 						if (photonPt->at(iPhoPos) > 207.1 && geo_sel) {
-
+//cout << "r" << endl;
 							SelectedPhotons_Pt.push_back(photonPt->at(iPhoPos));
 							SelectedPhotons_E.push_back(photonE->at(iPhoPos));
 							SelectedPhotons_Eta.push_back(photonEta->at(iPhoPos)); 
@@ -1816,14 +2090,6 @@ void GJetsAnalyzer::Loop(){
 			SelectedJets_N = 0;
 
 			for (unsigned int iJetPos = 0; (int)iJetPos < nJets; iJetPos++) {
-
-/*
-// JER systematics
-float newPt;
-newPt = (*jetPtRESdown)[iJetPos];
-(*jetPt)[iJetPos] = newPt; 
-// 
-*/
 
 				// only counting of cleaned jets vs. ALL SelectedPhotons
 				bool closeALL = false;
@@ -1998,11 +2264,11 @@ newPt = (*jetPtRESdown)[iJetPos];
 						gamma_Eta_1_preAcc_->Fill(Photons_Eta_preAcc.at(0), weight_final_preAcc);
 					}
 
-
+//cout << "out" << endl;
 				// TriMatch+(ID+Iso)+kin Photons selection (then, on the LEADING one)
 				if (SelectedPhotons_N > 0){
 					iSelected3++;
-
+//cout << "in" << endl;
 					gamma_Pt_1_postcut3_->Fill(SelectedPhotons_Pt.at(0), weight_final);
 					
 					if(nJets > 0 && (nJets == (int)jetPt->size()) ){
@@ -3201,14 +3467,14 @@ newPt = (*jetPtRESdown)[iJetPos];
 			unf_SelectedJetsGEN_HT_N0_->Fill(unf_SelectedJetsGEN_HT_N0, weight_withPU);
 		}
 		if (Sig && unf_selREC_N0){
-			unf_SelectedPhotons_Pt_N0_1_->Fill(unf_SelectedPhotons_Pt_N0_1, weight_withPU); //weight_final);
-			unf_SelectedJets_N_N0_->Fill(unf_SelectedJets_N_N0, weight_withPU); //weight_final);
-			unf_SelectedJets_HT_N0_->Fill(unf_SelectedJets_HT_N0, weight_withPU); //weight_final);
+			unf_SelectedPhotons_Pt_N0_1_->Fill(unf_SelectedPhotons_Pt_N0_1, weight_final);
+			unf_SelectedJets_N_N0_->Fill(unf_SelectedJets_N_N0, weight_final);
+			unf_SelectedJets_HT_N0_->Fill(unf_SelectedJets_HT_N0, weight_final);
 		}
 		if (Sig && (unf_selGEN_N0 && unf_selREC_N0)){
-			TH2F_unf_GENREC_Photons_Pt_N0_->Fill(unf_SelectedPhotons_Pt_N0_1, unf_photonPtGEN_N0, 1); //weight_final);
-			TH2F_unf_GENREC_Jets_N_N0_->Fill(unf_SelectedJets_N_N0, unf_SelectedJetsGEN_N_N0, 1); //weight_final);
-			TH2F_unf_GENREC_Jets_HT_N0_->Fill(unf_SelectedJets_HT_N0, unf_SelectedJetsGEN_HT_N0, 1); //weight_final);
+			TH2F_unf_GENREC_Photons_Pt_N0_->Fill(unf_photonPtGEN_N0, unf_SelectedPhotons_Pt_N0_1, weight_final);
+			TH2F_unf_GENREC_Jets_N_N0_->Fill(unf_SelectedJetsGEN_N_N0, unf_SelectedJets_N_N0, weight_final);
+			TH2F_unf_GENREC_Jets_HT_N0_->Fill(unf_SelectedJetsGEN_HT_N0, unf_SelectedJets_HT_N0, weight_final);
 		}
 		
 		// excl1
@@ -3218,14 +3484,14 @@ newPt = (*jetPtRESdown)[iJetPos];
 			unf_SelectedJetsGEN_HT_excl1_->Fill(unf_SelectedJetsGEN_HT_excl1, weight_withPU);
 		}
 		if (Sig && unf_selREC_excl1){
-			unf_SelectedPhotons_Pt_excl1_1_->Fill(unf_SelectedPhotons_Pt_excl1_1, weight_withPU); //weight_final);
-			unf_SelectedJets_N_excl1_->Fill(unf_SelectedJets_N_excl1, weight_withPU); //weight_final);
-			unf_SelectedJets_HT_excl1_->Fill(unf_SelectedJets_HT_excl1, weight_withPU); //weight_final);
+			unf_SelectedPhotons_Pt_excl1_1_->Fill(unf_SelectedPhotons_Pt_excl1_1, weight_final);
+			unf_SelectedJets_N_excl1_->Fill(unf_SelectedJets_N_excl1, weight_final);
+			unf_SelectedJets_HT_excl1_->Fill(unf_SelectedJets_HT_excl1, weight_final);
 		}
 		if (Sig && (unf_selGEN_excl1 && unf_selREC_excl1)){
-			TH2F_unf_GENREC_Photons_Pt_excl1_->Fill(unf_SelectedPhotons_Pt_excl1_1, unf_photonPtGEN_excl1, 1); //weight_final);
-			TH2F_unf_GENREC_Jets_N_excl1_->Fill(unf_SelectedJets_N_excl1, unf_SelectedJetsGEN_N_excl1, 1); //weight_final);
-			TH2F_unf_GENREC_Jets_HT_excl1_->Fill(unf_SelectedJets_HT_excl1, unf_SelectedJetsGEN_HT_excl1, 1); //weight_final);
+			TH2F_unf_GENREC_Photons_Pt_excl1_->Fill(unf_photonPtGEN_excl1, unf_SelectedPhotons_Pt_excl1_1, weight_final);
+			TH2F_unf_GENREC_Jets_N_excl1_->Fill(unf_SelectedJetsGEN_N_excl1, unf_SelectedJets_N_excl1, weight_final);
+			TH2F_unf_GENREC_Jets_HT_excl1_->Fill(unf_SelectedJetsGEN_HT_excl1, unf_SelectedJets_HT_excl1, weight_final);
 		}
 
 		// excl2
@@ -3235,14 +3501,14 @@ newPt = (*jetPtRESdown)[iJetPos];
 			unf_SelectedJetsGEN_HT_excl2_->Fill(unf_SelectedJetsGEN_HT_excl2, weight_withPU);
 		}
 		if (Sig && unf_selREC_excl2){
-			unf_SelectedPhotons_Pt_excl2_1_->Fill(unf_SelectedPhotons_Pt_excl2_1, weight_withPU); //weight_final);
-			unf_SelectedJets_N_excl2_->Fill(unf_SelectedJets_N_excl2, weight_withPU); //weight_final);
-			unf_SelectedJets_HT_excl2_->Fill(unf_SelectedJets_HT_excl2, weight_withPU); //weight_final);
+			unf_SelectedPhotons_Pt_excl2_1_->Fill(unf_SelectedPhotons_Pt_excl2_1, weight_final);
+			unf_SelectedJets_N_excl2_->Fill(unf_SelectedJets_N_excl2, weight_final);
+			unf_SelectedJets_HT_excl2_->Fill(unf_SelectedJets_HT_excl2, weight_final);
 		}
 		if (Sig && (unf_selGEN_excl2 && unf_selREC_excl2)){
-			TH2F_unf_GENREC_Photons_Pt_excl2_->Fill(unf_SelectedPhotons_Pt_excl2_1, unf_photonPtGEN_excl2, 1); //weight_final);
-			TH2F_unf_GENREC_Jets_N_excl2_->Fill(unf_SelectedJets_N_excl2, unf_SelectedJetsGEN_N_excl2, 1); //weight_final);
-			TH2F_unf_GENREC_Jets_HT_excl2_->Fill(unf_SelectedJets_HT_excl2, unf_SelectedJetsGEN_HT_excl2, 1); //weight_final);
+			TH2F_unf_GENREC_Photons_Pt_excl2_->Fill(unf_photonPtGEN_excl2, unf_SelectedPhotons_Pt_excl2_1, weight_final);
+			TH2F_unf_GENREC_Jets_N_excl2_->Fill(unf_SelectedJetsGEN_N_excl2, unf_SelectedJets_N_excl2, weight_final);
+			TH2F_unf_GENREC_Jets_HT_excl2_->Fill(unf_SelectedJetsGEN_HT_excl2, unf_SelectedJets_HT_excl2, weight_final);
 		}
 
 		// N1
@@ -3252,14 +3518,14 @@ newPt = (*jetPtRESdown)[iJetPos];
 			unf_SelectedJetsGEN_HT_N1_->Fill(unf_SelectedJetsGEN_HT_N1, weight_withPU);
 		}
 		if (Sig && unf_selREC_N1){		
-			unf_SelectedPhotons_Pt_N1_1_->Fill(unf_SelectedPhotons_Pt_N1_1, weight_withPU); //weight_final);
-			unf_SelectedJets_N_N1_->Fill(unf_SelectedJets_N_N1, weight_withPU); //weight_final);
-			unf_SelectedJets_HT_N1_->Fill(unf_SelectedJets_HT_N1, weight_withPU); //weight_final);
+			unf_SelectedPhotons_Pt_N1_1_->Fill(unf_SelectedPhotons_Pt_N1_1, weight_final);
+			unf_SelectedJets_N_N1_->Fill(unf_SelectedJets_N_N1, weight_final);
+			unf_SelectedJets_HT_N1_->Fill(unf_SelectedJets_HT_N1, weight_final);
 		}
 		if (Sig && (unf_selGEN_N1 && unf_selREC_N1)){
-			TH2F_unf_GENREC_Photons_Pt_N1_->Fill(unf_SelectedPhotons_Pt_N1_1, unf_photonPtGEN_N1, 1); //weight_final);
-			TH2F_unf_GENREC_Jets_N_N1_->Fill(unf_SelectedJets_N_N1, unf_SelectedJetsGEN_N_N1, 1); //weight_final);
-			TH2F_unf_GENREC_Jets_HT_N1_->Fill(unf_SelectedJets_HT_N1, unf_SelectedJetsGEN_HT_N1, 1); //weight_final);
+			TH2F_unf_GENREC_Photons_Pt_N1_->Fill(unf_photonPtGEN_N1, unf_SelectedPhotons_Pt_N1_1, weight_final);
+			TH2F_unf_GENREC_Jets_N_N1_->Fill(unf_SelectedJetsGEN_N_N1, unf_SelectedJets_N_N1, weight_final);
+			TH2F_unf_GENREC_Jets_HT_N1_->Fill(unf_SelectedJetsGEN_HT_N1, unf_SelectedJets_HT_N1, weight_final);
 		}
 
 		//N2
@@ -3269,16 +3535,17 @@ newPt = (*jetPtRESdown)[iJetPos];
 			unf_SelectedJetsGEN_HT_N2_->Fill(unf_SelectedJetsGEN_HT_N2, weight_withPU);
 		}
 		if (Sig && unf_selREC_N2){		
-			unf_SelectedPhotons_Pt_N2_1_->Fill(unf_SelectedPhotons_Pt_N2_1, weight_withPU); //weight_final);
-			unf_SelectedJets_N_N2_->Fill(unf_SelectedJets_N_N2, weight_withPU); //weight_final);
-			unf_SelectedJets_HT_N2_->Fill(unf_SelectedJets_HT_N2, weight_withPU); //weight_final);
+			unf_SelectedPhotons_Pt_N2_1_->Fill(unf_SelectedPhotons_Pt_N2_1, weight_final);
+			unf_SelectedJets_N_N2_->Fill(unf_SelectedJets_N_N2, weight_final);
+			unf_SelectedJets_HT_N2_->Fill(unf_SelectedJets_HT_N2, weight_final);
 		}
 		if (Sig && (unf_selGEN_N2 && unf_selREC_N2)){
-			TH2F_unf_GENREC_Photons_Pt_N2_->Fill(unf_SelectedPhotons_Pt_N2_1, unf_photonPtGEN_N2, 1); //weight_final);
-			TH2F_unf_GENREC_Jets_N_N2_->Fill(unf_SelectedJets_N_N2, unf_SelectedJetsGEN_N_N2, 1); //weight_final);
-			TH2F_unf_GENREC_Jets_HT_N2_->Fill(unf_SelectedJets_HT_N2, unf_SelectedJetsGEN_HT_N2, 1); //weight_final);
+			TH2F_unf_GENREC_Photons_Pt_N2_->Fill(unf_photonPtGEN_N2, unf_SelectedPhotons_Pt_N2_1, weight_final);
+			TH2F_unf_GENREC_Jets_N_N2_->Fill(unf_SelectedJetsGEN_N_N2, unf_SelectedJets_N_N2, weight_final);
+			TH2F_unf_GENREC_Jets_HT_N2_->Fill(unf_SelectedJetsGEN_HT_N2, unf_SelectedJets_HT_N2, weight_final);
 		}
 
+	}//end Closure
 		// if (Cut(ientry) < 0) continue;
 	} // end loop on entries
 
@@ -3308,7 +3575,7 @@ newPt = (*jetPtRESdown)[iJetPos];
 
 // ----- methods ----------------
 
-void GJetsAnalyzer::Book_Histos(){
+void Closure_GJetsAnalyzer::Book_Histos(){
 
 	cout << "Booking histograms... " << endl;
 	// book the histograms
@@ -4369,7 +4636,7 @@ void GJetsAnalyzer::Book_Histos(){
 }
 
 
-void GJetsAnalyzer::Plot_Histos(){
+void Closure_GJetsAnalyzer::Plot_Histos(){
 
 	// plot few histograms at the end, for check
 	cout << "Plots: quick check... " << endl;
@@ -6529,7 +6796,7 @@ void Zero_Variables(){
 }
 
 
-void GJetsAnalyzer::Text_File(){
+void Closure_GJetsAnalyzer::Text_File(){
 
 	cout << "Writing text file... " << endl;
 	ofstream text;

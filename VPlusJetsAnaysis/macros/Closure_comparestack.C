@@ -132,7 +132,7 @@ void setMYStyle() {
 }
 
 
-void comparestack(const char* titleh, const char* namevariable, const int rebin, const double x_min, const double x_max){
+void Closure_comparestack(const char* titleh, const char* namevariable, const int rebin, const double x_min, const double x_max){
 
   // Usage is: .L comparestack.C++
   //       ie: comparestack("SelectedPhotons_Pt_1_", "p_{T}^{#gamma1} [GeV/#font[12]{c}]", 1);
@@ -141,22 +141,19 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 
 	// ==================================== choose the tools
 
-	string folder = "SysSieie_02_results_2013_11_30";         // analysis folder
+	string folder = "Closure_20_results_2013_12_03";         // analysis folder
 
 	char geo[100] = "barrel";                // "barrel", "endcaps" or "total"
-
-	bool data_ReReco = true;                	// true: data = ReReco
-	                                        	// false: data = PromptReco
 	                                         
-	bool logX = false;											// log X scale for p_T plot	
-	bool inv_sigmaietaieta = true;          // inverted sigmaietaieta cut
+	bool logX = true;											 // log X scale for p_T plot	
+	bool inv_sigmaietaieta = false;          // inverted sigmaietaieta cut
 	bool inv_isolation = false;              // inverted isolation set cut
 
 	bool signal_MAD = true;                  // true: signal = MADGRAPH; false: signal = PYTHIA
 	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 
-	Int_t itype = 2;                        // it identifies histos with different analysis 
+	Int_t itype = 20;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names
@@ -222,18 +219,26 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 
 	// ==================================== assign files names
 
-	Char_t DATA_RR_Run2012A_22Jan2013_name[100];
-	Char_t DATA_RR_Run2012B_22Jan2013_name[100];
-	Char_t DATA_RR_Run2012C_22Jan2013_name[100];
-	Char_t DATA_RR_Run2012D_22Jan2013_name[100];
+	Char_t PSEUDODATA_GJets_HT_40To100_name[100];
+	Char_t PSEUDODATA_GJets_HT_100To200_name[100];	
+	Char_t PSEUDODATA_GJets_HT_200To400_name[100];
+	Char_t PSEUDODATA_GJets_HT_400ToInf_name[100];
 
-	Char_t DATA_PR_Run2012A_13Jul2012_name[100];
-	Char_t DATA_PR_Run2012A_recover_06Aug2012_name[100];
-	Char_t DATA_PR_Run2012B_13Jul2012_name[100];
-	Char_t DATA_PR_Run2012C_24Aug2012_name[100];
-	Char_t DATA_PR_Run2012C_EcalRecover_11Dec2012_name[100];
-	Char_t DATA_PR_Run2012C_PromptReco_name[100];
-	Char_t DATA_PR_Run2012D_PromptReco_name[100];
+	Char_t PSEUDODATA_DiPhotonJets_name[100];
+
+	Char_t PSEUDODATA_QCD_Pt_20_30_EMEnriched_name[100];
+	Char_t PSEUDODATA_QCD_Pt_30_80_EMEnriched_name[100];
+	Char_t PSEUDODATA_QCD_Pt_80_170_EMEnriched_name[100];
+	Char_t PSEUDODATA_QCD_Pt_170_250_EMEnriched_name[100];
+	Char_t PSEUDODATA_QCD_Pt_250_350_EMEnriched_name[100];
+	Char_t PSEUDODATA_QCD_Pt_350_EMEnriched_name[100];
+
+	Char_t PSEUDODATA_QCD_Pt_20_30_BCtoE_name[100];
+	Char_t PSEUDODATA_QCD_Pt_30_80_BCtoE_name[100];
+	Char_t PSEUDODATA_QCD_Pt_80_170_BCtoE_name[100];
+	Char_t PSEUDODATA_QCD_Pt_170_250_BCtoE_name[100];
+	Char_t PSEUDODATA_QCD_Pt_250_350_BCtoE_name[100];
+	Char_t PSEUDODATA_QCD_Pt_350_BCtoE_name[100];
 					
 	Char_t GJets_HT_40To100_name[100];
 	Char_t GJets_HT_100To200_name[100];	
@@ -273,42 +278,53 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	Char_t QCD_HT_500To1000_name[100];
 	Char_t QCD_HT_1000ToInf_name[100];
 
-	if (data_ReReco){
-		sprintf(DATA_RR_Run2012A_22Jan2013_name,"DATA_RR_Run2012A-22Jan2013_histos_%d_%s%s",itype, geo, root_char);
-		sprintf(DATA_RR_Run2012B_22Jan2013_name,"DATA_RR_Run2012B-22Jan2013_histos_%d_%s%s",itype, geo, root_char);
-		sprintf(DATA_RR_Run2012C_22Jan2013_name,"DATA_RR_Run2012C-22Jan2013_histos_%d_%s%s",itype, geo, root_char);
-		sprintf(DATA_RR_Run2012D_22Jan2013_name,"DATA_RR_Run2012D-22Jan2013_histos_%d_%s%s",itype, geo, root_char);
-				
-		cout << endl;	
-		cout << "========================" <<endl;	
-		cout << endl;	
-		cout << "data RR file 1 is " << DATA_RR_Run2012A_22Jan2013_name << endl;
-		cout << "data RR file 2 is " << DATA_RR_Run2012B_22Jan2013_name << endl;
-		cout << "data RR file 3 is " << DATA_RR_Run2012C_22Jan2013_name << endl;
-		cout << "data RR file 4 is " << DATA_RR_Run2012D_22Jan2013_name << endl;
-		cout << endl;
-	}
-	else{
-		sprintf(DATA_PR_Run2012A_13Jul2012_name,"DATA_PR_Run2012A-13Jul2012_histos_%d_%s%s",itype, geo, root_char);
-		sprintf(DATA_PR_Run2012A_recover_06Aug2012_name,"DATA_PR_Run2012A-recover-06Aug2012_histos_%d_%s%s",itype, geo, root_char);
-		sprintf(DATA_PR_Run2012B_13Jul2012_name,"DATA_PR_Run2012B-13Jul2012_histos_%d_%s%s",itype, geo, root_char);
-		sprintf(DATA_PR_Run2012C_24Aug2012_name,"DATA_PR_Run2012C-24Aug2012_histos_%d_%s%s",itype, geo, root_char);
-		sprintf(DATA_PR_Run2012C_EcalRecover_11Dec2012_name,"DATA_PR_Run2012C-EcalRecover_11Dec2012_histos_%d_%s%s",itype, geo, root_char);
-		sprintf(DATA_PR_Run2012C_PromptReco_name,"DATA_PR_Run2012C-PromptReco_histos_%d_%s%s",itype, geo, root_char);
-		sprintf(DATA_PR_Run2012D_PromptReco_name,"DATA_PR_Run2012D-PromptReco_histos_%d_%s%s",itype, geo, root_char);
 
-		cout << endl;	
-		cout << "========================" <<endl;	
-		cout << endl;	
-		cout << "data PR file 11 is " << DATA_PR_Run2012A_13Jul2012_name << endl;
-		cout << "data PR file 12 is " << DATA_PR_Run2012A_recover_06Aug2012_name << endl;
-		cout << "data PR file 13 is " << DATA_PR_Run2012B_13Jul2012_name << endl;
-		cout << "data PR file 14 is " << DATA_PR_Run2012C_24Aug2012_name << endl;
-		cout << "data PR file 15 is " << DATA_PR_Run2012C_EcalRecover_11Dec2012_name << endl;
-		cout << "data PR file 16 is " << DATA_PR_Run2012C_PromptReco_name << endl;
-		cout << "data PR file 17 is " << DATA_PR_Run2012D_PromptReco_name << endl;
-		cout << endl;
-	}
+	sprintf(PSEUDODATA_GJets_HT_40To100_name,"PSEUDODATA_MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_GJets_HT_100To200_name,"PSEUDODATA_MC_GJets_HT-100To200_histos_%d_%s%s",itype, geo, root_char);	
+	sprintf(PSEUDODATA_GJets_HT_200To400_name,"PSEUDODATA_MC_GJets_HT-200To400_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_GJets_HT_400ToInf_name,"PSEUDODATA_MC_GJets_HT-400ToInf_histos_%d_%s%s",itype, geo, root_char);
+
+	cout << "PSEUDODATA GJets file 121 is: " << PSEUDODATA_GJets_HT_40To100_name << endl;
+	cout << "PSEUDODATA GJets file 122 is: " << PSEUDODATA_GJets_HT_100To200_name << endl;	
+	cout << "PSEUDODATA GJets file 123 is: " << PSEUDODATA_GJets_HT_200To400_name << endl;
+	cout << "PSEUDODATA GJets file 124 is: " << PSEUDODATA_GJets_HT_400ToInf_name << endl;
+	cout << endl;
+	
+	sprintf(PSEUDODATA_DiPhotonJets_name,"PSEUDODATA_MC_DiPhotonJets_histos_%d_%s%s",itype, geo, root_char);
+	cout << "PSEUDODATA DiPhotonJets file 151 is: " << PSEUDODATA_DiPhotonJets_name << endl;
+	cout << endl;
+
+	sprintf(PSEUDODATA_QCD_Pt_20_30_EMEnriched_name,"PSEUDODATA_MC_QCD_Pt_20_30_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_30_80_EMEnriched_name,"PSEUDODATA_MC_QCD_Pt_30_80_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_80_170_EMEnriched_name,"PSEUDODATA_MC_QCD_Pt_80_170_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_170_250_EMEnriched_name,"PSEUDODATA_MC_QCD_Pt_170_250_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_250_350_EMEnriched_name,"PSEUDODATA_MC_QCD_Pt_250_350_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_350_EMEnriched_name,"PSEUDODATA_MC_QCD_Pt_350_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+
+	cout << "PSEUDODATA QCD EMEnriched file 161 is: " << PSEUDODATA_QCD_Pt_20_30_EMEnriched_name << endl;
+	cout << "PSEUDODATA QCD EMEnriched file 162 is: " << PSEUDODATA_QCD_Pt_30_80_EMEnriched_name << endl;
+	cout << "PSEUDODATA QCD EMEnriched file 163 is: " << PSEUDODATA_QCD_Pt_80_170_EMEnriched_name << endl;
+	cout << "PSEUDODATA QCD EMEnriched file 164 is: " << PSEUDODATA_QCD_Pt_170_250_EMEnriched_name << endl;
+	cout << "PSEUDODATA QCD EMEnriched file 165 is: " << PSEUDODATA_QCD_Pt_250_350_EMEnriched_name << endl;
+	cout << "PSEUDODATA QCD EMEnriched file 166 is: " << PSEUDODATA_QCD_Pt_350_EMEnriched_name << endl;
+	cout << endl;	
+	
+	sprintf(PSEUDODATA_QCD_Pt_20_30_BCtoE_name,"PSEUDODATA_MC_QCD_Pt_20_30_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_30_80_BCtoE_name,"PSEUDODATA_MC_QCD_Pt_30_80_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_80_170_BCtoE_name,"PSEUDODATA_MC_QCD_Pt_80_170_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_170_250_BCtoE_name,"PSEUDODATA_MC_QCD_Pt_170_250_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_250_350_BCtoE_name,"PSEUDODATA_MC_QCD_Pt_250_350_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_350_BCtoE_name,"PSEUDODATA_MC_QCD_Pt_350_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+
+	cout << "PSEUDODATA QCD BCtoE file 171 is: " << PSEUDODATA_QCD_Pt_20_30_BCtoE_name << endl;
+	cout << "PSEUDODATA QCD BCtoE file 172 is: " << PSEUDODATA_QCD_Pt_30_80_BCtoE_name << endl;
+	cout << "PSEUDODATA QCD BCtoE file 173 is: " << PSEUDODATA_QCD_Pt_80_170_BCtoE_name << endl;
+	cout << "PSEUDODATA QCD BCtoE file 174 is: " << PSEUDODATA_QCD_Pt_170_250_BCtoE_name << endl;
+	cout << "PSEUDODATA QCD BCtoE file 175 is: " << PSEUDODATA_QCD_Pt_250_350_BCtoE_name << endl;
+	cout << "PSEUDODATA QCD BCtoE file 176 is: " << PSEUDODATA_QCD_Pt_350_BCtoE_name << endl;	
+	cout << endl;
+
+
 	
 	if(signal_MAD){
 		sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
@@ -397,21 +413,28 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 		cout << endl;	
 	}
 
-
 	// ==================================== load TFiles
 
-	TFile *DATA_RR_Run2012A_22Jan2013_file;
-	TFile *DATA_RR_Run2012B_22Jan2013_file;
-	TFile *DATA_RR_Run2012C_22Jan2013_file;
-	TFile *DATA_RR_Run2012D_22Jan2013_file;
+	TFile *PSEUDODATA_GJets_HT_40To100_file;
+	TFile *PSEUDODATA_GJets_HT_100To200_file;	
+	TFile *PSEUDODATA_GJets_HT_200To400_file;
+	TFile *PSEUDODATA_GJets_HT_400ToInf_file;
 
-	TFile *DATA_PR_Run2012A_13Jul2012_file;
-	TFile *DATA_PR_Run2012A_recover_06Aug2012_file;
-	TFile *DATA_PR_Run2012B_13Jul2012_file;
-	TFile *DATA_PR_Run2012C_24Aug2012_file;
-	TFile *DATA_PR_Run2012C_EcalRecover_11Dec2012_file;
-	TFile *DATA_PR_Run2012C_PromptReco_file;
-	TFile *DATA_PR_Run2012D_PromptReco_file;
+	TFile *PSEUDODATA_DiPhotonJets_file;
+
+	TFile *PSEUDODATA_QCD_Pt_20_30_EMEnriched_file; 
+	TFile *PSEUDODATA_QCD_Pt_30_80_EMEnriched_file;
+	TFile *PSEUDODATA_QCD_Pt_80_170_EMEnriched_file;
+	TFile *PSEUDODATA_QCD_Pt_170_250_EMEnriched_file;
+	TFile *PSEUDODATA_QCD_Pt_250_350_EMEnriched_file;
+	TFile *PSEUDODATA_QCD_Pt_350_EMEnriched_file;
+
+	TFile *PSEUDODATA_QCD_Pt_20_30_BCtoE_file; 
+	TFile *PSEUDODATA_QCD_Pt_30_80_BCtoE_file;
+	TFile *PSEUDODATA_QCD_Pt_80_170_BCtoE_file;
+	TFile *PSEUDODATA_QCD_Pt_170_250_BCtoE_file;
+	TFile *PSEUDODATA_QCD_Pt_250_350_BCtoE_file;
+	TFile *PSEUDODATA_QCD_Pt_350_BCtoE_file;
 
 	TFile *GJets_HT_40To100_file;
 	TFile *GJets_HT_100To200_file;	
@@ -451,21 +474,27 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	TFile *QCD_HT_500To1000_file; 
 	TFile *QCD_HT_1000ToInf_file;
 
-	if (data_ReReco) {
-		DATA_RR_Run2012A_22Jan2013_file = new TFile((address+DATA_RR_Run2012A_22Jan2013_name).c_str());
-		DATA_RR_Run2012B_22Jan2013_file = new TFile((address+DATA_RR_Run2012B_22Jan2013_name).c_str());
-		DATA_RR_Run2012C_22Jan2013_file = new TFile((address+DATA_RR_Run2012C_22Jan2013_name).c_str());
-		DATA_RR_Run2012D_22Jan2013_file = new TFile((address+DATA_RR_Run2012D_22Jan2013_name).c_str());				
-	}
-	else {
-		DATA_PR_Run2012A_13Jul2012_file = new TFile((address+DATA_PR_Run2012A_13Jul2012_name).c_str());
-  	DATA_PR_Run2012A_recover_06Aug2012_file = new TFile((address+DATA_PR_Run2012A_recover_06Aug2012_name).c_str());
-		DATA_PR_Run2012B_13Jul2012_file = new TFile((address+DATA_PR_Run2012B_13Jul2012_name).c_str());
-		DATA_PR_Run2012C_24Aug2012_file = new TFile((address+DATA_PR_Run2012C_24Aug2012_name).c_str());
-		DATA_PR_Run2012C_EcalRecover_11Dec2012_file = new TFile((address+DATA_PR_Run2012C_EcalRecover_11Dec2012_name).c_str());
-		DATA_PR_Run2012C_PromptReco_file = new TFile((address+DATA_PR_Run2012C_PromptReco_name).c_str());
-		DATA_PR_Run2012D_PromptReco_file = new TFile((address+DATA_PR_Run2012D_PromptReco_name).c_str());
-	}
+	PSEUDODATA_GJets_HT_40To100_file = new TFile((address+PSEUDODATA_GJets_HT_40To100_name).c_str());	
+	PSEUDODATA_GJets_HT_100To200_file = new TFile((address+PSEUDODATA_GJets_HT_100To200_name).c_str());	
+	PSEUDODATA_GJets_HT_200To400_file = new TFile((address+PSEUDODATA_GJets_HT_200To400_name).c_str());
+	PSEUDODATA_GJets_HT_400ToInf_file = new TFile((address+PSEUDODATA_GJets_HT_400ToInf_name).c_str()); 
+
+	PSEUDODATA_DiPhotonJets_file = new TFile((address+PSEUDODATA_DiPhotonJets_name).c_str());
+	
+	PSEUDODATA_QCD_Pt_20_30_EMEnriched_file = new TFile((address+PSEUDODATA_QCD_Pt_20_30_EMEnriched_name).c_str()); 
+	PSEUDODATA_QCD_Pt_30_80_EMEnriched_file = new TFile((address+PSEUDODATA_QCD_Pt_30_80_EMEnriched_name).c_str());
+	PSEUDODATA_QCD_Pt_80_170_EMEnriched_file = new TFile((address+PSEUDODATA_QCD_Pt_80_170_EMEnriched_name).c_str());
+	PSEUDODATA_QCD_Pt_170_250_EMEnriched_file = new TFile((address+PSEUDODATA_QCD_Pt_170_250_EMEnriched_name).c_str());
+	PSEUDODATA_QCD_Pt_250_350_EMEnriched_file = new TFile((address+PSEUDODATA_QCD_Pt_250_350_EMEnriched_name).c_str());
+	PSEUDODATA_QCD_Pt_350_EMEnriched_file = new TFile((address+PSEUDODATA_QCD_Pt_350_EMEnriched_name).c_str());
+
+	PSEUDODATA_QCD_Pt_20_30_BCtoE_file = new TFile((address+PSEUDODATA_QCD_Pt_20_30_BCtoE_name).c_str()); 
+	PSEUDODATA_QCD_Pt_30_80_BCtoE_file = new TFile((address+PSEUDODATA_QCD_Pt_30_80_BCtoE_name).c_str());
+	PSEUDODATA_QCD_Pt_80_170_BCtoE_file = new TFile((address+PSEUDODATA_QCD_Pt_80_170_BCtoE_name).c_str());
+	PSEUDODATA_QCD_Pt_170_250_BCtoE_file = new TFile((address+PSEUDODATA_QCD_Pt_170_250_BCtoE_name).c_str());
+	PSEUDODATA_QCD_Pt_250_350_BCtoE_file = new TFile((address+PSEUDODATA_QCD_Pt_250_350_BCtoE_name).c_str());
+	PSEUDODATA_QCD_Pt_350_BCtoE_file = new TFile((address+PSEUDODATA_QCD_Pt_350_BCtoE_name).c_str());
+
 	
 	if(signal_MAD){	
 		GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
@@ -511,6 +540,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 		QCD_HT_1000ToInf_file = new TFile((address+QCD_HT_1000ToInf_name).c_str()); 
 	}
 
+
 	// ==================================== load TH1F
 
 	Char_t titlehisto[100];
@@ -531,20 +561,32 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	cout << "========================" <<endl;	
 	cout << endl;	
 
-	TH1F *DATA_RR_Run2012A_22Jan2013_histo;
-	TH1F *DATA_RR_Run2012B_22Jan2013_histo;
-	TH1F *DATA_RR_Run2012C_22Jan2013_histo;
-	TH1F *DATA_RR_Run2012D_22Jan2013_histo;
-	TH1F *DATA_ReReco_total_histo;
-			
-	TH1F *DATA_PR_Run2012A_13Jul2012_histo;
-	TH1F *DATA_PR_Run2012A_recover_06Aug2012_histo;
-	TH1F *DATA_PR_Run2012B_13Jul2012_histo;
-	TH1F *DATA_PR_Run2012C_24Aug2012_histo;
-	TH1F *DATA_PR_Run2012C_EcalRecover_11Dec2012_histo;
-	TH1F *DATA_PR_Run2012C_PromptReco_histo;
-	TH1F *DATA_PR_Run2012D_PromptReco_histo;
-	TH1F *DATA_PromptReco_total_histo;
+	TH1F *PSEUDODATA_GJets_HT_40To100_histo;
+	TH1F *PSEUDODATA_GJets_HT_100To200_histo;
+	TH1F *PSEUDODATA_GJets_HT_200To400_histo;
+	TH1F *PSEUDODATA_GJets_HT_400ToInf_histo;
+	TH1F *PSEUDODATA_GJets_HT_xToy_total_histo;
+
+	TH1F *PSEUDODATA_DiPhotonJets_histo;
+	TH1F *PSEUDODATA_DiPhotonJets_total_histo;
+
+	TH1F *PSEUDODATA_QCD_Pt_20_30_EMEnriched_histo;
+	TH1F *PSEUDODATA_QCD_Pt_30_80_EMEnriched_histo;
+	TH1F *PSEUDODATA_QCD_Pt_80_170_EMEnriched_histo;
+	TH1F *PSEUDODATA_QCD_Pt_170_250_EMEnriched_histo;
+	TH1F *PSEUDODATA_QCD_Pt_250_350_EMEnriched_histo;
+	TH1F *PSEUDODATA_QCD_Pt_350_EMEnriched_histo;
+	TH1F *PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo;
+
+	TH1F *PSEUDODATA_QCD_Pt_20_30_BCtoE_histo;
+	TH1F *PSEUDODATA_QCD_Pt_30_80_BCtoE_histo;
+	TH1F *PSEUDODATA_QCD_Pt_80_170_BCtoE_histo;
+	TH1F *PSEUDODATA_QCD_Pt_170_250_BCtoE_histo;
+	TH1F *PSEUDODATA_QCD_Pt_250_350_BCtoE_histo;
+	TH1F *PSEUDODATA_QCD_Pt_350_BCtoE_histo;;
+	TH1F *PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo;
+
+	TH1F *PSEUDODATA_total_histo;
 
 	TH1F *GJets_HT_40To100_histo;
 	TH1F *GJets_HT_100To200_histo;
@@ -589,79 +631,126 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	TH1F *QCD_HT_500To1000_histo;
 	TH1F *QCD_HT_1000ToInf_histo;
 	TH1F *QCD_HT_xToy_total_histo;	
+
+	//--- PSEUDODATA MC signal GJets_HT-xToy ----------------------------------------------
+
+	PSEUDODATA_GJets_HT_40To100_histo=(TH1F*)PSEUDODATA_GJets_HT_40To100_file->Get(titlehisto);
+	PSEUDODATA_GJets_HT_40To100_histo->Rebin(rebin);
+		
+	PSEUDODATA_GJets_HT_100To200_histo=(TH1F*)PSEUDODATA_GJets_HT_100To200_file->Get(titlehisto);
+	PSEUDODATA_GJets_HT_100To200_histo->Rebin(rebin);
+
+	PSEUDODATA_GJets_HT_200To400_histo=(TH1F*)PSEUDODATA_GJets_HT_200To400_file->Get(titlehisto);
+	PSEUDODATA_GJets_HT_200To400_histo->Rebin(rebin);
+
+	PSEUDODATA_GJets_HT_400ToInf_histo=(TH1F*)PSEUDODATA_GJets_HT_400ToInf_file->Get(titlehisto);
+	PSEUDODATA_GJets_HT_400ToInf_histo->Rebin(rebin);
+
+	cout << "PSEUDODATA_GJets_HT_40To100 entries = " << PSEUDODATA_GJets_HT_40To100_histo->Integral() << endl;
+	cout << "PSEUDODATA_GJets_HT_100To200 entries = " << PSEUDODATA_GJets_HT_100To200_histo->Integral() << endl;	
+	cout << "PSEUDODATA_GJets_HT_200To400 entries = " << PSEUDODATA_GJets_HT_200To400_histo->Integral() << endl;
+	cout << "PSEUDODATA_GJets_HT_400ToInf entries = " << PSEUDODATA_GJets_HT_400ToInf_histo->Integral() << endl;
+	cout << endl;
+		
+	PSEUDODATA_GJets_HT_xToy_total_histo = (TH1F*) PSEUDODATA_GJets_HT_40To100_histo->Clone("PSEUDODATA_GJets_HT_xToy_total_histo");
+	//--- PSEUDODATA_GJets_HT_xToy_total_histo->Sumw2();
+	PSEUDODATA_GJets_HT_xToy_total_histo->Add(PSEUDODATA_GJets_HT_100To200_histo);
+	PSEUDODATA_GJets_HT_xToy_total_histo->Add(PSEUDODATA_GJets_HT_200To400_histo);
+	PSEUDODATA_GJets_HT_xToy_total_histo->Add(PSEUDODATA_GJets_HT_400ToInf_histo);  
+	PSEUDODATA_GJets_HT_xToy_total_histo->SetLineColor(1);
+	PSEUDODATA_GJets_HT_xToy_total_histo->SetFillColor(5);  //for colors comment out Sumw2 in code
+		
+	// PSEUDODATA MC signal DiPhotonJets --------------------------------------------------
+	PSEUDODATA_DiPhotonJets_histo=(TH1F*)PSEUDODATA_DiPhotonJets_file->Get(titlehisto);
+	PSEUDODATA_DiPhotonJets_histo->Rebin(rebin);
 	
-	if (data_ReReco) {
-		//--- data ReReco ----------------------------------------------------------
-		DATA_RR_Run2012A_22Jan2013_histo=(TH1F*)DATA_RR_Run2012A_22Jan2013_file->Get(titlehisto);
-		DATA_RR_Run2012A_22Jan2013_histo->Rebin(rebin);
+	cout << "PSEUDODATA_DiPhotonJets entries = " << PSEUDODATA_DiPhotonJets_histo->Integral() << endl;
+	cout << endl;
 
-		DATA_RR_Run2012B_22Jan2013_histo=(TH1F*)DATA_RR_Run2012B_22Jan2013_file->Get(titlehisto);
-		DATA_RR_Run2012B_22Jan2013_histo->Rebin(rebin);
+	PSEUDODATA_DiPhotonJets_total_histo = (TH1F*) PSEUDODATA_DiPhotonJets_histo->Clone("PSEUDODATA_DiPhotonJets_total_histo");
+	//--- PSEUDODATA_DiPhotonJets_total_histo->Sumw2();
+	PSEUDODATA_DiPhotonJets_total_histo->SetLineColor(1);
+	PSEUDODATA_DiPhotonJets_total_histo->SetFillColor(kGray+2);  //for colors comment out Sumw2 in code
 
-		DATA_RR_Run2012C_22Jan2013_histo=(TH1F*)DATA_RR_Run2012C_22Jan2013_file->Get(titlehisto);
-		DATA_RR_Run2012C_22Jan2013_histo->Rebin(rebin);
+	//--- PSEUDODATA MC background QCD_Pt_x_y EMEnriched ----------------------------------	
+	PSEUDODATA_QCD_Pt_20_30_EMEnriched_histo=(TH1F*)PSEUDODATA_QCD_Pt_20_30_EMEnriched_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_20_30_EMEnriched_histo->Rebin(rebin);
 
-		DATA_RR_Run2012D_22Jan2013_histo=(TH1F*)DATA_RR_Run2012D_22Jan2013_file->Get(titlehisto);
-		DATA_RR_Run2012D_22Jan2013_histo->Rebin(rebin);
+	PSEUDODATA_QCD_Pt_30_80_EMEnriched_histo=(TH1F*)PSEUDODATA_QCD_Pt_30_80_EMEnriched_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_30_80_EMEnriched_histo->Rebin(rebin);
 
-		cout << "DATA_RR_Run2012A_22Jan2013 entries = " << DATA_RR_Run2012A_22Jan2013_histo->Integral() << endl;  
-		cout << "DATA_RR_Run2012B_22Jan2013 entries = " << DATA_RR_Run2012B_22Jan2013_histo->Integral() << endl;  
-		cout << "DATA_RR_Run2012C_22Jan2013 entries = " << DATA_RR_Run2012C_22Jan2013_histo->Integral() << endl;  
-		cout << "DATA_RR_Run2012D_22Jan2013 entries = " << DATA_RR_Run2012D_22Jan2013_histo->Integral() << endl;  
-		cout << endl;	
-	
-		DATA_ReReco_total_histo = (TH1F*) DATA_RR_Run2012A_22Jan2013_histo->Clone("DATA_ReReco_total_histo");
-		DATA_ReReco_total_histo->Add(DATA_RR_Run2012B_22Jan2013_histo);
-		DATA_ReReco_total_histo->Add(DATA_RR_Run2012C_22Jan2013_histo);
-		DATA_ReReco_total_histo->Add(DATA_RR_Run2012D_22Jan2013_histo);
-		}
-	else {
-		//--- data PromptReco-------------------------------------------------------
-		DATA_PR_Run2012A_13Jul2012_histo=(TH1F*)DATA_PR_Run2012A_13Jul2012_file->Get(titlehisto);
-		DATA_PR_Run2012A_13Jul2012_histo->Rebin(rebin);
+	PSEUDODATA_QCD_Pt_80_170_EMEnriched_histo=(TH1F*)PSEUDODATA_QCD_Pt_80_170_EMEnriched_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_80_170_EMEnriched_histo->Rebin(rebin);
 
-		DATA_PR_Run2012A_recover_06Aug2012_histo=(TH1F*)DATA_PR_Run2012A_recover_06Aug2012_file->Get(titlehisto);
-		DATA_PR_Run2012A_recover_06Aug2012_histo->Rebin(rebin);
+	PSEUDODATA_QCD_Pt_170_250_EMEnriched_histo=(TH1F*)PSEUDODATA_QCD_Pt_170_250_EMEnriched_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_170_250_EMEnriched_histo->Rebin(rebin);
 
-		DATA_PR_Run2012B_13Jul2012_histo=(TH1F*)DATA_PR_Run2012B_13Jul2012_file->Get(titlehisto);
-		DATA_PR_Run2012B_13Jul2012_histo->Rebin(rebin);
+	PSEUDODATA_QCD_Pt_250_350_EMEnriched_histo=(TH1F*)PSEUDODATA_QCD_Pt_250_350_EMEnriched_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_250_350_EMEnriched_histo->Rebin(rebin);
 
-		DATA_PR_Run2012C_24Aug2012_histo=(TH1F*)DATA_PR_Run2012C_24Aug2012_file->Get(titlehisto);
-		DATA_PR_Run2012C_24Aug2012_histo->Rebin(rebin);
+	PSEUDODATA_QCD_Pt_350_EMEnriched_histo=(TH1F*)PSEUDODATA_QCD_Pt_350_EMEnriched_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_350_EMEnriched_histo->Rebin(rebin);
 
-		DATA_PR_Run2012C_EcalRecover_11Dec2012_histo=(TH1F*)DATA_PR_Run2012C_EcalRecover_11Dec2012_file->Get(titlehisto);
-		DATA_PR_Run2012C_EcalRecover_11Dec2012_histo->Rebin(rebin);
+	cout << "PSEUDODATA_QCD_Pt_20_30_EMEnriched entries = " << PSEUDODATA_QCD_Pt_20_30_EMEnriched_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_30_80_EMEnriched entries = " << PSEUDODATA_QCD_Pt_30_80_EMEnriched_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_80_170_EMEnriched entries = " << PSEUDODATA_QCD_Pt_80_170_EMEnriched_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_170_250_EMEnriched entries = " << PSEUDODATA_QCD_Pt_170_250_EMEnriched_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_250_350_EMEnriched entries = " << PSEUDODATA_QCD_Pt_250_350_EMEnriched_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_350_EMEnriched entries = " << PSEUDODATA_QCD_Pt_350_EMEnriched_histo->Integral() << endl;
+	cout << endl;
 
-		DATA_PR_Run2012C_PromptReco_histo=(TH1F*)DATA_PR_Run2012C_PromptReco_file->Get(titlehisto);
-		DATA_PR_Run2012C_PromptReco_histo->Rebin(rebin);
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo = (TH1F*) PSEUDODATA_QCD_Pt_20_30_EMEnriched_histo->Clone("PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo");
+	//	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Sumw2();
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Add(PSEUDODATA_QCD_Pt_30_80_EMEnriched_histo);
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Add(PSEUDODATA_QCD_Pt_80_170_EMEnriched_histo);  
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Add(PSEUDODATA_QCD_Pt_170_250_EMEnriched_histo);  
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Add(PSEUDODATA_QCD_Pt_250_350_EMEnriched_histo);  
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Add(PSEUDODATA_QCD_Pt_350_EMEnriched_histo);  
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->SetLineColor(1);
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->SetFillColor(kMagenta+2);
 
-		DATA_PR_Run2012D_PromptReco_histo=(TH1F*)DATA_PR_Run2012D_PromptReco_file->Get(titlehisto);
-		DATA_PR_Run2012D_PromptReco_histo->Rebin(rebin);
 
-		cout << "DATA_PR_Run2012A_13Jul2012 entries = " << DATA_PR_Run2012A_13Jul2012_histo->Integral() << endl;  
-		cout << "DATA_PR_Run2012A_recover_06Aug2012 entries = " << DATA_PR_Run2012A_recover_06Aug2012_histo->Integral() << endl;  
-		cout << "DATA_PR_Run2012B_13Jul2012 entries = " << DATA_PR_Run2012B_13Jul2012_histo->Integral() << endl;  
-		cout << "DATA_PR_Run2012C_24Aug2012 entries = " << DATA_PR_Run2012C_24Aug2012_histo->Integral() << endl;  
-		cout << "DATA_PR_Run2012C_EcalRecover_11Dec2012 entries = " << DATA_PR_Run2012C_EcalRecover_11Dec2012_histo->Integral() << endl;  
-		cout << "DATA_PR_Run2012C_PromptReco entries = " << DATA_PR_Run2012C_PromptReco_histo->Integral() << endl;  
-		cout << "DATA_PR_Run2012D_PromptReco entries = " << DATA_PR_Run2012D_PromptReco_histo->Integral() << endl;  
-		cout << endl;	
-	
-		DATA_PromptReco_total_histo = (TH1F*) DATA_PR_Run2012A_13Jul2012_histo->Clone("DATA_PromptReco_total_histo");
-		DATA_PromptReco_total_histo->Add(DATA_PR_Run2012A_recover_06Aug2012_histo);
-		DATA_PromptReco_total_histo->Add(DATA_PR_Run2012B_13Jul2012_histo);
-		DATA_PromptReco_total_histo->Add(DATA_PR_Run2012C_24Aug2012_histo);
-		DATA_PromptReco_total_histo->Add(DATA_PR_Run2012C_EcalRecover_11Dec2012_histo);
-		DATA_PromptReco_total_histo->Add(DATA_PR_Run2012C_PromptReco_histo);
-		DATA_PromptReco_total_histo->Add(DATA_PR_Run2012D_PromptReco_histo);
-	}
-	TH1F *DATA_total_histo;
-	if (data_ReReco) {
-		DATA_total_histo = (TH1F*) DATA_ReReco_total_histo->Clone("DATA_total_histo");
-	}
-	else{
-		DATA_total_histo = (TH1F*) DATA_PromptReco_total_histo->Clone("DATA_total_histo");
-	}
+	//--- PSEUDODATA MC background PSEUDODATA_QCD_Pt_x_y BCtoE ----------------------------------
+	PSEUDODATA_QCD_Pt_20_30_BCtoE_histo=(TH1F*)PSEUDODATA_QCD_Pt_20_30_BCtoE_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_20_30_BCtoE_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_30_80_BCtoE_histo=(TH1F*)PSEUDODATA_QCD_Pt_30_80_BCtoE_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_30_80_BCtoE_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_80_170_BCtoE_histo=(TH1F*)PSEUDODATA_QCD_Pt_80_170_BCtoE_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_80_170_BCtoE_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_170_250_BCtoE_histo=(TH1F*)PSEUDODATA_QCD_Pt_170_250_BCtoE_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_170_250_BCtoE_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_250_350_BCtoE_histo=(TH1F*)PSEUDODATA_QCD_Pt_250_350_BCtoE_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_250_350_BCtoE_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_350_BCtoE_histo=(TH1F*)PSEUDODATA_QCD_Pt_350_BCtoE_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_350_BCtoE_histo->Rebin(rebin);
+
+	cout << "PSEUDODATA_QCD_Pt_20_30_BCtoE entries = " << PSEUDODATA_QCD_Pt_20_30_BCtoE_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_30_80_BCtoE entries = " << PSEUDODATA_QCD_Pt_30_80_BCtoE_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_80_170_BCtoE entries = " << PSEUDODATA_QCD_Pt_80_170_BCtoE_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_170_250_BCtoE entries = " << PSEUDODATA_QCD_Pt_170_250_BCtoE_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_250_350_BCtoE entries = " << PSEUDODATA_QCD_Pt_250_350_BCtoE_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_350_BCtoE entries = " << PSEUDODATA_QCD_Pt_350_BCtoE_histo->Integral() << endl;
+	cout << endl;
+
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo = (TH1F*) PSEUDODATA_QCD_Pt_20_30_BCtoE_histo->Clone("PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo");
+	//	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->Sumw2();
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->Add(PSEUDODATA_QCD_Pt_30_80_BCtoE_histo);
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->Add(PSEUDODATA_QCD_Pt_80_170_BCtoE_histo);  
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->Add(PSEUDODATA_QCD_Pt_170_250_BCtoE_histo);  
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->Add(PSEUDODATA_QCD_Pt_250_350_BCtoE_histo);  
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->Add(PSEUDODATA_QCD_Pt_350_BCtoE_histo);  
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->SetLineColor(1);
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->SetFillColor(kBlue-7);
+
+	PSEUDODATA_total_histo = (TH1F*) PSEUDODATA_GJets_HT_xToy_total_histo->Clone("PSEUDODATA_total_histo");
+	PSEUDODATA_total_histo->Add(PSEUDODATA_DiPhotonJets_total_histo);
+	PSEUDODATA_total_histo->Add(PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo);
+	PSEUDODATA_total_histo->Add(PSEUDODATA_QCD_Pt_350_BCtoE_histo);
 	
 	if(signal_MAD){				
 		//--- MC signal GJets_HT-xToy ----------------------------------------------
@@ -880,8 +969,39 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	cout << "========================" <<endl;	
 	cout << endl;
 	
-	if (data_ReReco) cout << "DATA ReReco total entries = " << DATA_ReReco_total_histo->Integral() << endl;
-	else cout << "DATA PromptReco total entries = " << DATA_PromptReco_total_histo->Integral() << endl;
+  double S, B, T, f;
+	S = PSEUDODATA_GJets_HT_xToy_total_histo->Integral() + PSEUDODATA_DiPhotonJets_total_histo->Integral();
+	B = PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Integral() + PSEUDODATA_QCD_Pt_350_BCtoE_histo->Integral();
+	T = PSEUDODATA_total_histo->Integral();
+	f = S/T;
+
+	cout << "PSEUDODATA Signal entries = " << S << endl;
+	cout << "PSEUDODATA Background entries = "<< B << endl;
+	cout << "PSEUDODATA Total entries = " << T << endl;
+	cout << "PSEUDODATA Signal/Total = " << f << endl;
+	cout << endl;
+
+	double NumBins;
+	NumBins = PSEUDODATA_total_histo->GetNbinsX();
+
+	vector<double> Signal, Background, Total;
+	for (int n = 1; n <= NumBins; n++) {
+	 	double S_bin, B_bin, T_bin;
+		S_bin = PSEUDODATA_GJets_HT_xToy_total_histo->GetBinContent(n) + PSEUDODATA_DiPhotonJets_total_histo->GetBinContent(n);
+		B_bin = PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->GetBinContent(n) + PSEUDODATA_QCD_Pt_350_BCtoE_histo->GetBinContent(n);
+		T_bin = PSEUDODATA_total_histo->GetBinContent(n);
+		Signal.push_back(S_bin);
+		Background.push_back(B_bin);
+		Total.push_back(T_bin);
+	}
+
+	for (int k = 1; k < NumBins; k++) {
+		cout << "Signal bin " << k << " = " << Signal.at(k) << endl; 
+		cout << "Background bin " << k << " = " << Background.at(k) << endl; 
+		cout << "Total bin " << k << " = " << Total.at(k) << endl; 
+		cout << "Signal/Total bin " << k << " = " << Signal.at(k)/Total.at(k) << endl; 
+		cout << "@@@@@@@@@@@@@@@@@@@@@@@" <<endl;	
+	}
 
 	cout << endl;
 	if(signal_MAD) cout << "GJets total entries = " << GJets_HT_xToy_total_histo->Integral() << endl;  
@@ -904,7 +1024,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	cout << endl;
 		
 	// ==================================== load Canvas
-	
+		
   TCanvas *Canva = new TCanvas(titlehisto,titlehisto);  
 	TPad* upperPad = new TPad("upperPad", "upperPad",.005, .25, .995, .995);
   TPad* lowerPad = new TPad("lowerPad", "lowerPad",.005, .005, .995, .2475);
@@ -931,7 +1051,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	}
 
 	TH1F *ratio_histo_NUM = new TH1F();
-	ratio_histo_NUM = (TH1F*) DATA_total_histo->Clone("ratio_histo_NUM");	
+	ratio_histo_NUM = (TH1F*) PSEUDODATA_total_histo->Clone("ratio_histo_NUM");	
 	ratio_histo_NUM->Sumw2();
 
 
@@ -966,18 +1086,18 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
   upperPad->cd();
 
 	if (x_min != -999 && x_max != -999){
-		if (x_max == DATA_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
+		if (x_max == PSEUDODATA_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
 		else X_max = x_max - (x_max-x_min)/Nbins;
-		if (x_min == DATA_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
+		if (x_min == PSEUDODATA_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
 		else X_min = x_min + (x_max-x_min)/Nbins;
 
-		DATA_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
+		PSEUDODATA_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
 	}
 
-	DATA_total_histo->SetMarkerSize(0.7);
-	DATA_total_histo->SetMarkerStyle(20);
-	DATA_total_histo->SetMinimum(0.1);
-	DATA_total_histo->Draw("E");
+	PSEUDODATA_total_histo->SetMarkerSize(0.7);
+	PSEUDODATA_total_histo->SetMarkerStyle(20);
+	PSEUDODATA_total_histo->SetMinimum(0.1);
+	PSEUDODATA_total_histo->Draw("E");
 
 	if (x_min != -999 && x_max != -999){
 		if (x_max == MC_stack->GetMaximum()) X_max = x_max;
@@ -991,24 +1111,23 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
 	}
 	
 	MC_stack->Draw("SAME");
-	DATA_total_histo->Draw("ESAME");
+	PSEUDODATA_total_histo->Draw("ESAME");
 	gPad->SetLogy();
 	if (logX){
 		gPad->SetLogx(); // for p_T plot	
 	}
-	DATA_total_histo->Draw("AXIS X+ Y+ SAME");
-	DATA_total_histo->Draw("AXIS SAME");
-	DATA_total_histo->GetXaxis()->SetTitle(namevariable1);
-	DATA_total_histo->GetXaxis()->SetTitleSize(0.05);
-	DATA_total_histo->GetYaxis()->SetTitle("Events");
+	PSEUDODATA_total_histo->Draw("AXIS X+ Y+ SAME");
+	PSEUDODATA_total_histo->Draw("AXIS SAME");
+	PSEUDODATA_total_histo->GetXaxis()->SetTitle(namevariable1);
+	PSEUDODATA_total_histo->GetXaxis()->SetTitleSize(0.05);
+	PSEUDODATA_total_histo->GetYaxis()->SetTitle("Events");
 
 	TLegend *leg =new TLegend(0.5475,0.6124,0.8322,0.8753);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
- 	if (data_ReReco) leg->AddEntry(DATA_total_histo,"Data","pL");
-	else leg->AddEntry(DATA_total_histo,"Data PromptReco","pL");
-		if(signal_MAD){
+ 	leg->AddEntry(PSEUDODATA_total_histo,"Pseudo-Data","pL");
+	if(signal_MAD){
 		leg->AddEntry(GJets_HT_xToy_total_histo,"#gamma + jets","f");
 	}
 	else{
@@ -1036,8 +1155,7 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
   text_2->SetFillColor(0);
   text_2->SetFillStyle(0);
   text_2->SetBorderSize(0);
-  if (data_ReReco) text_2->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
-  else text_2->AddText("#sqrt{s} = 8 TeV, L = 19.03 fb^{-1}");
+  text_2->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
   text_2->SetTextAlign(11);
   text_2->Draw();
 
@@ -1101,192 +1219,29 @@ void comparestack(const char* titleh, const char* namevariable, const int rebin,
   Canva->SaveAs((folder_s + geo_s + SB_folder + root_folder + titleh + root_string).c_str());
 	Canva->Close();
 
-	// ==================================== report
-
-	cout << "Writing report file... " << endl;
-	ofstream report;
-	
-	stringstream ss_t;
-	char txt_char[200];
-	ss_t << folder_s + geo_s + SB_folder + txt_folder + titleh + txt_string;
-	ss_t >> txt_char;
-	
-	report.open(txt_char);
-	
-	report << endl;
-	if (data_ReReco) {
-		report << "data RR file 1 is " << DATA_RR_Run2012A_22Jan2013_name << endl;
-		report << "data RR file 2 is " << DATA_RR_Run2012B_22Jan2013_name << endl;
-		report << "data RR file 3 is " << DATA_RR_Run2012C_22Jan2013_name << endl;
-		report << "data RR file 4 is " << DATA_RR_Run2012D_22Jan2013_name << endl;
-	}
-	else {
-		report << "data PR file 11 is " << DATA_PR_Run2012A_13Jul2012_name << endl;
-		report << "data PR file 12 is " << DATA_PR_Run2012A_recover_06Aug2012_name << endl;
-		report << "data PR file 13 is " << DATA_PR_Run2012B_13Jul2012_name << endl;
-		report << "data PR file 14 is " << DATA_PR_Run2012C_24Aug2012_name << endl;
-		report << "data PR file 15 is " << DATA_PR_Run2012C_EcalRecover_11Dec2012_name << endl;
-		report << "data PR file 16 is " << DATA_PR_Run2012C_PromptReco_name << endl;
-		report << "data PR file 17 is " << DATA_PR_Run2012D_PromptReco_name << endl;
-	}
-
-	if(signal_MAD){
-		report << endl;
-		report << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
-		report << "GJets file 22 is: " << GJets_HT_100To200_name << endl;	
-		report << "GJets file 23 is: " << GJets_HT_200To400_name << endl;
-		report << "GJets file 24 is: " << GJets_HT_400ToInf_name << endl;
-	}
-	
-	else {
-		report << endl;
-		report << "G file 31 is: " << G_Pt_15to30_name << endl;
-		report << "G file 32 is: " << G_Pt_30to50_name << endl;
-		report << "G file 33 is: " << G_Pt_50to80_name << endl;
-		report << "G file 34 is: " << G_Pt_80to120_name << endl;
-		report << "G file 35 is: " << G_Pt_120to170_name << endl;
-		report << "G file 36 is: " << G_Pt_170to300_name << endl;
-		report << "G file 37 is: " << G_Pt_300to470_name << endl;
-		report << "G file 38 is: " << G_Pt_470to800_name << endl;
-		report << "G file 39 is: " << G_Pt_800to1400_name << endl;
-		report << "G file 40 is: " << G_Pt_1400to1800_name << endl;
-		report << "G file 41 is: " << G_Pt_1800_name << endl;
-	}
-
-	report << endl;
-	report << "DiPhotonJets file 51 is: " << DiPhotonJets_name << endl;
-
-	if (!background_QCD){
-		report << endl;	
-		report << "QCD EMEnriched file 61 is: " << QCD_Pt_20_30_EMEnriched_name << endl;
-		report << "QCD EMEnriched file 62 is: " << QCD_Pt_30_80_EMEnriched_name << endl;
-		report << "QCD EMEnriched file 63 is: " << QCD_Pt_80_170_EMEnriched_name << endl;
-		report << "QCD EMEnriched file 64 is: " << QCD_Pt_170_250_EMEnriched_name << endl;
-		report << "QCD EMEnriched file 65 is: " << QCD_Pt_250_350_EMEnriched_name << endl;
-		report << "QCD EMEnriched file 66 is: " << QCD_Pt_350_EMEnriched_name << endl;
-		report << endl;
-		report << "QCD BCtoE file 71 is: " << QCD_Pt_20_30_BCtoE_name << endl;
-		report << "QCD BCtoE file 72 is: " << QCD_Pt_30_80_BCtoE_name << endl;
-		report << "QCD BCtoE file 73 is: " << QCD_Pt_80_170_BCtoE_name << endl;
-		report << "QCD BCtoE file 74 is: " << QCD_Pt_170_250_BCtoE_name << endl;
-		report << "QCD BCtoE file 75 is: " << QCD_Pt_250_350_BCtoE_name << endl;
-		report << "QCD BCtoE file 76 is: " << QCD_Pt_350_BCtoE_name << endl;	
-	}
-
-	else {
-		report << endl;	
-		report << "QCD file 81 is: " << QCD_HT_100To250_name << endl;
-		report << "QCD file 82 is: " << QCD_HT_250To500_name << endl;
-		report << "QCD file 83 is: " << QCD_HT_500To1000_name << endl;
-		report << "QCD file 84 is: " << QCD_HT_1000ToInf_name << endl;
-	}
-	report << endl;
-	report << "========================" <<endl;	
-	report << endl;	
-
- 	if (data_ReReco) {		
-		report << "DATA_RR_Run2012A_22Jan2013 entries = " << DATA_RR_Run2012A_22Jan2013_histo->Integral() << endl;  
-		report << "DATA_RR_Run2012B_22Jan2013 entries = " << DATA_RR_Run2012B_22Jan2013_histo->Integral() << endl;  
-		report << "DATA_RR_Run2012C_22Jan2013 entries = " << DATA_RR_Run2012C_22Jan2013_histo->Integral() << endl;  
-		report << "DATA_RR_Run2012D_22Jan2013 entries = " << DATA_RR_Run2012D_22Jan2013_histo->Integral() << endl;  
-	}
-	else {
-		report << "DATA_PR_Run2012A_13Jul2012 entries = " << DATA_PR_Run2012A_13Jul2012_histo->Integral() << endl;  
-		report << "DATA_PR_Run2012A_recover_06Aug2012 entries = " << DATA_PR_Run2012A_recover_06Aug2012_histo->Integral() << endl;  
-		report << "DATA_PR_Run2012B_13Jul2012 entries = " << DATA_PR_Run2012B_13Jul2012_histo->Integral() << endl;  
-		report << "DATA_PR_Run2012C_24Aug2012 entries = " << DATA_PR_Run2012C_24Aug2012_histo->Integral() << endl;  
-		report << "DATA_PR_Run2012C_EcalRecover_11Dec2012 entries = " << DATA_PR_Run2012C_EcalRecover_11Dec2012_histo->Integral() << endl;  
-		report << "DATA_PR_Run2012C_PromptReco entries = " << DATA_PR_Run2012C_PromptReco_histo->Integral() << endl;  
-		report << "DATA_PR_Run2012D_PromptReco entries = " << DATA_PR_Run2012D_PromptReco_histo->Integral() << endl;  
-	}
-	if(signal_MAD) {
-		report << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
-		report << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
-		report << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
-		report << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
-	}
-	else {
-		report << "G_Pt_15to30 entries = " << G_Pt_15to30_histo->Integral() << endl;
-		report << "G_Pt_30to50 entries = " << G_Pt_30to50_histo->Integral() << endl;
-		report << "G_Pt_50to80 entries = " << G_Pt_50to80_histo->Integral() << endl;
-		report << "G_Pt_80to120 entries = " << G_Pt_80to120_histo->Integral() << endl;
-		report << "G_Pt_120to170 entries = " << G_Pt_120to170_histo->Integral() << endl;
-		report << "G_Pt_170to300 entries = " << G_Pt_170to300_histo->Integral() << endl;
-		report << "G_Pt_300to470 entries = " << G_Pt_300to470_histo->Integral() << endl;
-		report << "G_Pt_470to800 entries = " << G_Pt_470to800_histo->Integral() << endl;
-		report << "G_Pt_800to1400 entries = " << G_Pt_800to1400_histo->Integral() << endl;
-		report << "G_Pt_1400to1800 entries = " << G_Pt_1400to1800_histo->Integral() << endl;
-		report << "G_Pt_1800 entries = " << G_Pt_1800_histo->Integral() << endl;
-	}
-	
-	report << "DiPhotonJets entries = " << DiPhotonJets_histo->Integral() << endl;
-
-	if (!background_QCD){
-		report << "QCD_Pt_20_30_EMEnriched entries = " << QCD_Pt_20_30_EMEnriched_histo->Integral() << endl;
-		report << "QCD_Pt_30_80_EMEnriched entries = " << QCD_Pt_30_80_EMEnriched_histo->Integral() << endl;
-		report << "QCD_Pt_80_170_EMEnriched entries = " << QCD_Pt_80_170_EMEnriched_histo->Integral() << endl;
-		report << "QCD_Pt_170_250_EMEnriched entries = " << QCD_Pt_170_250_EMEnriched_histo->Integral() << endl;
-		report << "QCD_Pt_250_350_EMEnriched entries = " << QCD_Pt_250_350_EMEnriched_histo->Integral() << endl;
-		report << "QCD_Pt_350_EMEnriched entries = " << QCD_Pt_350_EMEnriched_histo->Integral() << endl;
-		report << endl;
-		report << "QCD_Pt_20_30_BCtoE entries = " << QCD_Pt_20_30_BCtoE_histo->Integral() << endl;
-		report << "QCD_Pt_30_80_BCtoE entries = " << QCD_Pt_30_80_BCtoE_histo->Integral() << endl;
-		report << "QCD_Pt_80_170_BCtoE entries = " << QCD_Pt_80_170_BCtoE_histo->Integral() << endl;
-		report << "QCD_Pt_170_250_BCtoE entries = " << QCD_Pt_170_250_BCtoE_histo->Integral() << endl;
-		report << "QCD_Pt_250_350_BCtoE entries = " << QCD_Pt_250_350_BCtoE_histo->Integral() << endl;
-		report << "QCD_Pt_350_BCtoE entries = " << QCD_Pt_350_BCtoE_histo->Integral() << endl;
-	}
-	else {	
-		report << "QCD_HT_100To250 entries " << QCD_HT_100To250_histo->Integral() << endl;  
-		report << "QCD_HT_250To500 entries " << QCD_HT_250To500_histo->Integral() << endl;  
-		report << "QCD_HT_500To1000 entries " << QCD_HT_500To1000_histo->Integral() << endl;
-		report << "QCD_HT_1000ToInf entries " << QCD_HT_1000ToInf_histo->Integral() << endl;
-	}
-
-	report << endl;
-	report << "========================" <<endl;	
-	report << endl;	
-
- 	if (data_ReReco) report << "DATA ReReco total entries = " << DATA_ReReco_total_histo->Integral() << endl;
- 	else report << "DATA PromptReco total entries = " << DATA_PromptReco_total_histo->Integral() << endl;
-	
-	report << endl;
-	if(signal_MAD) report << "GJets total entries = " << GJets_HT_xToy_total_histo->Integral() << endl;  
-	else report << "G total entries = " << G_Pt_XtoY_total_histo->Integral() << endl;
-
-	report << endl;
-	report << "DiPhotonJets total entries = " << DiPhotonJets_total_histo->Integral() << endl;
-
-	report << endl;
-	if (!background_QCD){	  
-	report << "QCD EMEnriched total entries = " << QCD_Pt_x_y_EMEnriched_total_histo->Integral() << endl;  
-	report << "QCD BCtoE total entries = " << QCD_Pt_x_y_BCtoE_total_histo->Integral() << endl;
-	report << "QCD (EMEnriched + BCtoE) total entries = " << QCD_Pt_x_y_EMEnriched_total_histo->Integral() +
-	                                                       QCD_Pt_x_y_BCtoE_total_histo->Integral() << endl;
-	}	 
-	else report << "QCD HT total entries = " << QCD_HT_xToy_total_histo->Integral() << endl;  
-	report << endl;
-	
-	report.close();
-	cout << "...writing report file finished. " << endl;
 
 	// ==================================== close files
 
- 	if (data_ReReco) {
-		DATA_RR_Run2012A_22Jan2013_file->Close();
-		DATA_RR_Run2012B_22Jan2013_file->Close();
-		DATA_RR_Run2012C_22Jan2013_file->Close();
-		DATA_RR_Run2012D_22Jan2013_file->Close();
-	}
-	else{
-		DATA_PR_Run2012A_13Jul2012_file->Close();
-		DATA_PR_Run2012A_recover_06Aug2012_file->Close();
-		DATA_PR_Run2012B_13Jul2012_file->Close();
-		DATA_PR_Run2012C_24Aug2012_file->Close();
-		DATA_PR_Run2012C_EcalRecover_11Dec2012_file->Close();
-		DATA_PR_Run2012C_PromptReco_file->Close();
-		DATA_PR_Run2012D_PromptReco_file->Close();
-	}
+		PSEUDODATA_GJets_HT_40To100_file->Close();	
+		PSEUDODATA_GJets_HT_100To200_file->Close();	
+		PSEUDODATA_GJets_HT_200To400_file->Close();
+		PSEUDODATA_GJets_HT_400ToInf_file->Close(); 
+	
+		PSEUDODATA_DiPhotonJets_file->Close();
+
+		PSEUDODATA_QCD_Pt_20_30_EMEnriched_file->Close();
+		PSEUDODATA_QCD_Pt_30_80_EMEnriched_file->Close();
+		PSEUDODATA_QCD_Pt_80_170_EMEnriched_file->Close();
+		PSEUDODATA_QCD_Pt_170_250_EMEnriched_file->Close();
+		PSEUDODATA_QCD_Pt_250_350_EMEnriched_file->Close();
+		PSEUDODATA_QCD_Pt_350_EMEnriched_file->Close();
+
+		PSEUDODATA_QCD_Pt_20_30_BCtoE_file->Close();
+		PSEUDODATA_QCD_Pt_30_80_BCtoE_file->Close();
+		PSEUDODATA_QCD_Pt_80_170_BCtoE_file->Close();
+		PSEUDODATA_QCD_Pt_170_250_BCtoE_file->Close();
+		PSEUDODATA_QCD_Pt_250_350_BCtoE_file->Close();
+		PSEUDODATA_QCD_Pt_350_BCtoE_file->Close();
 
 	if(signal_MAD){	
 		GJets_HT_40To100_file->Close();	

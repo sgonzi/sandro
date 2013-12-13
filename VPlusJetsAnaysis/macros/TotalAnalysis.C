@@ -280,3 +280,34 @@ void GENAnalysis(){
 	TotalAnalysis_DiPhotonJets();
 }
 
+
+void FastAnalysis_1(){
+	bool RR_d = false;
+	RR_d = ReReco_data(RR_d);
+	if (RR_d) TotalAnalysis_dataReReco();
+	else TotalAnalysis_dataPromptReco();
+
+	bool s_MAD = false;
+	s_MAD = signal_MAD(s_MAD);
+	if (s_MAD) TotalAnalysis_GJets_HT_xToy();
+	else TotalAnalysis_G_Pt_XtoY();
+
+	TotalAnalysis_DiPhotonJets();
+
+}
+
+
+void resto_1(){
+
+	GJetsAnalyzer MC_GJets_HT_100To200(0,22);
+	MC_GJets_HT_100To200.Loop();
+
+	GJetsAnalyzer MC_GJets_HT_200To400(0,23);
+	MC_GJets_HT_200To400.Loop();
+	
+	GJetsAnalyzer MC_GJets_HT_400ToInf(0,24);
+	MC_GJets_HT_400ToInf.Loop();
+	
+	TotalAnalysis_DiPhotonJets();
+
+}

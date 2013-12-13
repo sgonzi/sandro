@@ -1,0 +1,1714 @@
+// 
+#include <iostream>
+
+#include <TROOT.h>
+#include <TFile.h>
+#include <stdio.h>
+#include <TH1.h>
+#include <THStack.h>
+#include <TGraph.h>
+#include <TGraphErrors.h>
+#include <TStyle.h>
+#include <TCanvas.h>
+#include <TLegend.h>
+#include <TPaveText.h>
+#include <TPad.h>
+#include <TBox.h>
+#include <TLine.h>
+#include <sstream>
+#include <TMath.h>
+#include "TF1.h"
+#include <TLatex.h>
+#include <vector>
+
+#if !defined(__CINT__) && !defined(__MAKECINT__)
+#include "FWCore/Utilities/interface/Exception.h"
+#endif
+
+using namespace std;
+
+void setMYStyle() {
+
+  TStyle *myStyle = new TStyle("MYStyle","My Style");
+
+// For the canvas:
+  myStyle->SetCanvasBorderMode(0);
+  myStyle->SetCanvasColor(kWhite);
+  myStyle->SetCanvasDefH(600); //Height of canvas
+  myStyle->SetCanvasDefW(600); //Width of canvas
+  myStyle->SetCanvasDefX(0);   //POsition on screen
+  myStyle->SetCanvasDefY(0);
+
+// For the Pad:
+  myStyle->SetPadBorderMode(0);
+  myStyle->SetPadColor(kWhite);
+  myStyle->SetPadGridX(false);
+  myStyle->SetPadGridY(false);
+  myStyle->SetGridColor(0);
+  myStyle->SetGridStyle(3);
+  myStyle->SetGridWidth(1);
+
+// For the frame:
+  myStyle->SetFrameBorderMode(0);
+  myStyle->SetFrameBorderSize(1);
+  myStyle->SetFrameFillColor(0);
+  myStyle->SetFrameFillStyle(0);
+  myStyle->SetFrameLineColor(1);
+  myStyle->SetFrameLineStyle(1);
+  myStyle->SetFrameLineWidth(1);
+
+// For the histo:
+  myStyle->SetHistLineColor(1);
+  myStyle->SetHistLineStyle(0);
+  myStyle->SetHistLineWidth(1);
+  myStyle->SetEndErrorSize(2);
+  myStyle->SetErrorX(0.);
+  myStyle->SetMarkerStyle(20);
+
+//For the fit/function:
+  myStyle->SetOptFit(1);
+  myStyle->SetFitFormat("5.4g");
+  myStyle->SetFuncColor(2);
+  myStyle->SetFuncStyle(1);
+  myStyle->SetFuncWidth(1);
+
+//For the date:
+  myStyle->SetOptDate(0);
+
+// For the statistics box:
+  myStyle->SetOptFile(0);
+  myStyle->SetOptStat(0); // To display the mean and RMS:   SetOptStat("mr");
+  myStyle->SetStatColor(kWhite);
+  myStyle->SetStatFont(42);
+  myStyle->SetStatFontSize(0.025);
+  myStyle->SetStatTextColor(1);
+  myStyle->SetStatFormat("6.4g");
+  myStyle->SetStatBorderSize(1);
+  myStyle->SetStatH(0.1);
+  myStyle->SetStatW(0.15);
+
+// Margins:
+  myStyle->SetPadTopMargin(0.07);
+  myStyle->SetPadBottomMargin(0.13);
+  myStyle->SetPadLeftMargin(0.13);
+  myStyle->SetPadRightMargin(0.13);
+
+// For the Global title:
+  myStyle->SetOptTitle(0);
+  myStyle->SetTitleFont(42);
+  myStyle->SetTitleColor(1);
+  myStyle->SetTitleTextColor(1);
+  myStyle->SetTitleFillColor(10);
+  myStyle->SetTitleFontSize(0.05);
+
+// For the axis titles:
+  myStyle->SetTitleColor(1, "XYZ");
+  myStyle->SetTitleFont(42, "XYZ");
+  myStyle->SetTitleSize(0.06, "XYZ");
+  myStyle->SetTitleXOffset(0.9);
+  myStyle->SetTitleYOffset(1.);
+
+// For the axis labels:
+  myStyle->SetLabelColor(1, "XYZ");
+  myStyle->SetLabelFont(42, "XYZ");
+  myStyle->SetLabelOffset(0.007, "XYZ");
+  myStyle->SetLabelSize(0.045, "XYZ");
+
+// For the axis:
+  myStyle->SetAxisColor(1, "XYZ");
+  myStyle->SetStripDecimals(kTRUE);
+  myStyle->SetTickLength(0.03, "XYZ");
+  myStyle->SetNdivisions(510, "XYZ");
+  myStyle->SetPadTickX(1);  // To get tick marks on the opposite side of the frame
+  myStyle->SetPadTickY(1);
+
+// Change for log plots:
+  myStyle->SetOptLogx(0);
+  myStyle->SetOptLogy(0);
+  myStyle->SetOptLogz(0);
+
+// Postscript options:
+  myStyle->SetPaperSize(20.,20.);
+
+  myStyle->cd();
+}
+
+
+void Closure_templates(const char* titleh, const char* namevariable, const int rebin, const double x_min, const double x_max){
+
+  // Usage is: .L comparestack.C+
+  //       ie: comparestack("SelectedPhotons_Pt_1_", "p_{T}^{#gamma_{1}} [GeV/#font[12]{c}]", 1);
+
+	setMYStyle();
+	
+	// ==================================== choose the tools
+
+	string folder = "Closure_20_results_2013_12_03";         // analysis folder
+
+	char geo[100] = "barrel";                // "barrel", "endcaps" or "total"
+	                                         
+	bool inv_sigmaietaieta = false;          // inverted sigmaietaieta cut
+	bool inv_isolation = false;              // inverted isolation set cut
+
+	bool signal_MAD = true;                  // true: signal = MADGRAPH; false: signal = PYTHIA
+	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
+	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
+
+	Int_t itype = 20;                        // it identifies histos with different analysis 
+
+
+	// ==================================== definitions
+
+	std::vector <string> sample_NORMAL;
+	sample_NORMAL.push_back("MC_SIG");
+	sample_NORMAL.push_back("MC_BACK");
+	sample_NORMAL.push_back("PSEUDODATA");
+
+	std::vector<string> sample_INVERTED;
+	sample_INVERTED.push_back("MC_BACK_INV");
+	sample_INVERTED.push_back("PSEUDODATA_INV");
+
+	std::vector <string> list;
+	if (!inv_sigmaietaieta && !inv_isolation) {
+		for (unsigned i=0; i<sample_NORMAL.size(); i++){
+			list.push_back(sample_NORMAL.at(i));
+		}
+	}	
+	else if ((inv_sigmaietaieta && !inv_isolation) || (!inv_sigmaietaieta && inv_isolation)){
+		for (unsigned j=0; j<sample_INVERTED.size(); j++){
+			list.push_back(sample_INVERTED.at(j));
+		}
+	}	
+	else cout << "ERROR: you are trying to invert both SIGMAIETAIETA and ISOLATION cuts" << endl << endl;
+ 
+	string sample;
+	for (unsigned k=0; k<list.size(); k++){
+
+		sample = list.at(k);
+
+		// ==================================== string names
+
+		stringstream ss_g;
+		string Geo;
+		ss_g << geo;
+		ss_g >> Geo;
+		string geo_s = Geo + "/";
+		string folder_s = folder + "/";
+		string SB_folder;
+		if (signal_MAD && background_QCD) {
+			SB_folder = "sM1_bQ1/";
+		}
+		else if (signal_MAD && !background_QCD) {
+			SB_folder = "sM1_bQ0/";
+		}
+		else if (!signal_MAD && background_QCD) {
+			SB_folder = "sM0_bQ1/";
+		}
+		else {
+			SB_folder = "sM0_bQ0/";
+		}
+		string out_files = "output_files/";
+		string fit_pdf_folder = "fit_pdf_plots/";
+		string pdf_string = ".pdf";
+		string fit_root_folder = "fit_root_plots/";
+		string root_string = ".root";
+		string inverted = "_inv";
+		string sigmaietaieta_s = "_sigmaietaieta";
+		string isolation_s = "_isolation";
+		if (inv_sigmaietaieta && !inv_isolation) {
+			root_string = inverted + sigmaietaieta_s + root_string;
+		}
+		else if (!inv_sigmaietaieta && inv_isolation) {
+			root_string = inverted + isolation_s + root_string;
+		}
+		else {
+			root_string = root_string;
+		}
+
+		stringstream ss_r;
+		char root_char[200];
+		ss_r << root_string;
+		ss_r >> root_char;
+
+		string address = folder_s + geo_s + out_files;
+
+
+		// ==================================== exception controls
+
+		if (inv_sigmaietaieta && inv_isolation){
+			cout << "ERROR: you are trying to invert both SIGMAIETAIETA and ISOLATION cuts" << endl << endl;
+			throw cms::Exception("WrongBool");
+		}
+		if (!(Geo == "barrel" || Geo == "endcaps" || Geo == "total")) {
+			cout << "ERROR: Wrong geometry string (only \"barrel\" or \"endcaps\" or \"total\"). You wrote: \"" << geo << "\"" << endl << endl;
+			throw cms::Exception("WrongString");
+		}
+
+	// ==================================== assign files names
+
+	Char_t PSEUDODATA_GJets_HT_40To100_name[100];
+	Char_t PSEUDODATA_GJets_HT_100To200_name[100];	
+	Char_t PSEUDODATA_GJets_HT_200To400_name[100];
+	Char_t PSEUDODATA_GJets_HT_400ToInf_name[100];
+
+	Char_t PSEUDODATA_DiPhotonJets_name[100];
+
+	Char_t PSEUDODATA_QCD_Pt_20_30_EMEnriched_name[100];
+	Char_t PSEUDODATA_QCD_Pt_30_80_EMEnriched_name[100];
+	Char_t PSEUDODATA_QCD_Pt_80_170_EMEnriched_name[100];
+	Char_t PSEUDODATA_QCD_Pt_170_250_EMEnriched_name[100];
+	Char_t PSEUDODATA_QCD_Pt_250_350_EMEnriched_name[100];
+	Char_t PSEUDODATA_QCD_Pt_350_EMEnriched_name[100];
+
+	Char_t PSEUDODATA_QCD_Pt_20_30_BCtoE_name[100];
+	Char_t PSEUDODATA_QCD_Pt_30_80_BCtoE_name[100];
+	Char_t PSEUDODATA_QCD_Pt_80_170_BCtoE_name[100];
+	Char_t PSEUDODATA_QCD_Pt_170_250_BCtoE_name[100];
+	Char_t PSEUDODATA_QCD_Pt_250_350_BCtoE_name[100];
+	Char_t PSEUDODATA_QCD_Pt_350_BCtoE_name[100];
+					
+	Char_t GJets_HT_40To100_name[100];
+	Char_t GJets_HT_100To200_name[100];	
+	Char_t GJets_HT_200To400_name[100];
+	Char_t GJets_HT_400ToInf_name[100];
+
+	Char_t G_Pt_15to30_name[100];
+	Char_t G_Pt_30to50_name[100];
+	Char_t G_Pt_50to80_name[100];
+	Char_t G_Pt_80to120_name[100];	
+	Char_t G_Pt_120to170_name[100];
+	Char_t G_Pt_170to300_name[100];	
+	Char_t G_Pt_300to470_name[100];
+	Char_t G_Pt_470to800_name[100];
+	Char_t G_Pt_800to1400_name[100];
+	Char_t G_Pt_1400to1800_name[100];
+	Char_t G_Pt_1800_name[100];
+
+	Char_t DiPhotonJets_name[100];
+
+	Char_t QCD_Pt_20_30_EMEnriched_name[100];
+	Char_t QCD_Pt_30_80_EMEnriched_name[100];
+	Char_t QCD_Pt_80_170_EMEnriched_name[100];
+	Char_t QCD_Pt_170_250_EMEnriched_name[100];
+	Char_t QCD_Pt_250_350_EMEnriched_name[100];
+	Char_t QCD_Pt_350_EMEnriched_name[100];
+
+	Char_t QCD_Pt_20_30_BCtoE_name[100];
+	Char_t QCD_Pt_30_80_BCtoE_name[100];
+	Char_t QCD_Pt_80_170_BCtoE_name[100];
+	Char_t QCD_Pt_170_250_BCtoE_name[100];
+	Char_t QCD_Pt_250_350_BCtoE_name[100];
+	Char_t QCD_Pt_350_BCtoE_name[100];
+	
+	Char_t QCD_HT_100To250_name[100];
+	Char_t QCD_HT_250To500_name[100];
+	Char_t QCD_HT_500To1000_name[100];
+	Char_t QCD_HT_1000ToInf_name[100];
+
+
+	sprintf(PSEUDODATA_GJets_HT_40To100_name,"PSEUDODATA_MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_GJets_HT_100To200_name,"PSEUDODATA_MC_GJets_HT-100To200_histos_%d_%s%s",itype, geo, root_char);	
+	sprintf(PSEUDODATA_GJets_HT_200To400_name,"PSEUDODATA_MC_GJets_HT-200To400_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_GJets_HT_400ToInf_name,"PSEUDODATA_MC_GJets_HT-400ToInf_histos_%d_%s%s",itype, geo, root_char);
+
+	cout << "PSEUDODATA GJets file 121 is: " << PSEUDODATA_GJets_HT_40To100_name << endl;
+	cout << "PSEUDODATA GJets file 122 is: " << PSEUDODATA_GJets_HT_100To200_name << endl;	
+	cout << "PSEUDODATA GJets file 123 is: " << PSEUDODATA_GJets_HT_200To400_name << endl;
+	cout << "PSEUDODATA GJets file 124 is: " << PSEUDODATA_GJets_HT_400ToInf_name << endl;
+	cout << endl;
+	
+	sprintf(PSEUDODATA_DiPhotonJets_name,"PSEUDODATA_MC_DiPhotonJets_histos_%d_%s%s",itype, geo, root_char);
+	cout << "PSEUDODATA DiPhotonJets file 151 is: " << PSEUDODATA_DiPhotonJets_name << endl;
+	cout << endl;
+
+	sprintf(PSEUDODATA_QCD_Pt_20_30_EMEnriched_name,"PSEUDODATA_MC_QCD_Pt_20_30_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_30_80_EMEnriched_name,"PSEUDODATA_MC_QCD_Pt_30_80_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_80_170_EMEnriched_name,"PSEUDODATA_MC_QCD_Pt_80_170_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_170_250_EMEnriched_name,"PSEUDODATA_MC_QCD_Pt_170_250_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_250_350_EMEnriched_name,"PSEUDODATA_MC_QCD_Pt_250_350_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_350_EMEnriched_name,"PSEUDODATA_MC_QCD_Pt_350_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+
+	cout << "PSEUDODATA QCD EMEnriched file 161 is: " << PSEUDODATA_QCD_Pt_20_30_EMEnriched_name << endl;
+	cout << "PSEUDODATA QCD EMEnriched file 162 is: " << PSEUDODATA_QCD_Pt_30_80_EMEnriched_name << endl;
+	cout << "PSEUDODATA QCD EMEnriched file 163 is: " << PSEUDODATA_QCD_Pt_80_170_EMEnriched_name << endl;
+	cout << "PSEUDODATA QCD EMEnriched file 164 is: " << PSEUDODATA_QCD_Pt_170_250_EMEnriched_name << endl;
+	cout << "PSEUDODATA QCD EMEnriched file 165 is: " << PSEUDODATA_QCD_Pt_250_350_EMEnriched_name << endl;
+	cout << "PSEUDODATA QCD EMEnriched file 166 is: " << PSEUDODATA_QCD_Pt_350_EMEnriched_name << endl;
+	cout << endl;	
+	
+	sprintf(PSEUDODATA_QCD_Pt_20_30_BCtoE_name,"PSEUDODATA_MC_QCD_Pt_20_30_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_30_80_BCtoE_name,"PSEUDODATA_MC_QCD_Pt_30_80_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_80_170_BCtoE_name,"PSEUDODATA_MC_QCD_Pt_80_170_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_170_250_BCtoE_name,"PSEUDODATA_MC_QCD_Pt_170_250_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_250_350_BCtoE_name,"PSEUDODATA_MC_QCD_Pt_250_350_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+	sprintf(PSEUDODATA_QCD_Pt_350_BCtoE_name,"PSEUDODATA_MC_QCD_Pt_350_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+
+	cout << "PSEUDODATA QCD BCtoE file 171 is: " << PSEUDODATA_QCD_Pt_20_30_BCtoE_name << endl;
+	cout << "PSEUDODATA QCD BCtoE file 172 is: " << PSEUDODATA_QCD_Pt_30_80_BCtoE_name << endl;
+	cout << "PSEUDODATA QCD BCtoE file 173 is: " << PSEUDODATA_QCD_Pt_80_170_BCtoE_name << endl;
+	cout << "PSEUDODATA QCD BCtoE file 174 is: " << PSEUDODATA_QCD_Pt_170_250_BCtoE_name << endl;
+	cout << "PSEUDODATA QCD BCtoE file 175 is: " << PSEUDODATA_QCD_Pt_250_350_BCtoE_name << endl;
+	cout << "PSEUDODATA QCD BCtoE file 176 is: " << PSEUDODATA_QCD_Pt_350_BCtoE_name << endl;	
+	cout << endl;
+
+	
+	if(signal_MAD){
+		sprintf(GJets_HT_40To100_name,"MC_GJets_HT-40To100_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(GJets_HT_100To200_name,"MC_GJets_HT-100To200_histos_%d_%s%s",itype, geo, root_char);	
+		sprintf(GJets_HT_200To400_name,"MC_GJets_HT-200To400_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(GJets_HT_400ToInf_name,"MC_GJets_HT-400ToInf_histos_%d_%s%s",itype, geo, root_char);
+
+		cout << "GJets file 21 is: " << GJets_HT_40To100_name << endl;
+		cout << "GJets file 22 is: " << GJets_HT_100To200_name << endl;	
+		cout << "GJets file 23 is: " << GJets_HT_200To400_name << endl;
+		cout << "GJets file 24 is: " << GJets_HT_400ToInf_name << endl;
+		cout << endl;
+	}
+	else {
+		sprintf(G_Pt_15to30_name,"MC_G_Pt-15to30_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(G_Pt_30to50_name,"MC_G_Pt-30to50_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(G_Pt_50to80_name,"MC_G_Pt-50to80_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(G_Pt_80to120_name,"MC_G_Pt-80to120_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(G_Pt_120to170_name,"MC_G_Pt-120to170_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(G_Pt_170to300_name,"MC_G_Pt-170to300_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(G_Pt_300to470_name,"MC_G_Pt-300to470_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(G_Pt_470to800_name,"MC_G_Pt-470to800_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(G_Pt_800to1400_name,"MC_G_Pt-800to1400_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(G_Pt_1400to1800_name,"MC_G_Pt-1400to1800_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(G_Pt_1800_name,"MC_G_Pt-1800_histos_%d_%s%s",itype, geo, root_char);
+
+		cout << "G file 31 is: " << G_Pt_15to30_name << endl;
+		cout << "G file 32 is: " << G_Pt_30to50_name << endl;
+		cout << "G file 33 is: " << G_Pt_50to80_name << endl;
+		cout << "G file 34 is: " << G_Pt_80to120_name << endl;
+		cout << "G file 35 is: " << G_Pt_120to170_name << endl;
+		cout << "G file 36 is: " << G_Pt_170to300_name << endl;
+		cout << "G file 37 is: " << G_Pt_300to470_name << endl;
+		cout << "G file 38 is: " << G_Pt_470to800_name << endl;
+		cout << "G file 39 is: " << G_Pt_800to1400_name << endl;
+		cout << "G file 40 is: " << G_Pt_1400to1800_name << endl;
+		cout << "G file 41 is: " << G_Pt_1800_name << endl;
+		cout << endl;	
+	}
+	
+	sprintf(DiPhotonJets_name,"MC_DiPhotonJets_histos_%d_%s%s",itype, geo, root_char);
+	cout << "DiPhotonJets file 51 is: " << DiPhotonJets_name << endl;
+	cout << endl;
+
+	if (!background_QCD){	
+		sprintf(QCD_Pt_20_30_EMEnriched_name,"MC_QCD_Pt_20_30_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_Pt_30_80_EMEnriched_name,"MC_QCD_Pt_30_80_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_Pt_80_170_EMEnriched_name,"MC_QCD_Pt_80_170_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_Pt_170_250_EMEnriched_name,"MC_QCD_Pt_170_250_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_Pt_250_350_EMEnriched_name,"MC_QCD_Pt_250_350_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_Pt_350_EMEnriched_name,"MC_QCD_Pt_350_EMEnriched_histos_%d_%s%s",itype, geo, root_char);
+
+		cout << "QCD EMEnriched file 61 is: " << QCD_Pt_20_30_EMEnriched_name << endl;
+		cout << "QCD EMEnriched file 62 is: " << QCD_Pt_30_80_EMEnriched_name << endl;
+		cout << "QCD EMEnriched file 63 is: " << QCD_Pt_80_170_EMEnriched_name << endl;
+		cout << "QCD EMEnriched file 64 is: " << QCD_Pt_170_250_EMEnriched_name << endl;
+		cout << "QCD EMEnriched file 65 is: " << QCD_Pt_250_350_EMEnriched_name << endl;
+		cout << "QCD EMEnriched file 66 is: " << QCD_Pt_350_EMEnriched_name << endl;
+		cout << endl;	
+	
+		sprintf(QCD_Pt_20_30_BCtoE_name,"MC_QCD_Pt_20_30_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_Pt_30_80_BCtoE_name,"MC_QCD_Pt_30_80_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_Pt_80_170_BCtoE_name,"MC_QCD_Pt_80_170_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_Pt_170_250_BCtoE_name,"MC_QCD_Pt_170_250_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_Pt_250_350_BCtoE_name,"MC_QCD_Pt_250_350_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_Pt_350_BCtoE_name,"MC_QCD_Pt_350_BCtoE_histos_%d_%s%s",itype, geo, root_char);
+
+		cout << "QCD BCtoE file 71 is: " << QCD_Pt_20_30_BCtoE_name << endl;
+		cout << "QCD BCtoE file 72 is: " << QCD_Pt_30_80_BCtoE_name << endl;
+		cout << "QCD BCtoE file 73 is: " << QCD_Pt_80_170_BCtoE_name << endl;
+		cout << "QCD BCtoE file 74 is: " << QCD_Pt_170_250_BCtoE_name << endl;
+		cout << "QCD BCtoE file 75 is: " << QCD_Pt_250_350_BCtoE_name << endl;
+		cout << "QCD BCtoE file 76 is: " << QCD_Pt_350_BCtoE_name << endl;	
+		cout << endl;
+	}
+	else {	
+		sprintf(QCD_HT_100To250_name,"MC_QCD_HT-100To250_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_HT_250To500_name,"MC_QCD_HT-250To500_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_HT_500To1000_name,"MC_QCD_HT-500To1000_histos_%d_%s%s",itype, geo, root_char);
+		sprintf(QCD_HT_1000ToInf_name,"MC_QCD_HT-1000ToInf_histos_%d_%s%s",itype, geo, root_char);
+
+		cout << "QCD file 81 is: " << QCD_HT_100To250_name << endl;
+		cout << "QCD file 82 is: " << QCD_HT_250To500_name << endl;
+		cout << "QCD file 83 is: " << QCD_HT_500To1000_name << endl;
+		cout << "QCD file 84 is: " << QCD_HT_1000ToInf_name << endl;
+		cout << endl;	
+	}
+
+	// ==================================== load TFiles
+
+	TFile *PSEUDODATA_GJets_HT_40To100_file;
+	TFile *PSEUDODATA_GJets_HT_100To200_file;	
+	TFile *PSEUDODATA_GJets_HT_200To400_file;
+	TFile *PSEUDODATA_GJets_HT_400ToInf_file;
+
+	TFile *PSEUDODATA_DiPhotonJets_file;
+
+	TFile *PSEUDODATA_QCD_Pt_20_30_EMEnriched_file; 
+	TFile *PSEUDODATA_QCD_Pt_30_80_EMEnriched_file;
+	TFile *PSEUDODATA_QCD_Pt_80_170_EMEnriched_file;
+	TFile *PSEUDODATA_QCD_Pt_170_250_EMEnriched_file;
+	TFile *PSEUDODATA_QCD_Pt_250_350_EMEnriched_file;
+	TFile *PSEUDODATA_QCD_Pt_350_EMEnriched_file;
+
+	TFile *PSEUDODATA_QCD_Pt_20_30_BCtoE_file; 
+	TFile *PSEUDODATA_QCD_Pt_30_80_BCtoE_file;
+	TFile *PSEUDODATA_QCD_Pt_80_170_BCtoE_file;
+	TFile *PSEUDODATA_QCD_Pt_170_250_BCtoE_file;
+	TFile *PSEUDODATA_QCD_Pt_250_350_BCtoE_file;
+	TFile *PSEUDODATA_QCD_Pt_350_BCtoE_file;
+
+	TFile *GJets_HT_40To100_file;
+	TFile *GJets_HT_100To200_file;	
+	TFile *GJets_HT_200To400_file;
+	TFile *GJets_HT_400ToInf_file;
+
+	TFile *G_Pt_15to30_file;
+	TFile *G_Pt_30to50_file;
+	TFile *G_Pt_50to80_file;
+	TFile *G_Pt_80to120_file;
+	TFile *G_Pt_120to170_file;
+	TFile *G_Pt_170to300_file;
+	TFile *G_Pt_300to470_file;
+	TFile *G_Pt_470to800_file;
+	TFile *G_Pt_800to1400_file;
+	TFile *G_Pt_1400to1800_file;
+	TFile *G_Pt_1800_file;
+
+	TFile *DiPhotonJets_file;
+
+	TFile *QCD_Pt_20_30_EMEnriched_file; 
+	TFile *QCD_Pt_30_80_EMEnriched_file;
+	TFile *QCD_Pt_80_170_EMEnriched_file;
+	TFile *QCD_Pt_170_250_EMEnriched_file;
+	TFile *QCD_Pt_250_350_EMEnriched_file;
+	TFile *QCD_Pt_350_EMEnriched_file;
+
+	TFile *QCD_Pt_20_30_BCtoE_file; 
+	TFile *QCD_Pt_30_80_BCtoE_file;
+	TFile *QCD_Pt_80_170_BCtoE_file;
+	TFile *QCD_Pt_170_250_BCtoE_file;
+	TFile *QCD_Pt_250_350_BCtoE_file;
+	TFile *QCD_Pt_350_BCtoE_file;
+
+	TFile *QCD_HT_100To250_file;  
+	TFile *QCD_HT_250To500_file;   
+	TFile *QCD_HT_500To1000_file; 
+	TFile *QCD_HT_1000ToInf_file;
+
+	PSEUDODATA_GJets_HT_40To100_file = new TFile((address+PSEUDODATA_GJets_HT_40To100_name).c_str());	
+	PSEUDODATA_GJets_HT_100To200_file = new TFile((address+PSEUDODATA_GJets_HT_100To200_name).c_str());	
+	PSEUDODATA_GJets_HT_200To400_file = new TFile((address+PSEUDODATA_GJets_HT_200To400_name).c_str());
+	PSEUDODATA_GJets_HT_400ToInf_file = new TFile((address+PSEUDODATA_GJets_HT_400ToInf_name).c_str()); 
+
+	PSEUDODATA_DiPhotonJets_file = new TFile((address+PSEUDODATA_DiPhotonJets_name).c_str());
+	
+	PSEUDODATA_QCD_Pt_20_30_EMEnriched_file = new TFile((address+PSEUDODATA_QCD_Pt_20_30_EMEnriched_name).c_str()); 
+	PSEUDODATA_QCD_Pt_30_80_EMEnriched_file = new TFile((address+PSEUDODATA_QCD_Pt_30_80_EMEnriched_name).c_str());
+	PSEUDODATA_QCD_Pt_80_170_EMEnriched_file = new TFile((address+PSEUDODATA_QCD_Pt_80_170_EMEnriched_name).c_str());
+	PSEUDODATA_QCD_Pt_170_250_EMEnriched_file = new TFile((address+PSEUDODATA_QCD_Pt_170_250_EMEnriched_name).c_str());
+	PSEUDODATA_QCD_Pt_250_350_EMEnriched_file = new TFile((address+PSEUDODATA_QCD_Pt_250_350_EMEnriched_name).c_str());
+	PSEUDODATA_QCD_Pt_350_EMEnriched_file = new TFile((address+PSEUDODATA_QCD_Pt_350_EMEnriched_name).c_str());
+
+	PSEUDODATA_QCD_Pt_20_30_BCtoE_file = new TFile((address+PSEUDODATA_QCD_Pt_20_30_BCtoE_name).c_str()); 
+	PSEUDODATA_QCD_Pt_30_80_BCtoE_file = new TFile((address+PSEUDODATA_QCD_Pt_30_80_BCtoE_name).c_str());
+	PSEUDODATA_QCD_Pt_80_170_BCtoE_file = new TFile((address+PSEUDODATA_QCD_Pt_80_170_BCtoE_name).c_str());
+	PSEUDODATA_QCD_Pt_170_250_BCtoE_file = new TFile((address+PSEUDODATA_QCD_Pt_170_250_BCtoE_name).c_str());
+	PSEUDODATA_QCD_Pt_250_350_BCtoE_file = new TFile((address+PSEUDODATA_QCD_Pt_250_350_BCtoE_name).c_str());
+	PSEUDODATA_QCD_Pt_350_BCtoE_file = new TFile((address+PSEUDODATA_QCD_Pt_350_BCtoE_name).c_str());
+
+	
+	if(signal_MAD){	
+		GJets_HT_40To100_file = new TFile((address+GJets_HT_40To100_name).c_str());	
+		GJets_HT_100To200_file = new TFile((address+GJets_HT_100To200_name).c_str());	
+		GJets_HT_200To400_file = new TFile((address+GJets_HT_200To400_name).c_str());
+		GJets_HT_400ToInf_file = new TFile((address+GJets_HT_400ToInf_name).c_str()); 
+	}
+	else {	
+		G_Pt_15to30_file = new TFile((address+G_Pt_15to30_name).c_str());
+		G_Pt_30to50_file = new TFile((address+G_Pt_30to50_name).c_str());
+		G_Pt_50to80_file = new TFile((address+G_Pt_50to80_name).c_str());
+		G_Pt_80to120_file = new TFile((address+G_Pt_80to120_name).c_str());
+		G_Pt_120to170_file = new TFile((address+G_Pt_120to170_name).c_str());
+		G_Pt_170to300_file = new TFile((address+G_Pt_170to300_name).c_str());
+		G_Pt_300to470_file = new TFile((address+G_Pt_300to470_name).c_str());
+		G_Pt_470to800_file = new TFile((address+G_Pt_470to800_name).c_str());
+		G_Pt_800to1400_file = new TFile((address+G_Pt_800to1400_name).c_str());
+		G_Pt_1400to1800_file = new TFile((address+G_Pt_1400to1800_name).c_str());	
+		G_Pt_1800_file = new TFile((address+G_Pt_1800_name).c_str());
+	}
+
+	DiPhotonJets_file = new TFile((address+DiPhotonJets_name).c_str());
+	
+	if (!background_QCD){
+		QCD_Pt_20_30_EMEnriched_file = new TFile((address+QCD_Pt_20_30_EMEnriched_name).c_str()); 
+		QCD_Pt_30_80_EMEnriched_file = new TFile((address+QCD_Pt_30_80_EMEnriched_name).c_str());
+		QCD_Pt_80_170_EMEnriched_file = new TFile((address+QCD_Pt_80_170_EMEnriched_name).c_str());
+		QCD_Pt_170_250_EMEnriched_file = new TFile((address+QCD_Pt_170_250_EMEnriched_name).c_str());
+		QCD_Pt_250_350_EMEnriched_file = new TFile((address+QCD_Pt_250_350_EMEnriched_name).c_str());
+		QCD_Pt_350_EMEnriched_file = new TFile((address+QCD_Pt_350_EMEnriched_name).c_str());
+
+		QCD_Pt_20_30_BCtoE_file = new TFile((address+QCD_Pt_20_30_BCtoE_name).c_str()); 
+		QCD_Pt_30_80_BCtoE_file = new TFile((address+QCD_Pt_30_80_BCtoE_name).c_str());
+		QCD_Pt_80_170_BCtoE_file = new TFile((address+QCD_Pt_80_170_BCtoE_name).c_str());
+		QCD_Pt_170_250_BCtoE_file = new TFile((address+QCD_Pt_170_250_BCtoE_name).c_str());
+		QCD_Pt_250_350_BCtoE_file = new TFile((address+QCD_Pt_250_350_BCtoE_name).c_str());
+		QCD_Pt_350_BCtoE_file = new TFile((address+QCD_Pt_350_BCtoE_name).c_str());
+	}
+	else{
+		QCD_HT_100To250_file = new TFile((address+QCD_HT_100To250_name).c_str());  
+		QCD_HT_250To500_file = new TFile((address+QCD_HT_250To500_name).c_str());   
+		QCD_HT_500To1000_file = new TFile((address+QCD_HT_500To1000_name).c_str()); 
+		QCD_HT_1000ToInf_file = new TFile((address+QCD_HT_1000ToInf_name).c_str()); 
+	}
+
+		// ==================================== open now the output TFile
+
+		root_string = ".root";
+		pdf_string = ".pdf";
+		string sample_mod = "";
+		if (inv_sigmaietaieta && !inv_isolation){
+			sample_mod = sample + sigmaietaieta_s + "_";
+		}
+		else if (inv_isolation && !inv_sigmaietaieta){
+			sample_mod = sample + isolation_s + "_";
+		}
+		else sample_mod = sample + "_";
+		string templates = "template_";
+		string templates_folder = "templates/";
+		string outfilename = (sample_mod + templates + titleh + root_string).c_str();
+
+		TFile *outfile = new TFile((folder_s + geo_s + SB_folder + templates_folder + outfilename).c_str(),"recreate");
+
+
+	// ==================================== load TH1F
+
+	Char_t titlehisto[100];
+
+	strcpy(titlehisto,titleh);
+
+	Char_t namevariable1[200];
+	
+	strcpy(namevariable1,namevariable);
+
+
+	cout << "========================" <<endl;	
+	cout << endl;	
+
+	cout << "Analyzing Histogram " << titlehisto << endl;
+
+	cout << endl;	
+	cout << "========================" <<endl;	
+	cout << endl;	
+
+	TH1F *PSEUDODATA_GJets_HT_40To100_histo;
+	TH1F *PSEUDODATA_GJets_HT_100To200_histo;
+	TH1F *PSEUDODATA_GJets_HT_200To400_histo;
+	TH1F *PSEUDODATA_GJets_HT_400ToInf_histo;
+	TH1F *PSEUDODATA_GJets_HT_xToy_total_histo;
+
+	TH1F *PSEUDODATA_DiPhotonJets_histo;
+	TH1F *PSEUDODATA_DiPhotonJets_total_histo;
+
+	TH1F *PSEUDODATA_QCD_Pt_20_30_EMEnriched_histo;
+	TH1F *PSEUDODATA_QCD_Pt_30_80_EMEnriched_histo;
+	TH1F *PSEUDODATA_QCD_Pt_80_170_EMEnriched_histo;
+	TH1F *PSEUDODATA_QCD_Pt_170_250_EMEnriched_histo;
+	TH1F *PSEUDODATA_QCD_Pt_250_350_EMEnriched_histo;
+	TH1F *PSEUDODATA_QCD_Pt_350_EMEnriched_histo;
+	TH1F *PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo;
+
+	TH1F *PSEUDODATA_QCD_Pt_20_30_BCtoE_histo;
+	TH1F *PSEUDODATA_QCD_Pt_30_80_BCtoE_histo;
+	TH1F *PSEUDODATA_QCD_Pt_80_170_BCtoE_histo;
+	TH1F *PSEUDODATA_QCD_Pt_170_250_BCtoE_histo;
+	TH1F *PSEUDODATA_QCD_Pt_250_350_BCtoE_histo;
+	TH1F *PSEUDODATA_QCD_Pt_350_BCtoE_histo;;
+	TH1F *PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo;
+
+	TH1F *PSEUDODATA_total_histo;
+
+	TH1F *GJets_HT_40To100_histo;
+	TH1F *GJets_HT_100To200_histo;
+	TH1F *GJets_HT_200To400_histo;
+	TH1F *GJets_HT_400ToInf_histo;
+	TH1F *GJets_HT_xToy_total_histo;
+
+	TH1F *G_Pt_15to30_histo;
+	TH1F *G_Pt_30to50_histo;
+	TH1F *G_Pt_50to80_histo;
+	TH1F *G_Pt_80to120_histo;
+	TH1F *G_Pt_120to170_histo;
+	TH1F *G_Pt_170to300_histo;
+	TH1F *G_Pt_300to470_histo;
+	TH1F *G_Pt_470to800_histo;
+	TH1F *G_Pt_800to1400_histo;
+	TH1F *G_Pt_1400to1800_histo;
+	TH1F *G_Pt_1800_histo;
+	TH1F *G_Pt_XtoY_total_histo;
+
+	TH1F *DiPhotonJets_histo;
+	TH1F *DiPhotonJets_total_histo;
+
+	TH1F *QCD_Pt_20_30_EMEnriched_histo;
+	TH1F *QCD_Pt_30_80_EMEnriched_histo;
+	TH1F *QCD_Pt_80_170_EMEnriched_histo;
+	TH1F *QCD_Pt_170_250_EMEnriched_histo;
+	TH1F *QCD_Pt_250_350_EMEnriched_histo;
+	TH1F *QCD_Pt_350_EMEnriched_histo;
+	TH1F *QCD_Pt_x_y_EMEnriched_total_histo;
+
+	TH1F *QCD_Pt_20_30_BCtoE_histo;
+	TH1F *QCD_Pt_30_80_BCtoE_histo;
+	TH1F *QCD_Pt_80_170_BCtoE_histo;
+	TH1F *QCD_Pt_170_250_BCtoE_histo;
+	TH1F *QCD_Pt_250_350_BCtoE_histo;
+	TH1F *QCD_Pt_350_BCtoE_histo;;
+	TH1F *QCD_Pt_x_y_BCtoE_total_histo;
+
+	TH1F *QCD_HT_100To250_histo;
+	TH1F *QCD_HT_250To500_histo;
+	TH1F *QCD_HT_500To1000_histo;
+	TH1F *QCD_HT_1000ToInf_histo;
+	TH1F *QCD_HT_xToy_total_histo;	
+
+	//--- PSEUDODATA MC signal GJets_HT-xToy ----------------------------------------------
+
+	PSEUDODATA_GJets_HT_40To100_histo=(TH1F*)PSEUDODATA_GJets_HT_40To100_file->Get(titlehisto);
+	PSEUDODATA_GJets_HT_40To100_histo->Rebin(rebin);
+		
+	PSEUDODATA_GJets_HT_100To200_histo=(TH1F*)PSEUDODATA_GJets_HT_100To200_file->Get(titlehisto);
+	PSEUDODATA_GJets_HT_100To200_histo->Rebin(rebin);
+
+	PSEUDODATA_GJets_HT_200To400_histo=(TH1F*)PSEUDODATA_GJets_HT_200To400_file->Get(titlehisto);
+	PSEUDODATA_GJets_HT_200To400_histo->Rebin(rebin);
+
+	PSEUDODATA_GJets_HT_400ToInf_histo=(TH1F*)PSEUDODATA_GJets_HT_400ToInf_file->Get(titlehisto);
+	PSEUDODATA_GJets_HT_400ToInf_histo->Rebin(rebin);
+
+	cout << "PSEUDODATA_GJets_HT_40To100 entries = " << PSEUDODATA_GJets_HT_40To100_histo->Integral() << endl;
+	cout << "PSEUDODATA_GJets_HT_100To200 entries = " << PSEUDODATA_GJets_HT_100To200_histo->Integral() << endl;	
+	cout << "PSEUDODATA_GJets_HT_200To400 entries = " << PSEUDODATA_GJets_HT_200To400_histo->Integral() << endl;
+	cout << "PSEUDODATA_GJets_HT_400ToInf entries = " << PSEUDODATA_GJets_HT_400ToInf_histo->Integral() << endl;
+	cout << endl;
+		
+	PSEUDODATA_GJets_HT_xToy_total_histo = (TH1F*) PSEUDODATA_GJets_HT_40To100_histo->Clone("PSEUDODATA_GJets_HT_xToy_total_histo");
+	//--- PSEUDODATA_GJets_HT_xToy_total_histo->Sumw2();
+	PSEUDODATA_GJets_HT_xToy_total_histo->Add(PSEUDODATA_GJets_HT_100To200_histo);
+	PSEUDODATA_GJets_HT_xToy_total_histo->Add(PSEUDODATA_GJets_HT_200To400_histo);
+	PSEUDODATA_GJets_HT_xToy_total_histo->Add(PSEUDODATA_GJets_HT_400ToInf_histo);  
+	PSEUDODATA_GJets_HT_xToy_total_histo->SetLineColor(1);
+	PSEUDODATA_GJets_HT_xToy_total_histo->SetFillColor(5);  //for colors comment out Sumw2 in code
+		
+	// PSEUDODATA MC signal DiPhotonJets --------------------------------------------------
+	PSEUDODATA_DiPhotonJets_histo=(TH1F*)PSEUDODATA_DiPhotonJets_file->Get(titlehisto);
+	PSEUDODATA_DiPhotonJets_histo->Rebin(rebin);
+	
+	cout << "PSEUDODATA_DiPhotonJets entries = " << PSEUDODATA_DiPhotonJets_histo->Integral() << endl;
+	cout << endl;
+
+	PSEUDODATA_DiPhotonJets_total_histo = (TH1F*) PSEUDODATA_DiPhotonJets_histo->Clone("PSEUDODATA_DiPhotonJets_total_histo");
+	//--- PSEUDODATA_DiPhotonJets_total_histo->Sumw2();
+	PSEUDODATA_DiPhotonJets_total_histo->SetLineColor(1);
+	PSEUDODATA_DiPhotonJets_total_histo->SetFillColor(kGray+2);  //for colors comment out Sumw2 in code
+
+	//--- PSEUDODATA MC background QCD_Pt_x_y EMEnriched ----------------------------------	
+	PSEUDODATA_QCD_Pt_20_30_EMEnriched_histo=(TH1F*)PSEUDODATA_QCD_Pt_20_30_EMEnriched_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_20_30_EMEnriched_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_30_80_EMEnriched_histo=(TH1F*)PSEUDODATA_QCD_Pt_30_80_EMEnriched_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_30_80_EMEnriched_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_80_170_EMEnriched_histo=(TH1F*)PSEUDODATA_QCD_Pt_80_170_EMEnriched_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_80_170_EMEnriched_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_170_250_EMEnriched_histo=(TH1F*)PSEUDODATA_QCD_Pt_170_250_EMEnriched_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_170_250_EMEnriched_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_250_350_EMEnriched_histo=(TH1F*)PSEUDODATA_QCD_Pt_250_350_EMEnriched_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_250_350_EMEnriched_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_350_EMEnriched_histo=(TH1F*)PSEUDODATA_QCD_Pt_350_EMEnriched_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_350_EMEnriched_histo->Rebin(rebin);
+
+	cout << "PSEUDODATA_QCD_Pt_20_30_EMEnriched entries = " << PSEUDODATA_QCD_Pt_20_30_EMEnriched_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_30_80_EMEnriched entries = " << PSEUDODATA_QCD_Pt_30_80_EMEnriched_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_80_170_EMEnriched entries = " << PSEUDODATA_QCD_Pt_80_170_EMEnriched_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_170_250_EMEnriched entries = " << PSEUDODATA_QCD_Pt_170_250_EMEnriched_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_250_350_EMEnriched entries = " << PSEUDODATA_QCD_Pt_250_350_EMEnriched_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_350_EMEnriched entries = " << PSEUDODATA_QCD_Pt_350_EMEnriched_histo->Integral() << endl;
+	cout << endl;
+
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo = (TH1F*) PSEUDODATA_QCD_Pt_20_30_EMEnriched_histo->Clone("PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo");
+	//	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Sumw2();
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Add(PSEUDODATA_QCD_Pt_30_80_EMEnriched_histo);
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Add(PSEUDODATA_QCD_Pt_80_170_EMEnriched_histo);  
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Add(PSEUDODATA_QCD_Pt_170_250_EMEnriched_histo);  
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Add(PSEUDODATA_QCD_Pt_250_350_EMEnriched_histo);  
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->Add(PSEUDODATA_QCD_Pt_350_EMEnriched_histo);  
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->SetLineColor(1);
+	PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo->SetFillColor(kMagenta+2);
+
+
+	//--- PSEUDODATA MC background PSEUDODATA_QCD_Pt_x_y BCtoE ----------------------------------
+	PSEUDODATA_QCD_Pt_20_30_BCtoE_histo=(TH1F*)PSEUDODATA_QCD_Pt_20_30_BCtoE_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_20_30_BCtoE_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_30_80_BCtoE_histo=(TH1F*)PSEUDODATA_QCD_Pt_30_80_BCtoE_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_30_80_BCtoE_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_80_170_BCtoE_histo=(TH1F*)PSEUDODATA_QCD_Pt_80_170_BCtoE_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_80_170_BCtoE_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_170_250_BCtoE_histo=(TH1F*)PSEUDODATA_QCD_Pt_170_250_BCtoE_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_170_250_BCtoE_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_250_350_BCtoE_histo=(TH1F*)PSEUDODATA_QCD_Pt_250_350_BCtoE_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_250_350_BCtoE_histo->Rebin(rebin);
+
+	PSEUDODATA_QCD_Pt_350_BCtoE_histo=(TH1F*)PSEUDODATA_QCD_Pt_350_BCtoE_file->Get(titlehisto);
+	PSEUDODATA_QCD_Pt_350_BCtoE_histo->Rebin(rebin);
+
+	cout << "PSEUDODATA_QCD_Pt_20_30_BCtoE entries = " << PSEUDODATA_QCD_Pt_20_30_BCtoE_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_30_80_BCtoE entries = " << PSEUDODATA_QCD_Pt_30_80_BCtoE_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_80_170_BCtoE entries = " << PSEUDODATA_QCD_Pt_80_170_BCtoE_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_170_250_BCtoE entries = " << PSEUDODATA_QCD_Pt_170_250_BCtoE_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_250_350_BCtoE entries = " << PSEUDODATA_QCD_Pt_250_350_BCtoE_histo->Integral() << endl;
+	cout << "PSEUDODATA_QCD_Pt_350_BCtoE entries = " << PSEUDODATA_QCD_Pt_350_BCtoE_histo->Integral() << endl;
+	cout << endl;
+
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo = (TH1F*) PSEUDODATA_QCD_Pt_20_30_BCtoE_histo->Clone("PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo");
+	//	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->Sumw2();
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->Add(PSEUDODATA_QCD_Pt_30_80_BCtoE_histo);
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->Add(PSEUDODATA_QCD_Pt_80_170_BCtoE_histo);  
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->Add(PSEUDODATA_QCD_Pt_170_250_BCtoE_histo);  
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->Add(PSEUDODATA_QCD_Pt_250_350_BCtoE_histo);  
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->Add(PSEUDODATA_QCD_Pt_350_BCtoE_histo);  
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->SetLineColor(1);
+	PSEUDODATA_QCD_Pt_x_y_BCtoE_total_histo->SetFillColor(kBlue-7);
+
+	PSEUDODATA_total_histo = (TH1F*) PSEUDODATA_GJets_HT_xToy_total_histo->Clone("PSEUDODATA_total_histo");
+	PSEUDODATA_total_histo->Add(PSEUDODATA_DiPhotonJets_total_histo);
+	PSEUDODATA_total_histo->Add(PSEUDODATA_QCD_Pt_x_y_EMEnriched_total_histo);
+	PSEUDODATA_total_histo->Add(PSEUDODATA_QCD_Pt_350_BCtoE_histo);
+	
+	if(signal_MAD){				
+		//--- MC signal GJets_HT-xToy ----------------------------------------------
+
+		GJets_HT_40To100_histo=(TH1F*)GJets_HT_40To100_file->Get(titlehisto);
+		GJets_HT_40To100_histo->Rebin(rebin);
+		
+		GJets_HT_100To200_histo=(TH1F*)GJets_HT_100To200_file->Get(titlehisto);
+		GJets_HT_100To200_histo->Rebin(rebin);
+
+		GJets_HT_200To400_histo=(TH1F*)GJets_HT_200To400_file->Get(titlehisto);
+		GJets_HT_200To400_histo->Rebin(rebin);
+
+		GJets_HT_400ToInf_histo=(TH1F*)GJets_HT_400ToInf_file->Get(titlehisto);
+		GJets_HT_400ToInf_histo->Rebin(rebin);
+
+		cout << "GJets_HT_40To100 entries = " << GJets_HT_40To100_histo->Integral() << endl;
+		cout << "GJets_HT_100To200 entries = " << GJets_HT_100To200_histo->Integral() << endl;	
+		cout << "GJets_HT_200To400 entries = " << GJets_HT_200To400_histo->Integral() << endl;
+		cout << "GJets_HT_400ToInf entries = " << GJets_HT_400ToInf_histo->Integral() << endl;
+		cout << endl;
+		
+		GJets_HT_xToy_total_histo = (TH1F*) GJets_HT_40To100_histo->Clone("GJets_HT_xToy_total_histo");
+		//--- GJets_HT_xToy_total_histo->Sumw2();
+		GJets_HT_xToy_total_histo->Add(GJets_HT_100To200_histo);
+		GJets_HT_xToy_total_histo->Add(GJets_HT_200To400_histo);
+		GJets_HT_xToy_total_histo->Add(GJets_HT_400ToInf_histo);  
+		GJets_HT_xToy_total_histo->SetLineColor(1);
+		GJets_HT_xToy_total_histo->SetFillColor(5);  //for colors comment out Sumw2 in code
+	}
+
+	else {	
+		// MC signal G_Pt-XtoY --------------------------------------------------	
+		G_Pt_15to30_histo=(TH1F*)G_Pt_15to30_file->Get(titlehisto);
+		G_Pt_15to30_histo->Rebin(rebin);
+
+		G_Pt_30to50_histo=(TH1F*)G_Pt_30to50_file->Get(titlehisto);
+		G_Pt_30to50_histo->Rebin(rebin);
+
+		G_Pt_50to80_histo=(TH1F*)G_Pt_50to80_file->Get(titlehisto);
+		G_Pt_50to80_histo->Rebin(rebin);
+
+		G_Pt_80to120_histo=(TH1F*)G_Pt_80to120_file->Get(titlehisto);
+		G_Pt_80to120_histo->Rebin(rebin);
+
+		G_Pt_120to170_histo=(TH1F*)G_Pt_120to170_file->Get(titlehisto);
+		G_Pt_120to170_histo->Rebin(rebin);
+	
+		G_Pt_170to300_histo=(TH1F*)G_Pt_170to300_file->Get(titlehisto);
+		G_Pt_170to300_histo->Rebin(rebin);
+
+		G_Pt_300to470_histo=(TH1F*)G_Pt_300to470_file->Get(titlehisto);
+		G_Pt_300to470_histo->Rebin(rebin);
+
+		G_Pt_470to800_histo=(TH1F*)G_Pt_470to800_file->Get(titlehisto);
+		G_Pt_470to800_histo->Rebin(rebin);
+
+		G_Pt_800to1400_histo=(TH1F*)G_Pt_800to1400_file->Get(titlehisto);
+		G_Pt_800to1400_histo->Rebin(rebin);
+
+		G_Pt_1400to1800_histo=(TH1F*)G_Pt_1400to1800_file->Get(titlehisto);
+		G_Pt_1400to1800_histo->Rebin(rebin);
+
+		G_Pt_1800_histo=(TH1F*)G_Pt_1800_file->Get(titlehisto);
+		G_Pt_1800_histo->Rebin(rebin);
+
+		cout << "G_Pt_15to30 entries = " << G_Pt_15to30_histo->Integral() << endl;
+		cout << "G_Pt_30to50 entries = " << G_Pt_30to50_histo->Integral() << endl;
+		cout << "G_Pt_50to80 entries = " << G_Pt_50to80_histo->Integral() << endl;
+		cout << "G_Pt_80to120 entries = " << G_Pt_80to120_histo->Integral() << endl;
+		cout << "G_Pt_120to170 entries = " << G_Pt_120to170_histo->Integral() << endl;
+		cout << "G_Pt_170to300 entries = " << G_Pt_170to300_histo->Integral() << endl;
+		cout << "G_Pt_300to470 entries = " << G_Pt_300to470_histo->Integral() << endl;
+		cout << "G_Pt_470to800 entries = " << G_Pt_470to800_histo->Integral() << endl;
+		cout << "G_Pt_800to1400 entries = " << G_Pt_800to1400_histo->Integral() << endl;
+		cout << "G_Pt_1400to1800 entries = " << G_Pt_1400to1800_histo->Integral() << endl;
+		cout << "G_Pt_1800 entries = " << G_Pt_1800_histo->Integral() << endl;
+		cout << endl;
+	
+		G_Pt_XtoY_total_histo = (TH1F*) G_Pt_15to30_histo->Clone("G_Pt_XtoY_total_histo");
+		//--- G_Pt_XtoY_total_histo->Sumw2();
+		G_Pt_XtoY_total_histo->Add(G_Pt_30to50_histo);
+		G_Pt_XtoY_total_histo->Add(G_Pt_50to80_histo);  
+		G_Pt_XtoY_total_histo->Add(G_Pt_80to120_histo);  
+		G_Pt_XtoY_total_histo->Add(G_Pt_120to170_histo);  
+		G_Pt_XtoY_total_histo->Add(G_Pt_170to300_histo);  
+		G_Pt_XtoY_total_histo->Add(G_Pt_300to470_histo);  
+		G_Pt_XtoY_total_histo->Add(G_Pt_470to800_histo);  		
+		G_Pt_XtoY_total_histo->Add(G_Pt_800to1400_histo);
+		G_Pt_XtoY_total_histo->Add(G_Pt_1400to1800_histo);	  	
+		G_Pt_XtoY_total_histo->Add(G_Pt_1800_histo);	  	
+		G_Pt_XtoY_total_histo->SetLineColor(1);
+		G_Pt_XtoY_total_histo->SetFillColor(kGreen+2);  //for colors comment out Sumw2 in code
+	}
+	
+	// MC signal DiPhotonJets --------------------------------------------------
+	DiPhotonJets_histo=(TH1F*)DiPhotonJets_file->Get(titlehisto);
+	DiPhotonJets_histo->Rebin(rebin);
+	
+	cout << "DiPhotonJets entries = " << DiPhotonJets_histo->Integral() << endl;
+	cout << endl;
+
+	DiPhotonJets_total_histo = (TH1F*) DiPhotonJets_histo->Clone("DiPhotonJets_total_histo");
+	//--- DiPhotonJets_total_histo->Sumw2();
+	DiPhotonJets_total_histo->SetLineColor(1);
+	DiPhotonJets_total_histo->SetFillColor(kGray+2);  //for colors comment out Sumw2 in code
+
+	if (!background_QCD){	
+		//--- MC background QCD_Pt_x_y EMEnriched ----------------------------------	
+		QCD_Pt_20_30_EMEnriched_histo=(TH1F*)QCD_Pt_20_30_EMEnriched_file->Get(titlehisto);
+		QCD_Pt_20_30_EMEnriched_histo->Rebin(rebin);
+
+		QCD_Pt_30_80_EMEnriched_histo=(TH1F*)QCD_Pt_30_80_EMEnriched_file->Get(titlehisto);
+		QCD_Pt_30_80_EMEnriched_histo->Rebin(rebin);
+
+		QCD_Pt_80_170_EMEnriched_histo=(TH1F*)QCD_Pt_80_170_EMEnriched_file->Get(titlehisto);
+		QCD_Pt_80_170_EMEnriched_histo->Rebin(rebin);
+
+		QCD_Pt_170_250_EMEnriched_histo=(TH1F*)QCD_Pt_170_250_EMEnriched_file->Get(titlehisto);
+		QCD_Pt_170_250_EMEnriched_histo->Rebin(rebin);
+
+		QCD_Pt_250_350_EMEnriched_histo=(TH1F*)QCD_Pt_250_350_EMEnriched_file->Get(titlehisto);
+		QCD_Pt_250_350_EMEnriched_histo->Rebin(rebin);
+
+		QCD_Pt_350_EMEnriched_histo=(TH1F*)QCD_Pt_350_EMEnriched_file->Get(titlehisto);
+		QCD_Pt_350_EMEnriched_histo->Rebin(rebin);
+
+		cout << "QCD_Pt_20_30_EMEnriched entries = " << QCD_Pt_20_30_EMEnriched_histo->Integral() << endl;
+		cout << "QCD_Pt_30_80_EMEnriched entries = " << QCD_Pt_30_80_EMEnriched_histo->Integral() << endl;
+		cout << "QCD_Pt_80_170_EMEnriched entries = " << QCD_Pt_80_170_EMEnriched_histo->Integral() << endl;
+		cout << "QCD_Pt_170_250_EMEnriched entries = " << QCD_Pt_170_250_EMEnriched_histo->Integral() << endl;
+		cout << "QCD_Pt_250_350_EMEnriched entries = " << QCD_Pt_250_350_EMEnriched_histo->Integral() << endl;
+		cout << "QCD_Pt_350_EMEnriched entries = " << QCD_Pt_350_EMEnriched_histo->Integral() << endl;
+		cout << endl;
+
+		QCD_Pt_x_y_EMEnriched_total_histo = (TH1F*) QCD_Pt_20_30_EMEnriched_histo->Clone("QCD_Pt_x_y_EMEnriched_total_histo");
+		//	QCD_Pt_x_y_EMEnriched_total_histo->Sumw2();
+		QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_30_80_EMEnriched_histo);
+		QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_80_170_EMEnriched_histo);  
+		QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_170_250_EMEnriched_histo);  
+		QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_250_350_EMEnriched_histo);  
+		QCD_Pt_x_y_EMEnriched_total_histo->Add(QCD_Pt_350_EMEnriched_histo);  
+		QCD_Pt_x_y_EMEnriched_total_histo->SetLineColor(1);
+		QCD_Pt_x_y_EMEnriched_total_histo->SetFillColor(kMagenta+2);
+
+
+		//--- MC background QCD_Pt_x_y BCtoE ----------------------------------
+		QCD_Pt_20_30_BCtoE_histo=(TH1F*)QCD_Pt_20_30_BCtoE_file->Get(titlehisto);
+		QCD_Pt_20_30_BCtoE_histo->Rebin(rebin);
+
+		QCD_Pt_30_80_BCtoE_histo=(TH1F*)QCD_Pt_30_80_BCtoE_file->Get(titlehisto);
+		QCD_Pt_30_80_BCtoE_histo->Rebin(rebin);
+
+		QCD_Pt_80_170_BCtoE_histo=(TH1F*)QCD_Pt_80_170_BCtoE_file->Get(titlehisto);
+		QCD_Pt_80_170_BCtoE_histo->Rebin(rebin);
+
+		QCD_Pt_170_250_BCtoE_histo=(TH1F*)QCD_Pt_170_250_BCtoE_file->Get(titlehisto);
+		QCD_Pt_170_250_BCtoE_histo->Rebin(rebin);
+
+		QCD_Pt_250_350_BCtoE_histo=(TH1F*)QCD_Pt_250_350_BCtoE_file->Get(titlehisto);
+		QCD_Pt_250_350_BCtoE_histo->Rebin(rebin);
+
+		QCD_Pt_350_BCtoE_histo=(TH1F*)QCD_Pt_350_BCtoE_file->Get(titlehisto);
+		QCD_Pt_350_BCtoE_histo->Rebin(rebin);
+
+		cout << "QCD_Pt_20_30_BCtoE entries = " << QCD_Pt_20_30_BCtoE_histo->Integral() << endl;
+		cout << "QCD_Pt_30_80_BCtoE entries = " << QCD_Pt_30_80_BCtoE_histo->Integral() << endl;
+		cout << "QCD_Pt_80_170_BCtoE entries = " << QCD_Pt_80_170_BCtoE_histo->Integral() << endl;
+		cout << "QCD_Pt_170_250_BCtoE entries = " << QCD_Pt_170_250_BCtoE_histo->Integral() << endl;
+		cout << "QCD_Pt_250_350_BCtoE entries = " << QCD_Pt_250_350_BCtoE_histo->Integral() << endl;
+		cout << "QCD_Pt_350_BCtoE entries = " << QCD_Pt_350_BCtoE_histo->Integral() << endl;
+		cout << endl;
+
+		QCD_Pt_x_y_BCtoE_total_histo = (TH1F*) QCD_Pt_20_30_BCtoE_histo->Clone("QCD_Pt_x_y_BCtoE_total_histo");
+		//	QCD_Pt_x_y_BCtoE_total_histo->Sumw2();
+		QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_30_80_BCtoE_histo);
+		QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_80_170_BCtoE_histo);  
+		QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_170_250_BCtoE_histo);  
+		QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_250_350_BCtoE_histo);  
+		QCD_Pt_x_y_BCtoE_total_histo->Add(QCD_Pt_350_BCtoE_histo);  
+		QCD_Pt_x_y_BCtoE_total_histo->SetLineColor(1);
+		QCD_Pt_x_y_BCtoE_total_histo->SetFillColor(kBlue-7);
+	}
+	else {	
+		// MC background QCD HT-xToy --------------------------------------------
+		QCD_HT_100To250_histo=(TH1F*)QCD_HT_100To250_file->Get(titlehisto);
+		QCD_HT_100To250_histo->Rebin(rebin);
+
+		QCD_HT_250To500_histo=(TH1F*)QCD_HT_250To500_file->Get(titlehisto);
+		QCD_HT_250To500_histo->Rebin(rebin);
+
+		QCD_HT_500To1000_histo=(TH1F*)QCD_HT_500To1000_file->Get(titlehisto);
+		QCD_HT_500To1000_histo->Rebin(rebin);
+
+		QCD_HT_1000ToInf_histo=(TH1F*)QCD_HT_1000ToInf_file->Get(titlehisto);
+		QCD_HT_1000ToInf_histo->Rebin(rebin);
+
+		cout << "QCD_HT_100To250 entries " << QCD_HT_100To250_histo->Integral() << endl;  
+		cout << "QCD_HT_250To500 entries " << QCD_HT_250To500_histo->Integral() << endl;  
+		cout << "QCD_HT_500To1000 entries " << QCD_HT_500To1000_histo->Integral() << endl;
+		cout << "QCD_HT_1000ToInf entries " << QCD_HT_1000ToInf_histo->Integral() << endl;
+		cout << endl;
+	
+		QCD_HT_xToy_total_histo = (TH1F*) QCD_HT_100To250_histo->Clone("QCD_HT_xToy_total_histo");
+		//	QCD_HT_xToy_total_histo->Sumw2();
+		QCD_HT_xToy_total_histo->Add(QCD_HT_250To500_histo);
+		QCD_HT_xToy_total_histo->Add(QCD_HT_500To1000_histo);  
+		QCD_HT_xToy_total_histo->Add(QCD_HT_1000ToInf_histo);  
+		QCD_HT_xToy_total_histo->SetLineColor(1);
+		QCD_HT_xToy_total_histo->SetFillColor(kRed+2);
+	}
+
+		// ==================================== preparing MC SIGNAL and MC BACKGROUND added histos
+
+		// MC SIGNAL total 
+		TH1F *MC_SIG_total_histo;
+		if(signal_MAD){
+			MC_SIG_total_histo = (TH1F*) GJets_HT_xToy_total_histo->Clone("MC_SIG_total_histo");
+		}
+		else{
+			MC_SIG_total_histo = (TH1F*) G_Pt_XtoY_total_histo->Clone("MC_SIG_total_histo");
+		}
+		MC_SIG_total_histo->Add(DiPhotonJets_total_histo);
+
+		// MC BACKGROUND total
+		TH1F *MC_BACK_total_histo;
+		if (!background_QCD){
+			MC_BACK_total_histo = (TH1F*) QCD_Pt_x_y_EMEnriched_total_histo->Clone("MC_BACK_total_histo");
+			MC_BACK_total_histo->Add(QCD_Pt_x_y_BCtoE_total_histo);
+		}
+		else MC_BACK_total_histo = (TH1F*) QCD_HT_xToy_total_histo->Clone("MC_BACK_total_histo");
+
+		// MC BACKGROUND INVERTED total
+		TH1F *MC_BACK_INV_total_histo = (TH1F*) MC_BACK_total_histo->Clone("MC_BACK_INV_total_histo");
+
+		// PSEUDODATA INVERTED total
+		TH1F *PSEUDODATA_INV_total_histo = (TH1F*) PSEUDODATA_total_histo->Clone("PSEUDODATA_INV_total_histo");
+
+		// ==================================== print Entries number
+
+		cout << "========================" <<endl;
+		cout << endl;
+
+		cout << "PSEUDODATA Total entries = " << PSEUDODATA_total_histo->Integral() << endl;
+
+		cout << endl;
+		if(signal_MAD) cout << "GJets total entries = " << GJets_HT_xToy_total_histo->Integral() << endl;  
+		else cout << "G total entries = " << G_Pt_XtoY_total_histo->Integral() << endl;
+
+		cout << endl;
+		cout << "DiPhotonJets total entries = " << DiPhotonJets_total_histo->Integral() << endl;
+
+		cout << endl;
+		if (!background_QCD){
+			cout << "QCD EMEnriched total entries = " << QCD_Pt_x_y_EMEnriched_total_histo->Integral() << endl;  
+			cout << "QCD BCtoE total entries = " << QCD_Pt_x_y_BCtoE_total_histo->Integral() << endl;
+			cout << "QCD (EMEnriched + BCtoE) total entries = " << QCD_Pt_x_y_EMEnriched_total_histo->Integral() +
+		                                                       QCD_Pt_x_y_BCtoE_total_histo->Integral() << endl;
+		}
+		else cout << "QCD HT total entries = " << QCD_HT_xToy_total_histo->Integral() << endl;  
+		cout << endl;
+
+		cout << "========================" <<endl;
+		cout << endl;
+
+		cout << "MC SIGNAL total entries = " << MC_SIG_total_histo->Integral() <<endl;
+		cout << "MC BACKGROUND total entries = " << MC_BACK_total_histo->Integral() <<endl;
+		cout << "PSEUDODATA Total entries = " << PSEUDODATA_total_histo->Integral() << endl;
+		cout << "MC BACKGROUND INVERTED total entries = " << MC_BACK_INV_total_histo->Integral() <<endl;
+		cout << "PSEUDODATA INVERTED total entries = " << PSEUDODATA_INV_total_histo->Integral() <<endl;
+
+		cout << "========================" <<endl;
+		cout << endl;
+
+		// ==================================== load Canvas
+
+		TCanvas *Canva = new TCanvas(titlehisto,titlehisto);  
+		int Nbins;
+		double X_min, X_max;
+
+		if (sample == "MC_SIG") {
+
+			MC_SIG_total_histo->Sumw2();
+
+			Nbins = MC_SIG_total_histo->GetNbinsX();
+
+			if (x_min != -999 && x_max != -999){
+				if (x_max == MC_SIG_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
+				else X_max = x_max - (x_max-x_min)/Nbins;
+				if (x_min == MC_SIG_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
+				else X_min = x_min + (x_max-x_min)/Nbins;
+
+				MC_SIG_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
+			}
+
+			MC_SIG_total_histo->SetMarkerSize(0.7);
+			MC_SIG_total_histo->SetMarkerStyle(20);
+			MC_SIG_total_histo->SetMinimum(0.1);
+
+			MC_SIG_total_histo->Draw("E");
+			gPad->SetLogy();
+			MC_SIG_total_histo->Draw("AXIS X+ Y+ SAME");
+			MC_SIG_total_histo->Draw("AXIS SAME");
+			MC_SIG_total_histo->GetXaxis()->SetTitle(namevariable);
+			MC_SIG_total_histo->GetXaxis()->SetTitleSize(0.045);
+			MC_SIG_total_histo->GetYaxis()->SetTitle("Events");
+
+			MC_SIG_total_histo->Write(titleh) ;
+			outfile-> Write();
+		}
+
+		else if (sample == "MC_BACK") {
+
+			MC_BACK_total_histo->Sumw2();
+
+			Nbins = MC_BACK_total_histo->GetNbinsX();
+
+			if (x_min != -999 && x_max != -999){
+				if (x_max == MC_BACK_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
+				else X_max = x_max - (x_max-x_min)/Nbins;
+				if (x_min == MC_BACK_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
+				else X_min = x_min + (x_max-x_min)/Nbins;
+
+				MC_BACK_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
+			}
+
+			MC_BACK_total_histo->SetMarkerSize(0.7);
+			MC_BACK_total_histo->SetMarkerStyle(20);
+			MC_BACK_total_histo->SetMinimum(0.1);
+
+			MC_BACK_total_histo->Draw("E");
+			gPad->SetLogy();
+			MC_BACK_total_histo->Draw("AXIS X+ Y+ SAME");
+			MC_BACK_total_histo->Draw("AXIS SAME");
+			MC_BACK_total_histo->GetXaxis()->SetTitle(namevariable);
+			MC_BACK_total_histo->GetXaxis()->SetTitleSize(0.045);
+			MC_BACK_total_histo->GetYaxis()->SetTitle("Events");
+
+			MC_BACK_total_histo->Write(titleh) ;
+			outfile-> Write();
+		}
+
+		else if (sample == "MC_BACK_INV") {
+
+			MC_BACK_INV_total_histo->Sumw2();
+
+			Nbins = MC_BACK_INV_total_histo->GetNbinsX();
+
+			if (x_min != -999 && x_max != -999){
+				if (x_max == MC_BACK_INV_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
+				else X_max = x_max - (x_max-x_min)/Nbins;
+				if (x_min == MC_BACK_INV_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
+				else X_min = x_min + (x_max-x_min)/Nbins;
+
+				MC_BACK_INV_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
+			}
+
+			MC_BACK_INV_total_histo->SetMarkerSize(0.7);
+			MC_BACK_INV_total_histo->SetMarkerStyle(20);
+			MC_BACK_INV_total_histo->SetMinimum(0.1);
+
+			MC_BACK_INV_total_histo->Draw("E");
+			gPad->SetLogy();
+			MC_BACK_INV_total_histo->Draw("AXIS X+ Y+ SAME");
+			MC_BACK_INV_total_histo->Draw("AXIS SAME");
+			MC_BACK_INV_total_histo->GetXaxis()->SetTitle(namevariable);
+			MC_BACK_INV_total_histo->GetXaxis()->SetTitleSize(0.045);
+			MC_BACK_INV_total_histo->GetYaxis()->SetTitle("Events");
+
+			MC_BACK_INV_total_histo->Write(titleh) ;
+			outfile-> Write();
+		}
+
+		else if (sample == "PSEUDODATA_INV") {
+
+			PSEUDODATA_INV_total_histo->Sumw2();
+
+			Nbins = PSEUDODATA_INV_total_histo->GetNbinsX();
+
+			if (x_min != -999 && x_max != -999){
+				if (x_max == PSEUDODATA_INV_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
+				else X_max = x_max - (x_max-x_min)/Nbins;
+				if (x_min == PSEUDODATA_INV_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
+				else X_min = x_min + (x_max-x_min)/Nbins;
+
+				PSEUDODATA_INV_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
+			}
+
+			PSEUDODATA_INV_total_histo->SetMarkerSize(0.7);
+			PSEUDODATA_INV_total_histo->SetMarkerStyle(20);
+			PSEUDODATA_INV_total_histo->SetMinimum(0.1);
+
+			PSEUDODATA_INV_total_histo->Draw("E");
+			gPad->SetLogy();
+			PSEUDODATA_INV_total_histo->Draw("AXIS X+ Y+ SAME");
+			PSEUDODATA_INV_total_histo->Draw("AXIS SAME");
+			PSEUDODATA_INV_total_histo->GetXaxis()->SetTitle(namevariable);
+			PSEUDODATA_INV_total_histo->GetXaxis()->SetTitleSize(0.045);
+			PSEUDODATA_INV_total_histo->GetYaxis()->SetTitle("Events");
+
+			PSEUDODATA_INV_total_histo->Write(titleh) ;
+			outfile-> Write();
+		}	
+
+		else {
+
+			PSEUDODATA_total_histo->Sumw2();
+
+			Nbins = PSEUDODATA_total_histo->GetNbinsX();
+
+			if (x_min != -999 && x_max != -999){
+				if (x_max == PSEUDODATA_total_histo->GetXaxis()->GetXmax()) X_max = x_max;
+				else X_max = x_max - (x_max-x_min)/Nbins;
+				if (x_min == PSEUDODATA_total_histo->GetXaxis()->GetXmin()) X_min = x_min;
+				else X_min = x_min + (x_max-x_min)/Nbins;
+
+				PSEUDODATA_total_histo->GetXaxis()->SetRangeUser(X_min,X_max);
+			}
+
+			PSEUDODATA_total_histo->SetMarkerSize(0.7);
+			PSEUDODATA_total_histo->SetMarkerStyle(20);
+			PSEUDODATA_total_histo->SetMinimum(0.1);
+
+			PSEUDODATA_total_histo->Draw("E");
+			gPad->SetLogy();
+			PSEUDODATA_total_histo->Draw("AXIS X+ Y+ SAME");
+			PSEUDODATA_total_histo->Draw("AXIS SAME");
+			PSEUDODATA_total_histo->GetXaxis()->SetTitle(namevariable);
+			PSEUDODATA_total_histo->GetXaxis()->SetTitleSize(0.045);
+			PSEUDODATA_total_histo->GetYaxis()->SetTitle("Events");
+
+			PSEUDODATA_total_histo->Write(titleh) ;
+			outfile-> Write();
+		}
+
+
+		TLegend *leg =new TLegend(0.6068,0.6923,0.83,0.7490);
+		leg->SetFillColor(0); 
+		leg->SetFillStyle(0); 
+		leg->SetBorderSize(0);
+		if (sample == "MC_SIG") {
+			leg->AddEntry(MC_SIG_total_histo,"MC signal","pL");
+		}  
+		else if (sample == "MC_BACK") {
+			leg->AddEntry(MC_BACK_total_histo,"MC background","pL");
+		}
+		else if (sample == "MC_BACK_INV") {
+			if (inv_sigmaietaieta && !inv_isolation){
+				leg->AddEntry(MC_BACK_INV_total_histo,"#splitline{MC background,}{#sigma_{i #eta i #eta}} sidebands","pL");
+			}
+			else if (!inv_sigmaietaieta && inv_isolation){
+				leg->AddEntry(MC_BACK_INV_total_histo,"#splitline{MC background,}{isolation sidebands}","pL");
+			}
+			else {
+					cout << "ERROR: Wrong sample string (only \"MC_SIG\" or \"MC_BACK\" or \"PSEUDODATA\" or \"MC_BACK_INV\" or \"PSEUDODATA_INV\"). You wrote: \"" << geo << "\"" << endl << endl;
+			}
+		} 
+		else if (sample == "PSEUDODATA_INV") {
+			if (inv_sigmaietaieta && !inv_isolation){
+				leg->AddEntry(PSEUDODATA_INV_total_histo,"#splitline{Pseudo-Data,}{#sigma_{i #eta i #eta} sidebands}","pL");
+			}
+			else if (!inv_sigmaietaieta && inv_isolation){
+				leg->AddEntry(PSEUDODATA_INV_total_histo,"#splitline{Pseudo-Data,}{isolation sidebands}","pL");
+			}
+			else {
+				cout << "ERROR: Wrong sample string (only \"MC_SIG\" or \"MC_BACK\" or \"DATA\" or \"MC_BACK_INV\" or \"DATA_INV\"). You wrote: \"" << geo << "\"" << endl << endl;
+			}
+		}  
+		else {
+			leg->AddEntry(PSEUDODATA_total_histo,"Pseudo-Data","pL");
+		}  
+		leg->Draw();
+
+
+	  TPaveText* text_1 = new TPaveText(0.1194,0.9310,0.3313,0.9780,"NDC");
+	  text_1->SetFillColor(0);
+	  text_1->SetFillStyle(0);
+	  text_1->SetBorderSize(0);
+	  text_1->AddText("CMS Preliminary");
+	  text_1->SetTextAlign(11);
+	  text_1->Draw();
+
+	  TPaveText* text_2 = new TPaveText(0.5627,0.9310,0.8678,0.9780,"NDC");
+	  text_2->SetFillColor(0);
+	  text_2->SetFillStyle(0);
+	  text_2->SetBorderSize(0);
+		text_2->AddText("#sqrt{s} = 8 TeV, L = 19.71 fb^{-1}");
+	  text_2->SetTextAlign(11);
+	  text_2->Draw();
+
+
+		Canva->SaveAs((folder_s + geo_s + SB_folder + fit_pdf_folder + sample_mod + titleh + pdf_string).c_str());
+		Canva->SaveAs((folder_s + geo_s + SB_folder + fit_root_folder + sample_mod + titleh + root_string).c_str());
+		Canva->Close();
+	
+
+		// ==================================== close files
+
+		PSEUDODATA_GJets_HT_40To100_file->Close();	
+		PSEUDODATA_GJets_HT_100To200_file->Close();	
+		PSEUDODATA_GJets_HT_200To400_file->Close();
+		PSEUDODATA_GJets_HT_400ToInf_file->Close(); 
+	
+		PSEUDODATA_DiPhotonJets_file->Close();
+
+		PSEUDODATA_QCD_Pt_20_30_EMEnriched_file->Close();
+		PSEUDODATA_QCD_Pt_30_80_EMEnriched_file->Close();
+		PSEUDODATA_QCD_Pt_80_170_EMEnriched_file->Close();
+		PSEUDODATA_QCD_Pt_170_250_EMEnriched_file->Close();
+		PSEUDODATA_QCD_Pt_250_350_EMEnriched_file->Close();
+		PSEUDODATA_QCD_Pt_350_EMEnriched_file->Close();
+
+		PSEUDODATA_QCD_Pt_20_30_BCtoE_file->Close();
+		PSEUDODATA_QCD_Pt_30_80_BCtoE_file->Close();
+		PSEUDODATA_QCD_Pt_80_170_BCtoE_file->Close();
+		PSEUDODATA_QCD_Pt_170_250_BCtoE_file->Close();
+		PSEUDODATA_QCD_Pt_250_350_BCtoE_file->Close();
+		PSEUDODATA_QCD_Pt_350_BCtoE_file->Close();
+
+		if(signal_MAD){	
+			GJets_HT_40To100_file->Close();	
+			GJets_HT_100To200_file->Close();	
+			GJets_HT_200To400_file->Close();
+			GJets_HT_400ToInf_file->Close(); 
+		}
+		else{
+			G_Pt_15to30_file->Close();
+			G_Pt_30to50_file->Close();
+			G_Pt_50to80_file->Close();
+			G_Pt_80to120_file->Close();
+			G_Pt_120to170_file->Close();			
+			G_Pt_170to300_file->Close();	
+			G_Pt_300to470_file->Close();	
+			G_Pt_470to800_file->Close();	
+			G_Pt_800to1400_file->Close();
+			G_Pt_1400to1800_file->Close();		
+			G_Pt_1800_file->Close();
+		}
+	
+		DiPhotonJets_file->Close();
+
+		if (!background_QCD){
+			QCD_Pt_20_30_EMEnriched_file->Close();
+			QCD_Pt_30_80_EMEnriched_file->Close();
+			QCD_Pt_80_170_EMEnriched_file->Close();
+			QCD_Pt_170_250_EMEnriched_file->Close();
+			QCD_Pt_250_350_EMEnriched_file->Close();
+			QCD_Pt_350_EMEnriched_file->Close();
+
+			QCD_Pt_20_30_BCtoE_file->Close();
+			QCD_Pt_30_80_BCtoE_file->Close();
+			QCD_Pt_80_170_BCtoE_file->Close();
+			QCD_Pt_170_250_BCtoE_file->Close();
+			QCD_Pt_250_350_BCtoE_file->Close();
+			QCD_Pt_350_BCtoE_file->Close();
+		}
+		else {
+			QCD_HT_100To250_file->Close();  
+			QCD_HT_250To500_file->Close();
+			QCD_HT_500To1000_file->Close();
+			QCD_HT_1000ToInf_file->Close(); 
+		}
+	}
+}
+
+
+void Closure_templates_PfIsoChargedHad_RhoCorrected_20binPt() {
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin01_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 111 [GeV/#font[12]{c}]", 1, 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin02_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 111 < p_{T}^{#gamma_{1}} < 123.1 [GeV/#font[12]{c}]", 1, 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin03_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 123.1 < p_{T}^{#gamma_{1}} < 136.6 [GeV/#font[12]{c}]", 1, 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin04_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 136.6 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin05_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 168.2 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin06_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 168.2 < p_{T}^{#gamma_{1}} < 186.6 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin07_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 186.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin08_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 229.7 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin09_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 229.7 < p_{T}^{#gamma_{1}} < 254.9 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin10_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 254.9 < p_{T}^{#gamma_{1}} < 282.8 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin11_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 282.8 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin12_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 348.2 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin13_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 348.2 < p_{T}^{#gamma_{1}} < 386.4 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin14_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 386.4 < p_{T}^{#gamma_{1}} < 428.7 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin15_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 428.7 < p_{T}^{#gamma_{1}} < 475.7 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin16_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 475.7 < p_{T}^{#gamma_{1}} < 527.8 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin17_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 527.8 < p_{T}^{#gamma_{1}} < 585.6 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin18_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 585.6 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin19_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 721 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin20_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 721 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin21_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin22_big_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]",1 , 0, 1.6);	
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin23_big_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 201.7 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin24_big_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin25_big_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin26_big_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]",1 , 0, 1.6);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_1_bin27_big_", "Iso^{#gamma_{1} #rho_{corr}}_{ChHad} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]",1 , 0, 1.6);				
+}
+
+
+void Closure_templates_PfIsoNeutralHad_RhoCorrected_20binPt() {
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin01_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 111 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin02_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 111 < p_{T}^{#gamma_{1}} < 123.1 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin03_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 123.1 < p_{T}^{#gamma_{1}} < 136.6 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin04_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 136.6 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin05_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 168.2 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin06_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 168.2 < p_{T}^{#gamma_{1}} < 186.6 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin07_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 186.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin08_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 229.7 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin09_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 229.7 < p_{T}^{#gamma_{1}} < 254.9 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin10_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 254.9 < p_{T}^{#gamma_{1}} < 282.8 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin11_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 282.8 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin12_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 348.2 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin13_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 348.2 < p_{T}^{#gamma_{1}} < 386.4 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin14_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 386.4 < p_{T}^{#gamma_{1}} < 428.7 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin15_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 428.7 < p_{T}^{#gamma_{1}} < 475.7 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin16_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 475.7 < p_{T}^{#gamma_{1}} < 527.8 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin17_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 527.8 < p_{T}^{#gamma_{1}} < 585.6 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin18_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 585.6 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin19_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 721 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin20_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 721 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin21_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin22_big_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin23_big_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 201.7 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin24_big_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin25_big_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin26_big_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_1_bin27_big_", "Iso^{#gamma_{1} #rho_{corr}}_{NeHad} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 4, 0, 20);
+}
+
+
+void Closure_templates_PfIsoPhoton_RhoCorrected_20binPt() {
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin01_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 111 [GeV/#font[12]{c}]", 1, 0, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin02_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 111 < p_{T}^{#gamma_{1}} < 123.1 [GeV/#font[12]{c}]", 1, 0, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin03_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 123.1 < p_{T}^{#gamma_{1}} < 136.6 [GeV/#font[12]{c}]", 1, 0, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin04_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 136.6 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, 0, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin05_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 168.2 [GeV/#font[12]{c}]", 1, 0, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin06_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 168.2 < p_{T}^{#gamma_{1}} < 186.6 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin07_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 186.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, 0, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin08_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 229.7 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin09_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 229.7 < p_{T}^{#gamma_{1}} < 254.9 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin10_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 254.9 < p_{T}^{#gamma_{1}} < 282.8 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin11_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 282.8 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin12_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 348.2 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin13_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 348.2 < p_{T}^{#gamma_{1}} < 386.4 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin14_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 386.4 < p_{T}^{#gamma_{1}} < 428.7 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin15_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 428.7 < p_{T}^{#gamma_{1}} < 475.7 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin16_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 475.7 < p_{T}^{#gamma_{1}} < 527.8 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin17_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 527.8 < p_{T}^{#gamma_{1}} < 585.6 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin18_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 585.6 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin19_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 721 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin20_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 721 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, 0, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin21_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, 0, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin22_big_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, 0, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin23_big_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 201.7 [GeV/#font[12]{c}]", 1, 0, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin24_big_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, 0, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin25_big_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, 0, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin26_big_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, 0, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_1_bin27_big_", "Iso^{#gamma_{1} #rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, 0, 10);
+}
+
+
+void Closure_templates_PfIso_RhoCorrected_20binPt() {
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin01_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 111 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin02_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 111 < p_{T}^{#gamma_{1}} < 123.1 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin03_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 123.1 < p_{T}^{#gamma_{1}} < 136.6 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin04_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 136.6 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin05_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 168.2 [GeV/#font[12]{c}]", 4, 0, 20);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin06_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 168.2 < p_{T}^{#gamma_{1}} < 186.6 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin07_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 186.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin08_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 229.7 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin09_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 229.7 < p_{T}^{#gamma_{1}} < 254.9 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin10_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 254.9 < p_{T}^{#gamma_{1}} < 282.8 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin11_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 282.8 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin12_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 348.2 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin13_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 348.2 < p_{T}^{#gamma_{1}} < 386.4 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin14_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 386.4 < p_{T}^{#gamma_{1}} < 428.7 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin15_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 428.7 < p_{T}^{#gamma_{1}} < 475.7 [GeV/#font[12]{c}]", 4, 0, 40);	
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin16_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 475.7 < p_{T}^{#gamma_{1}} < 527.8 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin17_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 527.8 < p_{T}^{#gamma_{1}} < 585.6 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin18_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 585.6 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin19_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 721 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin20_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 721 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin21_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin22_big_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin23_big_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 201.7 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin24_big_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin25_big_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin26_big_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 4, 0, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_1_bin27_big_", "Iso^{#gamma_{1} #rho_{corr}} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 4, 0, 40);
+}
+
+void Closure_templates_id_sieie_20binPt() {
+	Closure_templates("SelectedPhotons_id_sieie_1_bin01_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 100 < p_{T}^{#gamma_{1}} < 111 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin02_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 111 < p_{T}^{#gamma_{1}} < 123.1 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin03_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 123.1 < p_{T}^{#gamma_{1}} < 136.6 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin04_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 136.6 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin05_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 151.6 < p_{T}^{#gamma_{1}} < 168.2 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin06_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 168.2 < p_{T}^{#gamma_{1}} < 186.6 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin07_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 186.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin08_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 207.1 < p_{T}^{#gamma_{1}} < 229.7 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin09_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 229.7 < p_{T}^{#gamma_{1}} < 254.9 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin10_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 254.9 < p_{T}^{#gamma_{1}} < 282.8 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin11_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 282.8 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin12_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 313.8 < p_{T}^{#gamma_{1}} < 348.2 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin13_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 348.2 < p_{T}^{#gamma_{1}} < 386.4 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin14_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 386.4 < p_{T}^{#gamma_{1}} < 428.7 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin15_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 428.7 < p_{T}^{#gamma_{1}} < 475.7 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin16_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 475.7 < p_{T}^{#gamma_{1}} < 527.8 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin17_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 527.8 < p_{T}^{#gamma_{1}} < 585.6 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin18_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 585.6 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin19_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 649.8 < p_{T}^{#gamma_{1}} < 721 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin20_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 721 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin21_", "#sigma_{i#etai#eta}^{#gamma_{1}}, p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin22_big_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin23_big_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 151.6 < p_{T}^{#gamma_{1}} < 201.7 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin24_big_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin25_big_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin26_big_", "#sigma_{i#etai#eta}^{#gamma_{1}}, 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 2, 0., 0.012);
+	Closure_templates("SelectedPhotons_id_sieie_1_bin27_big_", "#sigma_{i#etai#eta}^{#gamma_{1}}, p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 2, 0., 0.012);
+}
+
+
+void Closure_templates_PfIsoChargedHad_RhoCorrected_forFit_20binPt() {
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 111 [GeV/#font[12]{c}]", 1, -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 111 < p_{T}^{#gamma_{1}} < 123.1 [GeV/#font[12]{c}]", 1, -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 123.1 < p_{T}^{#gamma_{1}} < 136.6 [GeV/#font[12]{c}]", 1, -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 136.6 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 168.2 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 168.2 < p_{T}^{#gamma_{1}} < 186.6 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 186.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 229.7 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 229.7 < p_{T}^{#gamma_{1}} < 254.9 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 254.9 < p_{T}^{#gamma_{1}} < 282.8 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 282.8 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 348.2 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 348.2 < p_{T}^{#gamma_{1}} < 386.4 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 386.4 < p_{T}^{#gamma_{1}} < 428.7 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 428.7 < p_{T}^{#gamma_{1}} < 475.7 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 475.7 < p_{T}^{#gamma_{1}} < 527.8 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 527.8 < p_{T}^{#gamma_{1}} < 585.6 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 585.6 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 721 [GeV/#font[12]{c}]",1 , -2, 2);
+	Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 721 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]",1 , -2, 2);
+Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin21_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]",1 , -2, 2);
+Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin22_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]",1 , -2, 2);
+Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin23_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 201.7 [GeV/#font[12]{c}]",1 , -2, 2);
+Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin24_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]",1 , -2, 2);
+Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin25_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]",1 , -2, 2);
+Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin26_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]",1 , -2, 2);
+Closure_templates("SelectedPhotons_PfIsoChargedHad_RhoCorr_forFit_1_bin27_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{ChHad} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]",1 , -2, 2);
+}
+
+
+void Closure_templates_PfIsoNeutralHad_RhoCorrected_forFit_20binPt() {
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 111 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 111 < p_{T}^{#gamma_{1}} < 123.1 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 123.1 < p_{T}^{#gamma_{1}} < 136.6 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 136.6 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 168.2 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 168.2 < p_{T}^{#gamma_{1}} < 186.6 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 186.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 229.7 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 229.7 < p_{T}^{#gamma_{1}} < 254.9 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 254.9 < p_{T}^{#gamma_{1}} < 282.8 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 282.8 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 348.2 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 348.2 < p_{T}^{#gamma_{1}} < 386.4 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 386.4 < p_{T}^{#gamma_{1}} < 428.7 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 428.7 < p_{T}^{#gamma_{1}} < 475.7 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 475.7 < p_{T}^{#gamma_{1}} < 527.8 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 527.8 < p_{T}^{#gamma_{1}} < 585.6 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 585.6 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 721 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 721 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 4, -10, 20);
+Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin21_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 4, -10, 20);
+Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin22_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 4, -10, 20);
+Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin23_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 201.7 [GeV/#font[12]{c}]", 4, -10, 20);
+Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin24_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 4, -10, 20);
+Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin25_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 4, -10, 20);
+Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin26_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 4, -10, 20);
+Closure_templates("SelectedPhotons_PfIsoNeutralHad_RhoCorr_forFit_1_bin27_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{NeHad} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 4, -10, 20);
+}
+
+
+void Closure_templates_PfIsoPhoton_RhoCorrected_forFit_20binPt() {
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 111 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 111 < p_{T}^{#gamma_{1}} < 123.1 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 123.1 < p_{T}^{#gamma_{1}} < 136.6 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 136.6 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 168.2 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 168.2 < p_{T}^{#gamma_{1}} < 186.6 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 186.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 229.7 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 229.7 < p_{T}^{#gamma_{1}} < 254.9 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 254.9 < p_{T}^{#gamma_{1}} < 282.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 282.8 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 348.2 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 348.2 < p_{T}^{#gamma_{1}} < 386.4 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 386.4 < p_{T}^{#gamma_{1}} < 428.7 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 428.7 < p_{T}^{#gamma_{1}} < 475.7 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 475.7 < p_{T}^{#gamma_{1}} < 527.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 527.8 < p_{T}^{#gamma_{1}} < 585.6 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 585.6 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 721 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 721 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin21_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin22_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin23_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 201.7 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin24_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin25_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin26_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_1_bin27_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, -10, 10);		
+}
+
+
+void Closure_templates_PfIso_RhoCorrected_forFit_20binPt() {
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 111 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 111 < p_{T}^{#gamma_{1}} < 123.1 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 123.1 < p_{T}^{#gamma_{1}} < 136.6 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 136.6 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 168.2 [GeV/#font[12]{c}]", 4, -10, 20);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 168.2 < p_{T}^{#gamma_{1}} < 186.6 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 186.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 229.7 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 229.7 < p_{T}^{#gamma_{1}} < 254.9 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 254.9 < p_{T}^{#gamma_{1}} < 282.8 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 282.8 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 348.2 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 348.2 < p_{T}^{#gamma_{1}} < 386.4 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 386.4 < p_{T}^{#gamma_{1}} < 428.7 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 428.7 < p_{T}^{#gamma_{1}} < 475.7 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 475.7 < p_{T}^{#gamma_{1}} < 527.8 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 527.8 < p_{T}^{#gamma_{1}} < 585.6 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 585.6 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 721 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 721 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin21_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin22_big_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin23_big_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 201.7 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin24_big_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin25_big_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin26_big_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 4, -10, 40);
+	Closure_templates("SelectedPhotons_PfIso_RhoCorr_forFit_1_bin27_big_", "Iso^{#gamma_{1} fit-#rho_{corr}} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 4, -10, 40);
+}
+
+void Closure_templates_IsoFPRPhoton_RhoCorrected_forFit_20binPt() {
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 111 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 111 < p_{T}^{#gamma_{1}} < 123.1 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 123.1 < p_{T}^{#gamma_{1}} < 136.6 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 136.6 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 168.2 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 168.2 < p_{T}^{#gamma_{1}} < 186.6 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 186.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 229.7 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 229.7 < p_{T}^{#gamma_{1}} < 254.9 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 254.9 < p_{T}^{#gamma_{1}} < 282.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 282.8 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 348.2 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 348.2 < p_{T}^{#gamma_{1}} < 386.4 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 386.4 < p_{T}^{#gamma_{1}} < 428.7 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 428.7 < p_{T}^{#gamma_{1}} < 475.7 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 475.7 < p_{T}^{#gamma_{1}} < 527.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 527.8 < p_{T}^{#gamma_{1}} < 585.6 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 585.6 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 721 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 721 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin21_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin22_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin23_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 151.6 < p_{T}^{#gamma_{1}} < 201.7 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin24_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin25_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin26_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_1_bin27_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}], p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, -10, 10);
+}
+
+void Closure_templates_IsoFPRRandomConePhoton_RhoCorrected_forFit_20binPt() {
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin01_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 100 < p_{T}^{#gamma_{1}} < 111 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin02_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 111 < p_{T}^{#gamma_{1}} < 123.1 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin03_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 123.1 < p_{T}^{#gamma_{1}} < 136.6 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin04_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 136.6 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin05_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 151.6 < p_{T}^{#gamma_{1}} < 168.2 [GeV/#font[12]{c}]", 1, -10, 9.5);
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin06_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 168.2 < p_{T}^{#gamma_{1}} < 186.6 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin07_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 186.6 < p_{T}^{#gamma_{1}} < 207.1 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin08_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 207.1 < p_{T}^{#gamma_{1}} < 229.7 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin09_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 229.7 < p_{T}^{#gamma_{1}} < 254.9 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin10_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 254.9 < p_{T}^{#gamma_{1}} < 282.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin11_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 282.8 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin12_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 313.8 < p_{T}^{#gamma_{1}} < 348.2 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin13_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 348.2 < p_{T}^{#gamma_{1}} < 386.4 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin14_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 386.4 < p_{T}^{#gamma_{1}} < 428.7 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin15_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 428.7 < p_{T}^{#gamma_{1}} < 475.7 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin16_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 475.7 < p_{T}^{#gamma_{1}} < 527.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin17_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 527.8 < p_{T}^{#gamma_{1}} < 585.6 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin18_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 585.6 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin19_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 649.8 < p_{T}^{#gamma_{1}} < 721 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin20_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 721 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -10, 10);	
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin21_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, p_{T}^{#gamma_{1}} > 800 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin22_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 100 < p_{T}^{#gamma_{1}} < 151.6 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin23_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 151.6 < p_{T}^{#gamma_{1}} < 201.7 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin24_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 207.1 < p_{T}^{#gamma_{1}} < 313.8 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin25_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 313.8 < p_{T}^{#gamma_{1}} < 649.8 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin26_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, 649.8 < p_{T}^{#gamma_{1}} < 800 [GeV/#font[12]{c}]", 1, -10, 10);
+	Closure_templates("SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_1_bin27_big_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}] - template, p_{T}^{#gamma_{1}} > 313.8 [GeV/#font[12]{c}]", 1, -10, 10);
+}
+
+
+void Closure_templates_Total() {
+	Closure_templates_PfIsoChargedHad_RhoCorrected_20binPt();
+	Closure_templates_PfIsoNeutralHad_RhoCorrected_20binPt();
+	Closure_templates_PfIsoPhoton_RhoCorrected_20binPt();
+	Closure_templates_PfIso_RhoCorrected_20binPt();
+	Closure_templates_id_sieie_20binPt();
+	Closure_templates_PfIsoChargedHad_RhoCorrected_forFit_20binPt();
+	Closure_templates_PfIsoNeutralHad_RhoCorrected_forFit_20binPt();
+	Closure_templates_PfIsoPhoton_RhoCorrected_forFit_20binPt();
+	Closure_templates_PfIso_RhoCorrected_forFit_20binPt();
+	Closure_templates_IsoFPRPhoton_RhoCorrected_forFit_20binPt();
+	Closure_templates_IsoFPRRandomConePhoton_RhoCorrected_forFit_20binPt();
+}

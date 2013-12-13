@@ -156,7 +156,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 
 	// ==================================== choose the tools
 
-	string folder = "09_results_2013_11_02"; // analysis folder
+	string folder = "12_results_2013_11_02"; // analysis folder
 
 	char geo[100] = "barrel";                // "barrel", "endcaps" or "total"
 
@@ -170,7 +170,7 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 	bool background_QCD = false;             // true: background = MADGRAPH not filtered (QCD HT)
 	                                         // false: background = PYTHIA filtered (QCD EMEnriched + BCtoE); 
 
-	Int_t itype = 9;                        // it identifies histos with different analysis 
+	Int_t itype = 12;                        // it identifies histos with different analysis 
 
 
 	// ==================================== string names
@@ -820,8 +820,8 @@ void histo2D(const char* titleh, const char* titleYaxis, string string_pT, const
 	gPad->SetLogz();
 
 	TLegend *leg; 
-	if (!inv_sigmaietaieta) leg = new TLegend(0.1778,0.5478,0.5151,0.7480);
-	else leg = new TLegend(0.4161,0.5478,0.7534,0.7480);
+	if (!inv_sigmaietaieta) leg = new TLegend(0.1778,0.6975,0.5151,0.8977);
+	else leg = new TLegend(0.4161,0.6975,0.7534,0.8977);
 	leg->SetFillColor(0); 
   leg->SetFillStyle(0); 
   leg->SetBorderSize(0);
@@ -1396,12 +1396,12 @@ void histo2D_SelectedPhotons_IsoFPRRandomConePhoton_RhoCorr_forFit_vs_sieie_inve
 
 
 void histo2D_Thesis_normal() {
-	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "", 2, 1, 0., 0.012, -10, 10);
-	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "", 2, 1, 0., 0.012, -10, 10);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "", 2, 1, 0., 0.012, -5, 10);
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "", 2, 1, 0., 0.012, -5, 10);
 }
 
 
 void histo2D_Thesis_inverted_sieie() {
-	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "", 2, 1, 0.010, 0.025, -10, 10);	
-	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "", 2, 1, 0.010, 0.025, -10, 10);
+	histo2D("TH2F_SelectedPhotons_PfIsoPhoton_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho} [GeV/#font[12]{c}]", "", 2, 1, 0.010, 0.025, -5, 10);	
+	histo2D("TH2F_SelectedPhotons_IsoFPRPhoton_RhoCorr_forFit_vs_sieie_1_", "Iso^{#gamma_{1} fit-#rho_{corr}}_{Pho-FPR} [GeV/#font[12]{c}]", "", 2, 1, 0.010, 0.025, -5, 10);
 }
